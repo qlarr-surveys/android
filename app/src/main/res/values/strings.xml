@@ -1,0 +1,178 @@
+<resources>
+    <string name="app_name">Qlarr</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_responses">Responses</string>
+    <string name="title_activity_info">Info</string>
+    <string name="title_survey_list">Surveys</string>
+    <string name="login_hint_server_url">Server Url</string>
+    <string name="login_hint_email">Email</string>
+    <string name="login_hint_password">Password</string>
+    <string name="login_button_login">Sign in</string>
+    <string name="login_button_login_loading">Please wait</string>
+    <string name="error_general_title">Error</string>
+    <string name="error_network_title">Network Error</string>
+    <string name="error_timeout_title">Timeout</string>
+    <string name="error_general_description">Please try again later.</string>
+    <string name="error_network_description">No Internet… Check your network</string>
+    <string name="error_timeout_description">Everything is taking longer than it should… Please try again later</string>
+    <string name="error_auth_title">Session expired.</string>
+    <string name="error_auth_description">Please sign in again.</string>
+    <string name="not_found_description">This resource is not found</string>
+    <string name="error_login_title">Sign in failed!</string>
+    <string name="error_login_description">Please enter valid credentials</string>
+    <string name="error_signup_not_allowed_title">Sign in failed!</string>
+    <string name="error_signup_not_allowed_description">You have to have an existing account to log in through google… go create an account</string>
+    <string name="error_role_not_supported_title">Sign in failed!</string>
+    <string name="error_role_not_supported_description">You must be a surveyor, Survey Admin or Super Admin to be able to log in to this app</string>
+    <string name="validation_email_error">Please enter valid email</string>
+    <string name="validation_psw_error">Password minimum length is 8</string>
+    <string name="validation_url_error">Invalid URL</string>
+    <string name="syncing_survey_title">Syncing %s</string>
+    <string name="syncing_survey_file_order">Downloading %1$d/%2$d</string>
+    <string name="syncing_survey_file_download_progress">%1$d KB of %2$d KB (%3$d)%%</string>
+    <string name="fetching_surveys_message">Fetching Surveys…</string>
+    <string name="no_surveys_message">No Surveys assigned Available… Please check Network and make sure you are assigned some surveys and refresh later</string>
+    <string name="chrome_version_not_supported">Chrome version not supported</string>
+    <string name="response_sync_status">Synced: %b</string>
+    <string name="response_start_date">Start Date: %s</string>
+    <string name="response_submit_date">Submit Date: %s</string>
+    <string name="response_lang">Language: %s</string>
+    <string name="responses_screen_complete_responses">Complete responses</string>
+    <string name="responses_screen_incomplete_responses">Incomplete responses</string>
+    <string name="responses_screen_last_sync_time">Last sync</string>
+    <string name="responses_screen_sync_button">Sync</string>
+    <string name="response_item_started">Started</string>
+    <string name="response_item_completed">Completed</string>
+    <string name="response_item_synced">Synced</string>
+    <string name="response_item_language">Language</string>
+    <string name="permission_denied">Permission Denied!!</string>
+    <string name="canceled">Cancelled</string>
+    <string name="press_back_to_exit">\"Press back again to exit.</string>
+    <string name="local_responses_count">Local Responses: %d</string>
+    <string name="local_complete_responses_count">Local Complete Responses: %d</string>
+    <string name="unlimited_quota">Unlimited</string>
+    <string name="survey_quota">Survey Quota: %d</string>
+    <string name="user_quota">User Quota: %d</string>
+    <string name="no_start_date">No Start Date</string>
+    <string name="start_date">Start Date: %s</string>
+    <string name="no_end_date">No End Date</string>
+    <string name="end_date">End Date: %s</string>
+    <string name="kilobytes">%.2f KB</string>
+    <string name="megabytes">%.2f MB</string>
+    <string name="max_size_exceeded">Max Size Exceeded</string>
+    <string name="max_size_exceeded_message">This file(%1$dKB) exceeds max allowed size of %2$dKB</string>
+    <string name="max_size_exceeded_message_compression_note">This file(%1$dKB) exceeds max allowed size of %2$dKB, will be compressed to match constraint</string>
+    <string name="consent_adjust_monitoring_and_tracking">Adjust details and settings</string>
+    <string name="consent_approve">Agree and continue</string>
+    <string name="consent_confirm_choices">Proceed with selected options</string>
+    <string name="consent_confirm_without_tracking">Proceed without tracking</string>
+    <string name="consent_crashlytics_details">We use the Crashlytics tool from Crashlytics Inc.,
+        Cambridge, Massachusetts, USA (https://crashlytics.com) to receive error reports after
+        our Qlarr app crashes and to improve the stability of the app. The tool provides the
+        provider with reports on crashes and bugs. In addition to the information on the crash itself, the collected and stored data also includes device-specific information that is important for assessing the crash, such as device type, operating system version, available memory, etc. This information contains neither the IP address nor personally identifiable information and none other data from the mobile device. It does not contain data about the user and is not linked. The sole purpose of the collection and storage is to record and evaluate program errors in the app to eliminate them. You can activate or deactivate the use of Crashlytics using the switch above.</string>
+    <string name="consent_crashlytics_title">Crashlytics</string>
+    <string name="consent_intro">In this app, we use technologies that measure the performance of the app, transmit error reports in the event of problems and thus help us to improve the app. By tapping on \"Agree and continue\" you agree to the use of these technologies and the associated processing of personal data. You can find more information in our privacy policy.</string>
+    <string name="consent_monitoring_and_tracking">Monitoring &amp; Tracking</string>
+    <string name="consent_firebase_details">In order to monitor and continuously improve the use and usability of the app, we use the tool Google Analytics for Firebase from Google Inc., Mountainview, California, USA.\nThe collected data help us to better understand the use and thus the app improve in the right places. All IP addresses are only saved in anonymized form. Therefore, the data obtained cannot be used to personally identify users.
+FirebaseAnalytics uses an advertising ID. You can restrict this use in the device settings of your mobile device: Settings&gt; Google&gt; Ads&gt; Reset Advertising ID.</string>
+    <string name="consent_firebase_title">Firebase</string>
+    <string name="login_as_guest">Browse Example Surveys</string>
+    <string name="notification_channel_uploader_name">Upload progress</string>
+    <string name="notification_channel_uploader_description">Survey responses upload
+        progress</string>
+    <string name="notification_uploader_title">Uploading…</string>
+    <string name="notification_uploader_description">Upload with server in progress</string>
+    <string name="sync_time_never">Never</string>
+    <string name="back">Back</string>
+    <string name="survey_creation_date">Created</string>
+    <string name="survey_last_modified">Last updated</string>
+    <string name="survey_start_date">Starts</string>
+    <string name="survey_end_date">Ends</string>
+    <string name="survey_new_version_available">New version available</string>
+    <string name="survey_local_responses">Total local responses</string>
+    <string name="survey_local_complete_responses">Complete responses</string>
+    <string name="survey_local_incomplete_responses">Incomplete responses</string>
+    <string name="survey_synced_responses">Synced responses</string>
+    <string name="survey_unsynced_responses">To sync responses</string>
+    <string name="survey_stats_quota">Survey quota left</string>
+    <string name="survey_stats_user_quota">User quota left</string>
+    <string name="survey_save_timings">Save timings</string>
+    <string name="enabled">Enabled</string>
+    <string name="disabled">Disabled</string>
+    <string name="survey_status">Status</string>
+    <string name="survey_update_available">New version available</string>
+    <string name="survey_item_button_responses">Responses</string>
+    <string name="survey_item_button_info">Info</string>
+    <plurals name="time_interval_days_ago">
+        <item quantity="one">yesterday</item>
+        <item quantity="other">%d days ago</item>
+        <item quantity="zero">%d days ago</item>
+    </plurals>
+    <plurals name="time_interval_hours_ago">
+        <item quantity="one">1 hour ago</item>
+        <item quantity="other">%d hours ago</item>
+        <item quantity="zero">%d hours ago</item>
+    </plurals>
+    <plurals name="time_interval_minutes_ago">
+        <item quantity="one">1 minute ago</item>
+        <item quantity="other">%d minutes ago</item>
+        <item quantity="zero">%d minutes ago</item>
+    </plurals>
+    <plurals name="time_interval_months_ago">
+        <item quantity="one">last month</item>
+        <item quantity="other">in %d months</item>
+        <item quantity="zero">in %d months ago</item>
+    </plurals>
+    <plurals name="time_interval_weeks_ago">
+        <item quantity="one">last week</item>
+        <item quantity="other">%d weeks ago</item>
+        <item quantity="zero">%d weeks ago</item>
+    </plurals>
+    <plurals name="time_interval_years_ago">
+        <item quantity="one">last year</item>
+        <item quantity="other">%d years ago</item>
+        <item quantity="zero">%d years ago</item>
+    </plurals>
+    <plurals name="time_interval_in_days">
+        <item quantity="one">tomorrow</item>
+        <item quantity="other">in %d days</item>
+        <item quantity="zero">in %d days</item>
+    </plurals>
+    <plurals name="time_interval_in_hours">
+        <item quantity="one">next hour</item>
+        <item quantity="other">in %d hours</item>
+        <item quantity="zero">in %d hours</item>
+    </plurals>
+    <plurals name="time_interval_in_months">
+        <item quantity="one">next month</item>
+        <item quantity="other">in %d months ago</item>
+        <item quantity="zero">%d months ago</item>
+    </plurals>
+    <plurals name="time_interval_in_weeks">
+        <item quantity="one">last week</item>
+        <item quantity="other">in %d weeks</item>
+        <item quantity="zero">in %d weeks</item>
+    </plurals>
+    <plurals name="time_interval_in_years">
+        <item quantity="one">next year</item>
+        <item quantity="other">in %d years</item>
+        <item quantity="zero">in %d years</item>
+    </plurals>
+    <string name="time_interval_just_now">Just now</string>
+    <string name="survey_item_expires">Expires %s</string>
+    <string name="survey_item_starts">Starts %s</string>
+    <string name="today">Today</string>
+    <string name="survey_item_quota_left">Quota left: %d</string>
+    <string name="survey_item_button_start">Start</string>
+    <string name="survey_item_button_download">Download</string>
+    <string name="survey_item_button_update">Update</string>
+    <string name="survey_item_button_sync">Sync</string>
+    <string name="logout">Logout</string>
+    <string name="cancel">Cancel</string>
+    <string name="logout_alert_message">All non synced data will be lost.</string>
+    <string name="logout_are_you_sure">Are you sure you want to logout?</string>
+    <string name="login_to_private">Login to Private Server</string>
+    <string name="login_to_cloud">Login to Qlarr.com</string>
+    <string name="guest_warning">"You are checking the app as the guest. "</string>
+    <string name="survey_item_button_get_missing_files">Get Missing Files</string>
+</resources>

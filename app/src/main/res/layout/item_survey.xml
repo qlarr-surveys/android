@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/icon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/ic_baseline_assignment_24"
+        android:tint="@color/tint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8sp"
+        android:gravity="start"
+        android:textColor="@color/tint"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/icon"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Survey Name" />
+
+    <TextView
+        android:id="@+id/start_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8sp"
+        android:gravity="start"
+        android:textColor="@color/tint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/icon"
+        app:layout_constraintTop_toBottomOf="@id/name"
+        tools:text="Start Date: 22" />
+
+    <TextView
+        android:id="@+id/end_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8sp"
+        android:gravity="start"
+        android:textColor="@color/tint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/icon"
+        app:layout_constraintTop_toBottomOf="@id/start_date"
+        tools:text="End Date: 22" />
+
+    <TextView
+        android:id="@+id/quota"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8sp"
+        android:gravity="start"
+        android:textColor="@color/tint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/icon"
+        app:layout_constraintTop_toBottomOf="@id/end_date"
+        tools:text="Quota: 22" />
+
+    <TextView
+        android:id="@+id/local_response_count"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8sp"
+        android:gravity="start"
+        android:textColor="@color/tint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/icon"
+        app:layout_constraintTop_toBottomOf="@id/quota"
+        tools:text="Local: 22" />
+
+    <TextView
+        android:id="@+id/complete_local_response_count"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8sp"
+        android:gravity="start"
+        android:textColor="@color/tint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/icon"
+        app:layout_constraintTop_toBottomOf="@id/local_response_count"
+        tools:text="Total Response: 22" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/upload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:foreground="?android:selectableItemBackground"
+        android:padding="8dp"
+        android:src="@android:drawable/stat_sys_upload"
+        android:tint="@color/tint"
+        app:layout_constraintBottom_toBottomOf="@id/info"
+        app:layout_constraintEnd_toStartOf="@id/info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/info" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:foreground="?android:selectableItemBackground"
+        android:padding="8dp"
+        android:src="@drawable/ic_outline_info_24"
+        android:tint="@color/tint"
+        app:layout_constraintEnd_toStartOf="@id/responses"
+        app:layout_constraintStart_toEndOf="@id/icon"
+        app:layout_constraintTop_toBottomOf="@+id/complete_local_response_count" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/responses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:foreground="?android:selectableItemBackground"
+        android:padding="8dp"
+        android:src="@drawable/baseline_table_rows_24"
+        android:tint="@color/tint"
+        app:layout_constraintEnd_toStartOf="@id/sync"
+        app:layout_constraintStart_toEndOf="@id/info"
+        app:layout_constraintTop_toBottomOf="@+id/complete_local_response_count" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/sync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:foreground="?android:selectableItemBackground"
+        android:padding="8dp"
+        android:src="@drawable/ic_baseline_sync_24"
+        android:tint="@color/tint"
+        app:layout_constraintEnd_toStartOf="@id/play"
+        app:layout_constraintStart_toEndOf="@id/responses"
+        app:layout_constraintTop_toBottomOf="@+id/complete_local_response_count" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:foreground="?android:selectableItemBackground"
+        android:padding="8dp"
+        android:src="@drawable/ic_play"
+        android:tint="@color/tint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/sync"
+        app:layout_constraintTop_toBottomOf="@+id/complete_local_response_count" />
+
+</merge>

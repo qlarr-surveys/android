@@ -1,0 +1,1 @@
+System.register(["./index-legacy-DMBe9EAg.js"],(function(e,t){"use strict";var n;return{setters:[e=>{n=e.r}],execute:function(){e("u",(function(){return n.useContext(t)}));const t=e("F",n.createContext(void 0))}}}));

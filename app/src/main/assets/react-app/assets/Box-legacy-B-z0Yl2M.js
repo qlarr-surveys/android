@@ -1,0 +1,1 @@
+System.register(["./index-legacy-DMBe9EAg.js"],(function(e,t){"use strict";var s,a,r;return{setters:[e=>{s=e.f,a=e.ak,r=e.ac}],execute:function(){const t=s("MuiBox",["root"]),n=a({defaultClassName:t.root,generateClassName:r.generate});e("B",n)}}}));
