@@ -20,7 +20,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+import java.net.HttpURLConnection
 
 interface SurveyRepository {
 
@@ -235,9 +237,10 @@ class SurveyRepositoryImpl(
     override suspend fun uploadSurveyResponseFile(
         surveyId: String, fileName: String, storedFileName: String, file: File
     ) {
+        val fileType = HttpURLConnection.guessContentTypeFromName(fileName)
         val multipartBody =
             MultipartBody.Part.createFormData("file", fileName, file.asRequestBody())
-        service.uploadSurveyFile(surveyId, storedFileName, multipartBody)
+        service.uploadSurveyFile(surveyId, storedFileName, fileType.toRequestBody(), multipartBody)
     }
 
     override suspend fun fileOnServer(surveyId: String, fileName: String): Boolean {
