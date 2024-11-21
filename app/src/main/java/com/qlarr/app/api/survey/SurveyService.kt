@@ -1,7 +1,6 @@
 package com.qlarr.app.api.survey
 
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -35,7 +34,6 @@ interface SurveyService {
     suspend fun uploadSurveyFile(
         @Path("surveyId") surveyId: String,
         @Path("fileName") fileName: String,
-        @Part("fileType") fileType: RequestBody,
         @Part file: MultipartBody.Part
     ): Response<Unit>
 
