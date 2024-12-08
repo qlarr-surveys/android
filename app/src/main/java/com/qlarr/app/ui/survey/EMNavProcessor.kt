@@ -26,7 +26,6 @@ import com.qlarr.expressionmanager.model.NavigationUseCaseInput
 import com.qlarr.expressionmanager.model.ReservedCode
 import com.qlarr.expressionmanager.model.SurveyLang
 import com.qlarr.expressionmanager.model.SurveyMode
-import com.qlarr.expressionmanager.model.stringIndex
 import com.qlarr.expressionmanager.usecase.MaskedValuesUseCase
 import com.qlarr.expressionmanager.usecase.NavigationJsonOutput
 import com.qlarr.expressionmanager.usecase.NavigationUseCaseWrapperImpl
@@ -337,20 +336,18 @@ class EMNavProcessor(
     fun uploadFile(
         key: String,
         fileName: String,
-        byteArray: ByteArray,
-        fileExtension: String
+        byteArray: ByteArray
     ): ResponseUploadFile {
-        val uuid = UUID.randomUUID()
-        val storedFilename = "$uuid.$fileExtension"
+        val uuid = UUID.randomUUID().toString()
         val responseFile = FileUtils.getResponseFile(
             context = getActivity(),
-            fileName = storedFilename,
+            fileName = uuid,
             surveyId = survey.id
         )
         responseFile.writeBytes(byteArray)
         return saveFileResponse(
             fileName = fileName,
-            storedFilename = storedFilename,
+            storedFilename = uuid,
             key = key,
             fileSize = responseFile.length()
         )
