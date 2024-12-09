@@ -21,7 +21,6 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.qlarr.app.BuildConfig
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.ui.common.FileUtils
-import com.qlarr.app.ui.common.getFileExtension
 import com.qlarr.expressionmanager.ext.ScriptUtils
 import com.qlarr.expressionmanager.model.NavigationDirection
 import com.qlarr.expressionmanager.model.NavigationIndex
@@ -183,8 +182,8 @@ class QlarrWebView
         fun capturePhoto(key: String, maxSizeInKb: Int) {
             maxSizeKb = if (maxSizeInKb > 0) maxSizeInKb else null
             operationKey = key
-            val uuid = UUID.randomUUID()
-            val file = FileUtils.getResponseFile(context, "${uuid}.jpg", survey.id)
+            val uuid = UUID.randomUUID().toString()
+            val file = FileUtils.getResponseFile(context, uuid, survey.id)
             saverUri =
                 FileProvider.getUriForFile(context, FileUtils.FILE_PROVIDER_AUTHORITY, file)
             surveyActivity?.takePhoto(saverUri!!)
@@ -235,8 +234,7 @@ class QlarrWebView
                     val uploadFile = emNavProcessor.uploadFile(
                         key,
                         fileName,
-                        stream.readBytes(),
-                        saverUri!!.getFileExtension(context)!!
+                        stream.readBytes()
                     )
                     val string = jacksonKtMapper.writeValueAsString(uploadFile)
                     resetFileUploadVariables()
@@ -317,12 +315,10 @@ class QlarrWebView
         context.contentResolver.openInputStream(saverUri!!)?.use { stream ->
             val size = stream.readBytes().size.toLong()
             val shouldCompress = isSizeViolated(size, true)
-            val uuid =
-                UUID.fromString(saverUri.toString().substringAfterLast("/").substringBefore("."))
-            val extension = saverUri!!.getFileExtension(context)!!
+            val uuid = saverUri.toString().substringAfterLast("/").substringBefore(".")
             val result = emNavProcessor.saveFileResponse(
-                fileName = "captured-image.$extension",
-                storedFilename = "$uuid.$extension",
+                fileName = "captured-image.jpg",
+                storedFilename = uuid,
                 fileSize = size,
                 key = operationKey!!
             )
@@ -376,12 +372,10 @@ class QlarrWebView
                 resetFileUploadVariables()
                 return
             }
-            val fileExtension = contentUri.getFileExtension(context)!!
             val result = emNavProcessor.uploadFile(
                 key = operationKey!!,
-                fileName = "captured-video.$fileExtension",
-                byteArray = byteArray,
-                fileExtension = fileExtension
+                fileName = "captured-video.mp4",
+                byteArray = byteArray
             )
             loadUrlOnUiThread(
                 "javascript:onVideoCaptured$operationKey(${
