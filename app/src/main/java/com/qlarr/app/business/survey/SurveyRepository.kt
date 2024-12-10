@@ -239,12 +239,13 @@ class SurveyRepositoryImpl(
     ) {
         val fileType =
             HttpURLConnection.guessContentTypeFromName(fileName) ?: "application/octet-stream"
-        val multipartBody =
-            MultipartBody.Part.createFormData(
-                "file",
-                fileName,
-                file.asRequestBody(fileType.toMediaType())
-            )
+
+        val multipartBody = MultipartBody.Part.createFormData(
+            "file",
+            fileName,
+            file.asRequestBody(fileType.toMediaType())
+        )
+
         service.uploadSurveyFile(surveyId, storedFileName, multipartBody)
     }
 
