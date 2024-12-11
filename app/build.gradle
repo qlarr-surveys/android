@@ -6,12 +6,6 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.compose'
 }
 
-def keystorePropertiesFile = rootProject.file("keystore.properties");
-def keystoreProperties = new Properties()
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-}
-
 android {
     compileSdk 34
 
@@ -90,14 +84,14 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.9.1'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.7'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7'
-    implementation 'com.github.qlarr-surveys.survey-engine:surveyengine:6ef9e192b9'
-    implementation 'androidx.core:core-ktx:1.15.0'
+    implementation 'com.github.qlarr-surveys.expression-manager:expressionmanager:5bc324e'
+    implementation 'androidx.core:core-ktx:1.13.1'
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.8.4'
     implementation 'androidx.navigation:navigation-ui-ktx:2.8.4'
-    implementation "androidx.work:work-runtime-ktx:2.10.0"
+    implementation "androidx.work:work-runtime-ktx:2.9.1"
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation 'androidx.lifecycle:lifecycle-process:2.8.7'
