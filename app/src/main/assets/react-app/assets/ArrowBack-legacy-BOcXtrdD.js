@@ -1,1 +1,0 @@
-System.register(["./index-legacy-DMBe9EAg.js","./use-service-legacy-CgI9X4sP.js"],(function(e,s){"use strict";var t,r;return{setters:[e=>{t=e.j},e=>{r=e.d}],execute:function(){e("A",r(t.jsx("path",{d:"M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"}),"ArrowBack"))}}}));

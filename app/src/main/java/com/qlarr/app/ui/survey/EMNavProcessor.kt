@@ -15,25 +15,24 @@ import com.qlarr.app.db.QlarrDb
 import com.qlarr.app.db.model.Response
 import com.qlarr.app.db.model.Response.Companion.STORED_FILENAME_KEY
 import com.qlarr.app.ui.common.FileUtils
-import com.qlarr.expressionmanager.ext.ScriptUtils
-import com.qlarr.expressionmanager.ext.labels
-import com.qlarr.expressionmanager.model.ColumnName
-import com.qlarr.expressionmanager.model.Dependency
-import com.qlarr.expressionmanager.model.NavigationDirection
-import com.qlarr.expressionmanager.model.NavigationIndex
-import com.qlarr.expressionmanager.model.NavigationInfo
-import com.qlarr.expressionmanager.model.NavigationUseCaseInput
-import com.qlarr.expressionmanager.model.ReservedCode
-import com.qlarr.expressionmanager.model.SurveyLang
-import com.qlarr.expressionmanager.model.SurveyMode
-import com.qlarr.expressionmanager.model.stringIndex
-import com.qlarr.expressionmanager.usecase.MaskedValuesUseCase
-import com.qlarr.expressionmanager.usecase.NavigationJsonOutput
-import com.qlarr.expressionmanager.usecase.NavigationUseCaseWrapperImpl
-import com.qlarr.expressionmanager.usecase.additionalLang
-import com.qlarr.expressionmanager.usecase.availableLangByCode
-import com.qlarr.expressionmanager.usecase.defaultLang
-import com.qlarr.expressionmanager.usecase.defaultSurveyLang
+import com.qlarr.surveyengine.ext.ScriptUtils
+import com.qlarr.surveyengine.ext.labels
+import com.qlarr.surveyengine.model.ColumnName
+import com.qlarr.surveyengine.model.Dependency
+import com.qlarr.surveyengine.model.NavigationDirection
+import com.qlarr.surveyengine.model.NavigationIndex
+import com.qlarr.surveyengine.model.NavigationInfo
+import com.qlarr.surveyengine.model.NavigationUseCaseInput
+import com.qlarr.surveyengine.model.ReservedCode
+import com.qlarr.surveyengine.model.SurveyLang
+import com.qlarr.surveyengine.model.SurveyMode
+import com.qlarr.surveyengine.usecase.MaskedValuesUseCase
+import com.qlarr.surveyengine.usecase.NavigationJsonOutput
+import com.qlarr.surveyengine.usecase.NavigationUseCaseWrapperImpl
+import com.qlarr.surveyengine.usecase.additionalLang
+import com.qlarr.surveyengine.usecase.availableLangByCode
+import com.qlarr.surveyengine.usecase.defaultLang
+import com.qlarr.surveyengine.usecase.defaultSurveyLang
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -337,20 +336,18 @@ class EMNavProcessor(
     fun uploadFile(
         key: String,
         fileName: String,
-        byteArray: ByteArray,
-        fileExtension: String
+        byteArray: ByteArray
     ): ResponseUploadFile {
-        val uuid = UUID.randomUUID()
-        val storedFilename = "$uuid.$fileExtension"
+        val uuid = UUID.randomUUID().toString()
         val responseFile = FileUtils.getResponseFile(
             context = getActivity(),
-            fileName = storedFilename,
+            fileName = uuid,
             surveyId = survey.id
         )
         responseFile.writeBytes(byteArray)
         return saveFileResponse(
             fileName = fileName,
-            storedFilename = storedFilename,
+            storedFilename = uuid,
             key = key,
             fileSize = responseFile.length()
         )

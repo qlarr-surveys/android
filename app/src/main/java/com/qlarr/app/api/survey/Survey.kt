@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
-import com.qlarr.expressionmanager.model.NavigationIndex
+import com.qlarr.surveyengine.model.NavigationIndex
 import java.time.LocalDateTime
 
 @JsonIgnoreProperties(ignoreUnknown = true)

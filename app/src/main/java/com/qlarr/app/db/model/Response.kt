@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.qlarr.app.db.survey.SurveyDataEntity
-import com.qlarr.expressionmanager.model.NavigationIndex
+import com.qlarr.surveyengine.model.NavigationIndex
 import java.time.LocalDateTime
 
 @Entity(

@@ -2,9 +2,9 @@ package com.qlarr.app.db
 
 import androidx.room.TypeConverter
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import com.qlarr.expressionmanager.model.NavigationIndex
-import com.qlarr.expressionmanager.model.SurveyLang
-import com.qlarr.expressionmanager.model.jacksonKtMapper
+import com.qlarr.surveyengine.model.NavigationIndex
+import com.qlarr.surveyengine.model.SurveyLang
+import com.qlarr.surveyengine.model.jacksonKtMapper
 import java.time.LocalDateTime
 
 
