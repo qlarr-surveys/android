@@ -24,6 +24,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.net.HttpURLConnection
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 interface SurveyRepository {
     suspend fun getSurveyDbEntity(surveyId: String): SurveyDataEntity?
@@ -63,7 +64,7 @@ interface SurveyRepository {
 
     suspend fun updateSurveyAfterCached(surveyData: SurveyData)
 
-    suspend fun updateSurveyInDB(
+    suspend fun updateSurveyAfterSync(
         surveyId: String,
         responseCount: ResponseCount,
     ): SurveyData
@@ -71,8 +72,6 @@ interface SurveyRepository {
     suspend fun surveyDesign(id: String): SurveyDesign
 
     suspend fun clearSurveyFiles()
-
-    suspend fun updateLastSyncTime(id: String)
 
     sealed class DataStream {
         class Chunk(
@@ -162,6 +161,7 @@ class SurveyRepositoryImpl(
                 unsyncedCount = unsyncedCount,
                 cachedDesign = offlineSurvey?.cachedDesign == true,
                 cachedAllFiles = offlineSurvey?.cachedAllFiles == true,
+                lastSync = offlineSurvey?.lastSync,
             )
 
         saveSurveyToDB(
@@ -199,12 +199,12 @@ class SurveyRepositoryImpl(
         surveyDao.update(surveyData.toSurveyDataEntity())
     }
 
-    override suspend fun updateSurveyInDB(
+    override suspend fun updateSurveyAfterSync(
         surveyId: String,
         responseCount: ResponseCount,
     ): SurveyData {
         surveyDao.getSurveyDataById(surveyId)?.let { surveyDataEntity ->
-            surveyDao.update(surveyDataEntity.update(responseCount))
+            surveyDao.update(surveyDataEntity.updateAfterSync(responseCount))
         } ?: throw IllegalStateException("Survey not found with id: $surveyId")
         return getOfflineSurvey(surveyId)
     }
@@ -220,10 +220,6 @@ class SurveyRepositoryImpl(
         surveyDao.getAllSurveyData().forEach {
             FileUtils.deleteSurveyDirectory(context, it.id)
         }
-    }
-
-    override suspend fun updateLastSyncTime(id: String) {
-        surveyDao.updateLastSync(id, LocalDateTime.now())
     }
 
     override fun getSurveyFile(
@@ -298,11 +294,12 @@ class SurveyRepositoryImpl(
             Result.failure(e)
         }
 
-    private fun SurveyDataEntity.update(responseCount: ResponseCount): SurveyDataEntity =
+    private fun SurveyDataEntity.updateAfterSync(responseCount: ResponseCount): SurveyDataEntity =
         copy(
             id = id,
             totalResponsesCount = responseCount.completeResponseCount,
-            syncedResponseCount = responseCount.completeResponseCount,
+            syncedResponseCount = this.syncedResponseCount + 1,
+            lastSync = LocalDateTime.now(ZoneOffset.UTC),
         )
 
     private fun SurveyData.toSurveyDataEntity(): SurveyDataEntity =

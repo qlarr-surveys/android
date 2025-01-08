@@ -31,7 +31,6 @@ data class SurveyData(
     val imageUrl: String,
     val lastSync: LocalDateTime? = null,
 ) : Parcelable {
-
     private val scheduled: Boolean
         get() = startDate != null && startDate.isAfter(LocalDateTime.now())
     private val expired: Boolean
@@ -47,14 +46,17 @@ data class SurveyData(
         }
 
     val isPlayEnabled: Boolean
-        get() = !newVersionAvailable
-                && publishInfo.version > 0
-                && !quotaExceeded()
-                && surveyStatus == SurveyStatus.ACTIVE
+        get() =
+            !newVersionAvailable &&
+                publishInfo.version > 0 &&
+                !quotaExceeded() &&
+                surveyStatus == SurveyStatus.ACTIVE
 
     val isDownloadable: Boolean
-        get() = !quotaExceeded()
-                && surveyStatus == SurveyStatus.ACTIVE || surveyStatus == SurveyStatus.SCHEDULED
+        get() =
+            !quotaExceeded() &&
+                surveyStatus == SurveyStatus.ACTIVE ||
+                surveyStatus == SurveyStatus.SCHEDULED
 
     val isResponsesEnabled get() = localResponsesCount > 0
 
@@ -63,15 +65,14 @@ data class SurveyData(
         return surveyQuota > 0 && (finalUnsyncedCount + totalResponseCount) >= surveyQuota
     }
 
-    fun surveyQuotaLeft(): Int? = if (surveyQuota > 0) {
-        surveyQuota - (localUnsyncedResponsesCount + totalResponseCount)
-    } else {
-        null
-    }
+    fun surveyQuotaLeft(): Int? =
+        if (surveyQuota > 0) {
+            surveyQuota - (localUnsyncedResponsesCount + totalResponseCount)
+        } else {
+            null
+        }
 
-    fun quotaLeft(): Int? {
-        return surveyQuotaLeft()
-    }
+    fun quotaLeft(): Int? = surveyQuotaLeft()
 
     companion object {
         fun fromSurveyAndDesign(
@@ -83,9 +84,10 @@ data class SurveyData(
             completeResponsesCount: Int,
             unsyncedCount: Int,
             cachedDesign: Boolean,
-            cachedAllFiles: Boolean
-        ): SurveyData {
-            return SurveyData(
+            cachedAllFiles: Boolean,
+            lastSync: LocalDateTime?,
+        ): SurveyData =
+            SurveyData(
                 id = survey.id,
                 creationDate = survey.creationDate,
                 lastModified = survey.lastModified,
@@ -103,16 +105,19 @@ data class SurveyData(
                 syncedResponseCount = survey.syncedResponseCount,
                 totalResponseCount = survey.totalResponseCount,
                 description = survey.description ?: "",
-                imageUrl = survey.imageName?.let { name ->
-                    ("$baseUrl/survey/${survey.id}/resource/$name")
-                } ?: "",
+                imageUrl =
+                    survey.imageName?.let { name ->
+                        ("$baseUrl/survey/${survey.id}/resource/$name")
+                    } ?: "",
                 cachedDesign = cachedDesign,
-                cachedAllFiles = cachedAllFiles
+                cachedAllFiles = cachedAllFiles,
+                lastSync = lastSync,
             )
-        }
     }
 }
 
 enum class SurveyStatus {
-    ACTIVE, EXPIRED, SCHEDULED
+    ACTIVE,
+    EXPIRED,
+    SCHEDULED,
 }

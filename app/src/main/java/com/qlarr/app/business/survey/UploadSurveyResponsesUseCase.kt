@@ -57,7 +57,6 @@ class UploadSurveyResponsesUseCaseImpl(
         responses.forEach { response ->
             try {
                 syncResponse(surveyId, response)
-                surveyRepository.updateLastSyncTime(surveyId)
             } catch (e: Exception) {
                 reportError(e)
             }
@@ -114,7 +113,7 @@ class UploadSurveyResponsesUseCaseImpl(
         if (result.isSuccess) {
             // 4. mark response as synced
             responseRepository.markResponseAsSynced(response.id)
-            val surveyData = surveyRepository.updateSurveyInDB(surveyId, result.getOrThrow())
+            val surveyData = surveyRepository.updateSurveyAfterSync(surveyId, result.getOrThrow())
             eventBus.emitEvent(AppEvent.UploadedSurveyResponse(response.id, surveyData))
         } else {
             reportError(result.exceptionOrNull())

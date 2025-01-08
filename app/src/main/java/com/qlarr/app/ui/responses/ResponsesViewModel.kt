@@ -29,8 +29,9 @@ class ResponsesViewModel(
     private val responsesRepository: ResponseRepository,
     private val eventBus: EventBus,
     private val errorProcessor: ErrorProcessor,
-    private val surveyRepository: SurveyRepository
-) : AndroidViewModel(application), ErrorProcessor by errorProcessor {
+    private val surveyRepository: SurveyRepository,
+) : AndroidViewModel(application),
+    ErrorProcessor by errorProcessor {
     private lateinit var surveyData: SurveyData
     private val _responsesScreenData = MutableStateFlow(ResponsesScreenState())
     val responsesScreenData = _responsesScreenData.asStateFlow()
@@ -54,13 +55,17 @@ class ResponsesViewModel(
                 }
             }
         }
+
+        _responsesScreenData.update {
+            it.copy(lastSyncTime = surveyData.lastSync)
+        }
     }
 
     fun fetchResponses(surveyData: SurveyData) {
         _responsesScreenData.update {
             it.copy(
                 completeResponsesCount = surveyData.localCompleteResponsesCount,
-                inCompleteResponsesCount = surveyData.localResponsesCount - surveyData.localCompleteResponsesCount
+                inCompleteResponsesCount = surveyData.localResponsesCount - surveyData.localCompleteResponsesCount,
             )
         }
         refresh()
@@ -70,10 +75,14 @@ class ResponsesViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             surveyData = surveyRepository.getOfflineSurvey(surveyData.id)
             if (_responsesScreenData.value.responses.any { it.id == responseId }) {
-                val newResponse = responsesRepository.getResponse(responseId)
-                    .toResponseItemData(surveyData.quotaExceeded())
-                val newResponses = _responsesScreenData.value.responses.toMutableList()
-                    .replaceFirstIf({ it.id == responseId }, { newResponse })
+                val newResponse =
+                    responsesRepository
+                        .getResponse(responseId)
+                        .toResponseItemData(surveyData.quotaExceeded())
+                val newResponses =
+                    _responsesScreenData.value.responses
+                        .toMutableList()
+                        .replaceFirstIf({ it.id == responseId }, { newResponse })
                 _responsesScreenData.update {
                     it.copy(responses = newResponses)
                 }
@@ -97,32 +106,37 @@ class ResponsesViewModel(
         }
         viewModelScope.launch(Dispatchers.IO) {
             _responsesScreenData.update { it.copy(isLoading = true) }
-            responsesRepository.getResponses(surveyData.id, currentPage++, PER_PAGE)
+            responsesRepository
+                .getResponses(surveyData.id, currentPage++, PER_PAGE)
                 .let { newList ->
                     val start = System.currentTimeMillis()
                     val quotaExceeded = surveyData.quotaExceeded()
                     if (newList.isNotEmpty()) {
                         emNavProcessor.maskedValues(newList).collect { response ->
                             _responsesScreenData.update {
-                                it.copy(isLoading = false,
+                                it.copy(
+                                    isLoading = false,
                                     isComplete = newList.size < PER_PAGE,
-                                    responses = it.responses.toMutableList()
-                                        .apply {
-                                            add(response.toResponseItemData(quotaExceeded))
-                                        })
+                                    responses =
+                                        it.responses
+                                            .toMutableList()
+                                            .apply {
+                                                add(response.toResponseItemData(quotaExceeded))
+                                            },
+                                )
                             }
                         }
                     } else {
                         _responsesScreenData.update {
                             it.copy(
                                 isLoading = false,
-                                isComplete = true
+                                isComplete = true,
                             )
                         }
                     }
                     Log.d(
                         "time",
-                        "loadNext ${System.currentTimeMillis() - start}"
+                        "loadNext ${System.currentTimeMillis() - start}",
                     )
                 }
         }
@@ -151,33 +165,38 @@ class ResponsesViewModel(
             editEnabled = !quotaExceeded && submitDate == null,
             deleteEnabled = !isSynced,
             values = values.valuesToData(),
-            lang = lang
+            lang = lang,
         )
 
-    private fun Map<String, Any>.valuesToData() = mapNotNull {
-        if ((it.value as? LinkedHashMap<*, *>)?.run {
-                containsKey(KEY_FILENAME)
-                        && containsKey(KEY_STORED_FILENAME) && containsKey(KEY_TYPE)
-            } == true) {
-            val map = it.value as LinkedHashMap<*, *>
-            val file = FileUtils.getResponseFile(
-                context = getApplication(),
-                fileName = map[KEY_STORED_FILENAME] as String,
-                surveyId = surveyData.id
-            )
-            if (file.exists()) {
-                ResponseValueData.FileValueData(
-                    filename = map[KEY_FILENAME] as String,
-                    file = file,
-                    fileType = map[KEY_TYPE] as String, key = it.key
-                )
+    private fun Map<String, Any>.valuesToData() =
+        mapNotNull {
+            if ((it.value as? LinkedHashMap<*, *>)?.run {
+                    containsKey(KEY_FILENAME) &&
+                        containsKey(KEY_STORED_FILENAME) &&
+                        containsKey(KEY_TYPE)
+                } == true
+            ) {
+                val map = it.value as LinkedHashMap<*, *>
+                val file =
+                    FileUtils.getResponseFile(
+                        context = getApplication(),
+                        fileName = map[KEY_STORED_FILENAME] as String,
+                        surveyId = surveyData.id,
+                    )
+                if (file.exists()) {
+                    ResponseValueData.FileValueData(
+                        filename = map[KEY_FILENAME] as String,
+                        file = file,
+                        fileType = map[KEY_TYPE] as String,
+                        key = it.key,
+                    )
+                } else {
+                    null
+                }
             } else {
-                null
+                ResponseValueData.StringValueData(key = it.key, value = it.value.toString())
             }
-        } else {
-            ResponseValueData.StringValueData(key = it.key, value = it.value.toString())
         }
-    }
 
     override fun onCleared() {
         super.onCleared()
@@ -207,15 +226,21 @@ data class ResponseItemData(
     val values: List<ResponseValueData>,
     val editEnabled: Boolean,
     val deleteEnabled: Boolean,
-    val lang: String
+    val lang: String,
 )
 
-sealed class ResponseValueData(open val key: String) {
-    data class StringValueData(override val key: String, val value: String) : ResponseValueData(key)
+sealed class ResponseValueData(
+    open val key: String,
+) {
+    data class StringValueData(
+        override val key: String,
+        val value: String,
+    ) : ResponseValueData(key)
+
     data class FileValueData(
         val filename: String,
         val file: File,
         val fileType: String,
-        override val key: String
+        override val key: String,
     ) : ResponseValueData(key)
 }
