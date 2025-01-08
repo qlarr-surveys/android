@@ -26,34 +26,37 @@ data class SurveyDataEntity(
     val totalResponsesCount: Int,
     val syncedResponseCount: Int,
     val description: String = "",
-    val imageUrl: String = ""
+    val imageUrl: String = "",
+    val lastSync: LocalDateTime? = null,
 ) {
     fun toSurveyData(
         localResponseCount: Int,
         localCompleteResponseCount: Int,
-        localUnsyncedResponseCount: Int
-    ): SurveyData = SurveyData(
-        id = id,
-        creationDate = creationDate,
-        lastModified = lastModified,
-        startDate = startDate,
-        endDate = endDate,
-        name = name,
-        status = status,
-        usage = usage,
-        surveyQuota = quota,
-        publishInfo = publishInfoEntity.toPublishInfo(),
-        newVersionAvailable = false,
-        localResponsesCount = localResponseCount,
-        localCompleteResponsesCount = localCompleteResponseCount,
-        localUnsyncedResponsesCount = localUnsyncedResponseCount,
-        syncedResponseCount = syncedResponseCount,
-        totalResponseCount = totalResponsesCount,
-        description = description,
-        imageUrl = imageUrl,
-        cachedDesign = cachedDesign,
-        cachedAllFiles = cachedAllFiles
-    )
+        localUnsyncedResponseCount: Int,
+    ): SurveyData =
+        SurveyData(
+            id = id,
+            creationDate = creationDate,
+            lastModified = lastModified,
+            startDate = startDate,
+            endDate = endDate,
+            name = name,
+            status = status,
+            usage = usage,
+            surveyQuota = quota,
+            publishInfo = publishInfoEntity.toPublishInfo(),
+            newVersionAvailable = false,
+            localResponsesCount = localResponseCount,
+            localCompleteResponsesCount = localCompleteResponseCount,
+            localUnsyncedResponsesCount = localUnsyncedResponseCount,
+            syncedResponseCount = syncedResponseCount,
+            totalResponseCount = totalResponsesCount,
+            description = description,
+            imageUrl = imageUrl,
+            cachedDesign = cachedDesign,
+            cachedAllFiles = cachedAllFiles,
+            lastSync = lastSync,
+        )
 }
 
 data class PublishInfoEntity(

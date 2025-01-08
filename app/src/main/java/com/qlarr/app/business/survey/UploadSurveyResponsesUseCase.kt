@@ -13,6 +13,7 @@ import com.qlarr.app.ui.responses.ResponsesViewModel.Companion.KEY_TYPE
 
 interface UploadSurveyResponsesUseCase {
     suspend operator fun invoke()
+
     suspend fun uploadSurvey(surveyId: String)
 }
 
@@ -21,16 +22,16 @@ class UploadSurveyResponsesUseCaseImpl(
     private val responseRepository: ResponseRepository,
     private val surveyRepository: SurveyRepository,
     private val sessionManager: SessionManager,
-    private val eventBus: EventBus
+    private val eventBus: EventBus,
 ) : UploadSurveyResponsesUseCase {
-
     override suspend fun invoke() {
         try {
             if (sessionManager.isGuest()) {
                 return
             }
             eventBus.emitEvent(AppEvent.UploadingResponse(true))
-            surveyRepository.getOfflineSurveyList()
+            surveyRepository
+                .getOfflineSurveyList()
                 .filter {
                     it.surveyStatus == SurveyStatus.ACTIVE &&
                         it.localUnsyncedResponsesCount > 0
@@ -49,11 +50,14 @@ class UploadSurveyResponsesUseCaseImpl(
 
     override suspend fun uploadSurvey(surveyId: String) {
         eventBus.emitEvent(AppEvent.UploadingSurveyResponse(surveyId))
-        val responses = responseRepository.getResponses(surveyId)
-            .filter { !it.isSynced && it.submitDate != null }
+        val responses =
+            responseRepository
+                .getResponses(surveyId)
+                .filter { !it.isSynced && it.submitDate != null }
         responses.forEach { response ->
             try {
                 syncResponse(surveyId, response)
+                surveyRepository.updateLastSyncTime(surveyId)
             } catch (e: Exception) {
                 reportError(e)
             }
@@ -62,47 +66,49 @@ class UploadSurveyResponsesUseCaseImpl(
 
     private suspend fun syncResponse(
         surveyId: String,
-        response: Response
+        response: Response,
     ) {
-        response.values.mapNotNull {
-            if ((it.value as? LinkedHashMap<*, *>)?.run {
-                    containsKey(KEY_FILENAME)
-                            && containsKey(KEY_STORED_FILENAME)
-                            && containsKey(KEY_TYPE)
-                } == true) {
-                val map = it.value as LinkedHashMap<*, *>
-                FileUploadInfo(map[KEY_STORED_FILENAME] as String, map[KEY_FILENAME] as String)
-            } else {
-                null
+        response.values
+            .mapNotNull {
+                if ((it.value as? LinkedHashMap<*, *>)?.run {
+                        containsKey(KEY_FILENAME) &&
+                            containsKey(KEY_STORED_FILENAME) &&
+                            containsKey(KEY_TYPE)
+                    } == true
+                ) {
+                    val map = it.value as LinkedHashMap<*, *>
+                    FileUploadInfo(map[KEY_STORED_FILENAME] as String, map[KEY_FILENAME] as String)
+                } else {
+                    null
+                }
+            }.filter {
+                !surveyRepository.fileOnServer(surveyId, it.storedFileName)
+            }.forEach { filename ->
+                val file = FileUtils.getResponseFile(appContext, filename.storedFileName, surveyId)
+                if (file.exists()) {
+                    surveyRepository.uploadSurveyResponseFile(
+                        surveyId,
+                        fileName = filename.originalFileName,
+                        storedFileName = filename.storedFileName,
+                        file = file,
+                    )
+                    file.delete()
+                } else {
+                    reportError(IllegalStateException("File not found: $filename"))
+                }
             }
-        }.filter {
-            !surveyRepository.fileOnServer(surveyId, it.storedFileName)
-        }.forEach { filename ->
-            val file = FileUtils.getResponseFile(appContext, filename.storedFileName, surveyId)
-            if (file.exists()) {
-                surveyRepository.uploadSurveyResponseFile(
-                    surveyId,
-                    fileName = filename.originalFileName,
-                    storedFileName = filename.storedFileName,
-                    file = file
-                )
-                file.delete()
-
-            } else {
-                reportError(IllegalStateException("File not found: $filename"))
-            }
-        }
 
         // 3. upload response row
-        val uploadData = UploadResponseRequestData(
-            versionId = response.version,
-            lang = response.lang,
-            values = response.values,
-            startDate = response.startDate,
-            submitDate = response.submitDate,
-            userId = sessionManager.getUserIdOrThrow(),
-            navigationIndex = response.navigationIndex
-        )
+        val uploadData =
+            UploadResponseRequestData(
+                versionId = response.version,
+                lang = response.lang,
+                values = response.values,
+                startDate = response.startDate,
+                submitDate = response.submitDate,
+                userId = sessionManager.getUserIdOrThrow(),
+                navigationIndex = response.navigationIndex,
+            )
         val result =
             surveyRepository.uploadSurveyResponse(surveyId, response.id, uploadData)
         if (result.isSuccess) {
@@ -119,6 +125,8 @@ class UploadSurveyResponsesUseCaseImpl(
         throwable?.printStackTrace()
     }
 
-    data class FileUploadInfo(val storedFileName: String, val originalFileName: String)
-
+    data class FileUploadInfo(
+        val storedFileName: String,
+        val originalFileName: String,
+    )
 }

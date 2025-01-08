@@ -29,6 +29,7 @@ data class SurveyData(
     val isSyncing: Boolean = false,
     val description: String,
     val imageUrl: String,
+    val lastSync: LocalDateTime? = null,
 ) : Parcelable {
 
     private val scheduled: Boolean
