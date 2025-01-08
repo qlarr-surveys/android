@@ -79,7 +79,7 @@
 -keep class com.qlarr.app.api.** { *; }
 
 # -------------------EXPRESSION MANAGER
--keep class com.qlarr.expressionmanager.model.** { *; }
+-keep class com.qlarr.surveyengine.model.** { *; }
 
 
 -keep class com.qlarr.app.db.** { *; }
@@ -87,4 +87,4 @@
 -keep class com.qlarr.qlarr.usecase.ValidationJsonOutput { *; }
 -keep class com.qlarr.qlarr.context.build.NotSkippedInstructionManifesto { *; }
 -keep class com.qlarr.qlarr.context.build.SkipCodeOutput { *; }
--keep class com.qlarr.expressionmanager.model.** {*;}
+-keep class com.qlarr.surveyengine.model.** {*;}

@@ -21,10 +21,10 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.qlarr.app.BuildConfig
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.ui.common.FileUtils
-import com.qlarr.expressionmanager.ext.ScriptUtils
-import com.qlarr.expressionmanager.model.NavigationDirection
-import com.qlarr.expressionmanager.model.NavigationIndex
-import com.qlarr.expressionmanager.model.jacksonKtMapper
+import com.qlarr.surveyengine.ext.ScriptUtils
+import com.qlarr.surveyengine.model.NavigationDirection
+import com.qlarr.surveyengine.model.NavigationIndex
+import com.qlarr.surveyengine.model.jacksonKtMapper
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.destination
 import id.zelory.compressor.constraint.size

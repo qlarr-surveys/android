@@ -1,0 +1,1 @@
+import{r as t,j as p,L as a}from"./index-vqe_o6H9.js";import{a2 as e}from"./use-service-d2kt1S5h.js";const i=t.forwardRef(({href:r,...o},s)=>p.jsx(a,{ref:s,to:r,...o}));i.propTypes={href:e.string};export{i as R};
