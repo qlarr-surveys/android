@@ -70,21 +70,21 @@
 
 -keepnames class com.fasterxml.jackson.** { *; }
 -dontwarn com.fasterxml.jackson.databind.**
+-keep class org.json.**
+-keepclassmembers,includedescriptorclasses class org.json.** { *; }
 
 # ----------------- reflection -------
 -keep class kotlin.Metadata { *; }
 -keep class kotlin.reflect.** { *; }
 
-# ------------------ KEEP API classes ----------
+# ------------------ KEEP necessary App classes ----------
 -keep class com.qlarr.app.api.** { *; }
-
-# -------------------EXPRESSION MANAGER
--keep class com.qlarr.surveyengine.model.** { *; }
-
-
 -keep class com.qlarr.app.db.** { *; }
--keep class com.qlarr.qlarr.usecase.ValidationOutput { *; }
--keep class com.qlarr.qlarr.usecase.ValidationJsonOutput { *; }
--keep class com.qlarr.qlarr.context.build.NotSkippedInstructionManifesto { *; }
--keep class com.qlarr.qlarr.context.build.SkipCodeOutput { *; }
--keep class com.qlarr.surveyengine.model.** {*;}
+-keep class com.qlarr.app.ui.survey.NavigateRequest { *; }
+-keep class com.qlarr.app.ui.survey.ApiNavigationOutput { *; }
+-keep class com.qlarr.app.ui.survey.ResponseUploadFile { *; }
+-keep class com.qlarr.app.ui.survey.NavigationListener { *; }
+
+# -------------------SURVEY ENGINE
+-keep class com.qlarr.surveyengine.** { *; }
+

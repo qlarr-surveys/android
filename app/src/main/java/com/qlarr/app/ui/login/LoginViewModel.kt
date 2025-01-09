@@ -17,19 +17,24 @@ import kotlinx.coroutines.launch
 class LoginViewModel(
     private val loginInteractor: LoginInteractor,
     private val sessionManager: SessionManager,
-    errorProcessor: ErrorProcessor
-) : ViewModel(), ErrorProcessor by errorProcessor {
-
+    errorProcessor: ErrorProcessor,
+) : ViewModel(),
+    ErrorProcessor by errorProcessor {
     private val _loginState = MutableStateFlow(LoginState())
     val loginState = _loginState.asStateFlow()
 
-    fun login(serverUrl: String, email: String, password: String) {
+    fun login(
+        serverUrl: String,
+        email: String,
+        password: String,
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             _loginState.update { it.copy(isLoading = true) }
             val trimmedEmail = email.trim()
             val trimmedPsw = password.trim()
-            val isUrlValid = _loginState.value.selection!=EnvSelection.PRIVATE || isValidUrl(serverUrl)
-            if (_loginState.value.selection==EnvSelection.PRIVATE && isUrlValid){
+            val isUrlValid =
+                _loginState.value.selection != EnvSelection.PRIVATE || isValidUrl(serverUrl)
+            if (_loginState.value.selection == EnvSelection.PRIVATE && isUrlValid) {
                 sessionManager.saveEnv(BackendEnvironment.Private(serverUrl))
             }
             val isPswValid = InputUtils.isValidPassword(trimmedPsw)
@@ -41,7 +46,7 @@ class LoginViewModel(
                             listOf(
                                 Roles.SUPER_ADMIN,
                                 Roles.SURVEY_ADMIN,
-                                Roles.SURVEYOR
+                                Roles.SURVEYOR,
                             ).map { it.name.lowercase() }.contains(role)
                         }
                     ) {
@@ -53,21 +58,21 @@ class LoginViewModel(
                 } catch (e: Exception) {
                     _loginState.update { it.copy(isLoading = false) }
                     processLoginError(e)
-
                 }
             } else {
                 _loginState.update {
                     it.copy(
+                        isLoading = false,
                         urlValidationError = !isUrlValid,
                         emailValidationError = !isEmailValid,
-                        pswValidationError = !isPswValid
+                        pswValidationError = !isPswValid,
                     )
                 }
             }
         }
     }
 
-    fun setEnvSelection(selection: EnvSelection){
+    fun setEnvSelection(selection: EnvSelection) {
         _loginState.update { it.copy(selection = selection) }
     }
 
@@ -92,15 +97,19 @@ class LoginViewModel(
         val roleNotSupported: Boolean = false,
         val pswValidationError: Boolean = false,
         val emailValidationError: Boolean = false,
-        val urlValidationError: Boolean = false
+        val urlValidationError: Boolean = false,
     )
 }
 
 @Suppress("unused")
 enum class Roles {
-    SUPER_ADMIN, SURVEY_ADMIN, SURVEYOR, ANALYST;
+    SUPER_ADMIN,
+    SURVEY_ADMIN,
+    SURVEYOR,
+    ANALYST,
 }
 
 enum class EnvSelection {
-    NONE, PRIVATE;
+    NONE,
+    PRIVATE,
 }

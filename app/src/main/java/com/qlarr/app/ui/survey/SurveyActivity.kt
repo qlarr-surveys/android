@@ -1,7 +1,6 @@
 package com.qlarr.app.ui.survey
 
 import android.Manifest.permission
-import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -30,7 +29,6 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-
 class SurveyActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySurveyBinding
     private lateinit var responseId: String
@@ -41,10 +39,10 @@ class SurveyActivity : AppCompatActivity() {
     private val errorDisplayManager: ErrorDisplayManager by inject()
 
     val survey: SurveyData
-        get() = intent.parcelable(EXTRA_SURVEY)
-            ?: throw IllegalArgumentException("Survey is required")
+        get() =
+            intent.parcelable(EXTRA_SURVEY)
+                ?: throw IllegalArgumentException("Survey is required")
 
-    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySurveyBinding.inflate(layoutInflater)
@@ -71,11 +69,12 @@ class SurveyActivity : AppCompatActivity() {
             val t = System.currentTimeMillis()
             if (t - backPressedTime > 3000) { // 3 secs
                 backPressedTime = t
-                Toast.makeText(
-                    this@SurveyActivity,
-                    R.string.press_back_to_exit,
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast
+                    .makeText(
+                        this@SurveyActivity,
+                        R.string.press_back_to_exit,
+                        Toast.LENGTH_SHORT,
+                    ).show()
             } else {
                 finish()
             }
@@ -102,16 +101,17 @@ class SurveyActivity : AppCompatActivity() {
     }
 
     fun pickFromGallery(mimeTypes: String?) {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
-            if (mimeTypes.isNullOrBlank()) {
-                type = "*/*"
-            } else {
-                type = mimeTypes
-                putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes.split(",").toTypedArray())
+        val intent =
+            Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
+                if (mimeTypes.isNullOrBlank()) {
+                    type = "*/*"
+                } else {
+                    type = mimeTypes
+                    putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes.split(",").toTypedArray())
+                }
             }
-        }
         try {
             galleryLauncher.launch(intent)
         } catch (e: ActivityNotFoundException) {
@@ -120,23 +120,25 @@ class SurveyActivity : AppCompatActivity() {
     }
 
     private fun takePhotoOnPermissionGranted() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-            addFlags(
-                Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-            )
-            putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-        }
+        val intent =
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+                addFlags(
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
+                )
+                putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+            }
         photoLauncher.launch(intent)
     }
 
     private fun takeVideoOnPermissionGranted() {
-        val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE).apply {
-            addFlags(
-                Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-            )
-        }
+        val intent =
+            Intent(MediaStore.ACTION_VIDEO_CAPTURE).apply {
+                addFlags(
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
+                )
+            }
         videoLauncher.launch(intent)
     }
 
@@ -145,25 +147,24 @@ class SurveyActivity : AppCompatActivity() {
         getCameraPermission { takePhotoOnPermissionGranted() }
     }
 
-
     fun takeVideo() {
         getCameraPermission { takeVideoOnPermissionGranted() }
     }
 
-    private val requestCameraPermission = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { granted ->
-        if (granted) {
-            if (photoUri != null) {
-                takePhotoOnPermissionGranted()
+    private val requestCameraPermission =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission(),
+        ) { granted ->
+            if (granted) {
+                if (photoUri != null) {
+                    takePhotoOnPermissionGranted()
+                } else {
+                    takeVideoOnPermissionGranted()
+                }
             } else {
-                takeVideoOnPermissionGranted()
+                notifyPermissionDenied()
             }
-        } else {
-            notifyPermissionDenied()
         }
-    }
-
 
     private val photoLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -175,7 +176,6 @@ class SurveyActivity : AppCompatActivity() {
                 }
             }
         }
-
 
     private val galleryLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -195,7 +195,6 @@ class SurveyActivity : AppCompatActivity() {
             }
         }
 
-
     private fun processGalleryResult(data: Intent?) {
         data?.data?.let { uri ->
             binding.webview.onFileSelected(uri)
@@ -211,15 +210,16 @@ class SurveyActivity : AppCompatActivity() {
         binding.webview.onVideoResult(contentUri)
     }
 
-    private val barcodeLauncher = registerForActivityResult(
-        ScanContract()
-    ) { result: ScanIntentResult ->
-        if (result.contents == null) {
-            notifyResultCancelled()
-        } else {
-            binding.webview.onBarcodeScanned(result.contents)
+    private val barcodeLauncher =
+        registerForActivityResult(
+            ScanContract(),
+        ) { result: ScanIntentResult ->
+            if (result.contents == null) {
+                notifyResultCancelled()
+            } else {
+                binding.webview.onBarcodeScanned(result.contents)
+            }
         }
-    }
 
     fun scanBarcode() {
         val options = ScanOptions()
@@ -230,7 +230,11 @@ class SurveyActivity : AppCompatActivity() {
         barcodeLauncher.launch(options)
     }
 
-    fun showMaxSizeValidation(actual: Int, max: Int, compression: Boolean = false) {
+    fun showMaxSizeValidation(
+        actual: Int,
+        max: Int,
+        compression: Boolean = false,
+    ) {
         val builder = AlertDialog.Builder(this)
         builder.apply {
             setTitle(R.string.max_size_exceeded)
@@ -238,14 +242,13 @@ class SurveyActivity : AppCompatActivity() {
                 getString(
                     if (compression) R.string.max_size_exceeded_message_compression_note else R.string.max_size_exceeded_message,
                     actual,
-                    max
-                )
+                    max,
+                ),
             )
             setNeutralButton(
-                android.R.string.ok
+                android.R.string.ok,
             ) { _, _ ->
             }
-
         }
         builder.create().show()
     }
@@ -270,12 +273,20 @@ class SurveyActivity : AppCompatActivity() {
         private const val TAG = "SurveyActivity"
         private const val EXTRA_SURVEY = "survey"
         private const val RESPONSE_ID = "response_id"
-        fun createIntent(context: Context, survey: SurveyData): Intent =
+
+        fun createIntent(
+            context: Context,
+            survey: SurveyData,
+        ): Intent =
             Intent(context, SurveyActivity::class.java).apply {
                 putExtra(EXTRA_SURVEY, survey as Parcelable)
             }
 
-        fun createIntent(context: Context, survey: SurveyData, responseId: String): Intent =
+        fun createIntent(
+            context: Context,
+            survey: SurveyData,
+            responseId: String,
+        ): Intent =
             Intent(context, SurveyActivity::class.java).apply {
                 putExtra(EXTRA_SURVEY, survey as Parcelable)
                 putExtra(RESPONSE_ID, responseId)

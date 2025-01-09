@@ -40,6 +40,7 @@ android {
             applicationIdSuffix '.debug'
             debuggable true
             crunchPngs false
+            signingConfig signingConfigs.debug
         }
         release {
             buildConfigField "String", "CLOUD_SERVER_URL", "\"https://stg.api.qlarr.com\""
@@ -48,6 +49,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 
