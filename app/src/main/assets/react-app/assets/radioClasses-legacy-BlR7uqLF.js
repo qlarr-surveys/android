@@ -1,1 +1,0 @@
-System.register(["./index-legacy-z8WAiyjY.js"],(function(e,r){"use strict";var i,t;return{setters:[e=>{i=e.f,t=e.g}],execute:function(){e("g",(function(e){return t("MuiRadio",e)})),e("r",i("MuiRadio",["root","checked","disabled","colorPrimary","colorSecondary","sizeSmall"]))}}}));

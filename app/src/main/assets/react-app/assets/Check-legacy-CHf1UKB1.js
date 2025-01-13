@@ -1,0 +1,1 @@
+System.register(["./index-legacy-CFVrgsj-.js","./use-service-legacy-DWWO7tqv.js"],(function(e,s){"use strict";var t,c;return{setters:[e=>{t=e.j},e=>{c=e.e}],execute:function(){e("C",c(t.jsx("path",{d:"M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"}),"Check"))}}}));
