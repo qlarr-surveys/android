@@ -3,27 +3,36 @@ package com.qlarr.app.business.survey
 import com.qlarr.app.BuildConfig
 import com.qlarr.app.api.auth.LoginResponse
 import com.qlarr.app.business.settings.SharedPrefsManager
-import java.net.MalformedURLException
-import java.net.URL
+import okhttp3.HttpUrl.Companion.toHttpUrl
 
 interface SessionManager {
     fun getActiveToken(): String?
-    fun getRefreshToken(): String?
-    fun getUserIdOrThrow(): String
-    fun saveSession(loginResponse: LoginResponse)
-    fun saveUserAsGuest()
-    fun saveEnv(environment: BackendEnvironment)
-    fun isGuest(): Boolean
-    fun env(): BackendEnvironment?
 
+    fun getRefreshToken(): String?
+
+    fun getUserIdOrThrow(): String
+
+    fun saveSession(loginResponse: LoginResponse)
+
+    fun saveUserAsGuest()
+
+    fun saveEnv(environment: BackendEnvironment)
+
+    fun isGuest(): Boolean
+
+    fun env(): BackendEnvironment?
 }
 
-class SessionManagerImpl(private val sharedPrefsManager: SharedPrefsManager) : SessionManager {
+class SessionManagerImpl(
+    private val sharedPrefsManager: SharedPrefsManager,
+) : SessionManager {
     override fun getActiveToken(): String? = sharedPrefsManager.activeToken
 
     override fun getRefreshToken(): String? = sharedPrefsManager.refreshToken
-    override fun getUserIdOrThrow(): String = sharedPrefsManager.userId
-        ?: throw IllegalStateException("User id is null")
+
+    override fun getUserIdOrThrow(): String =
+        sharedPrefsManager.userId
+            ?: throw IllegalStateException("User id is null")
 
     override fun saveSession(loginResponse: LoginResponse) {
         sharedPrefsManager.userId = loginResponse.id
@@ -41,44 +50,41 @@ class SessionManagerImpl(private val sharedPrefsManager: SharedPrefsManager) : S
         sharedPrefsManager.env = environment
     }
 
-    override fun isGuest(): Boolean {
-        return sharedPrefsManager.isGuest
-    }
+    override fun isGuest(): Boolean = sharedPrefsManager.isGuest
 
-    override fun env(): BackendEnvironment? {
-        return sharedPrefsManager.env
-    }
-
+    override fun env(): BackendEnvironment? = sharedPrefsManager.env
 }
 
-sealed class BackendEnvironment(open val baseUrl: String) {
+sealed class BackendEnvironment(
+    open val baseUrl: String,
+) {
     data object SAAS : BackendEnvironment(baseUrl = BuildConfig.CLOUD_SERVER_URL)
-    data class Private(override val baseUrl: String) : BackendEnvironment(baseUrl = baseUrl)
 
-    fun toSharedPrefsString(): String {
-        return when (this) {
+    data class Private(
+        override val baseUrl: String,
+    ) : BackendEnvironment(baseUrl = baseUrl)
+
+    fun toSharedPrefsString(): String =
+        when (this) {
             is SAAS -> "SAAS"
             is Private -> baseUrl
         }
-    }
 
     companion object {
-        fun fromSharedPrefsString(value:String?): BackendEnvironment? {
-            return when {
+        fun fromSharedPrefsString(value: String?): BackendEnvironment? =
+            when {
                 value.isNullOrEmpty() -> null
                 value == "SAAS" -> SAAS
                 isValidUrl(value) -> Private(value)
                 else -> null
             }
-        }
     }
 }
 
-fun isValidUrl(url: String): Boolean {
-    return try {
-        URL(url)
+fun isValidUrl(url: String): Boolean =
+    try {
+        url.toHttpUrl()
         true
-    } catch (e: MalformedURLException) {
+    } catch (e: IllegalArgumentException) {
         false
     }
-}
