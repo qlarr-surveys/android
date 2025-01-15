@@ -32,7 +32,7 @@ class LoginViewModel(
             _loginState.update { it.copy(isLoading = true) }
             val trimmedEmail = email.trim()
             val trimmedPsw = password.trim()
-            val trimmedUrl = serverUrl.trim().replace(Regex("\\s+|/+$"), "")
+            val trimmedUrl = InputUtils.trimServerUrl(serverUrl)
             val isUrlValid =
                 _loginState.value.selection != EnvSelection.PRIVATE || isValidUrl(trimmedUrl)
             if (_loginState.value.selection == EnvSelection.PRIVATE && isUrlValid) {
