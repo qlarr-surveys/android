@@ -9,11 +9,19 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.provider.MediaStore
+import android.view.ViewGroup.LayoutParams
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.activity.addCallback
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.lifecycle.lifecycleScope
 import com.journeyapps.barcodescanner.ScanContract
@@ -22,18 +30,17 @@ import com.journeyapps.barcodescanner.ScanOptions
 import com.qlarr.app.R
 import com.qlarr.app.business.parcelable
 import com.qlarr.app.business.survey.SurveyData
-import com.qlarr.app.databinding.ActivitySurveyBinding
 import com.qlarr.app.ui.common.error.ErrorDisplayManager
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class SurveyActivity : AppCompatActivity() {
-    private lateinit var binding: ActivitySurveyBinding
+class SurveyActivity : ComponentActivity() {
     private lateinit var responseId: String
     private var backPressedTime: Long = 0
     private var photoUri: Uri? = null
+    private var qlarrWebView: QlarrWebView? = null
 
     private val surveyViewModel: SurveyViewModel by viewModel { parametersOf(survey.id) }
     private val errorDisplayManager: ErrorDisplayManager by inject()
@@ -45,8 +52,8 @@ class SurveyActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySurveyBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        enableEdgeToEdge()
+
         if (!intent.hasExtra(EXTRA_SURVEY)) {
             finish()
             return
@@ -59,7 +66,26 @@ class SurveyActivity : AppCompatActivity() {
         }
 
         val responseIdExtra: String? = intent.getStringExtra(RESPONSE_ID)
-        binding.webview.loadSurvey(survey, responseIdExtra)
+        setContent {
+            Scaffold { padding ->
+                AndroidView(
+                    modifier =
+                    Modifier
+                        .padding(padding)
+                        .fillMaxSize(),
+                    factory = { context ->
+                        QlarrWebView(context).apply {
+                            layoutParams =
+                                LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+                            qlarrWebView = this
+                            loadSurvey(surveyData = survey, responseId = responseIdExtra)
+                        }
+                    },
+                    update = { qlarrWebView ->
+                    },
+                )
+            }
+        }
 
         setupBackPress()
     }
@@ -197,17 +223,17 @@ class SurveyActivity : AppCompatActivity() {
 
     private fun processGalleryResult(data: Intent?) {
         data?.data?.let { uri ->
-            binding.webview.onFileSelected(uri)
+            qlarrWebView?.onFileSelected(uri)
         }
     }
 
     private fun processCameraResult() {
         photoUri = null
-        binding.webview.onCameraResult()
+        qlarrWebView?.onCameraResult()
     }
 
     private fun processVideoResult(contentUri: Uri?) {
-        binding.webview.onVideoResult(contentUri)
+        qlarrWebView?.onVideoResult(contentUri)
     }
 
     private val barcodeLauncher =
@@ -217,7 +243,7 @@ class SurveyActivity : AppCompatActivity() {
             if (result.contents == null) {
                 notifyResultCancelled()
             } else {
-                binding.webview.onBarcodeScanned(result.contents)
+                qlarrWebView?.onBarcodeScanned(result.contents)
             }
         }
 
