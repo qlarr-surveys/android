@@ -1,1 +1,0 @@
-import{j as e}from"./index-DrdL8HT2.js";const t="_pageWarper_1b4x1_1",s="_pageTitle_1b4x1_10",p="_pageSubTitle_1b4x1_16",a={pageWarper:t,pageTitle:s,pageSubTitle:p};function r(){return e.jsxs("div",{className:a.pageWarper,children:[e.jsx("div",{className:a.pageTitle,children:"404"}),e.jsx("div",{className:a.pageSubTitle,children:"Page not found"})]})}export{r as default};
