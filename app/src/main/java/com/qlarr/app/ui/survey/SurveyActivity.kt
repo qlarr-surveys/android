@@ -70,9 +70,9 @@ class SurveyActivity : ComponentActivity() {
             Scaffold { padding ->
                 AndroidView(
                     modifier =
-                    Modifier
-                        .padding(padding)
-                        .fillMaxSize(),
+                        Modifier
+                            .padding(padding)
+                            .fillMaxSize(),
                     factory = { context ->
                         QlarrWebView(context).apply {
                             layoutParams =
