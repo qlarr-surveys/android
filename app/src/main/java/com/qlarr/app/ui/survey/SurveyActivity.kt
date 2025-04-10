@@ -17,10 +17,19 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.lifecycle.lifecycleScope
@@ -31,6 +40,10 @@ import com.qlarr.app.R
 import com.qlarr.app.business.parcelable
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.ui.common.error.ErrorDisplayManager
+import com.qlarr.app.ui.common.theme.Colors
+import com.qlarr.app.ui.common.theme.PrimaryActionButton
+import com.qlarr.app.ui.common.theme.QlarrTheme
+import com.qlarr.app.ui.common.theme.TertiaryActionButton
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -67,27 +80,61 @@ class SurveyActivity : ComponentActivity() {
 
         val responseIdExtra: String? = intent.getStringExtra(RESPONSE_ID)
         setContent {
-            Scaffold { padding ->
-                AndroidView(
-                    modifier =
-                        Modifier
-                            .padding(padding)
-                            .fillMaxSize(),
-                    factory = { context ->
-                        QlarrWebView(context).apply {
-                            layoutParams =
-                                LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-                            qlarrWebView = this
-                            loadSurvey(surveyData = survey, responseId = responseIdExtra)
-                        }
-                    },
-                    update = { qlarrWebView ->
-                    },
-                )
-            }
-        }
+            val showBottomBar by surveyViewModel.showBottomBar.collectAsState()
 
-        setupBackPress()
+            QlarrTheme {
+                Scaffold(bottomBar = {
+                    if (showBottomBar) {
+                        BottomAppBar(
+                            containerColor = Colors.White,
+                            tonalElevation = 8.dp,
+                        ) {
+                            Row(
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                            ) {
+                                TertiaryActionButton(
+                                    onClick = {},
+                                    modifier = Modifier.weight(1f),
+                                    textRes = R.string.survey_end_repeat,
+                                )
+                                Spacer(modifier = Modifier.width(16.dp))
+                                PrimaryActionButton(
+                                    onClick = {},
+                                    modifier = Modifier.weight(1f),
+                                    textRes = R.string.survey_end_finish_action,
+                                )
+                            }
+                        }
+                    }
+                }) { padding ->
+                    AndroidView(
+                        modifier =
+                            Modifier
+                                .padding(padding)
+                                .fillMaxSize(),
+                        factory = { context ->
+                            QlarrWebView(context).apply {
+                                layoutParams =
+                                    LayoutParams(
+                                        LayoutParams.MATCH_PARENT,
+                                        LayoutParams.MATCH_PARENT,
+                                    )
+                                qlarrWebView = this
+                                loadSurvey(surveyData = survey, responseId = responseIdExtra)
+                            }
+                        },
+                        update = { qlarrWebView ->
+                        },
+                    )
+                }
+            }
+
+            setupBackPress()
+        }
     }
 
     private fun setupBackPress() {

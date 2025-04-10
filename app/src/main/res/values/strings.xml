@@ -161,4 +161,6 @@
     <string name="login_to_cloud">Login to Qlarr.com</string>
     <string name="guest_warning">"You are checking the app as the guest. "</string>
     <string name="survey_item_button_get_missing_files">Get Missing Files</string>
+    <string name="survey_end_finish_action">Finish</string>
+    <string name="survey_end_repeat">Start new</string>
 </resources>
