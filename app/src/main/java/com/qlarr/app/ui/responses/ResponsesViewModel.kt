@@ -78,13 +78,17 @@ class ResponsesViewModel(
                 val newResponse =
                     responsesRepository
                         .getResponse(responseId)
-                        .toResponseItemData(surveyData.quotaExceeded())
-                val newResponses =
-                    _responsesScreenData.value.responses
-                        .toMutableList()
-                        .replaceFirstIf({ it.id == responseId }, { newResponse })
-                _responsesScreenData.update {
-                    it.copy(responses = newResponses)
+                emNavProcessor.maskedValues(listOf(newResponse)).collect { response ->
+                    val newResponses =
+                        _responsesScreenData.value.responses
+                            .toMutableList()
+                            .replaceFirstIf(
+                                { it.id == responseId },
+                                { response.toResponseItemData(surveyData.quotaExceeded()) },
+                            )
+                    _responsesScreenData.update {
+                        it.copy(responses = newResponses)
+                    }
                 }
             }
         }
