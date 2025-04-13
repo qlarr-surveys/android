@@ -28,6 +28,10 @@ import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -79,8 +83,10 @@ class SurveyActivity : ComponentActivity() {
         }
 
         val responseIdExtra: String? = intent.getStringExtra(RESPONSE_ID)
+
         setContent {
             val showBottomBar by surveyViewModel.showBottomBar.collectAsState()
+            var reloadCount by remember { mutableIntStateOf(0) }
 
             QlarrTheme {
                 Scaffold(bottomBar = {
@@ -91,19 +97,21 @@ class SurveyActivity : ComponentActivity() {
                         ) {
                             Row(
                                 modifier =
-                                    Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 8.dp),
                                 horizontalArrangement = Arrangement.SpaceBetween,
                             ) {
                                 TertiaryActionButton(
-                                    onClick = {},
+                                    onClick = {
+                                        reloadCount++
+                                    },
                                     modifier = Modifier.weight(1f),
                                     textRes = R.string.survey_end_repeat,
                                 )
                                 Spacer(modifier = Modifier.width(16.dp))
                                 PrimaryActionButton(
-                                    onClick = {},
+                                    onClick = ::finish,
                                     modifier = Modifier.weight(1f),
                                     textRes = R.string.survey_end_finish_action,
                                 )
@@ -111,25 +119,30 @@ class SurveyActivity : ComponentActivity() {
                         }
                     }
                 }) { padding ->
-                    AndroidView(
-                        modifier =
-                            Modifier
-                                .padding(padding)
-                                .fillMaxSize(),
-                        factory = { context ->
-                            QlarrWebView(context).apply {
-                                layoutParams =
-                                    LayoutParams(
-                                        LayoutParams.MATCH_PARENT,
-                                        LayoutParams.MATCH_PARENT,
-                                    )
-                                qlarrWebView = this
-                                loadSurvey(surveyData = survey, responseId = responseIdExtra)
-                            }
-                        },
-                        update = { qlarrWebView ->
-                        },
-                    )
+                    key(reloadCount) {
+                        AndroidView(
+                            modifier =
+                                Modifier
+                                    .padding(padding)
+                                    .fillMaxSize(),
+                            factory = { context ->
+                                QlarrWebView(context).apply {
+                                    layoutParams =
+                                        LayoutParams(
+                                            LayoutParams.MATCH_PARENT,
+                                            LayoutParams.MATCH_PARENT,
+                                        )
+                                    qlarrWebView = this
+                                }
+                            },
+                            update = { qlarrWebView ->
+                                qlarrWebView.loadSurvey(
+                                    surveyData = survey,
+                                    responseId = responseIdExtra,
+                                )
+                            },
+                        )
+                    }
                 }
             }
 
