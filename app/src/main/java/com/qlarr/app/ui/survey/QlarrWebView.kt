@@ -14,6 +14,9 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.core.content.FileProvider
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
@@ -33,7 +36,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.util.UUID
-
+import kotlin.math.roundToInt
 
 @SuppressLint("SetJavaScriptEnabled")
 class QlarrWebView
@@ -59,10 +62,44 @@ class QlarrWebView
 
     private lateinit var emNavProcessor: EMNavProcessor
     private lateinit var survey: SurveyData
-    private var responseId: String? = null
+        private var insets: WindowInsets = WindowInsets(0, 0, 0, 0)
+        private var responseId: String? = null
 
+        private fun Int.toRoundedDp(density: Density): Int = with(density) { this@toRoundedDp.toDp().value.roundToInt() }
+        private val qlarrWebViewClient = object : WebViewClient() {
+            override fun onPageFinished(
+                view: WebView?,
+                url: String?,
+            ) {
+                super.onPageFinished(view, url)
+                val density = Density(context)
+                val safeAreaJs = """
+            document.documentElement.style.setProperty('--safe-area-inset-top', '${
+                    insets.getTop(
+                        density,
+                    ).toRoundedDp(density)
+                }px');
+            document.documentElement.style.setProperty('--safe-area-inset-right', '${
+                    insets.getRight(
+                        density,
+                        LayoutDirection.Ltr,
+                    ).toRoundedDp(density)
+                }px');
+            document.documentElement.style.setProperty('--safe-area-inset-bottom', '${
+                    insets.getBottom(
+                        density,
+                    ).toRoundedDp(density)
+                }px');
+            document.documentElement.style.setProperty('--safe-area-inset-left', '${
+                    insets.getLeft(
+                        density,
+                        LayoutDirection.Ltr,
+                    ).toRoundedDp(density)
+            }px');
+            """
+            evaluateJavascript(safeAreaJs, null)
+        }
 
-    private val qlarrWebViewClient = object : WebViewClient() {
         override fun shouldInterceptRequest(
             view: WebView?, request: WebResourceRequest?
         ): WebResourceResponse? {
@@ -295,12 +332,16 @@ class QlarrWebView
             return null
         }
         return WebResourceResponse(
-            "", "utf-8", 200, "OK", mutableMapOf("Access-Control-Allow-Origin" to "*"), inputStream
+                "",
+                "utf-8",
+                200,
+                "OK",
+                mutableMapOf("Access-Control-Allow-Origin" to "*"), inputStream
         )
     }
 
-
-    fun loadSurvey(surveyData: SurveyData, responseId: String?) {
+    fun loadSurvey(surveyData: SurveyData, responseId: String?, windowsInsets: WindowInsets) {
+        this.insets = windowsInsets
         survey = surveyData
         val data = context.assets.open("$REACT_APP_BUILD_FOLDER/index.html").bufferedReader().use {
             it.readText()
