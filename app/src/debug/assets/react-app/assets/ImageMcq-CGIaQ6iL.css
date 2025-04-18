@@ -1,0 +1,34 @@
+._imageGrid_8hrt4_1 {
+  margin-top: 16px;
+}
+
+._imageContainer_8hrt4_5 {
+  position: relative;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+._selection_8hrt4_13 {
+  position: absolute;
+  top: 0;
+  border-radius: 0 !important;
+  background-color: #ffffffcc !important;
+}
+
+@media (max-width: 768px) {
+  ._radioCheck_8hrt4_21 {
+    display: none;
+  }
+}
+
+._radioCheck_8hrt4_21 {
+  width: 15px;
+  height: 15px;
+}
+
+._imageFlexContainer_8hrt4_31 {
+  display: flex;
+  flex-wrap: wrap;
+}

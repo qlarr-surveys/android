@@ -1,0 +1,30 @@
+._imageGrid_18w6k_1 {
+  margin-top: 16px;
+}
+
+._imageContainer_18w6k_5 {
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+._rankContainer_18w6k_12 {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  cursor: pointer;
+  padding: .25rem .5rem;
+  border-radius: 50%;
+}
+
+._rankValue_18w6k_21 {
+  color: white;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+._imageFlexContainer_18w6k_27 {
+  display: flex;
+  flex-wrap: wrap;
+}
