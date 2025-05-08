@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Qlarr</string>
+    <string name="title_activity_login">Anmelden</string>
+    <string name="title_activity_responses">Antworten</string>
+    <string name="title_activity_info">Info</string>
+    <string name="title_survey_list">Umfragen</string>
+    <string name="login_hint_server_url">Server-URL</string>
+    <string name="login_hint_email">E-Mail</string>
+    <string name="login_hint_password">Passwort</string>
+    <string name="login_button_login">Anmelden</string>
+    <string name="login_button_login_loading">Bitte warten</string>
+    <string name="error_general_title">Fehler</string>
+    <string name="error_network_title">Netzwerkfehler</string>
+    <string name="error_timeout_title">Zeitüberschreitung</string>
+    <string name="error_general_description">Bitte versuchen Sie es später erneut.</string>
+    <string name="error_network_description">Keine Internetverbindung… Überprüfen Sie Ihr Netzwerk</string>
+    <string name="error_timeout_description">Alles dauert länger als erwartet… Bitte später erneut versuchen</string>
+    <string name="error_auth_title">Sitzung abgelaufen.</string>
+    <string name="error_auth_description">Bitte erneut anmelden.</string>
+    <string name="not_found_description">Diese Ressource wurde nicht gefunden</string>
+    <string name="error_login_title">Anmeldung fehlgeschlagen!</string>
+    <string name="error_login_description">Bitte gültige Zugangsdaten eingeben</string>
+    <string name="error_signup_not_allowed_title">Anmeldung fehlgeschlagen!</string>
+    <string name="error_signup_not_allowed_description">Sie benötigen ein bestehendes Konto, um sich über Google anzumelden… bitte Konto erstellen</string>
+    <string name="error_role_not_supported_title">Anmeldung fehlgeschlagen!</string>
+    <string name="error_role_not_supported_description">Sie müssen ein Umfrageleiter, Umfrageadministrator oder Superadministrator sein, um sich anzumelden</string>
+    <string name="validation_email_error">Bitte gültige E-Mail eingeben</string>
+    <string name="validation_psw_error">Passwort muss mindestens 8 Zeichen lang sein</string>
+    <string name="validation_url_error">Ungültige URL</string>
+    <string name="syncing_survey_title">Synchronisiere %s</string>
+    <string name="syncing_survey_file_order">Herunterladen %1$d/%2$d</string>
+    <string name="syncing_survey_file_download_progress">%1$d KB von %2$d KB (%3$d)%%</string>
+    <string name="fetching_surveys_message">Lade Umfragen…</string>
+    <string name="no_surveys_message">Keine Umfragen verfügbar… Bitte Netzwerk überprüfen und sicherstellen, dass Ihnen Umfragen zugewiesen wurden. Später erneut versuchen</string>
+    <string name="chrome_version_not_supported">Chrome-Version wird nicht unterstützt</string>
+    <string name="response_sync_status">Synchronisiert: %b</string>
+    <string name="response_start_date">Startdatum: %s</string>
+    <string name="response_submit_date">Einreichdatum: %s</string>
+    <string name="response_lang">Sprache: %s</string>
+    <string name="responses_screen_complete_responses">Abgeschlossene Antworten</string>
+    <string name="responses_screen_incomplete_responses">Unvollständige Antworten</string>
+    <string name="responses_screen_last_sync_time">Letzte Synchronisierung</string>
+    <string name="responses_screen_sync_button">Synchronisieren</string>
+    <string name="response_item_started">Gestartet</string>
+    <string name="response_item_completed">Abgeschlossen</string>
+    <string name="response_item_synced">Synchronisiert</string>
+    <string name="response_item_language">Sprache</string>
+    <string name="permission_denied">Zugriff verweigert!!</string>
+    <string name="canceled">Abgebrochen</string>
+    <string name="press_back_to_exit">„Zurück“ erneut drücken zum Beenden.</string>
+    <string name="local_responses_count">Lokale Antworten: %d</string>
+    <string name="local_complete_responses_count">Lokale abgeschlossene Antworten: %d</string>
+    <string name="unlimited_quota">Unbegrenzt</string>
+    <string name="survey_quota">Umfragen-Kontingent: %d</string>
+    <string name="user_quota">Benutzerkontingent: %d</string>
+    <string name="no_start_date">Kein Startdatum</string>
+    <string name="start_date">Startdatum: %s</string>
+    <string name="no_end_date">Kein Enddatum</string>
+    <string name="end_date">Enddatum: %s</string>
+    <string name="kilobytes">%.2f KB</string>
+    <string name="megabytes">%.2f MB</string>
+    <string name="max_size_exceeded">Maximale Größe überschritten</string>
+    <string name="max_size_exceeded_message">Diese Datei (%1$dKB) überschreitet die erlaubte Größe von %2$dKB</string>
+    <string name="max_size_exceeded_message_compression_note">Diese Datei (%1$dKB) überschreitet die erlaubte Größe von %2$dKB und wird komprimiert</string>
+    <string name="login_as_guest">Beispielumfragen ansehen</string>
+    <string name="notification_channel_uploader_name">Upload-Fortschritt</string>
+    <string name="notification_channel_uploader_description">Fortschritt beim Hochladen von Umfrageantworten</string>
+    <string name="notification_uploader_title">Wird hochgeladen…</string>
+    <string name="notification_uploader_description">Upload zum Server läuft</string>
+    <string name="sync_time_never">Nie</string>
+    <string name="back">Zurück</string>
+    <string name="survey_creation_date">Erstellt</string>
+    <string name="survey_last_modified">Zuletzt aktualisiert</string>
+    <string name="survey_start_date">Beginnt</string>
+    <string name="survey_end_date">Endet</string>
+    <string name="survey_new_version_available">Neue Version verfügbar</string>
+    <string name="survey_local_responses">Gesamte lokale Antworten</string>
+    <string name="survey_local_complete_responses">Abgeschlossene Antworten</string>
+    <string name="survey_local_incomplete_responses">Unvollständige Antworten</string>
+    <string name="survey_synced_responses">Synchronisierte Antworten</string>
+    <string name="survey_unsynced_responses">Zu synchronisierende Antworten</string>
+    <string name="survey_stats_quota">Verbleibendes Umfragenkontingent</string>
+    <string name="survey_stats_user_quota">Verbleibendes Benutzerkontingent</string>
+    <string name="survey_save_timings">Zeiten speichern</string>
+    <string name="enabled">Aktiviert</string>
+    <string name="disabled">Deaktiviert</string>
+    <string name="survey_status">Status</string>
+    <string name="survey_update_available">Neue Version verfügbar</string>
+    <string name="survey_item_button_responses">Antworten</string>
+    <string name="survey_item_button_info">Info</string>
+
+    <plurals name="time_interval_days_ago">
+        <item quantity="one">gestern</item>
+        <item quantity="other">vor %d Tagen</item>
+    </plurals>
+    <plurals name="time_interval_hours_ago">
+        <item quantity="one">vor 1 Stunde</item>
+        <item quantity="other">vor %d Stunden</item>
+    </plurals>
+    <plurals name="time_interval_minutes_ago">
+        <item quantity="one">vor 1 Minute</item>
+        <item quantity="other">vor %d Minuten</item>
+    </plurals>
+    <plurals name="time_interval_months_ago">
+        <item quantity="one">letzten Monat</item>
+        <item quantity="other">vor %d Monaten</item>
+    </plurals>
+    <plurals name="time_interval_weeks_ago">
+        <item quantity="one">letzte Woche</item>
+        <item quantity="other">vor %d Wochen</item>
+    </plurals>
+    <plurals name="time_interval_years_ago">
+        <item quantity="one">letztes Jahr</item>
+        <item quantity="other">vor %d Jahren</item>
+    </plurals>
+    <plurals name="time_interval_in_days">
+        <item quantity="one">morgen</item>
+        <item quantity="other">in %d Tagen</item>
+    </plurals>
+    <plurals name="time_interval_in_hours">
+        <item quantity="one">in einer Stunde</item>
+        <item quantity="other">in %d Stunden</item>
+    </plurals>
+    <plurals name="time_interval_in_months">
+        <item quantity="one">nächster Monat</item>
+        <item quantity="other">in %d Monaten</item>
+    </plurals>
+    <plurals name="time_interval_in_weeks">
+        <item quantity="one">nächste Woche</item>
+        <item quantity="other">in %d Wochen</item>
+    </plurals>
+    <plurals name="time_interval_in_years">
+        <item quantity="one">nächstes Jahr</item>
+        <item quantity="other">in %d Jahren</item>
+    </plurals>
+
+    <string name="time_interval_just_now">Gerade eben</string>
+    <string name="survey_item_expires">Läuft ab am %s</string>
+    <string name="survey_item_starts">Beginnt am %s</string>
+    <string name="today">Heute</string>
+    <string name="survey_item_quota_left">Verbleibendes Kontingent: %d</string>
+    <string name="survey_item_button_start">Starten</string>
+    <string name="survey_item_button_download">Herunterladen</string>
+    <string name="survey_item_button_update">Aktualisieren</string>
+    <string name="survey_item_button_sync">Synchronisieren</string>
+    <string name="logout">Abmelden</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="logout_alert_message">Alle nicht synchronisierten Daten gehen verloren.</string>
+    <string name="logout_are_you_sure">Möchten Sie sich wirklich abmelden?</string>
+    <string name="login_to_private">Anmelden am privaten Server</string>
+    <string name="login_to_cloud">Anmelden bei Qlarr.com</string>
+    <string name="guest_warning">„Sie verwenden die App als Gast.“</string>
+    <string name="survey_item_button_get_missing_files">Fehlende Dateien abrufen</string>
+    <string name="survey_end_finish_action">Beenden</string>
+    <string name="survey_end_repeat">Neu starten</string>
+</resources>
