@@ -20,9 +20,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Scaffold
@@ -97,9 +99,9 @@ class SurveyActivity : ComponentActivity() {
                         ) {
                             Row(
                                 modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 16.dp, vertical = 8.dp),
                                 horizontalArrangement = Arrangement.SpaceBetween,
                             ) {
                                 TertiaryActionButton(
@@ -118,12 +120,12 @@ class SurveyActivity : ComponentActivity() {
                             }
                         }
                     }
-                }) { padding ->
+                }) { _ ->
                     key(reloadCount) {
+                        val insets = WindowInsets.safeDrawing
                         AndroidView(
                             modifier =
                                 Modifier
-                                    .padding(padding)
                                     .fillMaxSize(),
                             factory = { context ->
                                 QlarrWebView(context).apply {
@@ -139,6 +141,7 @@ class SurveyActivity : ComponentActivity() {
                                 qlarrWebView.loadSurvey(
                                     surveyData = survey,
                                     responseId = responseIdExtra,
+                                    windowsInsets = insets,
                                 )
                             },
                         )
