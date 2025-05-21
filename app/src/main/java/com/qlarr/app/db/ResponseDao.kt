@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import com.qlarr.app.db.model.Response
-import com.qlarr.surveyengine.model.NavigationIndex
+import com.qlarr.surveyengine.model.exposed.NavigationIndex
 import java.time.LocalDateTime
 
 

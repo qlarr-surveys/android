@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.qlarr.app.db.survey.SurveyDataEntity
-import com.qlarr.surveyengine.model.NavigationIndex
+import com.qlarr.surveyengine.model.exposed.NavigationIndex
 import java.time.LocalDateTime
 
 @Entity(
@@ -43,7 +43,7 @@ data class Response(
 
     val version: Int,
 
-) {
+    ) {
     companion object {
         const val STORED_FILENAME_KEY = "stored_filename"
         const val ACTUAL_FILENAME_KEY = "filename"
