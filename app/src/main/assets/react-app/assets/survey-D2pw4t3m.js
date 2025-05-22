@@ -1,1 +1,0 @@
-const _={MIXED:"mixed",WEB:"web",OFFLINE:"offline"},E={ACTIVE:"active",DRAFT:"draft",CLOSED:"closed"},o={ALL_IN_ONE:"all_in_one",GROUP_BY_GROUP:"group_by_group",QUESTION_BY_QUESTION:"question_by_question"};export{o as N,_ as S,E as a};

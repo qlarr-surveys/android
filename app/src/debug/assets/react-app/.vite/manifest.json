@@ -1,809 +1,14 @@
 {
-  "_Card-BxTiTrtS.js": {
-    "file": "assets/Card-BxTiTrtS.js",
-    "name": "Card",
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js"
-    ]
+  "_Android-!~{003}~.js": {
+    "file": "assets/Android-CtDvwZhr.css",
+    "src": "_Android-!~{003}~.js"
   },
-  "_Card-legacy-DAyj9G4N.js": {
-    "file": "assets/Card-legacy-DAyj9G4N.js",
-    "name": "Card",
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js"
-    ]
-  },
-  "_CardMedia-legacy-CywE8xFy.js": {
-    "file": "assets/CardMedia-legacy-CywE8xFy.js",
-    "name": "CardMedia",
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js"
-    ]
-  },
-  "_CardMedia-naaIupyv.js": {
-    "file": "assets/CardMedia-naaIupyv.js",
-    "name": "CardMedia",
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js"
-    ]
-  },
-  "_Check-CzItDdan.js": {
-    "file": "assets/Check-CzItDdan.js",
-    "name": "Check",
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js"
-    ]
-  },
-  "_Check-legacy-Dd5kwFp-.js": {
-    "file": "assets/Check-legacy-Dd5kwFp-.js",
-    "name": "Check",
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js"
-    ]
-  },
-  "_Checkbox-DSC03rz9.js": {
-    "file": "assets/Checkbox-DSC03rz9.js",
-    "name": "Checkbox",
-    "imports": [
-      "index.html",
-      "_SwitchBase-BqqZbFu5.js",
-      "_use-service-D_BNczvS.js"
-    ]
-  },
-  "_Checkbox-legacy-B_Sa2GUd.js": {
-    "file": "assets/Checkbox-legacy-B_Sa2GUd.js",
-    "name": "Checkbox",
-    "imports": [
-      "index-legacy.html",
-      "_SwitchBase-legacy-C9xQX8jx.js",
-      "_use-service-legacy-DLuVKbJp.js"
-    ]
-  },
-  "_DailyMotion-DO9QaZrz.js": {
-    "file": "assets/DailyMotion-DO9QaZrz.js",
-    "name": "DailyMotion",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_index-DsxU1XV0.js"
-    ]
-  },
-  "_DailyMotion-legacy-Dqjq6cjd.js": {
-    "file": "assets/DailyMotion-legacy-Dqjq6cjd.js",
-    "name": "DailyMotion",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_index-legacy-DBjr7KQp.js"
-    ]
-  },
-  "_DatePicker-legacy-BCwln686.js": {
-    "file": "assets/DatePicker-legacy-BCwln686.js",
-    "name": "DatePicker",
-    "imports": [
-      "index-legacy.html",
-      "_DateTimePicker-legacy-FFoNYnkB.js",
-      "_Tabs-legacy-DSWwlWIj.js",
-      "_use-service-legacy-DLuVKbJp.js"
-    ]
-  },
-  "_DatePicker-wBwy_29S.js": {
-    "file": "assets/DatePicker-wBwy_29S.js",
-    "name": "DatePicker",
-    "imports": [
-      "index.html",
-      "_DateTimePicker-CBtVfPsg.js",
-      "_Tabs-C8JT5hpD.js",
-      "_use-service-D_BNczvS.js"
-    ]
-  },
-  "_DateTimePicker-CBtVfPsg.js": {
-    "file": "assets/DateTimePicker-CBtVfPsg.js",
-    "name": "DateTimePicker",
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js",
-      "_Tabs-C8JT5hpD.js",
-      "_InputAdornment-CnebZoW9.js"
-    ]
-  },
-  "_DateTimePicker-legacy-FFoNYnkB.js": {
-    "file": "assets/DateTimePicker-legacy-FFoNYnkB.js",
-    "name": "DateTimePicker",
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_Tabs-legacy-DSWwlWIj.js",
-      "_InputAdornment-legacy-CCb1yK4O.js"
-    ]
-  },
-  "_DateUtils-D9XCaXee.js": {
-    "file": "assets/DateUtils-D9XCaXee.js",
-    "name": "DateUtils"
-  },
-  "_DateUtils-legacy-Dg58phWT.js": {
-    "file": "assets/DateUtils-legacy-Dg58phWT.js",
-    "name": "DateUtils"
-  },
-  "_Delete-CGrSv7M_.js": {
-    "file": "assets/Delete-CGrSv7M_.js",
-    "name": "Delete",
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js"
-    ]
-  },
-  "_Delete-legacy-DE9IJzsH.js": {
-    "file": "assets/Delete-legacy-DE9IJzsH.js",
-    "name": "Delete",
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js"
-    ]
-  },
-  "_Divider-Dlzogn56.js": {
-    "file": "assets/Divider-Dlzogn56.js",
-    "name": "Divider",
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js"
-    ]
-  },
-  "_Divider-legacy-9ldxDN5q.js": {
-    "file": "assets/Divider-legacy-9ldxDN5q.js",
-    "name": "Divider",
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js"
-    ]
-  },
-  "_Facebook-DkoR0ryS.js": {
-    "file": "assets/Facebook-DkoR0ryS.js",
-    "name": "Facebook",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_index-DsxU1XV0.js"
-    ]
-  },
-  "_Facebook-legacy-DschYmPU.js": {
-    "file": "assets/Facebook-legacy-DschYmPU.js",
-    "name": "Facebook",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_index-legacy-DBjr7KQp.js"
-    ]
-  },
-  "_FilePlayer-CkMymbnY.js": {
-    "file": "assets/FilePlayer-CkMymbnY.js",
-    "name": "FilePlayer",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_index-DsxU1XV0.js"
-    ]
-  },
-  "_FilePlayer-legacy-B5bOOL2T.js": {
-    "file": "assets/FilePlayer-legacy-B5bOOL2T.js",
-    "name": "FilePlayer",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_index-legacy-DBjr7KQp.js"
-    ]
-  },
-  "_FormControlLabel-i6VTBdFM.js": {
-    "file": "assets/FormControlLabel-i6VTBdFM.js",
-    "name": "FormControlLabel",
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js"
-    ]
-  },
-  "_FormControlLabel-legacy-CA95rTY_.js": {
-    "file": "assets/FormControlLabel-legacy-CA95rTY_.js",
-    "name": "FormControlLabel",
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js"
-    ]
-  },
-  "_FormGroup-legacy-DOXCNPX6.js": {
-    "file": "assets/FormGroup-legacy-DOXCNPX6.js",
-    "name": "FormGroup",
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js"
-    ]
-  },
-  "_FormGroup-oSWhZBRb.js": {
-    "file": "assets/FormGroup-oSWhZBRb.js",
-    "name": "FormGroup",
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js"
-    ]
-  },
-  "_Image-!~{017}~.js": {
-    "file": "assets/Image-D_AjlMEB.css",
-    "src": "_Image-!~{017}~.js"
-  },
-  "_Image-CE4vE1Da.js": {
-    "file": "assets/Image-CE4vE1Da.js",
-    "name": "Image",
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js"
-    ],
-    "css": [
-      "assets/Image-D_AjlMEB.css"
-    ]
-  },
-  "_Image-legacy-KU2bRKGW.js": {
-    "file": "assets/Image-legacy-KU2bRKGW.js",
-    "name": "Image",
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js"
-    ]
-  },
-  "_InputAdornment-CnebZoW9.js": {
-    "file": "assets/InputAdornment-CnebZoW9.js",
-    "name": "InputAdornment",
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js"
-    ]
-  },
-  "_InputAdornment-legacy-CCb1yK4O.js": {
-    "file": "assets/InputAdornment-legacy-CCb1yK4O.js",
-    "name": "InputAdornment",
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js"
-    ]
-  },
-  "_Kaltura-BDbpkawf.js": {
-    "file": "assets/Kaltura-BDbpkawf.js",
-    "name": "Kaltura",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_index-DsxU1XV0.js"
-    ]
-  },
-  "_Kaltura-legacy-9HqC5vLe.js": {
-    "file": "assets/Kaltura-legacy-9HqC5vLe.js",
-    "name": "Kaltura",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_index-legacy-DBjr7KQp.js"
-    ]
-  },
-  "_Link-B6OA4b9x.js": {
-    "file": "assets/Link-B6OA4b9x.js",
-    "name": "Link",
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js"
-    ]
-  },
-  "_Link-legacy-jklI3zRP.js": {
-    "file": "assets/Link-legacy-jklI3zRP.js",
-    "name": "Link",
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js"
-    ]
-  },
-  "_Mixcloud-CZKyW_hx.js": {
-    "file": "assets/Mixcloud-CZKyW_hx.js",
-    "name": "Mixcloud",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_index-DsxU1XV0.js"
-    ]
-  },
-  "_Mixcloud-legacy-AVfKJ6Qk.js": {
-    "file": "assets/Mixcloud-legacy-AVfKJ6Qk.js",
-    "name": "Mixcloud",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_index-legacy-DBjr7KQp.js"
-    ]
-  },
-  "_Mux-CYiSbNkG.js": {
-    "file": "assets/Mux-CYiSbNkG.js",
-    "name": "Mux",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_index-DsxU1XV0.js"
-    ]
-  },
-  "_Mux-legacy-B9XfGqW3.js": {
-    "file": "assets/Mux-legacy-B9XfGqW3.js",
-    "name": "Mux",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_index-legacy-DBjr7KQp.js"
-    ]
-  },
-  "_Preview-legacy-Cq3Ts9_M.js": {
-    "file": "assets/Preview-legacy-Cq3Ts9_M.js",
-    "name": "Preview",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html"
-    ]
-  },
-  "_Preview-zG9z3Byi.js": {
-    "file": "assets/Preview-zG9z3Byi.js",
-    "name": "Preview",
+  "_Android-D7uSgl3-.js": {
+    "file": "assets/Android-D7uSgl3-.js",
+    "name": "Android",
     "isDynamicEntry": true,
     "imports": [
       "index.html"
-    ]
-  },
-  "_Radio-C05RY_Qz.js": {
-    "file": "assets/Radio-C05RY_Qz.js",
-    "name": "Radio",
-    "imports": [
-      "index.html",
-      "_SwitchBase-BqqZbFu5.js",
-      "_use-service-D_BNczvS.js",
-      "_RadioGroupContext-C8tgogbD.js",
-      "_radioClasses-B6tZog_h.js"
-    ]
-  },
-  "_Radio-legacy-u7FYCqgd.js": {
-    "file": "assets/Radio-legacy-u7FYCqgd.js",
-    "name": "Radio",
-    "imports": [
-      "index-legacy.html",
-      "_SwitchBase-legacy-C9xQX8jx.js",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_RadioGroupContext-legacy-Bbu9KNNs.js",
-      "_radioClasses-legacy-DphQBUmK.js"
-    ]
-  },
-  "_RadioGroup-BT-amEYM.js": {
-    "file": "assets/RadioGroup-BT-amEYM.js",
-    "name": "RadioGroup",
-    "imports": [
-      "index.html",
-      "_RadioGroupContext-C8tgogbD.js",
-      "_use-service-D_BNczvS.js",
-      "_FormGroup-oSWhZBRb.js"
-    ]
-  },
-  "_RadioGroup-legacy-U3rnWh7n.js": {
-    "file": "assets/RadioGroup-legacy-U3rnWh7n.js",
-    "name": "RadioGroup",
-    "imports": [
-      "index-legacy.html",
-      "_RadioGroupContext-legacy-Bbu9KNNs.js",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_FormGroup-legacy-DOXCNPX6.js"
-    ]
-  },
-  "_RadioGroupContext-C8tgogbD.js": {
-    "file": "assets/RadioGroupContext-C8tgogbD.js",
-    "name": "RadioGroupContext",
-    "imports": [
-      "index.html"
-    ]
-  },
-  "_RadioGroupContext-legacy-Bbu9KNNs.js": {
-    "file": "assets/RadioGroupContext-legacy-Bbu9KNNs.js",
-    "name": "RadioGroupContext",
-    "imports": [
-      "index-legacy.html"
-    ]
-  },
-  "_SoundCloud-CJ-3uGz1.js": {
-    "file": "assets/SoundCloud-CJ-3uGz1.js",
-    "name": "SoundCloud",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_index-DsxU1XV0.js"
-    ]
-  },
-  "_SoundCloud-legacy-CD3D2t6M.js": {
-    "file": "assets/SoundCloud-legacy-CD3D2t6M.js",
-    "name": "SoundCloud",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_index-legacy-DBjr7KQp.js"
-    ]
-  },
-  "_Streamable-Yj9AXE1L.js": {
-    "file": "assets/Streamable-Yj9AXE1L.js",
-    "name": "Streamable",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_index-DsxU1XV0.js"
-    ]
-  },
-  "_Streamable-legacy-D6Ndf0Dr.js": {
-    "file": "assets/Streamable-legacy-D6Ndf0Dr.js",
-    "name": "Streamable",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_index-legacy-DBjr7KQp.js"
-    ]
-  },
-  "_SwitchBase-BqqZbFu5.js": {
-    "file": "assets/SwitchBase-BqqZbFu5.js",
-    "name": "SwitchBase",
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js"
-    ]
-  },
-  "_SwitchBase-legacy-C9xQX8jx.js": {
-    "file": "assets/SwitchBase-legacy-C9xQX8jx.js",
-    "name": "SwitchBase",
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js"
-    ]
-  },
-  "_TableCell-Di9qFQzs.js": {
-    "file": "assets/TableCell-Di9qFQzs.js",
-    "name": "TableCell",
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js",
-      "_tableRowClasses-B1HVMYOB.js"
-    ]
-  },
-  "_TableCell-legacy-BTEC8sBz.js": {
-    "file": "assets/TableCell-legacy-BTEC8sBz.js",
-    "name": "TableCell",
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_tableRowClasses-legacy-BNdXjQON.js"
-    ]
-  },
-  "_TablePagination-DYBvoZJZ.js": {
-    "file": "assets/TablePagination-DYBvoZJZ.js",
-    "name": "TablePagination",
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js",
-      "_Tabs-C8JT5hpD.js",
-      "_TableCell-Di9qFQzs.js",
-      "_Toolbar-CZ6sMNbC.js"
-    ]
-  },
-  "_TablePagination-legacy-DGnjUVsh.js": {
-    "file": "assets/TablePagination-legacy-DGnjUVsh.js",
-    "name": "TablePagination",
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_Tabs-legacy-DSWwlWIj.js",
-      "_TableCell-legacy-BTEC8sBz.js",
-      "_Toolbar-legacy-gatoM_w3.js"
-    ]
-  },
-  "_TableRow-D6Acb3fE.js": {
-    "file": "assets/TableRow-D6Acb3fE.js",
-    "name": "TableRow",
-    "imports": [
-      "index.html",
-      "_TableCell-Di9qFQzs.js",
-      "_use-service-D_BNczvS.js",
-      "_tableRowClasses-B1HVMYOB.js"
-    ]
-  },
-  "_TableRow-legacy-CbWVNbnA.js": {
-    "file": "assets/TableRow-legacy-CbWVNbnA.js",
-    "name": "TableRow",
-    "imports": [
-      "index-legacy.html",
-      "_TableCell-legacy-BTEC8sBz.js",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_tableRowClasses-legacy-BNdXjQON.js"
-    ]
-  },
-  "_Tabs-C8JT5hpD.js": {
-    "file": "assets/Tabs-C8JT5hpD.js",
-    "name": "Tabs",
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js"
-    ]
-  },
-  "_Tabs-legacy-DSWwlWIj.js": {
-    "file": "assets/Tabs-legacy-DSWwlWIj.js",
-    "name": "Tabs",
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js"
-    ]
-  },
-  "_TextField-WQpbUAds.js": {
-    "file": "assets/TextField-WQpbUAds.js",
-    "name": "TextField",
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js"
-    ]
-  },
-  "_TextField-legacy-Cn7jw8uN.js": {
-    "file": "assets/TextField-legacy-Cn7jw8uN.js",
-    "name": "TextField",
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js"
-    ]
-  },
-  "_Toolbar-CZ6sMNbC.js": {
-    "file": "assets/Toolbar-CZ6sMNbC.js",
-    "name": "Toolbar",
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js"
-    ]
-  },
-  "_Toolbar-legacy-gatoM_w3.js": {
-    "file": "assets/Toolbar-legacy-gatoM_w3.js",
-    "name": "Toolbar",
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js"
-    ]
-  },
-  "_Twitch-legacy-kjmufaNw.js": {
-    "file": "assets/Twitch-legacy-kjmufaNw.js",
-    "name": "Twitch",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_index-legacy-DBjr7KQp.js"
-    ]
-  },
-  "_Twitch-oR_PFGHI.js": {
-    "file": "assets/Twitch-oR_PFGHI.js",
-    "name": "Twitch",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_index-DsxU1XV0.js"
-    ]
-  },
-  "_Vidyard-Bpd4F0V2.js": {
-    "file": "assets/Vidyard-Bpd4F0V2.js",
-    "name": "Vidyard",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_index-DsxU1XV0.js"
-    ]
-  },
-  "_Vidyard-legacy-DHzNcp-I.js": {
-    "file": "assets/Vidyard-legacy-DHzNcp-I.js",
-    "name": "Vidyard",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_index-legacy-DBjr7KQp.js"
-    ]
-  },
-  "_Vimeo-legacy-DwKhiiTa.js": {
-    "file": "assets/Vimeo-legacy-DwKhiiTa.js",
-    "name": "Vimeo",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_index-legacy-DBjr7KQp.js"
-    ]
-  },
-  "_Vimeo-v7EXu71q.js": {
-    "file": "assets/Vimeo-v7EXu71q.js",
-    "name": "Vimeo",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_index-DsxU1XV0.js"
-    ]
-  },
-  "_Web-!~{003}~.js": {
-    "file": "assets/Web-BWQnz4A7.css",
-    "src": "_Web-!~{003}~.js"
-  },
-  "_Web-BJ9GQG1r.js": {
-    "file": "assets/Web-BJ9GQG1r.js",
-    "name": "Web",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js",
-      "_Checkbox-DSC03rz9.js",
-      "_Tabs-C8JT5hpD.js",
-      "_radioClasses-B6tZog_h.js",
-      "_tableRowClasses-B1HVMYOB.js",
-      "_TextField-WQpbUAds.js",
-      "_FormControlLabel-i6VTBdFM.js",
-      "_SwitchBase-BqqZbFu5.js"
-    ],
-    "dynamicImports": [
-      "src/pages/manage/ResponsesSurvey/index.jsx",
-      "src/pages/manage/EditSurvey/index.jsx",
-      "src/pages/DesignSurvey/index.jsx",
-      "src/pages/Page404/index.jsx",
-      "src/pages/manage/ForgotPassword/index.jsx",
-      "src/pages/manage/ResetPassword/index.jsx",
-      "src/pages/manage/Dashboard/index.jsx",
-      "src/pages/manage/Login/index.jsx",
-      "src/pages/manage/ManageUsers/index.jsx",
-      "src/pages/manage/Profile/index.jsx",
-      "src/pages/manage/CreateSurvey/index.jsx",
-      "_index-DAoruMCC.js"
-    ],
-    "css": [
-      "assets/Web-BWQnz4A7.css"
-    ]
-  },
-  "_Web-legacy-G20LTzwp.js": {
-    "file": "assets/Web-legacy-G20LTzwp.js",
-    "name": "Web",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_Checkbox-legacy-B_Sa2GUd.js",
-      "_Tabs-legacy-DSWwlWIj.js",
-      "_radioClasses-legacy-DphQBUmK.js",
-      "_tableRowClasses-legacy-BNdXjQON.js",
-      "_TextField-legacy-Cn7jw8uN.js",
-      "_FormControlLabel-legacy-CA95rTY_.js",
-      "_SwitchBase-legacy-C9xQX8jx.js"
-    ],
-    "dynamicImports": [
-      "src/pages/manage/ResponsesSurvey/index-legacy.jsx",
-      "src/pages/manage/EditSurvey/index-legacy.jsx",
-      "src/pages/DesignSurvey/index-legacy.jsx",
-      "src/pages/Page404/index-legacy.jsx",
-      "src/pages/manage/ForgotPassword/index-legacy.jsx",
-      "src/pages/manage/ResetPassword/index-legacy.jsx",
-      "src/pages/manage/Dashboard/index-legacy.jsx",
-      "src/pages/manage/Login/index-legacy.jsx",
-      "src/pages/manage/ManageUsers/index-legacy.jsx",
-      "src/pages/manage/Profile/index-legacy.jsx",
-      "src/pages/manage/CreateSurvey/index-legacy.jsx",
-      "_index-legacy-CAdDVn6v.js"
-    ]
-  },
-  "_Wistia-BuSZiI3F.js": {
-    "file": "assets/Wistia-BuSZiI3F.js",
-    "name": "Wistia",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_index-DsxU1XV0.js"
-    ]
-  },
-  "_Wistia-legacy-DErazspV.js": {
-    "file": "assets/Wistia-legacy-DErazspV.js",
-    "name": "Wistia",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_index-legacy-DBjr7KQp.js"
-    ]
-  },
-  "_YouTube-CXw9s8Oo.js": {
-    "file": "assets/YouTube-CXw9s8Oo.js",
-    "name": "YouTube",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_index-DsxU1XV0.js"
-    ]
-  },
-  "_YouTube-legacy-w3nYc8mR.js": {
-    "file": "assets/YouTube-legacy-w3nYc8mR.js",
-    "name": "YouTube",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_index-legacy-DBjr7KQp.js"
-    ]
-  },
-  "_common-Bl2TiDan.js": {
-    "file": "assets/common-Bl2TiDan.js",
-    "name": "common",
-    "imports": [
-      "_use-service-D_BNczvS.js"
-    ]
-  },
-  "_common-legacy-BfMJ8X0r.js": {
-    "file": "assets/common-legacy-BfMJ8X0r.js",
-    "name": "common",
-    "imports": [
-      "_use-service-legacy-DLuVKbJp.js"
-    ]
-  },
-  "_dayjs.min-BYuDNZGJ.js": {
-    "file": "assets/dayjs.min-BYuDNZGJ.js",
-    "name": "dayjs.min",
-    "imports": [
-      "index.html"
-    ]
-  },
-  "_dayjs.min-legacy-DVnPMy8l.js": {
-    "file": "assets/dayjs.min-legacy-DVnPMy8l.js",
-    "name": "dayjs.min",
-    "imports": [
-      "index-legacy.html"
-    ]
-  },
-  "_index-!~{005}~.js": {
-    "file": "assets/index-_5kp2L-s.css",
-    "src": "_index-!~{005}~.js"
-  },
-  "_index-!~{010}~.js": {
-    "file": "assets/index-_2rZ8I_A.css",
-    "src": "_index-!~{010}~.js"
-  },
-  "_index-C1bvT1wp.js": {
-    "file": "assets/index-C1bvT1wp.js",
-    "name": "index",
-    "imports": [
-      "index.html"
-    ],
-    "css": [
-      "assets/index-_2rZ8I_A.css"
-    ]
-  },
-  "_index-CFFrfAwV.js": {
-    "file": "assets/index-CFFrfAwV.js",
-    "name": "index",
-    "imports": [
-      "_dayjs.min-BYuDNZGJ.js",
-      "index.html"
-    ]
-  },
-  "_index-CQIINAAR.js": {
-    "file": "assets/index-CQIINAAR.js",
-    "name": "index",
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js",
-      "_Web-BJ9GQG1r.js"
-    ]
-  },
-  "_index-DAoruMCC.js": {
-    "file": "assets/index-DAoruMCC.js",
-    "name": "index",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js",
-      "_isTouchDevice-BxjlknWP.js",
-      "_common-Bl2TiDan.js",
-      "_CardMedia-naaIupyv.js",
-      "_Card-BxTiTrtS.js",
-      "_Toolbar-CZ6sMNbC.js"
     ],
     "dynamicImports": [
       "src/components/Questions/DateTime/DateTimeQuestion.jsx",
@@ -831,92 +36,15 @@
       "src/components/Questions/SCQArray/SCQIconArray.jsx"
     ],
     "css": [
-      "assets/index-_5kp2L-s.css"
+      "assets/Android-CtDvwZhr.css"
     ]
   },
-  "_index-DsxU1XV0.js": {
-    "file": "assets/index-DsxU1XV0.js",
-    "name": "index",
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js"
-    ],
-    "dynamicImports": [
-      "_YouTube-CXw9s8Oo.js",
-      "_SoundCloud-CJ-3uGz1.js",
-      "_Vimeo-v7EXu71q.js",
-      "_Mux-CYiSbNkG.js",
-      "_Facebook-DkoR0ryS.js",
-      "_Streamable-Yj9AXE1L.js",
-      "_Wistia-BuSZiI3F.js",
-      "_Twitch-oR_PFGHI.js",
-      "_DailyMotion-DO9QaZrz.js",
-      "_Mixcloud-CZKyW_hx.js",
-      "_Vidyard-Bpd4F0V2.js",
-      "_Kaltura-BDbpkawf.js",
-      "_FilePlayer-CkMymbnY.js",
-      "_Preview-zG9z3Byi.js"
-    ]
-  },
-  "_index-LFjYGgJu.js": {
-    "file": "assets/index-LFjYGgJu.js",
-    "name": "index",
-    "imports": [
-      "index.html",
-      "_index-CFFrfAwV.js",
-      "_dayjs.min-BYuDNZGJ.js",
-      "_use-service-D_BNczvS.js",
-      "_DateTimePicker-CBtVfPsg.js",
-      "_TextField-WQpbUAds.js"
-    ]
-  },
-  "_index-PeLvE506.js": {
-    "file": "assets/index-PeLvE506.js",
-    "name": "index",
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js",
-      "_Web-BJ9GQG1r.js"
-    ]
-  },
-  "_index-legacy-6M8O2tsW.js": {
-    "file": "assets/index-legacy-6M8O2tsW.js",
-    "name": "index",
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_Web-legacy-G20LTzwp.js"
-    ]
-  },
-  "_index-legacy-C3hI9Q0o.js": {
-    "file": "assets/index-legacy-C3hI9Q0o.js",
-    "name": "index",
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_Web-legacy-G20LTzwp.js"
-    ]
-  },
-  "_index-legacy-C4Gq-aSS.js": {
-    "file": "assets/index-legacy-C4Gq-aSS.js",
-    "name": "index",
-    "imports": [
-      "_dayjs.min-legacy-DVnPMy8l.js",
-      "index-legacy.html"
-    ]
-  },
-  "_index-legacy-CAdDVn6v.js": {
-    "file": "assets/index-legacy-CAdDVn6v.js",
-    "name": "index",
+  "_Android-legacy-BgepuGDy.js": {
+    "file": "assets/Android-legacy-BgepuGDy.js",
+    "name": "Android",
     "isDynamicEntry": true,
     "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_isTouchDevice-legacy-Hx_ZLTbf.js",
-      "_common-legacy-BfMJ8X0r.js",
-      "_CardMedia-legacy-CywE8xFy.js",
-      "_Card-legacy-DAyj9G4N.js",
-      "_Toolbar-legacy-gatoM_w3.js"
+      "index-legacy.html"
     ],
     "dynamicImports": [
       "src/components/Questions/DateTime/DateTimeQuestion-legacy.jsx",
@@ -944,1552 +72,1054 @@
       "src/components/Questions/SCQArray/SCQIconArray-legacy.jsx"
     ]
   },
-  "_index-legacy-CrjT7QZL.js": {
-    "file": "assets/index-legacy-CrjT7QZL.js",
-    "name": "index",
-    "imports": [
-      "index-legacy.html",
-      "_index-legacy-C4Gq-aSS.js",
-      "_dayjs.min-legacy-DVnPMy8l.js",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_DateTimePicker-legacy-FFoNYnkB.js",
-      "_TextField-legacy-Cn7jw8uN.js"
-    ]
-  },
-  "_index-legacy-DBjr7KQp.js": {
-    "file": "assets/index-legacy-DBjr7KQp.js",
-    "name": "index",
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js"
-    ],
-    "dynamicImports": [
-      "_YouTube-legacy-w3nYc8mR.js",
-      "_SoundCloud-legacy-CD3D2t6M.js",
-      "_Vimeo-legacy-DwKhiiTa.js",
-      "_Mux-legacy-B9XfGqW3.js",
-      "_Facebook-legacy-DschYmPU.js",
-      "_Streamable-legacy-D6Ndf0Dr.js",
-      "_Wistia-legacy-DErazspV.js",
-      "_Twitch-legacy-kjmufaNw.js",
-      "_DailyMotion-legacy-Dqjq6cjd.js",
-      "_Mixcloud-legacy-AVfKJ6Qk.js",
-      "_Vidyard-legacy-DHzNcp-I.js",
-      "_Kaltura-legacy-9HqC5vLe.js",
-      "_FilePlayer-legacy-B5bOOL2T.js",
-      "_Preview-legacy-Cq3Ts9_M.js"
-    ]
-  },
-  "_index-legacy-DJT0UWW_.js": {
-    "file": "assets/index-legacy-DJT0UWW_.js",
-    "name": "index",
-    "imports": [
-      "index-legacy.html"
-    ]
-  },
-  "_isTouchDevice-BxjlknWP.js": {
-    "file": "assets/isTouchDevice-BxjlknWP.js",
-    "name": "isTouchDevice",
+  "_Checkbox-D8IqsUB-.js": {
+    "file": "assets/Checkbox-D8IqsUB-.js",
+    "name": "Checkbox",
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js"
+      "_SwitchBase-BcXgCjTk.js",
+      "_Android-D7uSgl3-.js"
     ]
   },
-  "_isTouchDevice-legacy-Hx_ZLTbf.js": {
-    "file": "assets/isTouchDevice-legacy-Hx_ZLTbf.js",
-    "name": "isTouchDevice",
+  "_Checkbox-legacy-BrOUgA_9.js": {
+    "file": "assets/Checkbox-legacy-BrOUgA_9.js",
+    "name": "Checkbox",
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js"
+      "_SwitchBase-legacy-CQyho5C6.js",
+      "_Android-legacy-BgepuGDy.js"
     ]
   },
-  "_radioClasses-B6tZog_h.js": {
-    "file": "assets/radioClasses-B6tZog_h.js",
-    "name": "radioClasses",
-    "imports": [
-      "index.html"
-    ]
-  },
-  "_radioClasses-legacy-DphQBUmK.js": {
-    "file": "assets/radioClasses-legacy-DphQBUmK.js",
-    "name": "radioClasses",
-    "imports": [
-      "index-legacy.html"
-    ]
-  },
-  "_router-link-WGW5BBjn.js": {
-    "file": "assets/router-link-WGW5BBjn.js",
-    "name": "router-link",
+  "_DailyMotion-BymFu9pV.js": {
+    "file": "assets/DailyMotion-BymFu9pV.js",
+    "name": "DailyMotion",
+    "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js"
+      "_index-C1S3-jZo.js"
     ]
   },
-  "_router-link-legacy-HTaaVJv3.js": {
-    "file": "assets/router-link-legacy-HTaaVJv3.js",
-    "name": "router-link",
+  "_DailyMotion-legacy-y4ArMWck.js": {
+    "file": "assets/DailyMotion-legacy-y4ArMWck.js",
+    "name": "DailyMotion",
+    "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js"
+      "_index-legacy-BNnFOp2_.js"
     ]
   },
-  "_survey-B8WvHOv0.js": {
-    "file": "assets/survey-B8WvHOv0.js",
-    "name": "survey"
+  "_Facebook-CDcUtoPj.js": {
+    "file": "assets/Facebook-CDcUtoPj.js",
+    "name": "Facebook",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
   },
-  "_survey-legacy-CmPJYFAs.js": {
-    "file": "assets/survey-legacy-CmPJYFAs.js",
-    "name": "survey"
+  "_Facebook-legacy-DbMbAc82.js": {
+    "file": "assets/Facebook-legacy-DbMbAc82.js",
+    "name": "Facebook",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
   },
-  "_tableRowClasses-B1HVMYOB.js": {
-    "file": "assets/tableRowClasses-B1HVMYOB.js",
-    "name": "tableRowClasses",
+  "_FilePlayer-cuKA6u3Q.js": {
+    "file": "assets/FilePlayer-cuKA6u3Q.js",
+    "name": "FilePlayer",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_FilePlayer-legacy-BS3J6uqQ.js": {
+    "file": "assets/FilePlayer-legacy-BS3J6uqQ.js",
+    "name": "FilePlayer",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_Kaltura-kgt4YjQ7.js": {
+    "file": "assets/Kaltura-kgt4YjQ7.js",
+    "name": "Kaltura",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_Kaltura-legacy-HAKTP--J.js": {
+    "file": "assets/Kaltura-legacy-HAKTP--J.js",
+    "name": "Kaltura",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_Mixcloud-h6Ck_oqu.js": {
+    "file": "assets/Mixcloud-h6Ck_oqu.js",
+    "name": "Mixcloud",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_Mixcloud-legacy-BT7PO_IG.js": {
+    "file": "assets/Mixcloud-legacy-BT7PO_IG.js",
+    "name": "Mixcloud",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_Mux-B-qwA6F9.js": {
+    "file": "assets/Mux-B-qwA6F9.js",
+    "name": "Mux",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_Mux-legacy-BEM_IZ6u.js": {
+    "file": "assets/Mux-legacy-BEM_IZ6u.js",
+    "name": "Mux",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_Preview-Cg14a-dE.js": {
+    "file": "assets/Preview-Cg14a-dE.js",
+    "name": "Preview",
+    "isDynamicEntry": true,
     "imports": [
       "index.html"
     ]
   },
-  "_tableRowClasses-legacy-BNdXjQON.js": {
-    "file": "assets/tableRowClasses-legacy-BNdXjQON.js",
-    "name": "tableRowClasses",
+  "_Preview-legacy-lRVl4GPD.js": {
+    "file": "assets/Preview-legacy-lRVl4GPD.js",
+    "name": "Preview",
+    "isDynamicEntry": true,
     "imports": [
       "index-legacy.html"
     ]
   },
-  "_use-boolean-DmRxK5TP.js": {
-    "file": "assets/use-boolean-DmRxK5TP.js",
-    "name": "use-boolean",
+  "_Radio-B9qqvD_B.js": {
+    "file": "assets/Radio-B9qqvD_B.js",
+    "name": "Radio",
+    "imports": [
+      "index.html",
+      "_SwitchBase-BcXgCjTk.js",
+      "_Android-D7uSgl3-.js",
+      "_RadioGroupContext-DCqrnyW1.js"
+    ]
+  },
+  "_Radio-legacy-Ct3J_WRY.js": {
+    "file": "assets/Radio-legacy-Ct3J_WRY.js",
+    "name": "Radio",
+    "imports": [
+      "index-legacy.html",
+      "_SwitchBase-legacy-CQyho5C6.js",
+      "_Android-legacy-BgepuGDy.js",
+      "_RadioGroupContext-legacy-BXSMHjT2.js"
+    ]
+  },
+  "_RadioGroup-DD-Bev0B.js": {
+    "file": "assets/RadioGroup-DD-Bev0B.js",
+    "name": "RadioGroup",
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js",
+      "_RadioGroupContext-DCqrnyW1.js"
+    ]
+  },
+  "_RadioGroup-legacy-NLxl-fmk.js": {
+    "file": "assets/RadioGroup-legacy-NLxl-fmk.js",
+    "name": "RadioGroup",
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js",
+      "_RadioGroupContext-legacy-BXSMHjT2.js"
+    ]
+  },
+  "_RadioGroupContext-DCqrnyW1.js": {
+    "file": "assets/RadioGroupContext-DCqrnyW1.js",
+    "name": "RadioGroupContext",
     "imports": [
       "index.html"
     ]
   },
-  "_use-boolean-legacy-BzZTfsBB.js": {
-    "file": "assets/use-boolean-legacy-BzZTfsBB.js",
-    "name": "use-boolean",
+  "_RadioGroupContext-legacy-BXSMHjT2.js": {
+    "file": "assets/RadioGroupContext-legacy-BXSMHjT2.js",
+    "name": "RadioGroupContext",
     "imports": [
       "index-legacy.html"
     ]
   },
-  "_use-service-!~{004}~.js": {
-    "file": "assets/use-service-DwBCS-1d.css",
-    "src": "_use-service-!~{004}~.js"
+  "_SoundCloud-legacy-CsM-fuKx.js": {
+    "file": "assets/SoundCloud-legacy-CsM-fuKx.js",
+    "name": "SoundCloud",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
   },
-  "_use-service-D_BNczvS.js": {
-    "file": "assets/use-service-D_BNczvS.js",
-    "name": "use-service",
+  "_SoundCloud-mwsv7qS2.js": {
+    "file": "assets/SoundCloud-mwsv7qS2.js",
+    "name": "SoundCloud",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_Streamable-7PIKcCTR.js": {
+    "file": "assets/Streamable-7PIKcCTR.js",
+    "name": "Streamable",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_Streamable-legacy-Co7kmepJ.js": {
+    "file": "assets/Streamable-legacy-Co7kmepJ.js",
+    "name": "Streamable",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_SwitchBase-BcXgCjTk.js": {
+    "file": "assets/SwitchBase-BcXgCjTk.js",
+    "name": "SwitchBase",
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js"
+    ]
+  },
+  "_SwitchBase-legacy-CQyho5C6.js": {
+    "file": "assets/SwitchBase-legacy-CQyho5C6.js",
+    "name": "SwitchBase",
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js"
+    ]
+  },
+  "_TableRow-Blbm1aaV.js": {
+    "file": "assets/TableRow-Blbm1aaV.js",
+    "name": "TableRow",
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js"
+    ]
+  },
+  "_TableRow-legacy-D_CYBs-M.js": {
+    "file": "assets/TableRow-legacy-D_CYBs-M.js",
+    "name": "TableRow",
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js"
+    ]
+  },
+  "_TextField-DGrOyR2q.js": {
+    "file": "assets/TextField-DGrOyR2q.js",
+    "name": "TextField",
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js"
+    ]
+  },
+  "_TextField-legacy-DdoVKr1d.js": {
+    "file": "assets/TextField-legacy-DdoVKr1d.js",
+    "name": "TextField",
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js"
+    ]
+  },
+  "_Twitch-BFFzeyqL.js": {
+    "file": "assets/Twitch-BFFzeyqL.js",
+    "name": "Twitch",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_Twitch-legacy-BYy9dWtp.js": {
+    "file": "assets/Twitch-legacy-BYy9dWtp.js",
+    "name": "Twitch",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_Vidyard-Bc4WULvj.js": {
+    "file": "assets/Vidyard-Bc4WULvj.js",
+    "name": "Vidyard",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_Vidyard-legacy-DL-wpAhp.js": {
+    "file": "assets/Vidyard-legacy-DL-wpAhp.js",
+    "name": "Vidyard",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_Vimeo-DbPeI0xe.js": {
+    "file": "assets/Vimeo-DbPeI0xe.js",
+    "name": "Vimeo",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_Vimeo-legacy-pYsqAvB_.js": {
+    "file": "assets/Vimeo-legacy-pYsqAvB_.js",
+    "name": "Vimeo",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_Wistia-CERlXfoh.js": {
+    "file": "assets/Wistia-CERlXfoh.js",
+    "name": "Wistia",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_Wistia-legacy-c3cJG6pY.js": {
+    "file": "assets/Wistia-legacy-c3cJG6pY.js",
+    "name": "Wistia",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_YouTube-Dq8MJnjO.js": {
+    "file": "assets/YouTube-Dq8MJnjO.js",
+    "name": "YouTube",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_YouTube-legacy-D3XZN4-V.js": {
+    "file": "assets/YouTube-legacy-D3XZN4-V.js",
+    "name": "YouTube",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_browser-ponyfill-CHWUMY1v.js": {
+    "file": "assets/browser-ponyfill-CHWUMY1v.js",
+    "name": "browser-ponyfill",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
+  },
+  "_browser-ponyfill-legacy--5nrivjQ.js": {
+    "file": "assets/browser-ponyfill-legacy--5nrivjQ.js",
+    "name": "browser-ponyfill",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html"
+    ]
+  },
+  "_index-!~{00N}~.js": {
+    "file": "assets/index-_2rZ8I_A.css",
+    "src": "_index-!~{00N}~.js"
+  },
+  "_index-BIpDyNX3.js": {
+    "file": "assets/index-BIpDyNX3.js",
+    "name": "index",
     "imports": [
       "index.html"
     ],
     "css": [
-      "assets/use-service-DwBCS-1d.css"
+      "assets/index-_2rZ8I_A.css"
     ]
   },
-  "_use-service-legacy-DLuVKbJp.js": {
-    "file": "assets/use-service-legacy-DLuVKbJp.js",
-    "name": "use-service",
-    "imports": [
-      "index-legacy.html"
-    ]
-  },
-  "_useDrop-eT_s750g.js": {
-    "file": "assets/useDrop-eT_s750g.js",
-    "name": "useDrop",
-    "imports": [
-      "_use-service-D_BNczvS.js",
-      "index.html"
-    ]
-  },
-  "_useDrop-legacy-CrrM_ozw.js": {
-    "file": "assets/useDrop-legacy-CrrM_ozw.js",
-    "name": "useDrop",
-    "imports": [
-      "_use-service-legacy-DLuVKbJp.js",
-      "index-legacy.html"
-    ]
-  },
-  "_yup-DOqXNEId.js": {
-    "file": "assets/yup-DOqXNEId.js",
-    "name": "yup",
+  "_index-C1S3-jZo.js": {
+    "file": "assets/index-C1S3-jZo.js",
+    "name": "index",
     "imports": [
       "index.html",
-      "_Web-BJ9GQG1r.js",
-      "_use-service-D_BNczvS.js"
+      "_Android-D7uSgl3-.js"
+    ],
+    "dynamicImports": [
+      "_YouTube-Dq8MJnjO.js",
+      "_SoundCloud-mwsv7qS2.js",
+      "_Vimeo-DbPeI0xe.js",
+      "_Mux-B-qwA6F9.js",
+      "_Facebook-CDcUtoPj.js",
+      "_Streamable-7PIKcCTR.js",
+      "_Wistia-CERlXfoh.js",
+      "_Twitch-BFFzeyqL.js",
+      "_DailyMotion-BymFu9pV.js",
+      "_Mixcloud-h6Ck_oqu.js",
+      "_Vidyard-Bc4WULvj.js",
+      "_Kaltura-kgt4YjQ7.js",
+      "_FilePlayer-cuKA6u3Q.js",
+      "_Preview-Cg14a-dE.js"
     ]
   },
-  "_yup-legacy-k3dYfHQc.js": {
-    "file": "assets/yup-legacy-k3dYfHQc.js",
-    "name": "yup",
+  "_index-legacy-BNnFOp2_.js": {
+    "file": "assets/index-legacy-BNnFOp2_.js",
+    "name": "index",
     "imports": [
       "index-legacy.html",
-      "_Web-legacy-G20LTzwp.js",
-      "_use-service-legacy-DLuVKbJp.js"
+      "_Android-legacy-BgepuGDy.js"
+    ],
+    "dynamicImports": [
+      "_YouTube-legacy-D3XZN4-V.js",
+      "_SoundCloud-legacy-CsM-fuKx.js",
+      "_Vimeo-legacy-pYsqAvB_.js",
+      "_Mux-legacy-BEM_IZ6u.js",
+      "_Facebook-legacy-DbMbAc82.js",
+      "_Streamable-legacy-Co7kmepJ.js",
+      "_Wistia-legacy-c3cJG6pY.js",
+      "_Twitch-legacy-BYy9dWtp.js",
+      "_DailyMotion-legacy-y4ArMWck.js",
+      "_Mixcloud-legacy-BT7PO_IG.js",
+      "_Vidyard-legacy-DL-wpAhp.js",
+      "_Kaltura-legacy-HAKTP--J.js",
+      "_FilePlayer-legacy-BS3J6uqQ.js",
+      "_Preview-legacy-lRVl4GPD.js"
+    ]
+  },
+  "_index-legacy-De2DvXj5.js": {
+    "file": "assets/index-legacy-De2DvXj5.js",
+    "name": "index",
+    "imports": [
+      "index-legacy.html"
     ]
   },
   "index-legacy.html": {
-    "file": "assets/index-legacy-BLatMfxz.js",
+    "file": "assets/index-legacy-D2IAuBBo.js",
     "name": "index",
     "src": "index-legacy.html",
     "isEntry": true,
     "dynamicImports": [
-      "src/Android-legacy.jsx",
-      "_Web-legacy-G20LTzwp.js"
+      "_browser-ponyfill-legacy--5nrivjQ.js",
+      "_Android-legacy-BgepuGDy.js"
     ]
   },
   "index.html": {
-    "file": "assets/index-BXKg_X9w.js",
+    "file": "assets/index-DRrn8_Vw.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
     "dynamicImports": [
-      "src/Android.jsx",
-      "_Web-BJ9GQG1r.js"
+      "_browser-ponyfill-CHWUMY1v.js",
+      "_Android-D7uSgl3-.js"
     ],
     "css": [
-      "assets/index-CoUo3s5p.css"
-    ]
-  },
-  "src/Android-legacy.jsx": {
-    "file": "assets/Android-legacy-L4DuSmZq.js",
-    "name": "Android",
-    "src": "src/Android-legacy.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_index-legacy-CAdDVn6v.js",
-      "_isTouchDevice-legacy-Hx_ZLTbf.js",
-      "_common-legacy-BfMJ8X0r.js",
-      "_CardMedia-legacy-CywE8xFy.js",
-      "_Card-legacy-DAyj9G4N.js",
-      "_Toolbar-legacy-gatoM_w3.js"
-    ]
-  },
-  "src/Android.jsx": {
-    "file": "assets/Android-BHOrdm08.js",
-    "name": "Android",
-    "src": "src/Android.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js",
-      "_index-DAoruMCC.js",
-      "_isTouchDevice-BxjlknWP.js",
-      "_common-Bl2TiDan.js",
-      "_CardMedia-naaIupyv.js",
-      "_Card-BxTiTrtS.js",
-      "_Toolbar-CZ6sMNbC.js"
+      "assets/index-DjiRxT2O.css"
     ]
   },
   "src/components/Questions/Barcode/Barcode-legacy.jsx": {
-    "file": "assets/Barcode-legacy-DhHj1Qtv.js",
+    "file": "assets/Barcode-legacy-CQ6UlEPL.js",
     "name": "Barcode",
     "src": "src/components/Questions/Barcode/Barcode-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_index-legacy-CAdDVn6v.js",
-      "_TextField-legacy-Cn7jw8uN.js",
-      "_isTouchDevice-legacy-Hx_ZLTbf.js",
-      "_common-legacy-BfMJ8X0r.js",
-      "_CardMedia-legacy-CywE8xFy.js",
-      "_Card-legacy-DAyj9G4N.js",
-      "_Toolbar-legacy-gatoM_w3.js"
+      "_Android-legacy-BgepuGDy.js",
+      "_TextField-legacy-DdoVKr1d.js"
     ]
   },
   "src/components/Questions/Barcode/Barcode.jsx": {
-    "file": "assets/Barcode-CL0VWqcj.js",
+    "file": "assets/Barcode-B6pw13dh.js",
     "name": "Barcode",
     "src": "src/components/Questions/Barcode/Barcode.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js",
-      "_index-DAoruMCC.js",
-      "_TextField-WQpbUAds.js",
-      "_isTouchDevice-BxjlknWP.js",
-      "_common-Bl2TiDan.js",
-      "_CardMedia-naaIupyv.js",
-      "_Card-BxTiTrtS.js",
-      "_Toolbar-CZ6sMNbC.js"
+      "_Android-D7uSgl3-.js",
+      "_TextField-DGrOyR2q.js"
     ],
     "css": [
       "assets/PhotoCapture-DmfQJuaI.css"
     ]
   },
   "src/components/Questions/DateTime/DateTimeQuestion-legacy.jsx": {
-    "file": "assets/DateTimeQuestion-legacy-BIQYr8uK.js",
+    "file": "assets/DateTimeQuestion-legacy-CZYwiGgW.js",
     "name": "DateTimeQuestion",
     "src": "src/components/Questions/DateTime/DateTimeQuestion-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_index-legacy-C4Gq-aSS.js",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_dayjs.min-legacy-DVnPMy8l.js",
-      "_DateTimePicker-legacy-FFoNYnkB.js",
-      "_TextField-legacy-Cn7jw8uN.js",
-      "_DatePicker-legacy-BCwln686.js",
-      "_Tabs-legacy-DSWwlWIj.js",
-      "_InputAdornment-legacy-CCb1yK4O.js"
+      "_Android-legacy-BgepuGDy.js",
+      "_TextField-legacy-DdoVKr1d.js"
     ]
   },
   "src/components/Questions/DateTime/DateTimeQuestion.jsx": {
-    "file": "assets/DateTimeQuestion-CVVAycmL.js",
+    "file": "assets/DateTimeQuestion-CY1cbsyw.js",
     "name": "DateTimeQuestion",
     "src": "src/components/Questions/DateTime/DateTimeQuestion.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_index-CFFrfAwV.js",
-      "_use-service-D_BNczvS.js",
-      "_dayjs.min-BYuDNZGJ.js",
-      "_DateTimePicker-CBtVfPsg.js",
-      "_TextField-WQpbUAds.js",
-      "_DatePicker-wBwy_29S.js",
-      "_Tabs-C8JT5hpD.js",
-      "_InputAdornment-CnebZoW9.js"
+      "_Android-D7uSgl3-.js",
+      "_TextField-DGrOyR2q.js"
     ],
     "css": [
       "assets/DateTimeQuestion-BqY86nnn.css"
     ]
   },
   "src/components/Questions/Email/EmailQuestion-legacy.jsx": {
-    "file": "assets/EmailQuestion-legacy-hQYQkLGk.js",
+    "file": "assets/EmailQuestion-legacy-QOFvm4Sf.js",
     "name": "EmailQuestion",
     "src": "src/components/Questions/Email/EmailQuestion-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_TextField-legacy-Cn7jw8uN.js"
+      "_Android-legacy-BgepuGDy.js",
+      "_TextField-legacy-DdoVKr1d.js"
     ]
   },
   "src/components/Questions/Email/EmailQuestion.jsx": {
-    "file": "assets/EmailQuestion-Cf6Jop2k.js",
+    "file": "assets/EmailQuestion-bku23xSW.js",
     "name": "EmailQuestion",
     "src": "src/components/Questions/Email/EmailQuestion.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js",
-      "_TextField-WQpbUAds.js"
+      "_Android-D7uSgl3-.js",
+      "_TextField-DGrOyR2q.js"
     ],
     "css": [
       "assets/EmailQuestion-Cb4dO2Lj.css"
     ]
   },
   "src/components/Questions/FileUpload/FileUpload-legacy.jsx": {
-    "file": "assets/FileUpload-legacy-vrGF8TuQ.js",
+    "file": "assets/FileUpload-legacy-ig27uHXD.js",
     "name": "FileUpload",
     "src": "src/components/Questions/FileUpload/FileUpload-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_index-legacy-CAdDVn6v.js",
-      "_Link-legacy-jklI3zRP.js",
-      "_isTouchDevice-legacy-Hx_ZLTbf.js",
-      "_common-legacy-BfMJ8X0r.js",
-      "_CardMedia-legacy-CywE8xFy.js",
-      "_Card-legacy-DAyj9G4N.js",
-      "_Toolbar-legacy-gatoM_w3.js"
+      "_Android-legacy-BgepuGDy.js"
     ]
   },
   "src/components/Questions/FileUpload/FileUpload.jsx": {
-    "file": "assets/FileUpload-G55TD9jo.js",
+    "file": "assets/FileUpload-CvQR_IsU.js",
     "name": "FileUpload",
     "src": "src/components/Questions/FileUpload/FileUpload.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js",
-      "_index-DAoruMCC.js",
-      "_Link-B6OA4b9x.js",
-      "_isTouchDevice-BxjlknWP.js",
-      "_common-Bl2TiDan.js",
-      "_CardMedia-naaIupyv.js",
-      "_Card-BxTiTrtS.js",
-      "_Toolbar-CZ6sMNbC.js"
+      "_Android-D7uSgl3-.js"
     ]
   },
   "src/components/Questions/IconMcq/IconMcq-legacy.jsx": {
-    "file": "assets/IconMcq-legacy-ysjdrveM.js",
+    "file": "assets/IconMcq-legacy-C__tf-f9.js",
     "name": "IconMcq",
     "src": "src/components/Questions/IconMcq/IconMcq-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_index-legacy-DJT0UWW_.js",
-      "_common-legacy-BfMJ8X0r.js"
+      "_Android-legacy-BgepuGDy.js",
+      "_index-legacy-De2DvXj5.js"
     ]
   },
   "src/components/Questions/IconMcq/IconMcq.jsx": {
-    "file": "assets/IconMcq-BdFQMH1-.js",
+    "file": "assets/IconMcq-C6uNSXsP.js",
     "name": "IconMcq",
     "src": "src/components/Questions/IconMcq/IconMcq.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js",
-      "_index-C1bvT1wp.js",
-      "_common-Bl2TiDan.js"
+      "_Android-D7uSgl3-.js",
+      "_index-BIpDyNX3.js"
     ],
     "css": [
       "assets/IconScq-CHI3y498.css"
     ]
   },
   "src/components/Questions/IconScq/IconScq-legacy.jsx": {
-    "file": "assets/IconScq-legacy-DJOZ4GVy.js",
+    "file": "assets/IconScq-legacy-UoBTuZJd.js",
     "name": "IconScq",
     "src": "src/components/Questions/IconScq/IconScq-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_index-legacy-DJT0UWW_.js",
-      "_common-legacy-BfMJ8X0r.js"
+      "_Android-legacy-BgepuGDy.js",
+      "_index-legacy-De2DvXj5.js"
     ]
   },
   "src/components/Questions/IconScq/IconScq.jsx": {
-    "file": "assets/IconScq-DLqz5M5B.js",
+    "file": "assets/IconScq-BsIcPNvE.js",
     "name": "IconScq",
     "src": "src/components/Questions/IconScq/IconScq.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js",
-      "_index-C1bvT1wp.js",
-      "_common-Bl2TiDan.js"
+      "_Android-D7uSgl3-.js",
+      "_index-BIpDyNX3.js"
     ],
     "css": [
       "assets/IconScq-CHI3y498.css"
     ]
   },
   "src/components/Questions/ImageDisplay/ImageDisplay-legacy.jsx": {
-    "file": "assets/ImageDisplay-legacy-BHgYmbrH.js",
+    "file": "assets/ImageDisplay-legacy-DcCS3KWg.js",
     "name": "ImageDisplay",
     "src": "src/components/Questions/ImageDisplay/ImageDisplay-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_common-legacy-BfMJ8X0r.js",
-      "_use-service-legacy-DLuVKbJp.js"
+      "_Android-legacy-BgepuGDy.js"
     ]
   },
   "src/components/Questions/ImageDisplay/ImageDisplay.jsx": {
-    "file": "assets/ImageDisplay-gB5ySs2w.js",
+    "file": "assets/ImageDisplay-CHsT_jX9.js",
     "name": "ImageDisplay",
     "src": "src/components/Questions/ImageDisplay/ImageDisplay.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_common-Bl2TiDan.js",
-      "_use-service-D_BNczvS.js"
+      "_Android-D7uSgl3-.js"
     ]
   },
   "src/components/Questions/ImageMcq/ImageMcq-legacy.jsx": {
-    "file": "assets/ImageMcq-legacy-D94Klv-S.js",
+    "file": "assets/ImageMcq-legacy-DBztTz4w.js",
     "name": "ImageMcq",
     "src": "src/components/Questions/ImageMcq/ImageMcq-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_common-legacy-BfMJ8X0r.js",
-      "_Checkbox-legacy-B_Sa2GUd.js",
-      "_SwitchBase-legacy-C9xQX8jx.js"
+      "_Android-legacy-BgepuGDy.js",
+      "_Checkbox-legacy-BrOUgA_9.js",
+      "_SwitchBase-legacy-CQyho5C6.js"
     ]
   },
   "src/components/Questions/ImageMcq/ImageMcq.jsx": {
-    "file": "assets/ImageMcq-Ba-DAqGr.js",
+    "file": "assets/ImageMcq-BTVHNVQZ.js",
     "name": "ImageMcq",
     "src": "src/components/Questions/ImageMcq/ImageMcq.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js",
-      "_common-Bl2TiDan.js",
-      "_Checkbox-DSC03rz9.js",
-      "_SwitchBase-BqqZbFu5.js"
+      "_Android-D7uSgl3-.js",
+      "_Checkbox-D8IqsUB-.js",
+      "_SwitchBase-BcXgCjTk.js"
     ],
     "css": [
       "assets/ImageMcq-CDEIJiE3.css"
     ]
   },
   "src/components/Questions/ImageRanking/ImageRanking-legacy.jsx": {
-    "file": "assets/ImageRanking-legacy-HvMr3I9y.js",
+    "file": "assets/ImageRanking-legacy-BSJ2jAii.js",
     "name": "ImageRanking",
     "src": "src/components/Questions/ImageRanking/ImageRanking-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_common-legacy-BfMJ8X0r.js"
+      "_Android-legacy-BgepuGDy.js"
     ]
   },
   "src/components/Questions/ImageRanking/ImageRanking.jsx": {
-    "file": "assets/ImageRanking-CAt5uCZ9.js",
+    "file": "assets/ImageRanking-B3McPhJ3.js",
     "name": "ImageRanking",
     "src": "src/components/Questions/ImageRanking/ImageRanking.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js",
-      "_common-Bl2TiDan.js"
+      "_Android-D7uSgl3-.js"
     ],
     "css": [
       "assets/ImageRanking-BSItg7yO.css"
     ]
   },
   "src/components/Questions/ImageScq/ImageScq-legacy.jsx": {
-    "file": "assets/ImageScq-legacy-Bp7kU4jQ.js",
+    "file": "assets/ImageScq-legacy-88tL20Ki.js",
     "name": "ImageScq",
     "src": "src/components/Questions/ImageScq/ImageScq-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_common-legacy-BfMJ8X0r.js",
-      "_Radio-legacy-u7FYCqgd.js",
-      "_SwitchBase-legacy-C9xQX8jx.js",
-      "_RadioGroupContext-legacy-Bbu9KNNs.js",
-      "_radioClasses-legacy-DphQBUmK.js"
+      "_Android-legacy-BgepuGDy.js",
+      "_Radio-legacy-Ct3J_WRY.js",
+      "_SwitchBase-legacy-CQyho5C6.js",
+      "_RadioGroupContext-legacy-BXSMHjT2.js"
     ]
   },
   "src/components/Questions/ImageScq/ImageScq.jsx": {
-    "file": "assets/ImageScq-CaMrl2nA.js",
+    "file": "assets/ImageScq-C29lAeng.js",
     "name": "ImageScq",
     "src": "src/components/Questions/ImageScq/ImageScq.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js",
-      "_common-Bl2TiDan.js",
-      "_Radio-C05RY_Qz.js",
-      "_SwitchBase-BqqZbFu5.js",
-      "_RadioGroupContext-C8tgogbD.js",
-      "_radioClasses-B6tZog_h.js"
+      "_Android-D7uSgl3-.js",
+      "_Radio-B9qqvD_B.js",
+      "_SwitchBase-BcXgCjTk.js",
+      "_RadioGroupContext-DCqrnyW1.js"
     ],
     "css": [
       "assets/ImageScq-CmRuXt2L.css"
     ]
   },
   "src/components/Questions/Mcq/Mcq-legacy.jsx": {
-    "file": "assets/Mcq-legacy-CpDimLrm.js",
+    "file": "assets/Mcq-legacy-BoMhM6iM.js",
     "name": "Mcq",
     "src": "src/components/Questions/Mcq/Mcq-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_index-legacy-CAdDVn6v.js",
-      "_FormControlLabel-legacy-CA95rTY_.js",
-      "_Checkbox-legacy-B_Sa2GUd.js",
-      "_RadioGroup-legacy-U3rnWh7n.js",
-      "_TextField-legacy-Cn7jw8uN.js",
-      "_isTouchDevice-legacy-Hx_ZLTbf.js",
-      "_common-legacy-BfMJ8X0r.js",
-      "_CardMedia-legacy-CywE8xFy.js",
-      "_Card-legacy-DAyj9G4N.js",
-      "_Toolbar-legacy-gatoM_w3.js",
-      "_SwitchBase-legacy-C9xQX8jx.js",
-      "_RadioGroupContext-legacy-Bbu9KNNs.js",
-      "_FormGroup-legacy-DOXCNPX6.js"
+      "_Android-legacy-BgepuGDy.js",
+      "_RadioGroup-legacy-NLxl-fmk.js",
+      "_Checkbox-legacy-BrOUgA_9.js",
+      "_TextField-legacy-DdoVKr1d.js",
+      "_RadioGroupContext-legacy-BXSMHjT2.js",
+      "_SwitchBase-legacy-CQyho5C6.js"
     ]
   },
   "src/components/Questions/Mcq/Mcq.jsx": {
-    "file": "assets/Mcq-D4G_JRHu.js",
+    "file": "assets/Mcq-BXDTa8sy.js",
     "name": "Mcq",
     "src": "src/components/Questions/Mcq/Mcq.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js",
-      "_index-DAoruMCC.js",
-      "_FormControlLabel-i6VTBdFM.js",
-      "_Checkbox-DSC03rz9.js",
-      "_RadioGroup-BT-amEYM.js",
-      "_TextField-WQpbUAds.js",
-      "_isTouchDevice-BxjlknWP.js",
-      "_common-Bl2TiDan.js",
-      "_CardMedia-naaIupyv.js",
-      "_Card-BxTiTrtS.js",
-      "_Toolbar-CZ6sMNbC.js",
-      "_SwitchBase-BqqZbFu5.js",
-      "_RadioGroupContext-C8tgogbD.js",
-      "_FormGroup-oSWhZBRb.js"
+      "_Android-D7uSgl3-.js",
+      "_RadioGroup-DD-Bev0B.js",
+      "_Checkbox-D8IqsUB-.js",
+      "_TextField-DGrOyR2q.js",
+      "_RadioGroupContext-DCqrnyW1.js",
+      "_SwitchBase-BcXgCjTk.js"
     ]
   },
   "src/components/Questions/NPS/NPS-legacy.jsx": {
-    "file": "assets/NPS-legacy-DON226oY.js",
+    "file": "assets/NPS-legacy-CXdIS7op.js",
     "name": "NPS",
     "src": "src/components/Questions/NPS/NPS-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js"
+      "_Android-legacy-BgepuGDy.js"
     ]
   },
   "src/components/Questions/NPS/NPS.jsx": {
-    "file": "assets/NPS-zIVbBt6_.js",
+    "file": "assets/NPS-DXTNwm9O.js",
     "name": "NPS",
     "src": "src/components/Questions/NPS/NPS.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js"
+      "_Android-D7uSgl3-.js"
     ],
     "css": [
       "assets/NPS-CsEr_Nug.css"
     ]
   },
   "src/components/Questions/Number/NumberQuestion-legacy.jsx": {
-    "file": "assets/NumberQuestion-legacy-CmhbRKnJ.js",
+    "file": "assets/NumberQuestion-legacy-DTlBDrE_.js",
     "name": "NumberQuestion",
     "src": "src/components/Questions/Number/NumberQuestion-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_TextField-legacy-Cn7jw8uN.js"
+      "_Android-legacy-BgepuGDy.js",
+      "_TextField-legacy-DdoVKr1d.js"
     ]
   },
   "src/components/Questions/Number/NumberQuestion.jsx": {
-    "file": "assets/NumberQuestion-QOWWa2S_.js",
+    "file": "assets/NumberQuestion-Xgq49duz.js",
     "name": "NumberQuestion",
     "src": "src/components/Questions/Number/NumberQuestion.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js",
-      "_TextField-WQpbUAds.js"
+      "_Android-D7uSgl3-.js",
+      "_TextField-DGrOyR2q.js"
     ],
     "css": [
       "assets/NumberQuestion-IdwP-AJw.css"
     ]
   },
   "src/components/Questions/Paragraph/ParagraphQuestion-legacy.jsx": {
-    "file": "assets/ParagraphQuestion-legacy-txshtv8r.js",
+    "file": "assets/ParagraphQuestion-legacy-4Sh5plTj.js",
     "name": "ParagraphQuestion",
     "src": "src/components/Questions/Paragraph/ParagraphQuestion-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_TextField-legacy-Cn7jw8uN.js"
+      "_Android-legacy-BgepuGDy.js",
+      "_TextField-legacy-DdoVKr1d.js"
     ]
   },
   "src/components/Questions/Paragraph/ParagraphQuestion.jsx": {
-    "file": "assets/ParagraphQuestion-blDnrHXo.js",
+    "file": "assets/ParagraphQuestion-DChbL7h5.js",
     "name": "ParagraphQuestion",
     "src": "src/components/Questions/Paragraph/ParagraphQuestion.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js",
-      "_TextField-WQpbUAds.js"
+      "_Android-D7uSgl3-.js",
+      "_TextField-DGrOyR2q.js"
     ],
     "css": [
       "assets/ParagraphQuestion--njUnKrI.css"
     ]
   },
   "src/components/Questions/PhotoCapture/PhotoCapture-legacy.jsx": {
-    "file": "assets/PhotoCapture-legacy-CGEdhiPt.js",
+    "file": "assets/PhotoCapture-legacy-DCQP5ZJq.js",
     "name": "PhotoCapture",
     "src": "src/components/Questions/PhotoCapture/PhotoCapture-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_common-legacy-BfMJ8X0r.js",
-      "_index-legacy-CAdDVn6v.js",
-      "_isTouchDevice-legacy-Hx_ZLTbf.js",
-      "_CardMedia-legacy-CywE8xFy.js",
-      "_Card-legacy-DAyj9G4N.js",
-      "_Toolbar-legacy-gatoM_w3.js"
+      "_Android-legacy-BgepuGDy.js"
     ]
   },
   "src/components/Questions/PhotoCapture/PhotoCapture.jsx": {
-    "file": "assets/PhotoCapture-BL9tb7S6.js",
+    "file": "assets/PhotoCapture-BZb8HmRv.js",
     "name": "PhotoCapture",
     "src": "src/components/Questions/PhotoCapture/PhotoCapture.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js",
-      "_common-Bl2TiDan.js",
-      "_index-DAoruMCC.js",
-      "_isTouchDevice-BxjlknWP.js",
-      "_CardMedia-naaIupyv.js",
-      "_Card-BxTiTrtS.js",
-      "_Toolbar-CZ6sMNbC.js"
+      "_Android-D7uSgl3-.js"
     ],
     "css": [
       "assets/PhotoCapture-DmfQJuaI.css"
     ]
   },
   "src/components/Questions/Ranking/Ranking-legacy.jsx": {
-    "file": "assets/Ranking-legacy-D0fZiOkY.js",
+    "file": "assets/Ranking-legacy-YczRcMOY.js",
     "name": "Ranking",
     "src": "src/components/Questions/Ranking/Ranking-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_index-legacy-CAdDVn6v.js",
-      "_useDrop-legacy-CrrM_ozw.js",
-      "_isTouchDevice-legacy-Hx_ZLTbf.js",
-      "_common-legacy-BfMJ8X0r.js",
-      "_CardMedia-legacy-CywE8xFy.js",
-      "_Card-legacy-DAyj9G4N.js",
-      "_Toolbar-legacy-gatoM_w3.js"
+      "_Android-legacy-BgepuGDy.js"
     ]
   },
   "src/components/Questions/Ranking/Ranking.jsx": {
-    "file": "assets/Ranking-BeNLNUs6.js",
+    "file": "assets/Ranking-C_gvwTSC.js",
     "name": "Ranking",
     "src": "src/components/Questions/Ranking/Ranking.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js",
-      "_index-DAoruMCC.js",
-      "_useDrop-eT_s750g.js",
-      "_isTouchDevice-BxjlknWP.js",
-      "_common-Bl2TiDan.js",
-      "_CardMedia-naaIupyv.js",
-      "_Card-BxTiTrtS.js",
-      "_Toolbar-CZ6sMNbC.js"
+      "_Android-D7uSgl3-.js"
     ],
     "css": [
       "assets/Ranking-B15QX9I5.css"
     ]
   },
   "src/components/Questions/SCQArray/SCQArray-legacy.jsx": {
-    "file": "assets/SCQArray-legacy-B-RkEJwv.js",
+    "file": "assets/SCQArray-legacy-BzTp_pCy.js",
     "name": "SCQArray",
     "src": "src/components/Questions/SCQArray/SCQArray-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_index-legacy-CAdDVn6v.js",
-      "_TableRow-legacy-CbWVNbnA.js",
-      "_TableCell-legacy-BTEC8sBz.js",
-      "_Radio-legacy-u7FYCqgd.js",
-      "_isTouchDevice-legacy-Hx_ZLTbf.js",
-      "_common-legacy-BfMJ8X0r.js",
-      "_CardMedia-legacy-CywE8xFy.js",
-      "_Card-legacy-DAyj9G4N.js",
-      "_Toolbar-legacy-gatoM_w3.js",
-      "_tableRowClasses-legacy-BNdXjQON.js",
-      "_SwitchBase-legacy-C9xQX8jx.js",
-      "_RadioGroupContext-legacy-Bbu9KNNs.js",
-      "_radioClasses-legacy-DphQBUmK.js"
+      "_Android-legacy-BgepuGDy.js",
+      "_TableRow-legacy-D_CYBs-M.js",
+      "_Radio-legacy-Ct3J_WRY.js",
+      "_SwitchBase-legacy-CQyho5C6.js",
+      "_RadioGroupContext-legacy-BXSMHjT2.js"
     ]
   },
   "src/components/Questions/SCQArray/SCQArray.jsx": {
-    "file": "assets/SCQArray-CLeS7INj.js",
+    "file": "assets/SCQArray-BRoK9l06.js",
     "name": "SCQArray",
     "src": "src/components/Questions/SCQArray/SCQArray.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js",
-      "_index-DAoruMCC.js",
-      "_TableRow-D6Acb3fE.js",
-      "_TableCell-Di9qFQzs.js",
-      "_Radio-C05RY_Qz.js",
-      "_isTouchDevice-BxjlknWP.js",
-      "_common-Bl2TiDan.js",
-      "_CardMedia-naaIupyv.js",
-      "_Card-BxTiTrtS.js",
-      "_Toolbar-CZ6sMNbC.js",
-      "_tableRowClasses-B1HVMYOB.js",
-      "_SwitchBase-BqqZbFu5.js",
-      "_RadioGroupContext-C8tgogbD.js",
-      "_radioClasses-B6tZog_h.js"
+      "_Android-D7uSgl3-.js",
+      "_TableRow-Blbm1aaV.js",
+      "_Radio-B9qqvD_B.js",
+      "_SwitchBase-BcXgCjTk.js",
+      "_RadioGroupContext-DCqrnyW1.js"
     ]
   },
   "src/components/Questions/SCQArray/SCQIconArray-legacy.jsx": {
-    "file": "assets/SCQIconArray-legacy-Eymmu0eF.js",
+    "file": "assets/SCQIconArray-legacy-DAyFH0VS.js",
     "name": "SCQIconArray",
     "src": "src/components/Questions/SCQArray/SCQIconArray-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_index-legacy-CAdDVn6v.js",
-      "_index-legacy-DJT0UWW_.js",
-      "_common-legacy-BfMJ8X0r.js",
-      "_TableRow-legacy-CbWVNbnA.js",
-      "_TableCell-legacy-BTEC8sBz.js",
-      "_isTouchDevice-legacy-Hx_ZLTbf.js",
-      "_CardMedia-legacy-CywE8xFy.js",
-      "_Card-legacy-DAyj9G4N.js",
-      "_Toolbar-legacy-gatoM_w3.js",
-      "_tableRowClasses-legacy-BNdXjQON.js"
+      "_Android-legacy-BgepuGDy.js",
+      "_index-legacy-De2DvXj5.js",
+      "_TableRow-legacy-D_CYBs-M.js"
     ]
   },
   "src/components/Questions/SCQArray/SCQIconArray.jsx": {
-    "file": "assets/SCQIconArray-D9OsmP2Z.js",
+    "file": "assets/SCQIconArray-B8M30hB3.js",
     "name": "SCQIconArray",
     "src": "src/components/Questions/SCQArray/SCQIconArray.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js",
-      "_index-DAoruMCC.js",
-      "_index-C1bvT1wp.js",
-      "_common-Bl2TiDan.js",
-      "_TableRow-D6Acb3fE.js",
-      "_TableCell-Di9qFQzs.js",
-      "_isTouchDevice-BxjlknWP.js",
-      "_CardMedia-naaIupyv.js",
-      "_Card-BxTiTrtS.js",
-      "_Toolbar-CZ6sMNbC.js",
-      "_tableRowClasses-B1HVMYOB.js"
+      "_Android-D7uSgl3-.js",
+      "_index-BIpDyNX3.js",
+      "_TableRow-Blbm1aaV.js"
     ]
   },
   "src/components/Questions/Scq/Scq-legacy.jsx": {
-    "file": "assets/Scq-legacy-Bf1fyyUZ.js",
+    "file": "assets/Scq-legacy-6DTQDQA_.js",
     "name": "Scq",
     "src": "src/components/Questions/Scq/Scq-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_index-legacy-CAdDVn6v.js",
-      "_RadioGroup-legacy-U3rnWh7n.js",
-      "_FormControlLabel-legacy-CA95rTY_.js",
-      "_Radio-legacy-u7FYCqgd.js",
-      "_TextField-legacy-Cn7jw8uN.js",
-      "_isTouchDevice-legacy-Hx_ZLTbf.js",
-      "_common-legacy-BfMJ8X0r.js",
-      "_CardMedia-legacy-CywE8xFy.js",
-      "_Card-legacy-DAyj9G4N.js",
-      "_Toolbar-legacy-gatoM_w3.js",
-      "_RadioGroupContext-legacy-Bbu9KNNs.js",
-      "_FormGroup-legacy-DOXCNPX6.js",
-      "_SwitchBase-legacy-C9xQX8jx.js",
-      "_radioClasses-legacy-DphQBUmK.js"
+      "_Android-legacy-BgepuGDy.js",
+      "_RadioGroup-legacy-NLxl-fmk.js",
+      "_Radio-legacy-Ct3J_WRY.js",
+      "_TextField-legacy-DdoVKr1d.js",
+      "_RadioGroupContext-legacy-BXSMHjT2.js",
+      "_SwitchBase-legacy-CQyho5C6.js"
     ]
   },
   "src/components/Questions/Scq/Scq.jsx": {
-    "file": "assets/Scq-Bu-B25-0.js",
+    "file": "assets/Scq-CRa3Jq8I.js",
     "name": "Scq",
     "src": "src/components/Questions/Scq/Scq.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js",
-      "_index-DAoruMCC.js",
-      "_RadioGroup-BT-amEYM.js",
-      "_FormControlLabel-i6VTBdFM.js",
-      "_Radio-C05RY_Qz.js",
-      "_TextField-WQpbUAds.js",
-      "_isTouchDevice-BxjlknWP.js",
-      "_common-Bl2TiDan.js",
-      "_CardMedia-naaIupyv.js",
-      "_Card-BxTiTrtS.js",
-      "_Toolbar-CZ6sMNbC.js",
-      "_RadioGroupContext-C8tgogbD.js",
-      "_FormGroup-oSWhZBRb.js",
-      "_SwitchBase-BqqZbFu5.js",
-      "_radioClasses-B6tZog_h.js"
+      "_Android-D7uSgl3-.js",
+      "_RadioGroup-DD-Bev0B.js",
+      "_Radio-B9qqvD_B.js",
+      "_TextField-DGrOyR2q.js",
+      "_RadioGroupContext-DCqrnyW1.js",
+      "_SwitchBase-BcXgCjTk.js"
     ]
   },
   "src/components/Questions/Signature/Signature-legacy.jsx": {
-    "file": "assets/Signature-legacy-DHnadtCI.js",
+    "file": "assets/Signature-legacy-CxjS3JW4.js",
     "name": "Signature",
     "src": "src/components/Questions/Signature/Signature-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_index-legacy-CAdDVn6v.js",
-      "_isTouchDevice-legacy-Hx_ZLTbf.js",
-      "_common-legacy-BfMJ8X0r.js",
-      "_CardMedia-legacy-CywE8xFy.js",
-      "_Card-legacy-DAyj9G4N.js",
-      "_Toolbar-legacy-gatoM_w3.js"
+      "_Android-legacy-BgepuGDy.js"
     ]
   },
   "src/components/Questions/Signature/Signature.jsx": {
-    "file": "assets/Signature-CZfmA8SF.js",
+    "file": "assets/Signature-DI_PXcog.js",
     "name": "Signature",
     "src": "src/components/Questions/Signature/Signature.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js",
-      "_index-DAoruMCC.js",
-      "_isTouchDevice-BxjlknWP.js",
-      "_common-Bl2TiDan.js",
-      "_CardMedia-naaIupyv.js",
-      "_Card-BxTiTrtS.js",
-      "_Toolbar-CZ6sMNbC.js"
+      "_Android-D7uSgl3-.js"
     ],
     "css": [
       "assets/Signature-CD_BYQEv.css"
     ]
   },
   "src/components/Questions/Text/TextQuestion-legacy.jsx": {
-    "file": "assets/TextQuestion-legacy-CO8YNVnf.js",
+    "file": "assets/TextQuestion-legacy-DiwQ7gxT.js",
     "name": "TextQuestion",
     "src": "src/components/Questions/Text/TextQuestion-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_TextField-legacy-Cn7jw8uN.js"
+      "_Android-legacy-BgepuGDy.js",
+      "_TextField-legacy-DdoVKr1d.js"
     ]
   },
   "src/components/Questions/Text/TextQuestion.jsx": {
-    "file": "assets/TextQuestion-jyNymDLv.js",
+    "file": "assets/TextQuestion-FoTMgvws.js",
     "name": "TextQuestion",
     "src": "src/components/Questions/Text/TextQuestion.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js",
-      "_TextField-WQpbUAds.js"
+      "_Android-D7uSgl3-.js",
+      "_TextField-DGrOyR2q.js"
     ],
     "css": [
       "assets/TextQuestion-BveFhdl-.css"
     ]
   },
   "src/components/Questions/VideoCapture/VideoCapture-legacy.jsx": {
-    "file": "assets/VideoCapture-legacy-CfUqkyYa.js",
+    "file": "assets/VideoCapture-legacy-BTcc33l5.js",
     "name": "VideoCapture",
     "src": "src/components/Questions/VideoCapture/VideoCapture-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_index-legacy-DBjr7KQp.js",
-      "_common-legacy-BfMJ8X0r.js",
-      "_index-legacy-CAdDVn6v.js",
-      "_isTouchDevice-legacy-Hx_ZLTbf.js",
-      "_CardMedia-legacy-CywE8xFy.js",
-      "_Card-legacy-DAyj9G4N.js",
-      "_Toolbar-legacy-gatoM_w3.js"
+      "_Android-legacy-BgepuGDy.js",
+      "_index-legacy-BNnFOp2_.js"
     ]
   },
   "src/components/Questions/VideoCapture/VideoCapture.jsx": {
-    "file": "assets/VideoCapture-DpOnPjPB.js",
+    "file": "assets/VideoCapture-Drkz7mTV.js",
     "name": "VideoCapture",
     "src": "src/components/Questions/VideoCapture/VideoCapture.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_use-service-D_BNczvS.js",
-      "_index-DsxU1XV0.js",
-      "_common-Bl2TiDan.js",
-      "_index-DAoruMCC.js",
-      "_isTouchDevice-BxjlknWP.js",
-      "_CardMedia-naaIupyv.js",
-      "_Card-BxTiTrtS.js",
-      "_Toolbar-CZ6sMNbC.js"
+      "_Android-D7uSgl3-.js",
+      "_index-C1S3-jZo.js"
     ],
     "css": [
       "assets/PhotoCapture-DmfQJuaI.css"
     ]
   },
   "src/components/Questions/VideoDisplay/VideoDisplay-legacy.jsx": {
-    "file": "assets/VideoDisplay-legacy-BHwGZz-Z.js",
+    "file": "assets/VideoDisplay-legacy-C413AO5K.js",
     "name": "VideoDisplay",
     "src": "src/components/Questions/VideoDisplay/VideoDisplay-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index-legacy.html",
-      "_common-legacy-BfMJ8X0r.js",
-      "_index-legacy-DBjr7KQp.js",
-      "_use-service-legacy-DLuVKbJp.js"
+      "_Android-legacy-BgepuGDy.js",
+      "_index-legacy-BNnFOp2_.js"
     ]
   },
   "src/components/Questions/VideoDisplay/VideoDisplay.jsx": {
-    "file": "assets/VideoDisplay-BGeEgg1g.js",
+    "file": "assets/VideoDisplay-CT4Dj8pW.js",
     "name": "VideoDisplay",
     "src": "src/components/Questions/VideoDisplay/VideoDisplay.jsx",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_common-Bl2TiDan.js",
-      "_index-DsxU1XV0.js",
-      "_use-service-D_BNczvS.js"
-    ]
-  },
-  "src/pages/DesignSurvey/index-legacy.jsx": {
-    "file": "assets/index-legacy-KvUCuUZJ.js",
-    "name": "index",
-    "src": "src/pages/DesignSurvey/index-legacy.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_Web-legacy-G20LTzwp.js",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_isTouchDevice-legacy-Hx_ZLTbf.js",
-      "_Image-legacy-KU2bRKGW.js",
-      "_TextField-legacy-Cn7jw8uN.js",
-      "_TableRow-legacy-CbWVNbnA.js",
-      "_TableCell-legacy-BTEC8sBz.js",
-      "_Radio-legacy-u7FYCqgd.js",
-      "_useDrop-legacy-CrrM_ozw.js",
-      "_index-legacy-DBjr7KQp.js",
-      "_common-legacy-BfMJ8X0r.js",
-      "_DateTimePicker-legacy-FFoNYnkB.js",
-      "_Tabs-legacy-DSWwlWIj.js",
-      "_index-legacy-DJT0UWW_.js",
-      "_index-legacy-6M8O2tsW.js",
-      "_FormControlLabel-legacy-CA95rTY_.js",
-      "_Checkbox-legacy-B_Sa2GUd.js",
-      "_DatePicker-legacy-BCwln686.js",
-      "_Delete-legacy-DE9IJzsH.js",
-      "_Card-legacy-DAyj9G4N.js",
-      "_survey-legacy-CmPJYFAs.js",
-      "_use-boolean-legacy-BzZTfsBB.js",
-      "_radioClasses-legacy-DphQBUmK.js",
-      "_tableRowClasses-legacy-BNdXjQON.js",
-      "_SwitchBase-legacy-C9xQX8jx.js",
-      "_RadioGroupContext-legacy-Bbu9KNNs.js",
-      "_InputAdornment-legacy-CCb1yK4O.js"
-    ]
-  },
-  "src/pages/DesignSurvey/index.jsx": {
-    "file": "assets/index-CQPYgnOI.js",
-    "name": "index",
-    "src": "src/pages/DesignSurvey/index.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_Web-BJ9GQG1r.js",
-      "_use-service-D_BNczvS.js",
-      "_isTouchDevice-BxjlknWP.js",
-      "_Image-CE4vE1Da.js",
-      "_TextField-WQpbUAds.js",
-      "_TableRow-D6Acb3fE.js",
-      "_TableCell-Di9qFQzs.js",
-      "_Radio-C05RY_Qz.js",
-      "_useDrop-eT_s750g.js",
-      "_index-DsxU1XV0.js",
-      "_common-Bl2TiDan.js",
-      "_DateTimePicker-CBtVfPsg.js",
-      "_Tabs-C8JT5hpD.js",
-      "_index-C1bvT1wp.js",
-      "_index-PeLvE506.js",
-      "_FormControlLabel-i6VTBdFM.js",
-      "_Checkbox-DSC03rz9.js",
-      "_DatePicker-wBwy_29S.js",
-      "_Delete-CGrSv7M_.js",
-      "_Card-BxTiTrtS.js",
-      "_survey-B8WvHOv0.js",
-      "_use-boolean-DmRxK5TP.js",
-      "_radioClasses-B6tZog_h.js",
-      "_tableRowClasses-B1HVMYOB.js",
-      "_SwitchBase-BqqZbFu5.js",
-      "_RadioGroupContext-C8tgogbD.js",
-      "_InputAdornment-CnebZoW9.js"
-    ],
-    "css": [
-      "assets/index-DCF2BXKY.css"
-    ]
-  },
-  "src/pages/Page404/index-legacy.jsx": {
-    "file": "assets/index-legacy-DVoweHQK.js",
-    "name": "index",
-    "src": "src/pages/Page404/index-legacy.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html"
-    ]
-  },
-  "src/pages/Page404/index.jsx": {
-    "file": "assets/index-D0_MXkK0.js",
-    "name": "index",
-    "src": "src/pages/Page404/index.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html"
-    ],
-    "css": [
-      "assets/index-DNabgenT.css"
-    ]
-  },
-  "src/pages/manage/CreateSurvey/index-legacy.jsx": {
-    "file": "assets/index-legacy-BwCXNXFq.js",
-    "name": "index",
-    "src": "src/pages/manage/CreateSurvey/index-legacy.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_DateUtils-legacy-Dg58phWT.js",
-      "_survey-legacy-CmPJYFAs.js",
-      "_TextField-legacy-Cn7jw8uN.js",
-      "_Web-legacy-G20LTzwp.js",
-      "_index-legacy-CrjT7QZL.js",
-      "_Card-legacy-DAyj9G4N.js",
-      "_FormGroup-legacy-DOXCNPX6.js",
-      "_Checkbox-legacy-B_Sa2GUd.js",
-      "_SwitchBase-legacy-C9xQX8jx.js",
-      "_Tabs-legacy-DSWwlWIj.js",
-      "_radioClasses-legacy-DphQBUmK.js",
-      "_tableRowClasses-legacy-BNdXjQON.js",
-      "_FormControlLabel-legacy-CA95rTY_.js",
-      "_index-legacy-C4Gq-aSS.js",
-      "_dayjs.min-legacy-DVnPMy8l.js",
-      "_DateTimePicker-legacy-FFoNYnkB.js",
-      "_InputAdornment-legacy-CCb1yK4O.js"
-    ]
-  },
-  "src/pages/manage/CreateSurvey/index.jsx": {
-    "file": "assets/index-BTbhsMIE.js",
-    "name": "index",
-    "src": "src/pages/manage/CreateSurvey/index.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js",
-      "_DateUtils-D9XCaXee.js",
-      "_survey-B8WvHOv0.js",
-      "_TextField-WQpbUAds.js",
-      "_Web-BJ9GQG1r.js",
-      "_index-LFjYGgJu.js",
-      "_Card-BxTiTrtS.js",
-      "_FormGroup-oSWhZBRb.js",
-      "_Checkbox-DSC03rz9.js",
-      "_SwitchBase-BqqZbFu5.js",
-      "_Tabs-C8JT5hpD.js",
-      "_radioClasses-B6tZog_h.js",
-      "_tableRowClasses-B1HVMYOB.js",
-      "_FormControlLabel-i6VTBdFM.js",
-      "_index-CFFrfAwV.js",
-      "_dayjs.min-BYuDNZGJ.js",
-      "_DateTimePicker-CBtVfPsg.js",
-      "_InputAdornment-CnebZoW9.js"
-    ],
-    "css": [
-      "assets/index-dYrCusrS.css"
-    ]
-  },
-  "src/pages/manage/Dashboard/index-legacy.jsx": {
-    "file": "assets/index-legacy-BWCUfdbj.js",
-    "name": "index",
-    "src": "src/pages/manage/Dashboard/index-legacy.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_Image-legacy-KU2bRKGW.js",
-      "_DateUtils-legacy-Dg58phWT.js",
-      "_Web-legacy-G20LTzwp.js",
-      "_dayjs.min-legacy-DVnPMy8l.js",
-      "_Delete-legacy-DE9IJzsH.js",
-      "_common-legacy-BfMJ8X0r.js",
-      "_TextField-legacy-Cn7jw8uN.js",
-      "_Check-legacy-Dd5kwFp-.js",
-      "_Card-legacy-DAyj9G4N.js",
-      "_CardMedia-legacy-CywE8xFy.js",
-      "_Divider-legacy-9ldxDN5q.js",
-      "_yup-legacy-k3dYfHQc.js",
-      "_survey-legacy-CmPJYFAs.js",
-      "_TablePagination-legacy-DGnjUVsh.js",
-      "_Checkbox-legacy-B_Sa2GUd.js",
-      "_SwitchBase-legacy-C9xQX8jx.js",
-      "_Tabs-legacy-DSWwlWIj.js",
-      "_radioClasses-legacy-DphQBUmK.js",
-      "_tableRowClasses-legacy-BNdXjQON.js",
-      "_FormControlLabel-legacy-CA95rTY_.js",
-      "_TableCell-legacy-BTEC8sBz.js",
-      "_Toolbar-legacy-gatoM_w3.js"
-    ]
-  },
-  "src/pages/manage/Dashboard/index.jsx": {
-    "file": "assets/index-CsEUyNpt.js",
-    "name": "index",
-    "src": "src/pages/manage/Dashboard/index.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js",
-      "_Image-CE4vE1Da.js",
-      "_DateUtils-D9XCaXee.js",
-      "_Web-BJ9GQG1r.js",
-      "_dayjs.min-BYuDNZGJ.js",
-      "_Delete-CGrSv7M_.js",
-      "_common-Bl2TiDan.js",
-      "_TextField-WQpbUAds.js",
-      "_Check-CzItDdan.js",
-      "_Card-BxTiTrtS.js",
-      "_CardMedia-naaIupyv.js",
-      "_Divider-Dlzogn56.js",
-      "_yup-DOqXNEId.js",
-      "_survey-B8WvHOv0.js",
-      "_TablePagination-DYBvoZJZ.js",
-      "_Checkbox-DSC03rz9.js",
-      "_SwitchBase-BqqZbFu5.js",
-      "_Tabs-C8JT5hpD.js",
-      "_radioClasses-B6tZog_h.js",
-      "_tableRowClasses-B1HVMYOB.js",
-      "_FormControlLabel-i6VTBdFM.js",
-      "_TableCell-Di9qFQzs.js",
-      "_Toolbar-CZ6sMNbC.js"
-    ],
-    "css": [
-      "assets/index-Cjs-_wQa.css"
-    ]
-  },
-  "src/pages/manage/EditSurvey/index-legacy.jsx": {
-    "file": "assets/index-legacy-Cle0uzuJ.js",
-    "name": "index",
-    "src": "src/pages/manage/EditSurvey/index-legacy.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_index-legacy-6M8O2tsW.js",
-      "_index-legacy-CrjT7QZL.js",
-      "_Web-legacy-G20LTzwp.js",
-      "_survey-legacy-CmPJYFAs.js",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_DateUtils-legacy-Dg58phWT.js",
-      "_index-legacy-C3hI9Q0o.js",
-      "_common-legacy-BfMJ8X0r.js",
-      "_Tabs-legacy-DSWwlWIj.js",
-      "_TextField-legacy-Cn7jw8uN.js",
-      "_index-legacy-C4Gq-aSS.js",
-      "_dayjs.min-legacy-DVnPMy8l.js",
-      "_DateTimePicker-legacy-FFoNYnkB.js",
-      "_InputAdornment-legacy-CCb1yK4O.js",
-      "_Checkbox-legacy-B_Sa2GUd.js",
-      "_SwitchBase-legacy-C9xQX8jx.js",
-      "_radioClasses-legacy-DphQBUmK.js",
-      "_tableRowClasses-legacy-BNdXjQON.js",
-      "_FormControlLabel-legacy-CA95rTY_.js"
-    ]
-  },
-  "src/pages/manage/EditSurvey/index.jsx": {
-    "file": "assets/index-D1ggAoGZ.js",
-    "name": "index",
-    "src": "src/pages/manage/EditSurvey/index.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_index-PeLvE506.js",
-      "_index-LFjYGgJu.js",
-      "_Web-BJ9GQG1r.js",
-      "_survey-B8WvHOv0.js",
-      "_use-service-D_BNczvS.js",
-      "_DateUtils-D9XCaXee.js",
-      "_index-CQIINAAR.js",
-      "_common-Bl2TiDan.js",
-      "_Tabs-C8JT5hpD.js",
-      "_TextField-WQpbUAds.js",
-      "_index-CFFrfAwV.js",
-      "_dayjs.min-BYuDNZGJ.js",
-      "_DateTimePicker-CBtVfPsg.js",
-      "_InputAdornment-CnebZoW9.js",
-      "_Checkbox-DSC03rz9.js",
-      "_SwitchBase-BqqZbFu5.js",
-      "_radioClasses-B6tZog_h.js",
-      "_tableRowClasses-B1HVMYOB.js",
-      "_FormControlLabel-i6VTBdFM.js"
-    ],
-    "css": [
-      "assets/index-DQnYX5Do.css"
-    ]
-  },
-  "src/pages/manage/ForgotPassword/index-legacy.jsx": {
-    "file": "assets/index-legacy-DnEoMvc6.js",
-    "name": "index",
-    "src": "src/pages/manage/ForgotPassword/index-legacy.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_yup-legacy-k3dYfHQc.js",
-      "_Web-legacy-G20LTzwp.js",
-      "_router-link-legacy-HTaaVJv3.js",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_Check-legacy-Dd5kwFp-.js",
-      "_Link-legacy-jklI3zRP.js",
-      "_Checkbox-legacy-B_Sa2GUd.js",
-      "_SwitchBase-legacy-C9xQX8jx.js",
-      "_Tabs-legacy-DSWwlWIj.js",
-      "_radioClasses-legacy-DphQBUmK.js",
-      "_tableRowClasses-legacy-BNdXjQON.js",
-      "_TextField-legacy-Cn7jw8uN.js",
-      "_FormControlLabel-legacy-CA95rTY_.js"
-    ]
-  },
-  "src/pages/manage/ForgotPassword/index.jsx": {
-    "file": "assets/index-CVvzllyt.js",
-    "name": "index",
-    "src": "src/pages/manage/ForgotPassword/index.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_yup-DOqXNEId.js",
-      "_Web-BJ9GQG1r.js",
-      "_router-link-WGW5BBjn.js",
-      "_use-service-D_BNczvS.js",
-      "_Check-CzItDdan.js",
-      "_Link-B6OA4b9x.js",
-      "_Checkbox-DSC03rz9.js",
-      "_SwitchBase-BqqZbFu5.js",
-      "_Tabs-C8JT5hpD.js",
-      "_radioClasses-B6tZog_h.js",
-      "_tableRowClasses-B1HVMYOB.js",
-      "_TextField-WQpbUAds.js",
-      "_FormControlLabel-i6VTBdFM.js"
-    ],
-    "css": [
-      "assets/index-DM_q9pq0.css"
-    ]
-  },
-  "src/pages/manage/Login/index-legacy.jsx": {
-    "file": "assets/index-legacy-x1mizjrR.js",
-    "name": "index",
-    "src": "src/pages/manage/Login/index-legacy.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_yup-legacy-k3dYfHQc.js",
-      "_Web-legacy-G20LTzwp.js",
-      "_use-boolean-legacy-BzZTfsBB.js",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_router-link-legacy-HTaaVJv3.js",
-      "_InputAdornment-legacy-CCb1yK4O.js",
-      "_Link-legacy-jklI3zRP.js",
-      "_Checkbox-legacy-B_Sa2GUd.js",
-      "_SwitchBase-legacy-C9xQX8jx.js",
-      "_Tabs-legacy-DSWwlWIj.js",
-      "_radioClasses-legacy-DphQBUmK.js",
-      "_tableRowClasses-legacy-BNdXjQON.js",
-      "_TextField-legacy-Cn7jw8uN.js",
-      "_FormControlLabel-legacy-CA95rTY_.js"
-    ]
-  },
-  "src/pages/manage/Login/index.jsx": {
-    "file": "assets/index-Dbypx-LI.js",
-    "name": "index",
-    "src": "src/pages/manage/Login/index.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_yup-DOqXNEId.js",
-      "_Web-BJ9GQG1r.js",
-      "_use-boolean-DmRxK5TP.js",
-      "_use-service-D_BNczvS.js",
-      "_router-link-WGW5BBjn.js",
-      "_InputAdornment-CnebZoW9.js",
-      "_Link-B6OA4b9x.js",
-      "_Checkbox-DSC03rz9.js",
-      "_SwitchBase-BqqZbFu5.js",
-      "_Tabs-C8JT5hpD.js",
-      "_radioClasses-B6tZog_h.js",
-      "_tableRowClasses-B1HVMYOB.js",
-      "_TextField-WQpbUAds.js",
-      "_FormControlLabel-i6VTBdFM.js"
-    ]
-  },
-  "src/pages/manage/ManageUsers/index-legacy.jsx": {
-    "file": "assets/index-legacy-PCBu7fcP.js",
-    "name": "index",
-    "src": "src/pages/manage/ManageUsers/index-legacy.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_yup-legacy-k3dYfHQc.js",
-      "_Web-legacy-G20LTzwp.js",
-      "_Tabs-legacy-DSWwlWIj.js",
-      "_Card-legacy-DAyj9G4N.js",
-      "_TableRow-legacy-CbWVNbnA.js",
-      "_tableRowClasses-legacy-BNdXjQON.js",
-      "_TableCell-legacy-BTEC8sBz.js",
-      "_Divider-legacy-9ldxDN5q.js",
-      "_Checkbox-legacy-B_Sa2GUd.js",
-      "_SwitchBase-legacy-C9xQX8jx.js",
-      "_radioClasses-legacy-DphQBUmK.js",
-      "_TextField-legacy-Cn7jw8uN.js",
-      "_FormControlLabel-legacy-CA95rTY_.js"
-    ]
-  },
-  "src/pages/manage/ManageUsers/index.jsx": {
-    "file": "assets/index-D3A8ta7E.js",
-    "name": "index",
-    "src": "src/pages/manage/ManageUsers/index.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_use-service-D_BNczvS.js",
-      "_yup-DOqXNEId.js",
-      "_Web-BJ9GQG1r.js",
-      "_Tabs-C8JT5hpD.js",
-      "_Card-BxTiTrtS.js",
-      "_TableRow-D6Acb3fE.js",
-      "_tableRowClasses-B1HVMYOB.js",
-      "_TableCell-Di9qFQzs.js",
-      "_Divider-Dlzogn56.js",
-      "_Checkbox-DSC03rz9.js",
-      "_SwitchBase-BqqZbFu5.js",
-      "_radioClasses-B6tZog_h.js",
-      "_TextField-WQpbUAds.js",
-      "_FormControlLabel-i6VTBdFM.js"
-    ],
-    "css": [
-      "assets/index-Cw7h46Lm.css"
-    ]
-  },
-  "src/pages/manage/Profile/index-legacy.jsx": {
-    "file": "assets/index-legacy-Vq2L-iyV.js",
-    "name": "index",
-    "src": "src/pages/manage/Profile/index-legacy.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_yup-legacy-k3dYfHQc.js",
-      "_Web-legacy-G20LTzwp.js",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_use-boolean-legacy-BzZTfsBB.js",
-      "_Link-legacy-jklI3zRP.js",
-      "_index-legacy-C3hI9Q0o.js",
-      "_InputAdornment-legacy-CCb1yK4O.js",
-      "_Checkbox-legacy-B_Sa2GUd.js",
-      "_SwitchBase-legacy-C9xQX8jx.js",
-      "_Tabs-legacy-DSWwlWIj.js",
-      "_radioClasses-legacy-DphQBUmK.js",
-      "_tableRowClasses-legacy-BNdXjQON.js",
-      "_TextField-legacy-Cn7jw8uN.js",
-      "_FormControlLabel-legacy-CA95rTY_.js"
-    ]
-  },
-  "src/pages/manage/Profile/index.jsx": {
-    "file": "assets/index-C21aYqNv.js",
-    "name": "index",
-    "src": "src/pages/manage/Profile/index.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_yup-DOqXNEId.js",
-      "_Web-BJ9GQG1r.js",
-      "_use-service-D_BNczvS.js",
-      "_use-boolean-DmRxK5TP.js",
-      "_Link-B6OA4b9x.js",
-      "_index-CQIINAAR.js",
-      "_InputAdornment-CnebZoW9.js",
-      "_Checkbox-DSC03rz9.js",
-      "_SwitchBase-BqqZbFu5.js",
-      "_Tabs-C8JT5hpD.js",
-      "_radioClasses-B6tZog_h.js",
-      "_tableRowClasses-B1HVMYOB.js",
-      "_TextField-WQpbUAds.js",
-      "_FormControlLabel-i6VTBdFM.js"
-    ],
-    "css": [
-      "assets/index-DcxnSa-8.css"
-    ]
-  },
-  "src/pages/manage/ResetPassword/index-legacy.jsx": {
-    "file": "assets/index-legacy-DHuJ3vIv.js",
-    "name": "index",
-    "src": "src/pages/manage/ResetPassword/index-legacy.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_yup-legacy-k3dYfHQc.js",
-      "_Web-legacy-G20LTzwp.js",
-      "_router-link-legacy-HTaaVJv3.js",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_use-boolean-legacy-BzZTfsBB.js",
-      "_InputAdornment-legacy-CCb1yK4O.js",
-      "_Link-legacy-jklI3zRP.js",
-      "_Checkbox-legacy-B_Sa2GUd.js",
-      "_SwitchBase-legacy-C9xQX8jx.js",
-      "_Tabs-legacy-DSWwlWIj.js",
-      "_radioClasses-legacy-DphQBUmK.js",
-      "_tableRowClasses-legacy-BNdXjQON.js",
-      "_TextField-legacy-Cn7jw8uN.js",
-      "_FormControlLabel-legacy-CA95rTY_.js"
-    ]
-  },
-  "src/pages/manage/ResetPassword/index.jsx": {
-    "file": "assets/index-DkwXoLjM.js",
-    "name": "index",
-    "src": "src/pages/manage/ResetPassword/index.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_yup-DOqXNEId.js",
-      "_Web-BJ9GQG1r.js",
-      "_router-link-WGW5BBjn.js",
-      "_use-service-D_BNczvS.js",
-      "_use-boolean-DmRxK5TP.js",
-      "_InputAdornment-CnebZoW9.js",
-      "_Link-B6OA4b9x.js",
-      "_Checkbox-DSC03rz9.js",
-      "_SwitchBase-BqqZbFu5.js",
-      "_Tabs-C8JT5hpD.js",
-      "_radioClasses-B6tZog_h.js",
-      "_tableRowClasses-B1HVMYOB.js",
-      "_TextField-WQpbUAds.js",
-      "_FormControlLabel-i6VTBdFM.js"
-    ]
-  },
-  "src/pages/manage/ResponsesSurvey/index-legacy.jsx": {
-    "file": "assets/index-legacy-zBCrZlSj.js",
-    "name": "index",
-    "src": "src/pages/manage/ResponsesSurvey/index-legacy.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index-legacy.html",
-      "_Delete-legacy-DE9IJzsH.js",
-      "_DateUtils-legacy-Dg58phWT.js",
-      "_use-service-legacy-DLuVKbJp.js",
-      "_Web-legacy-G20LTzwp.js",
-      "_Tabs-legacy-DSWwlWIj.js",
-      "_TableRow-legacy-CbWVNbnA.js",
-      "_TableCell-legacy-BTEC8sBz.js",
-      "_TablePagination-legacy-DGnjUVsh.js",
-      "_Checkbox-legacy-B_Sa2GUd.js",
-      "_SwitchBase-legacy-C9xQX8jx.js",
-      "_radioClasses-legacy-DphQBUmK.js",
-      "_tableRowClasses-legacy-BNdXjQON.js",
-      "_TextField-legacy-Cn7jw8uN.js",
-      "_FormControlLabel-legacy-CA95rTY_.js",
-      "_Toolbar-legacy-gatoM_w3.js"
-    ]
-  },
-  "src/pages/manage/ResponsesSurvey/index.jsx": {
-    "file": "assets/index-Ct665bQK.js",
-    "name": "index",
-    "src": "src/pages/manage/ResponsesSurvey/index.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html",
-      "_Delete-CGrSv7M_.js",
-      "_DateUtils-D9XCaXee.js",
-      "_use-service-D_BNczvS.js",
-      "_Web-BJ9GQG1r.js",
-      "_Tabs-C8JT5hpD.js",
-      "_TableRow-D6Acb3fE.js",
-      "_TableCell-Di9qFQzs.js",
-      "_TablePagination-DYBvoZJZ.js",
-      "_Checkbox-DSC03rz9.js",
-      "_SwitchBase-BqqZbFu5.js",
-      "_radioClasses-B6tZog_h.js",
-      "_tableRowClasses-B1HVMYOB.js",
-      "_TextField-WQpbUAds.js",
-      "_FormControlLabel-i6VTBdFM.js",
-      "_Toolbar-CZ6sMNbC.js"
-    ],
-    "css": [
-      "assets/index-CJ9lbdKb.css"
+      "_Android-D7uSgl3-.js",
+      "_index-C1S3-jZo.js"
     ]
   },
   "vite/legacy-polyfills-legacy": {
-    "file": "assets/polyfills-legacy-as8jgRVk.js",
+    "file": "assets/polyfills-legacy-DfaGz8UV.js",
     "name": "polyfills",
     "src": "vite/legacy-polyfills-legacy",
     "isEntry": true
