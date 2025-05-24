@@ -1,4 +1,3 @@
-<<<<<<<< HEAD:app/src/debug/assets/react-app/assets/Android-CtDvwZhr.css
 ._leftPanelGroupItem_1qo1l_1 {
   width: 100%;
   margin-bottom: 20px;
@@ -95,19 +94,12 @@
   white-space: pre-line;
   word-break: break-word;
 }._mainContainer_1oyjx_1 {
-========
-._mainContainer_3nwkh_1 {
->>>>>>>> main:app/src/debug/assets/react-app/assets/index-B4filxRh.css
   margin: auto;
-  min-height: 100vh;
+  height: calc(100vh);
   overflow: auto;
-  padding-top: var(--safe-area-inset-top);
-  padding-right: var(--safe-area-inset-right);
-  padding-bottom: var(--safe-area-inset-bottom);
-  padding-left: var(--safe-area-inset-left);
 }
 
-._surveyDesignError_3nwkh_11 {
+._surveyDesignError_1oyjx_7 {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -117,7 +109,7 @@
   border-radius: 4px;
 }
 
-._goBack_3nwkh_21 {
+._goBack_1oyjx_17 {
   display: inline-flex;
   -webkit-box-align: center;
   align-items: center;
@@ -137,7 +129,6 @@
   font-weight: 700;
   line-height: 1.71429;
   text-transform: capitalize;
-  font-family: "Public Sans", sans-serif;
   min-width: 64px;
   padding: 8px 16px;
   border-radius: 8px;
@@ -153,7 +144,7 @@
   font-size: 15px;
 }
 
-._goBack_3nwkh_21:hover {
+._goBack_1oyjx_17:hover {
   background-color: rgb(69, 79, 91);
   box-shadow: none;
 }
@@ -614,12 +605,12 @@
 .no-padding > :first-child {
   margin-top: 0;
 }
-._textDescription_6fb6d_1 {
+._textDescription_jd8f0_1 {
   max-width: 100%;
   margin-top: 8px;
 }
 
-._titleRow_6fb6d_6 {
+._titleRow_jd8f0_6 {
   display: block;
   justify-content: space-between;
   align-items: center;
@@ -629,14 +620,13 @@
   box-pack: justify;
 }
 
-._groupHeader_6fb6d_16 {
+._groupHeader_jd8f0_16 {
   padding: 1rem;
 }
 
-._topLevel_6fb6d_20 {
+._topLevel_jd8f0_20 {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
   max-width: 800px;
   min-width: 320px;
   margin-right: 16px;
@@ -644,25 +634,25 @@
   padding: .5rem 0rem 2rem .5rem;
   margin: auto;
   position: relative;
-}._buttonContainer_grkpv_1 {
+}._buttonContainer_zlh5z_1 {
   display: flex;
   gap: 1rem;
   align-items: center;
   justify-content: center;
-  padding: 10px 0px;
+  padding: 20px 0px 50px 0px;
 }
-._surveyContent_13yjc_1 {
+._surveyContent_jntaj_1 {
   margin: 0;
 }
 
-._surveyGroups_13yjc_5 {
+._surveyGroups_jntaj_5 {
   margin: auto;
   max-width: 800px;
   min-width: 300px;
   position: relative;
 }
 
-._cardImage_13yjc_12 {
+._cardImage_jntaj_12 {
   max-height: 22.5vw;
   height: 160px;
   margin: 12px auto;
@@ -671,7 +661,12 @@
   border-radius: 8px;
 }
 
-._stepperContent_13yjc_21 {
+._groupContianer_jntaj_21 {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+._stepperContent_jntaj_26 {
   position: absolute;
   background-color: white;
   width: 400px;
@@ -680,47 +675,10 @@
   height: 700px;
   overflow: auto;
   margin-top: 3rem;
-  /* max-width: 800px;
-  min-width: 350px;
-  margin: auto;
-  overflow: auto;
-  display: flex; */
 }
 
-._menuButton_13yjc_37._menuButton_13yjc_37 {
+._menuButton_jntaj_37._menuButton_jntaj_37 {
   position: fixed;
-}
-._groupCard_pjo30_1 {
-  padding: 8px;
-  margin: 8px;
-}
-
-._groupTitle_pjo30_6 {
-  font-weight: bolder;
-}
-
-._questionTitle_pjo30_10 {
-  display: flex;
-  padding: 8px;
-  margin: 8px;
-}
-
-._questionIcon_pjo30_16 {
-  margin-left: 8px;
-  margin-right: 8px;
-  color: green;
-  font-size: 1.2rem;
-}
-
-._bullet_pjo30_23 {
-  margin-right: 8px;
-  margin-left: 8px;
-  font-size: 1.2rem;
-}
-
-._redAsterix_pjo30_29 {
-  margin-left: 0.5rem;
-  color: red;
 }._loadingWrapper_1p71l_1 {
   position: absolute;
   top: 50%;
@@ -754,4 +712,53 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #e0e0e0;
+}
+._groupCard_18q7o_1 {
+  padding: 8px;
+  margin: 8px;
+}
+
+._groupTitle_18q7o_6 {
+  font-weight: bolder;
+}
+
+._questionTitle_18q7o_10 {
+  display: flex;
+  padding: 8px;
+  margin: 8px;
+}
+
+._questionIcon_18q7o_16 {
+  margin-left: 8px;
+  margin-right: 8px;
+  color: green;
+  font-size: 1.2rem;
+}
+
+._bullet_18q7o_23 {
+  margin-right: 8px;
+  margin-left: 8px;
+  font-size: 1.2rem;
+}
+
+._redAsterix_18q7o_29 {
+  margin-left: 0.5rem;
+  color: red;
+}
+
+._truncatedTwoLines_18q7o_34 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+._toolbar_13q1d_1._toolbar_13q1d_1 {
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+  min-height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
