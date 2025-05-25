@@ -1,0 +1,1127 @@
+{
+  "_Android-!~{003}~.js": {
+    "file": "assets/Android-CtDvwZhr.css",
+    "src": "_Android-!~{003}~.js"
+  },
+  "_Android-D7uSgl3-.js": {
+    "file": "assets/Android-D7uSgl3-.js",
+    "name": "Android",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ],
+    "dynamicImports": [
+      "src/components/Questions/DateTime/DateTimeQuestion.jsx",
+      "src/components/Questions/Scq/Scq.jsx",
+      "src/components/Questions/SCQArray/SCQArray.jsx",
+      "src/components/Questions/Signature/Signature.jsx",
+      "src/components/Questions/PhotoCapture/PhotoCapture.jsx",
+      "src/components/Questions/VideoCapture/VideoCapture.jsx",
+      "src/components/Questions/Mcq/Mcq.jsx",
+      "src/components/Questions/Number/NumberQuestion.jsx",
+      "src/components/Questions/Text/TextQuestion.jsx",
+      "src/components/Questions/VideoDisplay/VideoDisplay.jsx",
+      "src/components/Questions/ImageDisplay/ImageDisplay.jsx",
+      "src/components/Questions/ImageRanking/ImageRanking.jsx",
+      "src/components/Questions/Paragraph/ParagraphQuestion.jsx",
+      "src/components/Questions/Barcode/Barcode.jsx",
+      "src/components/Questions/Email/EmailQuestion.jsx",
+      "src/components/Questions/ImageScq/ImageScq.jsx",
+      "src/components/Questions/ImageMcq/ImageMcq.jsx",
+      "src/components/Questions/Ranking/Ranking.jsx",
+      "src/components/Questions/NPS/NPS.jsx",
+      "src/components/Questions/FileUpload/FileUpload.jsx",
+      "src/components/Questions/IconScq/IconScq.jsx",
+      "src/components/Questions/IconMcq/IconMcq.jsx",
+      "src/components/Questions/SCQArray/SCQIconArray.jsx"
+    ],
+    "css": [
+      "assets/Android-CtDvwZhr.css"
+    ]
+  },
+  "_Android-legacy-BgepuGDy.js": {
+    "file": "assets/Android-legacy-BgepuGDy.js",
+    "name": "Android",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html"
+    ],
+    "dynamicImports": [
+      "src/components/Questions/DateTime/DateTimeQuestion-legacy.jsx",
+      "src/components/Questions/Scq/Scq-legacy.jsx",
+      "src/components/Questions/SCQArray/SCQArray-legacy.jsx",
+      "src/components/Questions/Signature/Signature-legacy.jsx",
+      "src/components/Questions/PhotoCapture/PhotoCapture-legacy.jsx",
+      "src/components/Questions/VideoCapture/VideoCapture-legacy.jsx",
+      "src/components/Questions/Mcq/Mcq-legacy.jsx",
+      "src/components/Questions/Number/NumberQuestion-legacy.jsx",
+      "src/components/Questions/Text/TextQuestion-legacy.jsx",
+      "src/components/Questions/VideoDisplay/VideoDisplay-legacy.jsx",
+      "src/components/Questions/ImageDisplay/ImageDisplay-legacy.jsx",
+      "src/components/Questions/ImageRanking/ImageRanking-legacy.jsx",
+      "src/components/Questions/Paragraph/ParagraphQuestion-legacy.jsx",
+      "src/components/Questions/Barcode/Barcode-legacy.jsx",
+      "src/components/Questions/Email/EmailQuestion-legacy.jsx",
+      "src/components/Questions/ImageScq/ImageScq-legacy.jsx",
+      "src/components/Questions/ImageMcq/ImageMcq-legacy.jsx",
+      "src/components/Questions/Ranking/Ranking-legacy.jsx",
+      "src/components/Questions/NPS/NPS-legacy.jsx",
+      "src/components/Questions/FileUpload/FileUpload-legacy.jsx",
+      "src/components/Questions/IconScq/IconScq-legacy.jsx",
+      "src/components/Questions/IconMcq/IconMcq-legacy.jsx",
+      "src/components/Questions/SCQArray/SCQIconArray-legacy.jsx"
+    ]
+  },
+  "_Checkbox-D8IqsUB-.js": {
+    "file": "assets/Checkbox-D8IqsUB-.js",
+    "name": "Checkbox",
+    "imports": [
+      "index.html",
+      "_SwitchBase-BcXgCjTk.js",
+      "_Android-D7uSgl3-.js"
+    ]
+  },
+  "_Checkbox-legacy-BrOUgA_9.js": {
+    "file": "assets/Checkbox-legacy-BrOUgA_9.js",
+    "name": "Checkbox",
+    "imports": [
+      "index-legacy.html",
+      "_SwitchBase-legacy-CQyho5C6.js",
+      "_Android-legacy-BgepuGDy.js"
+    ]
+  },
+  "_DailyMotion-BymFu9pV.js": {
+    "file": "assets/DailyMotion-BymFu9pV.js",
+    "name": "DailyMotion",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_DailyMotion-legacy-y4ArMWck.js": {
+    "file": "assets/DailyMotion-legacy-y4ArMWck.js",
+    "name": "DailyMotion",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_Facebook-CDcUtoPj.js": {
+    "file": "assets/Facebook-CDcUtoPj.js",
+    "name": "Facebook",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_Facebook-legacy-DbMbAc82.js": {
+    "file": "assets/Facebook-legacy-DbMbAc82.js",
+    "name": "Facebook",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_FilePlayer-cuKA6u3Q.js": {
+    "file": "assets/FilePlayer-cuKA6u3Q.js",
+    "name": "FilePlayer",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_FilePlayer-legacy-BS3J6uqQ.js": {
+    "file": "assets/FilePlayer-legacy-BS3J6uqQ.js",
+    "name": "FilePlayer",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_Kaltura-kgt4YjQ7.js": {
+    "file": "assets/Kaltura-kgt4YjQ7.js",
+    "name": "Kaltura",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_Kaltura-legacy-HAKTP--J.js": {
+    "file": "assets/Kaltura-legacy-HAKTP--J.js",
+    "name": "Kaltura",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_Mixcloud-h6Ck_oqu.js": {
+    "file": "assets/Mixcloud-h6Ck_oqu.js",
+    "name": "Mixcloud",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_Mixcloud-legacy-BT7PO_IG.js": {
+    "file": "assets/Mixcloud-legacy-BT7PO_IG.js",
+    "name": "Mixcloud",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_Mux-B-qwA6F9.js": {
+    "file": "assets/Mux-B-qwA6F9.js",
+    "name": "Mux",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_Mux-legacy-BEM_IZ6u.js": {
+    "file": "assets/Mux-legacy-BEM_IZ6u.js",
+    "name": "Mux",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_Preview-Cg14a-dE.js": {
+    "file": "assets/Preview-Cg14a-dE.js",
+    "name": "Preview",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
+  },
+  "_Preview-legacy-lRVl4GPD.js": {
+    "file": "assets/Preview-legacy-lRVl4GPD.js",
+    "name": "Preview",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html"
+    ]
+  },
+  "_Radio-B9qqvD_B.js": {
+    "file": "assets/Radio-B9qqvD_B.js",
+    "name": "Radio",
+    "imports": [
+      "index.html",
+      "_SwitchBase-BcXgCjTk.js",
+      "_Android-D7uSgl3-.js",
+      "_RadioGroupContext-DCqrnyW1.js"
+    ]
+  },
+  "_Radio-legacy-Ct3J_WRY.js": {
+    "file": "assets/Radio-legacy-Ct3J_WRY.js",
+    "name": "Radio",
+    "imports": [
+      "index-legacy.html",
+      "_SwitchBase-legacy-CQyho5C6.js",
+      "_Android-legacy-BgepuGDy.js",
+      "_RadioGroupContext-legacy-BXSMHjT2.js"
+    ]
+  },
+  "_RadioGroup-DD-Bev0B.js": {
+    "file": "assets/RadioGroup-DD-Bev0B.js",
+    "name": "RadioGroup",
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js",
+      "_RadioGroupContext-DCqrnyW1.js"
+    ]
+  },
+  "_RadioGroup-legacy-NLxl-fmk.js": {
+    "file": "assets/RadioGroup-legacy-NLxl-fmk.js",
+    "name": "RadioGroup",
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js",
+      "_RadioGroupContext-legacy-BXSMHjT2.js"
+    ]
+  },
+  "_RadioGroupContext-DCqrnyW1.js": {
+    "file": "assets/RadioGroupContext-DCqrnyW1.js",
+    "name": "RadioGroupContext",
+    "imports": [
+      "index.html"
+    ]
+  },
+  "_RadioGroupContext-legacy-BXSMHjT2.js": {
+    "file": "assets/RadioGroupContext-legacy-BXSMHjT2.js",
+    "name": "RadioGroupContext",
+    "imports": [
+      "index-legacy.html"
+    ]
+  },
+  "_SoundCloud-legacy-CsM-fuKx.js": {
+    "file": "assets/SoundCloud-legacy-CsM-fuKx.js",
+    "name": "SoundCloud",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_SoundCloud-mwsv7qS2.js": {
+    "file": "assets/SoundCloud-mwsv7qS2.js",
+    "name": "SoundCloud",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_Streamable-7PIKcCTR.js": {
+    "file": "assets/Streamable-7PIKcCTR.js",
+    "name": "Streamable",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_Streamable-legacy-Co7kmepJ.js": {
+    "file": "assets/Streamable-legacy-Co7kmepJ.js",
+    "name": "Streamable",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_SwitchBase-BcXgCjTk.js": {
+    "file": "assets/SwitchBase-BcXgCjTk.js",
+    "name": "SwitchBase",
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js"
+    ]
+  },
+  "_SwitchBase-legacy-CQyho5C6.js": {
+    "file": "assets/SwitchBase-legacy-CQyho5C6.js",
+    "name": "SwitchBase",
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js"
+    ]
+  },
+  "_TableRow-Blbm1aaV.js": {
+    "file": "assets/TableRow-Blbm1aaV.js",
+    "name": "TableRow",
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js"
+    ]
+  },
+  "_TableRow-legacy-D_CYBs-M.js": {
+    "file": "assets/TableRow-legacy-D_CYBs-M.js",
+    "name": "TableRow",
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js"
+    ]
+  },
+  "_TextField-DGrOyR2q.js": {
+    "file": "assets/TextField-DGrOyR2q.js",
+    "name": "TextField",
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js"
+    ]
+  },
+  "_TextField-legacy-DdoVKr1d.js": {
+    "file": "assets/TextField-legacy-DdoVKr1d.js",
+    "name": "TextField",
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js"
+    ]
+  },
+  "_Twitch-BFFzeyqL.js": {
+    "file": "assets/Twitch-BFFzeyqL.js",
+    "name": "Twitch",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_Twitch-legacy-BYy9dWtp.js": {
+    "file": "assets/Twitch-legacy-BYy9dWtp.js",
+    "name": "Twitch",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_Vidyard-Bc4WULvj.js": {
+    "file": "assets/Vidyard-Bc4WULvj.js",
+    "name": "Vidyard",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_Vidyard-legacy-DL-wpAhp.js": {
+    "file": "assets/Vidyard-legacy-DL-wpAhp.js",
+    "name": "Vidyard",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_Vimeo-DbPeI0xe.js": {
+    "file": "assets/Vimeo-DbPeI0xe.js",
+    "name": "Vimeo",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_Vimeo-legacy-pYsqAvB_.js": {
+    "file": "assets/Vimeo-legacy-pYsqAvB_.js",
+    "name": "Vimeo",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_Wistia-CERlXfoh.js": {
+    "file": "assets/Wistia-CERlXfoh.js",
+    "name": "Wistia",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_Wistia-legacy-c3cJG6pY.js": {
+    "file": "assets/Wistia-legacy-c3cJG6pY.js",
+    "name": "Wistia",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_YouTube-Dq8MJnjO.js": {
+    "file": "assets/YouTube-Dq8MJnjO.js",
+    "name": "YouTube",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "_YouTube-legacy-D3XZN4-V.js": {
+    "file": "assets/YouTube-legacy-D3XZN4-V.js",
+    "name": "YouTube",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "_browser-ponyfill-CHWUMY1v.js": {
+    "file": "assets/browser-ponyfill-CHWUMY1v.js",
+    "name": "browser-ponyfill",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
+  },
+  "_browser-ponyfill-legacy--5nrivjQ.js": {
+    "file": "assets/browser-ponyfill-legacy--5nrivjQ.js",
+    "name": "browser-ponyfill",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html"
+    ]
+  },
+  "_index-!~{00N}~.js": {
+    "file": "assets/index-_2rZ8I_A.css",
+    "src": "_index-!~{00N}~.js"
+  },
+  "_index-BIpDyNX3.js": {
+    "file": "assets/index-BIpDyNX3.js",
+    "name": "index",
+    "imports": [
+      "index.html"
+    ],
+    "css": [
+      "assets/index-_2rZ8I_A.css"
+    ]
+  },
+  "_index-C1S3-jZo.js": {
+    "file": "assets/index-C1S3-jZo.js",
+    "name": "index",
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js"
+    ],
+    "dynamicImports": [
+      "_YouTube-Dq8MJnjO.js",
+      "_SoundCloud-mwsv7qS2.js",
+      "_Vimeo-DbPeI0xe.js",
+      "_Mux-B-qwA6F9.js",
+      "_Facebook-CDcUtoPj.js",
+      "_Streamable-7PIKcCTR.js",
+      "_Wistia-CERlXfoh.js",
+      "_Twitch-BFFzeyqL.js",
+      "_DailyMotion-BymFu9pV.js",
+      "_Mixcloud-h6Ck_oqu.js",
+      "_Vidyard-Bc4WULvj.js",
+      "_Kaltura-kgt4YjQ7.js",
+      "_FilePlayer-cuKA6u3Q.js",
+      "_Preview-Cg14a-dE.js"
+    ]
+  },
+  "_index-legacy-BNnFOp2_.js": {
+    "file": "assets/index-legacy-BNnFOp2_.js",
+    "name": "index",
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js"
+    ],
+    "dynamicImports": [
+      "_YouTube-legacy-D3XZN4-V.js",
+      "_SoundCloud-legacy-CsM-fuKx.js",
+      "_Vimeo-legacy-pYsqAvB_.js",
+      "_Mux-legacy-BEM_IZ6u.js",
+      "_Facebook-legacy-DbMbAc82.js",
+      "_Streamable-legacy-Co7kmepJ.js",
+      "_Wistia-legacy-c3cJG6pY.js",
+      "_Twitch-legacy-BYy9dWtp.js",
+      "_DailyMotion-legacy-y4ArMWck.js",
+      "_Mixcloud-legacy-BT7PO_IG.js",
+      "_Vidyard-legacy-DL-wpAhp.js",
+      "_Kaltura-legacy-HAKTP--J.js",
+      "_FilePlayer-legacy-BS3J6uqQ.js",
+      "_Preview-legacy-lRVl4GPD.js"
+    ]
+  },
+  "_index-legacy-De2DvXj5.js": {
+    "file": "assets/index-legacy-De2DvXj5.js",
+    "name": "index",
+    "imports": [
+      "index-legacy.html"
+    ]
+  },
+  "index-legacy.html": {
+    "file": "assets/index-legacy-D2IAuBBo.js",
+    "name": "index",
+    "src": "index-legacy.html",
+    "isEntry": true,
+    "dynamicImports": [
+      "_browser-ponyfill-legacy--5nrivjQ.js",
+      "_Android-legacy-BgepuGDy.js"
+    ]
+  },
+  "index.html": {
+    "file": "assets/index-DRrn8_Vw.js",
+    "name": "index",
+    "src": "index.html",
+    "isEntry": true,
+    "dynamicImports": [
+      "_browser-ponyfill-CHWUMY1v.js",
+      "_Android-D7uSgl3-.js"
+    ],
+    "css": [
+      "assets/index-DjiRxT2O.css"
+    ]
+  },
+  "src/components/Questions/Barcode/Barcode-legacy.jsx": {
+    "file": "assets/Barcode-legacy-CQ6UlEPL.js",
+    "name": "Barcode",
+    "src": "src/components/Questions/Barcode/Barcode-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js",
+      "_TextField-legacy-DdoVKr1d.js"
+    ]
+  },
+  "src/components/Questions/Barcode/Barcode.jsx": {
+    "file": "assets/Barcode-B6pw13dh.js",
+    "name": "Barcode",
+    "src": "src/components/Questions/Barcode/Barcode.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js",
+      "_TextField-DGrOyR2q.js"
+    ],
+    "css": [
+      "assets/PhotoCapture-DmfQJuaI.css"
+    ]
+  },
+  "src/components/Questions/DateTime/DateTimeQuestion-legacy.jsx": {
+    "file": "assets/DateTimeQuestion-legacy-CZYwiGgW.js",
+    "name": "DateTimeQuestion",
+    "src": "src/components/Questions/DateTime/DateTimeQuestion-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js",
+      "_TextField-legacy-DdoVKr1d.js"
+    ]
+  },
+  "src/components/Questions/DateTime/DateTimeQuestion.jsx": {
+    "file": "assets/DateTimeQuestion-CY1cbsyw.js",
+    "name": "DateTimeQuestion",
+    "src": "src/components/Questions/DateTime/DateTimeQuestion.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js",
+      "_TextField-DGrOyR2q.js"
+    ],
+    "css": [
+      "assets/DateTimeQuestion-BqY86nnn.css"
+    ]
+  },
+  "src/components/Questions/Email/EmailQuestion-legacy.jsx": {
+    "file": "assets/EmailQuestion-legacy-QOFvm4Sf.js",
+    "name": "EmailQuestion",
+    "src": "src/components/Questions/Email/EmailQuestion-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js",
+      "_TextField-legacy-DdoVKr1d.js"
+    ]
+  },
+  "src/components/Questions/Email/EmailQuestion.jsx": {
+    "file": "assets/EmailQuestion-bku23xSW.js",
+    "name": "EmailQuestion",
+    "src": "src/components/Questions/Email/EmailQuestion.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js",
+      "_TextField-DGrOyR2q.js"
+    ],
+    "css": [
+      "assets/EmailQuestion-Cb4dO2Lj.css"
+    ]
+  },
+  "src/components/Questions/FileUpload/FileUpload-legacy.jsx": {
+    "file": "assets/FileUpload-legacy-ig27uHXD.js",
+    "name": "FileUpload",
+    "src": "src/components/Questions/FileUpload/FileUpload-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js"
+    ]
+  },
+  "src/components/Questions/FileUpload/FileUpload.jsx": {
+    "file": "assets/FileUpload-CvQR_IsU.js",
+    "name": "FileUpload",
+    "src": "src/components/Questions/FileUpload/FileUpload.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js"
+    ]
+  },
+  "src/components/Questions/IconMcq/IconMcq-legacy.jsx": {
+    "file": "assets/IconMcq-legacy-C__tf-f9.js",
+    "name": "IconMcq",
+    "src": "src/components/Questions/IconMcq/IconMcq-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js",
+      "_index-legacy-De2DvXj5.js"
+    ]
+  },
+  "src/components/Questions/IconMcq/IconMcq.jsx": {
+    "file": "assets/IconMcq-C6uNSXsP.js",
+    "name": "IconMcq",
+    "src": "src/components/Questions/IconMcq/IconMcq.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js",
+      "_index-BIpDyNX3.js"
+    ],
+    "css": [
+      "assets/IconScq-CHI3y498.css"
+    ]
+  },
+  "src/components/Questions/IconScq/IconScq-legacy.jsx": {
+    "file": "assets/IconScq-legacy-UoBTuZJd.js",
+    "name": "IconScq",
+    "src": "src/components/Questions/IconScq/IconScq-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js",
+      "_index-legacy-De2DvXj5.js"
+    ]
+  },
+  "src/components/Questions/IconScq/IconScq.jsx": {
+    "file": "assets/IconScq-BsIcPNvE.js",
+    "name": "IconScq",
+    "src": "src/components/Questions/IconScq/IconScq.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js",
+      "_index-BIpDyNX3.js"
+    ],
+    "css": [
+      "assets/IconScq-CHI3y498.css"
+    ]
+  },
+  "src/components/Questions/ImageDisplay/ImageDisplay-legacy.jsx": {
+    "file": "assets/ImageDisplay-legacy-DcCS3KWg.js",
+    "name": "ImageDisplay",
+    "src": "src/components/Questions/ImageDisplay/ImageDisplay-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js"
+    ]
+  },
+  "src/components/Questions/ImageDisplay/ImageDisplay.jsx": {
+    "file": "assets/ImageDisplay-CHsT_jX9.js",
+    "name": "ImageDisplay",
+    "src": "src/components/Questions/ImageDisplay/ImageDisplay.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js"
+    ]
+  },
+  "src/components/Questions/ImageMcq/ImageMcq-legacy.jsx": {
+    "file": "assets/ImageMcq-legacy-DBztTz4w.js",
+    "name": "ImageMcq",
+    "src": "src/components/Questions/ImageMcq/ImageMcq-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js",
+      "_Checkbox-legacy-BrOUgA_9.js",
+      "_SwitchBase-legacy-CQyho5C6.js"
+    ]
+  },
+  "src/components/Questions/ImageMcq/ImageMcq.jsx": {
+    "file": "assets/ImageMcq-BTVHNVQZ.js",
+    "name": "ImageMcq",
+    "src": "src/components/Questions/ImageMcq/ImageMcq.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js",
+      "_Checkbox-D8IqsUB-.js",
+      "_SwitchBase-BcXgCjTk.js"
+    ],
+    "css": [
+      "assets/ImageMcq-CDEIJiE3.css"
+    ]
+  },
+  "src/components/Questions/ImageRanking/ImageRanking-legacy.jsx": {
+    "file": "assets/ImageRanking-legacy-BSJ2jAii.js",
+    "name": "ImageRanking",
+    "src": "src/components/Questions/ImageRanking/ImageRanking-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js"
+    ]
+  },
+  "src/components/Questions/ImageRanking/ImageRanking.jsx": {
+    "file": "assets/ImageRanking-B3McPhJ3.js",
+    "name": "ImageRanking",
+    "src": "src/components/Questions/ImageRanking/ImageRanking.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js"
+    ],
+    "css": [
+      "assets/ImageRanking-BSItg7yO.css"
+    ]
+  },
+  "src/components/Questions/ImageScq/ImageScq-legacy.jsx": {
+    "file": "assets/ImageScq-legacy-88tL20Ki.js",
+    "name": "ImageScq",
+    "src": "src/components/Questions/ImageScq/ImageScq-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js",
+      "_Radio-legacy-Ct3J_WRY.js",
+      "_SwitchBase-legacy-CQyho5C6.js",
+      "_RadioGroupContext-legacy-BXSMHjT2.js"
+    ]
+  },
+  "src/components/Questions/ImageScq/ImageScq.jsx": {
+    "file": "assets/ImageScq-C29lAeng.js",
+    "name": "ImageScq",
+    "src": "src/components/Questions/ImageScq/ImageScq.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js",
+      "_Radio-B9qqvD_B.js",
+      "_SwitchBase-BcXgCjTk.js",
+      "_RadioGroupContext-DCqrnyW1.js"
+    ],
+    "css": [
+      "assets/ImageScq-CmRuXt2L.css"
+    ]
+  },
+  "src/components/Questions/Mcq/Mcq-legacy.jsx": {
+    "file": "assets/Mcq-legacy-BoMhM6iM.js",
+    "name": "Mcq",
+    "src": "src/components/Questions/Mcq/Mcq-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js",
+      "_RadioGroup-legacy-NLxl-fmk.js",
+      "_Checkbox-legacy-BrOUgA_9.js",
+      "_TextField-legacy-DdoVKr1d.js",
+      "_RadioGroupContext-legacy-BXSMHjT2.js",
+      "_SwitchBase-legacy-CQyho5C6.js"
+    ]
+  },
+  "src/components/Questions/Mcq/Mcq.jsx": {
+    "file": "assets/Mcq-BXDTa8sy.js",
+    "name": "Mcq",
+    "src": "src/components/Questions/Mcq/Mcq.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js",
+      "_RadioGroup-DD-Bev0B.js",
+      "_Checkbox-D8IqsUB-.js",
+      "_TextField-DGrOyR2q.js",
+      "_RadioGroupContext-DCqrnyW1.js",
+      "_SwitchBase-BcXgCjTk.js"
+    ]
+  },
+  "src/components/Questions/NPS/NPS-legacy.jsx": {
+    "file": "assets/NPS-legacy-CXdIS7op.js",
+    "name": "NPS",
+    "src": "src/components/Questions/NPS/NPS-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js"
+    ]
+  },
+  "src/components/Questions/NPS/NPS.jsx": {
+    "file": "assets/NPS-DXTNwm9O.js",
+    "name": "NPS",
+    "src": "src/components/Questions/NPS/NPS.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js"
+    ],
+    "css": [
+      "assets/NPS-CsEr_Nug.css"
+    ]
+  },
+  "src/components/Questions/Number/NumberQuestion-legacy.jsx": {
+    "file": "assets/NumberQuestion-legacy-DTlBDrE_.js",
+    "name": "NumberQuestion",
+    "src": "src/components/Questions/Number/NumberQuestion-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js",
+      "_TextField-legacy-DdoVKr1d.js"
+    ]
+  },
+  "src/components/Questions/Number/NumberQuestion.jsx": {
+    "file": "assets/NumberQuestion-Xgq49duz.js",
+    "name": "NumberQuestion",
+    "src": "src/components/Questions/Number/NumberQuestion.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js",
+      "_TextField-DGrOyR2q.js"
+    ],
+    "css": [
+      "assets/NumberQuestion-IdwP-AJw.css"
+    ]
+  },
+  "src/components/Questions/Paragraph/ParagraphQuestion-legacy.jsx": {
+    "file": "assets/ParagraphQuestion-legacy-4Sh5plTj.js",
+    "name": "ParagraphQuestion",
+    "src": "src/components/Questions/Paragraph/ParagraphQuestion-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js",
+      "_TextField-legacy-DdoVKr1d.js"
+    ]
+  },
+  "src/components/Questions/Paragraph/ParagraphQuestion.jsx": {
+    "file": "assets/ParagraphQuestion-DChbL7h5.js",
+    "name": "ParagraphQuestion",
+    "src": "src/components/Questions/Paragraph/ParagraphQuestion.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js",
+      "_TextField-DGrOyR2q.js"
+    ],
+    "css": [
+      "assets/ParagraphQuestion--njUnKrI.css"
+    ]
+  },
+  "src/components/Questions/PhotoCapture/PhotoCapture-legacy.jsx": {
+    "file": "assets/PhotoCapture-legacy-DCQP5ZJq.js",
+    "name": "PhotoCapture",
+    "src": "src/components/Questions/PhotoCapture/PhotoCapture-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js"
+    ]
+  },
+  "src/components/Questions/PhotoCapture/PhotoCapture.jsx": {
+    "file": "assets/PhotoCapture-BZb8HmRv.js",
+    "name": "PhotoCapture",
+    "src": "src/components/Questions/PhotoCapture/PhotoCapture.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js"
+    ],
+    "css": [
+      "assets/PhotoCapture-DmfQJuaI.css"
+    ]
+  },
+  "src/components/Questions/Ranking/Ranking-legacy.jsx": {
+    "file": "assets/Ranking-legacy-YczRcMOY.js",
+    "name": "Ranking",
+    "src": "src/components/Questions/Ranking/Ranking-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js"
+    ]
+  },
+  "src/components/Questions/Ranking/Ranking.jsx": {
+    "file": "assets/Ranking-C_gvwTSC.js",
+    "name": "Ranking",
+    "src": "src/components/Questions/Ranking/Ranking.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js"
+    ],
+    "css": [
+      "assets/Ranking-B15QX9I5.css"
+    ]
+  },
+  "src/components/Questions/SCQArray/SCQArray-legacy.jsx": {
+    "file": "assets/SCQArray-legacy-BzTp_pCy.js",
+    "name": "SCQArray",
+    "src": "src/components/Questions/SCQArray/SCQArray-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js",
+      "_TableRow-legacy-D_CYBs-M.js",
+      "_Radio-legacy-Ct3J_WRY.js",
+      "_SwitchBase-legacy-CQyho5C6.js",
+      "_RadioGroupContext-legacy-BXSMHjT2.js"
+    ]
+  },
+  "src/components/Questions/SCQArray/SCQArray.jsx": {
+    "file": "assets/SCQArray-BRoK9l06.js",
+    "name": "SCQArray",
+    "src": "src/components/Questions/SCQArray/SCQArray.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js",
+      "_TableRow-Blbm1aaV.js",
+      "_Radio-B9qqvD_B.js",
+      "_SwitchBase-BcXgCjTk.js",
+      "_RadioGroupContext-DCqrnyW1.js"
+    ]
+  },
+  "src/components/Questions/SCQArray/SCQIconArray-legacy.jsx": {
+    "file": "assets/SCQIconArray-legacy-DAyFH0VS.js",
+    "name": "SCQIconArray",
+    "src": "src/components/Questions/SCQArray/SCQIconArray-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js",
+      "_index-legacy-De2DvXj5.js",
+      "_TableRow-legacy-D_CYBs-M.js"
+    ]
+  },
+  "src/components/Questions/SCQArray/SCQIconArray.jsx": {
+    "file": "assets/SCQIconArray-B8M30hB3.js",
+    "name": "SCQIconArray",
+    "src": "src/components/Questions/SCQArray/SCQIconArray.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js",
+      "_index-BIpDyNX3.js",
+      "_TableRow-Blbm1aaV.js"
+    ]
+  },
+  "src/components/Questions/Scq/Scq-legacy.jsx": {
+    "file": "assets/Scq-legacy-6DTQDQA_.js",
+    "name": "Scq",
+    "src": "src/components/Questions/Scq/Scq-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js",
+      "_RadioGroup-legacy-NLxl-fmk.js",
+      "_Radio-legacy-Ct3J_WRY.js",
+      "_TextField-legacy-DdoVKr1d.js",
+      "_RadioGroupContext-legacy-BXSMHjT2.js",
+      "_SwitchBase-legacy-CQyho5C6.js"
+    ]
+  },
+  "src/components/Questions/Scq/Scq.jsx": {
+    "file": "assets/Scq-CRa3Jq8I.js",
+    "name": "Scq",
+    "src": "src/components/Questions/Scq/Scq.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js",
+      "_RadioGroup-DD-Bev0B.js",
+      "_Radio-B9qqvD_B.js",
+      "_TextField-DGrOyR2q.js",
+      "_RadioGroupContext-DCqrnyW1.js",
+      "_SwitchBase-BcXgCjTk.js"
+    ]
+  },
+  "src/components/Questions/Signature/Signature-legacy.jsx": {
+    "file": "assets/Signature-legacy-CxjS3JW4.js",
+    "name": "Signature",
+    "src": "src/components/Questions/Signature/Signature-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js"
+    ]
+  },
+  "src/components/Questions/Signature/Signature.jsx": {
+    "file": "assets/Signature-DI_PXcog.js",
+    "name": "Signature",
+    "src": "src/components/Questions/Signature/Signature.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js"
+    ],
+    "css": [
+      "assets/Signature-CD_BYQEv.css"
+    ]
+  },
+  "src/components/Questions/Text/TextQuestion-legacy.jsx": {
+    "file": "assets/TextQuestion-legacy-DiwQ7gxT.js",
+    "name": "TextQuestion",
+    "src": "src/components/Questions/Text/TextQuestion-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js",
+      "_TextField-legacy-DdoVKr1d.js"
+    ]
+  },
+  "src/components/Questions/Text/TextQuestion.jsx": {
+    "file": "assets/TextQuestion-FoTMgvws.js",
+    "name": "TextQuestion",
+    "src": "src/components/Questions/Text/TextQuestion.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js",
+      "_TextField-DGrOyR2q.js"
+    ],
+    "css": [
+      "assets/TextQuestion-BveFhdl-.css"
+    ]
+  },
+  "src/components/Questions/VideoCapture/VideoCapture-legacy.jsx": {
+    "file": "assets/VideoCapture-legacy-BTcc33l5.js",
+    "name": "VideoCapture",
+    "src": "src/components/Questions/VideoCapture/VideoCapture-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "src/components/Questions/VideoCapture/VideoCapture.jsx": {
+    "file": "assets/VideoCapture-Drkz7mTV.js",
+    "name": "VideoCapture",
+    "src": "src/components/Questions/VideoCapture/VideoCapture.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js",
+      "_index-C1S3-jZo.js"
+    ],
+    "css": [
+      "assets/PhotoCapture-DmfQJuaI.css"
+    ]
+  },
+  "src/components/Questions/VideoDisplay/VideoDisplay-legacy.jsx": {
+    "file": "assets/VideoDisplay-legacy-C413AO5K.js",
+    "name": "VideoDisplay",
+    "src": "src/components/Questions/VideoDisplay/VideoDisplay-legacy.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index-legacy.html",
+      "_Android-legacy-BgepuGDy.js",
+      "_index-legacy-BNnFOp2_.js"
+    ]
+  },
+  "src/components/Questions/VideoDisplay/VideoDisplay.jsx": {
+    "file": "assets/VideoDisplay-CT4Dj8pW.js",
+    "name": "VideoDisplay",
+    "src": "src/components/Questions/VideoDisplay/VideoDisplay.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_Android-D7uSgl3-.js",
+      "_index-C1S3-jZo.js"
+    ]
+  },
+  "vite/legacy-polyfills-legacy": {
+    "file": "assets/polyfills-legacy-DfaGz8UV.js",
+    "name": "polyfills",
+    "src": "vite/legacy-polyfills-legacy",
+    "isEntry": true
+  }
+}

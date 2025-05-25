@@ -118,6 +118,7 @@
   "hide_always": "الإخفاء دائمًا",
   "hide_if": "إخفاء إذا",
   "hide_text": "اعرض الرموز أو الصور فقط دون التسميات.",
+
   "highlight_color": "لون التمييز",
   "if_answer_is": "إذا كانت الإجابة <strong>{{code}}</strong>",
   "image_aspect_ratio": "نسبة أبعاد الصورة",
@@ -180,6 +181,7 @@
   "show_hide": "إظهار/إخفاء",
   "show_if": "أظهر إذا",
   "show_question_hint": "أضف تلميحًا بسيطًا أسفل السؤال لمزيد من الوضوح.",
+
   "show_word_count": "إظهار عدد الكلمات",
   "skip_invalid": "فرض التحقق عند الإرسال فقط",
   "skip_logic": "تخطي المنطق",
