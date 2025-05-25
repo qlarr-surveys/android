@@ -10,29 +10,27 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.node.ObjectNode
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.qlarr.app.api.survey.NavigationJsonOutput
+import com.qlarr.app.api.survey.objectMapper
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.db.QlarrDb
 import com.qlarr.app.db.model.Response
 import com.qlarr.app.db.model.Response.Companion.STORED_FILENAME_KEY
 import com.qlarr.app.ui.common.FileUtils
-import com.qlarr.surveyengine.ext.ScriptUtils
-import com.qlarr.surveyengine.ext.labels
-import com.qlarr.surveyengine.model.ColumnName
+import com.qlarr.surveyengine.ext.JsonExt
+import com.qlarr.surveyengine.ext.engineScript
 import com.qlarr.surveyengine.model.Dependency
-import com.qlarr.surveyengine.model.NavigationDirection
-import com.qlarr.surveyengine.model.NavigationIndex
-import com.qlarr.surveyengine.model.NavigationInfo
-import com.qlarr.surveyengine.model.NavigationUseCaseInput
 import com.qlarr.surveyengine.model.ReservedCode
 import com.qlarr.surveyengine.model.SurveyLang
-import com.qlarr.surveyengine.model.SurveyMode
+import com.qlarr.surveyengine.model.exposed.ColumnName
+import com.qlarr.surveyengine.model.exposed.NavigationDirection
+import com.qlarr.surveyengine.model.exposed.NavigationIndex
+import com.qlarr.surveyengine.model.exposed.NavigationMode
+import com.qlarr.surveyengine.model.exposed.SurveyMode
+import com.qlarr.surveyengine.model.toDependency
 import com.qlarr.surveyengine.usecase.MaskedValuesUseCase
-import com.qlarr.surveyengine.usecase.NavigationJsonOutput
-import com.qlarr.surveyengine.usecase.NavigationUseCaseWrapperImpl
-import com.qlarr.surveyengine.usecase.additionalLang
-import com.qlarr.surveyengine.usecase.availableLangByCode
-import com.qlarr.surveyengine.usecase.defaultLang
-import com.qlarr.surveyengine.usecase.defaultSurveyLang
+import com.qlarr.surveyengine.usecase.NavigationUseCaseWrapper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -75,7 +73,7 @@ class EMNavProcessor(
                 }
             }
         }
-        loadJavaScript(ScriptUtils().engineScript)
+        loadJavaScript(engineScript().script)
     }
 
     private fun loadJavaScript(input: String) {
@@ -88,18 +86,13 @@ class EMNavProcessor(
     fun start(
         navListener: NavigationListener
     ) {
-        val navigationUseCaseInput = NavigationUseCaseInput(
-            navigationInfo = NavigationInfo(
-                navigationDirection = NavigationDirection.Start,
-                navigationIndex = null
-            ),
-        )
         navigationUseCase(
-            navigationUseCaseInput,
+            navigationDirection = NavigationDirection.Start,
+            navigationIndex = null,
             onSuccess = { navigationJsonOutput, lang, additionalLang ->
                 responseId = UUID.randomUUID()
                 saveResponse(
-                    navigationJsonOutput.survey.defaultLang(),
+                    navigationJsonOutput.defaultSurveyLang().code,
                     navigationJsonOutput
                 )
                 val result = navigationJsonOutput
@@ -123,18 +116,13 @@ class EMNavProcessor(
             response = qlarrDb.responseDao().get(responseId.toString())
         }
         val lang = useCaseInput.lang ?: response.lang
-        val navigationUseCaseInput = NavigationUseCaseInput(
+        navigationUseCase(
+            navigationDirection = useCaseInput.navigationDirection!!,
+            navigationIndex = response.navigationIndex,
+            lang = lang,
             values = response.values.toMutableMap().apply {
                 putAll(useCaseInput.values)
             },
-            navigationInfo = NavigationInfo(
-                navigationDirection = useCaseInput.navigationDirection!!,
-                navigationIndex = response.navigationIndex
-            ),
-            lang = lang
-        )
-        navigationUseCase(
-            navigationUseCaseInput,
             onSuccess = { navigationJsonOutput, language, additionalLang ->
                 val result = navigationJsonOutput
                     .with(
@@ -159,11 +147,14 @@ class EMNavProcessor(
         val schema = validationJsonOutput.schema.filter { it.columnName == ColumnName.VALUE }.map {
             it.componentCode
         }
-        val labels =
-            validationJsonOutput.survey.labels("", validationJsonOutput.survey.defaultLang())
+        val labels = JsonExt.labels(
+            validationJsonOutput.survey.toString(),
+            "",
+            validationJsonOutput.defaultSurveyLang().code
+        )
 
         val maskedValuesUseCaseImpl = measure("init useCase") {
-            MaskedValuesUseCase(validationJsonOutput = validationJsonOutput)
+            MaskedValuesUseCase(processedSurvey = objectMapper.writeValueAsString(validationJsonOutput))
         }
         return flow {
             values.forEach { response ->
@@ -199,14 +190,18 @@ class EMNavProcessor(
     }
 
     private suspend fun maskedValuesUseCase(
-        navigationUseCaseImpl: MaskedValuesUseCase,
+        maskedValuesUseCase: MaskedValuesUseCase,
         values: Map<String, Any>,
     ): Map<Dependency, Any> {
 
         return suspendCoroutine { continuation ->
 
             val script = measure("Get script") {
-                navigationUseCaseImpl.getNavigationScript(NavigationUseCaseInput(values = values))
+                maskedValuesUseCase.getNavigationScript(
+                    useCaseValues = objectMapper.writeValueAsString(
+                        values
+                    )
+                )
             }
             try {
                 val start = System.currentTimeMillis()
@@ -216,10 +211,10 @@ class EMNavProcessor(
                         Log.d("time", "javascript ${System.currentTimeMillis() - start}")
                         thread {
                             val result = measure("processResults") {
-                                navigationUseCaseImpl.processNavigationResult(value)
+                                maskedValuesUseCase.processNavigationResult(value)
                             }
                             continuation.resume(
-                                result
+                                result.mapKeys { it.key.toDependency()!! }
                             )
                         }
                     }
@@ -231,23 +226,31 @@ class EMNavProcessor(
     }
 
     private fun navigationUseCase(
-        navigationUseCaseInput: NavigationUseCaseInput,
+        lang: String? = null,
+        values: Map<String, Any> = mapOf(),
+        navigationMode: NavigationMode? = null,
+        navigationIndex: NavigationIndex? = null,
+        navigationDirection: NavigationDirection,
         onSuccess: (NavigationJsonOutput, SurveyLang, List<SurveyLang>) -> Unit,
         onError: (Throwable) -> Unit
     ) {
         val validationJsonOutput = FileUtils.getValidationJson(getActivity(), survey.id)!!
-        val lang = validationJsonOutput.survey.availableLangByCode(navigationUseCaseInput.lang)
+        val currentLang = validationJsonOutput.availableLangByCode(lang)
         val additionalLang =
-            mutableListOf(validationJsonOutput.survey.defaultSurveyLang()).apply {
+            mutableListOf(validationJsonOutput.defaultSurveyLang()).apply {
                 addAll(
-                    validationJsonOutput.survey.additionalLang()
+                    validationJsonOutput.additionalLang()
                 )
             }.filter {
-                it.code != lang.code
+                it.code != currentLang.code
             }
-        val navigationUseCaseWrapperImpl = NavigationUseCaseWrapperImpl(
-            validationJsonOutput = validationJsonOutput,
-            useCaseInput = navigationUseCaseInput,
+        val navigationUseCaseWrapperImpl = NavigationUseCaseWrapper.init(
+            lang = lang,
+            navigationDirection = navigationDirection,
+            navigationMode = navigationMode,
+            processedSurvey = objectMapper.writeValueAsString(validationJsonOutput),
+            values = objectMapper.writeValueAsString(values),
+            navigationIndex = navigationIndex,
             skipInvalid = validationJsonOutput.surveyNavigationData().skipInvalid,
             surveyMode = SurveyMode.OFFLINE
         )
@@ -257,8 +260,12 @@ class EMNavProcessor(
                 thread {
                     try {
                         onSuccess(
-                            navigationUseCaseWrapperImpl.processNavigationResult(value!!),
-                            lang, additionalLang
+                            objectMapper.readValue(
+                                navigationUseCaseWrapperImpl.processNavigationResult(
+                                    value!!
+                                ), jacksonTypeRef<NavigationJsonOutput>()
+                            ),
+                            currentLang, additionalLang
                         )
                     } catch (e: Exception) {
                         onError(e)
@@ -420,7 +427,7 @@ fun NavigationJsonOutput.with(
     lang: SurveyLang,
     additionalLang: List<SurveyLang>,
 )
-    : ApiNavigationOutput {
+        : ApiNavigationOutput {
     return ApiNavigationOutput(
         survey,
         state,

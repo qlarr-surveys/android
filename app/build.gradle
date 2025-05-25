@@ -75,7 +75,7 @@ android {
 }
 
 ext {
-    room_version = '2.6.1'
+    room_version = '2.7.1'
     okhttp_version = '4.12.0'
     coilVersion = '2.7.0'
     koinVersion = '3.5.6'
@@ -86,7 +86,7 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.9.1'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.9.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.0'
-    implementation 'com.github.qlarr-surveys.survey-engine:surveyengine:b7b0638'
+    implementation 'com.github.qlarr-surveys.survey-engine-kmp:surveyengine:ee739bf'
     implementation 'androidx.core:core-ktx:1.16.0'
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'com.google.android.material:material:1.12.0'
@@ -136,10 +136,10 @@ dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
 
     // compose
-    implementation platform('androidx.compose:compose-bom:2025.05.00')
+    implementation platform('androidx.compose:compose-bom:2025.05.01')
     implementation 'androidx.compose.material3:material3'
     implementation 'androidx.activity:activity-compose'
-    implementation 'androidx.fragment:fragment-compose:1.8.6'
+    implementation 'androidx.fragment:fragment-compose:1.8.7'
     // Android Studio Preview support
     implementation 'androidx.compose.ui:ui-tooling-preview'
     debugImplementation 'androidx.compose.ui:ui-tooling'

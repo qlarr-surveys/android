@@ -16,18 +16,17 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.core.content.FileProvider
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.qlarr.app.BuildConfig
+import com.qlarr.app.api.survey.objectMapper
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.ui.common.FileUtils
-import com.qlarr.surveyengine.ext.ScriptUtils
-import com.qlarr.surveyengine.model.NavigationDirection
-import com.qlarr.surveyengine.model.NavigationIndex
-import com.qlarr.surveyengine.model.jacksonKtMapper
+import com.qlarr.surveyengine.ext.commonScript
+import com.qlarr.surveyengine.model.exposed.NavigationDirection
+import com.qlarr.surveyengine.model.exposed.NavigationIndex
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.destination
 import id.zelory.compressor.constraint.size
@@ -67,40 +66,7 @@ class QlarrWebView
 
         private fun Int.toRoundedDp(density: Density): Int = with(density) { this@toRoundedDp.toDp().value.roundToInt() }
         private val qlarrWebViewClient = object : WebViewClient() {
-            override fun onPageFinished(
-                view: WebView?,
-                url: String?,
-            ) {
-                super.onPageFinished(view, url)
-                val density = Density(context)
-                val safeAreaJs = """
-            document.documentElement.style.setProperty('--safe-area-inset-top', '${
-                    insets.getTop(
-                        density,
-                    ).toRoundedDp(density)
-                }px');
-            document.documentElement.style.setProperty('--safe-area-inset-right', '${
-                    insets.getRight(
-                        density,
-                        LayoutDirection.Ltr,
-                    ).toRoundedDp(density)
-                }px');
-            document.documentElement.style.setProperty('--safe-area-inset-bottom', '${
-                    insets.getBottom(
-                        density,
-                    ).toRoundedDp(density)
-                }px');
-            document.documentElement.style.setProperty('--safe-area-inset-left', '${
-                    insets.getLeft(
-                        density,
-                        LayoutDirection.Ltr,
-                    ).toRoundedDp(density)
-            }px');
-            """
-            evaluateJavascript(safeAreaJs, null)
-        }
-
-        override fun shouldInterceptRequest(
+            override fun shouldInterceptRequest(
             view: WebView?, request: WebResourceRequest?
         ): WebResourceResponse? {
             val url = request?.url.toString()
@@ -175,7 +141,7 @@ class QlarrWebView
         @Suppress("unused")
         @JavascriptInterface
         fun navigate(body: String) {
-            val mapper = jacksonKtMapper.registerModule(JavaTimeModule())
+            val mapper = objectMapper.registerModule(JavaTimeModule())
             val navigateRequest: NavigateRequest = mapper.readValue(body)
             navigate(mapper, navigateRequest)
         }
@@ -191,7 +157,7 @@ class QlarrWebView
 
         @JavascriptInterface
         fun start() {
-            val mapper = jacksonKtMapper.registerModule(JavaTimeModule())
+            val mapper = objectMapper.registerModule(JavaTimeModule())
             if (responseId == null) {
                 emNavProcessor.start(object : NavigationListener {
                     override fun onSuccess(apiNavigationOutput: ApiNavigationOutput) {
@@ -273,7 +239,7 @@ class QlarrWebView
                         fileName,
                         stream.readBytes()
                     )
-                    val string = jacksonKtMapper.writeValueAsString(uploadFile)
+                    val string = objectMapper.writeValueAsString(uploadFile)
                     resetFileUploadVariables()
                     loadUrlOnUiThread("javascript:onFileUploaded($string)")
                 }
@@ -283,7 +249,7 @@ class QlarrWebView
         @JavascriptInterface
         fun uploadDataUrl(key: String, dataUrl: String, fileName: String) {
             val uploadFile = emNavProcessor.uploadDataUrl(key, dataUrl, fileName)
-            val string = jacksonKtMapper.writeValueAsString(uploadFile)
+            val string = objectMapper.writeValueAsString(uploadFile)
             loadUrlOnUiThread("javascript:onDataUrlUploaded($string)")
         }
 
@@ -321,7 +287,7 @@ class QlarrWebView
                 "Access-Control-Allow-Methods" to "GET,POST,PUT,DELETE",
                 "Access-Control-Allow-Credentials" to "true",
                 "Access-Control-Allow-Headers" to "access-control-allow-origin"
-            ), (script + "\n" + ScriptUtils().commonScript).byteInputStream()
+            ), (script + "\n" + commonScript().script).byteInputStream()
         )
     }
 
@@ -373,7 +339,7 @@ class QlarrWebView
             }
             loadUrlOnUiThread(
                 "javascript:onPhotoCaptured$operationKey(${
-                    jacksonKtMapper.writeValueAsString(
+                    objectMapper.writeValueAsString(
                         result.copy(size = finalSize)
                     )
                 })"
@@ -420,7 +386,7 @@ class QlarrWebView
             )
             loadUrlOnUiThread(
                 "javascript:onVideoCaptured$operationKey(${
-                    jacksonKtMapper.writeValueAsString(
+                    objectMapper.writeValueAsString(
                         result
                     )
                 })"

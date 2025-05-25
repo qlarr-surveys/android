@@ -8,8 +8,8 @@ import android.webkit.MimeTypeMap
 import androidx.core.content.FileProvider
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.qlarr.app.BuildConfig
-import com.qlarr.surveyengine.model.jacksonKtMapper
-import com.qlarr.surveyengine.usecase.ValidationJsonOutput
+import com.qlarr.app.api.survey.ValidationJsonOutput
+import com.qlarr.app.api.survey.objectMapper
 import java.io.File
 import java.net.URLDecoder
 import java.net.URLEncoder
@@ -78,7 +78,7 @@ object FileUtils {
     }
 
     fun getValidationJson(context: Context, surveyId: String): ValidationJsonOutput? {
-        return jacksonKtMapper.readValue(
+        return objectMapper.readValue(
             getValidationJsonFile(context, surveyId).bufferedReader().use {
                 it.readText()
             }, jacksonTypeRef<ValidationJsonOutput>()
