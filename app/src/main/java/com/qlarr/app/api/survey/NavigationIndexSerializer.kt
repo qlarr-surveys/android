@@ -42,7 +42,7 @@ class NavigationIndexSerializer : StdSerializer<NavigationIndex>(NavigationIndex
             is NavigationIndex.End -> gen.writeStringField("groupId", value.groupId)
             is NavigationIndex.Group -> gen.writeStringField("groupId", value.groupId)
             is NavigationIndex.Groups -> {
-                gen.writeStartArray()
+                gen.writeArrayFieldStart("groupIds")
                 value.groupIds.forEach {
                     gen.writeString(it)
                 }
