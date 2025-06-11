@@ -8,6 +8,7 @@ import com.qlarr.app.api.survey.Survey
 import com.qlarr.app.api.survey.SurveyDesign
 import com.qlarr.app.api.survey.SurveyService
 import com.qlarr.app.api.survey.UploadResponseRequestData
+import com.qlarr.app.business.guest.GuestSurveyRepository
 import com.qlarr.app.db.ResponseDao
 import com.qlarr.app.db.survey.PublishInfoEntity
 import com.qlarr.app.db.survey.SurveyDao
@@ -89,6 +90,7 @@ class SurveyRepositoryImpl(
     private val context: Context,
     private val responseDao: ResponseDao,
     private val sessionManager: SessionManager,
+    private val guestSurveyRepository: GuestSurveyRepository,
 ) : SurveyRepository {
     override suspend fun getSurveyDbEntity(surveyId: String): SurveyDataEntity? = surveyDao.getSurveyDataById(surveyId)
 
@@ -97,7 +99,7 @@ class SurveyRepositoryImpl(
             val offlineSurveys = getOfflineSurveyList()
             emit(offlineSurveys)
             val list =
-                if (sessionManager.isGuest()) guestService.getGuestSurveyList() else service.getSurveyList()
+                if (sessionManager.isGuest()) guestSurveyRepository.getGuestSurveyList() else service.getSurveyList()
             val surveyList =
                 list.map { survey ->
                     val offlineSurvey = offlineSurveys.firstOrNull { it.id == survey.id }
