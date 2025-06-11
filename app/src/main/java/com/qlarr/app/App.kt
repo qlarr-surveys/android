@@ -6,6 +6,7 @@ import coil.ImageLoader
 import coil.ImageLoaderFactory
 import coil.request.CachePolicy
 import com.qlarr.app.di.androidModule
+import com.qlarr.app.di.guestModule
 import com.qlarr.app.di.launchModule
 import com.qlarr.app.di.loginModule
 import com.qlarr.app.di.mainModule
@@ -15,8 +16,9 @@ import com.qlarr.app.di.surveyModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
-class App : Application(), ImageLoaderFactory {
-
+class App :
+    Application(),
+    ImageLoaderFactory {
     override fun onCreate() {
         super.onCreate()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -29,14 +31,17 @@ class App : Application(), ImageLoaderFactory {
                 mainModule,
                 refreshTokenModule,
                 responsesModule,
-                surveyModule
+                surveyModule,
+                guestModule,
             )
         }
     }
 
-    override fun newImageLoader(): ImageLoader = ImageLoader.Builder(this)
-        .diskCachePolicy(CachePolicy.ENABLED)
-        .memoryCachePolicy(CachePolicy.ENABLED)
-        .crossfade(true)
-        .build()
+    override fun newImageLoader(): ImageLoader =
+        ImageLoader
+            .Builder(this)
+            .diskCachePolicy(CachePolicy.ENABLED)
+            .memoryCachePolicy(CachePolicy.ENABLED)
+            .crossfade(true)
+            .build()
 }

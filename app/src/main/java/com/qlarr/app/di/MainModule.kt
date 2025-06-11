@@ -20,7 +20,17 @@ import org.koin.dsl.module
 val mainModule = module {
     single<SurveyService> { retrofitAuthenticatedEndpoints(get(), get()).create(SurveyService::class.java) }
     single<GuestService> { retrofitGuest().create(GuestService::class.java) }
-    single<SurveyRepository> { SurveyRepositoryImpl(get(), get(), get(), get(), get(), get()) }
+    single<SurveyRepository> {
+        SurveyRepositoryImpl(
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+        )
+    }
     single<ResponseRepository> { ResponseRepositoryImpl(get()) }
     single<UploadSurveyResponsesUseCase> {
         UploadSurveyResponsesUseCaseImpl(
