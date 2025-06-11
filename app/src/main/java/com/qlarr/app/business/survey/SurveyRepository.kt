@@ -137,7 +137,7 @@ class SurveyRepositoryImpl(
     ): SurveyData {
         val design =
             if (sessionManager.isGuest()) {
-                guestService.getGuestSurveyDesign(survey.id, PublishInfo())
+                guestSurveyRepository.getGuestSurveyDesign(survey.id)
             } else {
                 service.getSurveyDesign(survey.id, PublishInfo())
             }
