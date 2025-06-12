@@ -9,16 +9,17 @@ import com.qlarr.app.api.survey.Survey
 import com.qlarr.app.api.survey.SurveyDesign
 import com.qlarr.app.api.survey.objectMapper
 import java.io.IOException
+import java.io.InputStream
 
 interface GuestSurveyRepository {
     suspend fun getGuestSurveyList(): List<Survey>
 
     suspend fun getGuestSurveyDesign(surveyId: String): SurveyDesign
-//
-//    suspend fun getSurveyFile(
-//       surveyId: String,
-//       resourceId: String
-//    )
+
+    suspend fun getSurveyFile(
+        surveyId: String,
+        resourceId: String,
+    ): InputStream
 }
 
 class GuestSurveyRepositoryImpl(
@@ -29,10 +30,11 @@ class GuestSurveyRepositoryImpl(
     override suspend fun getGuestSurveyDesign(surveyId: String): SurveyDesign {
         val assetManager = appContext.assets
 
-        val surveyFolderPath = "${BASE_PATH}/${surveyFolderMap[surveyId]!!}"
+        val surveyFolderPath = surveyFolderMap[surveyId]!!
+        val resourcesPath = "$surveyFolderPath/resources"
         val files =
-            assetManager.list("$surveyFolderPath/resources")!!.map { filename ->
-                val fd = assetManager.openFd(filename)
+            assetManager.list(resourcesPath)!!.map { filename ->
+                val fd = assetManager.openFd("$resourcesPath/$filename")
                 FileData(filename, fd.length)
             }
         return try {
@@ -47,6 +49,11 @@ class GuestSurveyRepositoryImpl(
             SurveyDesign(listOf(), PublishInfo(1, 1), null)
         }
     }
+
+    override suspend fun getSurveyFile(
+        surveyId: String,
+        resourceId: String,
+    ): InputStream = appContext.assets.open("${surveyFolderMap[surveyId]!!}/resources/$resourceId")
 
     override suspend fun getGuestSurveyList(): List<Survey> {
         val folders = listFolders()

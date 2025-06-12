@@ -28,7 +28,6 @@ val mainModule = module {
             get(),
             get(),
             get(),
-            get(),
         )
     }
     single<ResponseRepository> { ResponseRepositoryImpl(get()) }

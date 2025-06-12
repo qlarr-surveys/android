@@ -1,7 +1,6 @@
 package com.qlarr.app.business.survey
 
 import android.content.Context
-import com.qlarr.app.api.survey.GuestService
 import com.qlarr.app.api.survey.PublishInfo
 import com.qlarr.app.api.survey.ResponseCount
 import com.qlarr.app.api.survey.Survey
@@ -85,7 +84,6 @@ interface SurveyRepository {
 
 class SurveyRepositoryImpl(
     private val service: SurveyService,
-    private val guestService: GuestService,
     private val surveyDao: SurveyDao,
     private val context: Context,
     private val responseDao: ResponseDao,
@@ -213,7 +211,7 @@ class SurveyRepositoryImpl(
 
     override suspend fun surveyDesign(id: String): SurveyDesign =
         if (sessionManager.isGuest()) {
-            guestService.getGuestSurveyDesign(id)
+            guestSurveyRepository.getGuestSurveyDesign(id)
         } else {
             service.getSurveyDesign(id)
         }
@@ -230,10 +228,10 @@ class SurveyRepositoryImpl(
     ): Flow<Result<SurveyRepository.DataStream>> =
         flow {
             if (sessionManager.isGuest()) {
-                guestService.getSurveyFile(surveyId, resourceId)
+                guestSurveyRepository.getSurveyFile(surveyId, resourceId)
             } else {
-                service.getSurveyFile(surveyId, resourceId)
-            }.byteStream().use { inputStream ->
+                service.getSurveyFile(surveyId, resourceId).byteStream()
+            }.use { inputStream ->
                 val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
                 var bytes = inputStream.read(buffer)
                 while (bytes >= 0) {
