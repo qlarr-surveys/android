@@ -1,7 +1,7 @@
 package com.qlarr.app.business.survey
 
-import com.qlarr.app.BuildConfig
 import com.qlarr.app.api.auth.LoginResponse
+import com.qlarr.app.business.guest.GuestSurveyRepository
 import com.qlarr.app.business.settings.SharedPrefsManager
 import okhttp3.HttpUrl.Companion.toHttpUrl
 
@@ -42,7 +42,7 @@ class SessionManagerImpl(
 
     override fun saveUserAsGuest() {
         sharedPrefsManager.isGuest = true
-        sharedPrefsManager.env = BackendEnvironment.SAAS
+        sharedPrefsManager.env = BackendEnvironment.Guest
     }
 
     override fun saveEnv(environment: BackendEnvironment) {
@@ -58,7 +58,8 @@ class SessionManagerImpl(
 sealed class BackendEnvironment(
     open val baseUrl: String,
 ) {
-    data object SAAS : BackendEnvironment(baseUrl = BuildConfig.CLOUD_SERVER_URL)
+    data object Guest :
+        BackendEnvironment(baseUrl = "file:///android_asset/${GuestSurveyRepository.BASE_PATH}")
 
     data class Private(
         override val baseUrl: String,
@@ -66,7 +67,7 @@ sealed class BackendEnvironment(
 
     fun toSharedPrefsString(): String =
         when (this) {
-            is SAAS -> "SAAS"
+            is Guest -> "GUEST"
             is Private -> baseUrl
         }
 
@@ -74,7 +75,7 @@ sealed class BackendEnvironment(
         fun fromSharedPrefsString(value: String?): BackendEnvironment? =
             when {
                 value.isNullOrEmpty() -> null
-                value == "SAAS" -> SAAS
+                value == "GUEST" -> Guest
                 isValidUrl(value) -> Private(value)
                 else -> null
             }

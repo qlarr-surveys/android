@@ -8,6 +8,7 @@ import com.qlarr.app.api.survey.PublishInfo
 import com.qlarr.app.api.survey.Survey
 import com.qlarr.app.api.survey.SurveyDesign
 import com.qlarr.app.api.survey.objectMapper
+import com.qlarr.app.business.guest.GuestSurveyRepository.Companion.BASE_PATH
 import java.io.IOException
 import java.io.InputStream
 
@@ -20,6 +21,10 @@ interface GuestSurveyRepository {
         surveyId: String,
         resourceId: String,
     ): InputStream
+
+    companion object {
+        const val BASE_PATH = "example-surveys"
+    }
 }
 
 class GuestSurveyRepositoryImpl(
@@ -90,9 +95,5 @@ class GuestSurveyRepositoryImpl(
             Log.e("AssetUtils", "JSON parse error in $surveyFilePath", e)
             null
         }
-    }
-
-    companion object {
-        private const val BASE_PATH = "example-surveys"
     }
 }

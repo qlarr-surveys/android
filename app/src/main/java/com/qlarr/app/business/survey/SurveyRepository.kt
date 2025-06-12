@@ -153,7 +153,7 @@ class SurveyRepositoryImpl(
         val surveyData =
             SurveyData.fromSurveyAndDesign(
                 survey = survey,
-                baseUrl = sessionManager.env()!!.baseUrl,
+                env = sessionManager.env()!!,
                 currentPublishInfo = offlineSurvey?.publishInfo?.toPublishInfo() ?: PublishInfo(),
                 newVersionAvailable = newVersionAvailable,
                 responsesCount = count,

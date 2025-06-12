@@ -77,7 +77,7 @@ data class SurveyData(
     companion object {
         fun fromSurveyAndDesign(
             survey: Survey,
-            baseUrl: String,
+            env: BackendEnvironment,
             currentPublishInfo: PublishInfo,
             newVersionAvailable: Boolean,
             responsesCount: Int,
@@ -107,7 +107,10 @@ data class SurveyData(
                 description = survey.description ?: "",
                 imageUrl =
                     survey.imageName?.let { name ->
-                        ("$baseUrl/survey/${survey.id}/resource/$name")
+                        when (env) {
+                            BackendEnvironment.Guest -> "${env.baseUrl}/${survey.id}/resources/$name"
+                            is BackendEnvironment.Private -> "${env.baseUrl}/survey/${survey.id}/resource/$name"
+                        }
                     } ?: "",
                 cachedDesign = cachedDesign,
                 cachedAllFiles = cachedAllFiles,
