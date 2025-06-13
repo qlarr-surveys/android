@@ -30,12 +30,10 @@ interface GuestSurveyRepository {
 class GuestSurveyRepositoryImpl(
     private val appContext: Context,
 ) : GuestSurveyRepository {
-    private val surveyFolderMap: MutableMap<String, String> = mutableMapOf()
-
     override suspend fun getGuestSurveyDesign(surveyId: String): SurveyDesign {
         val assetManager = appContext.assets
 
-        val surveyFolderPath = surveyFolderMap[surveyId]!!
+        val surveyFolderPath = getSurveyPath(surveyId)
         val resourcesPath = "$surveyFolderPath/resources"
         val files =
             assetManager.list(resourcesPath)!!.map { filename ->
@@ -58,27 +56,18 @@ class GuestSurveyRepositoryImpl(
     override suspend fun getSurveyFile(
         surveyId: String,
         resourceId: String,
-    ): InputStream = appContext.assets.open("${surveyFolderMap[surveyId]!!}/resources/$resourceId")
+    ): InputStream = appContext.assets.open("${getSurveyPath(surveyId)}/resources/$resourceId")
 
     override suspend fun getGuestSurveyList(): List<Survey> {
-        val folders = listFolders()
+        val assetManager = appContext.assets
+        val folders =
+            runCatching {
+                assetManager.list(BASE_PATH)?.toList()
+            }.getOrNull() ?: emptyList()
+
         return folders.mapNotNull { folder ->
             val folderPath = "$BASE_PATH/$folder"
-            val survey = getSurveyFromAssets(folderPath)
-            if (survey != null) {
-                surveyFolderMap.put(survey.id, folderPath)
-            }
-            survey
-        }
-    }
-
-    private fun listFolders(): List<String> {
-        val assetManager = appContext.assets
-        return try {
-            assetManager.list(BASE_PATH)?.toList() ?: emptyList()
-        } catch (e: IOException) {
-            Log.e("AssetUtils", "Error listing directories", e)
-            emptyList()
+            getSurveyFromAssets(folderPath)
         }
     }
 
@@ -96,4 +85,6 @@ class GuestSurveyRepositoryImpl(
             null
         }
     }
+
+    private fun getSurveyPath(surveyId: String) = "$BASE_PATH/$surveyId"
 }
