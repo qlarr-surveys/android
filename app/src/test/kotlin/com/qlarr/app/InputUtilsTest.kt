@@ -16,6 +16,6 @@ class InputUtilsTest {
     }
 
     companion object {
-        private const val SERVER_NAME = "https://stg.api.qlarr.com"
+        private const val SERVER_NAME = "https://some.server.com"
     }
 }

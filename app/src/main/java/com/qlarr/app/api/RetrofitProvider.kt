@@ -28,8 +28,6 @@ object RetrofitProvider {
                 ).build(),
         )
 
-    fun retrofitGuest(): Retrofit = getRetrofit(BuildConfig.CLOUD_SERVER_URL, getHttpClientBuilder(60).build())
-
     fun retrofitAuthenticatedEndpoints(
         sessionManager: SessionManager,
         refreshTokenUseCase: RefreshTokenUseCase,

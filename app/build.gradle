@@ -36,14 +36,12 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField "String", "CLOUD_SERVER_URL", "\"https://stg.api.qlarr.com\""
             applicationIdSuffix '.debug'
             debuggable true
             crunchPngs false
             signingConfig signingConfigs.debug
         }
         release {
-            buildConfigField "String", "CLOUD_SERVER_URL", "\"https://api.qlarr.com\""
             crunchPngs true
             debuggable false
             minifyEnabled true
