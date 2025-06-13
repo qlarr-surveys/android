@@ -1,9 +1,9 @@
 package com.qlarr.app.api
 
 import android.util.Log
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.qlarr.app.BuildConfig
+import com.qlarr.app.api.survey.objectMapper
 import com.qlarr.app.business.auth.RefreshTokenUseCase
 import com.qlarr.app.business.survey.SessionManager
 import kotlinx.coroutines.runBlocking
@@ -88,7 +88,7 @@ object RetrofitProvider {
         .baseUrl(baseUrl)
         .addConverterFactory(
             JacksonConverterFactory.create(
-                ObjectMapper().registerModule(
+                objectMapper.registerModule(
                     JavaTimeModule(),
                 ),
             ),
