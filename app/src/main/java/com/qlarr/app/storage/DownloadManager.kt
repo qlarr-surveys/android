@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import java.io.File
 import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 interface DownloadManager {
     suspend fun downloadSurveyFiles(surveyData: SurveyData): Flow<DownloadState>
@@ -41,15 +42,15 @@ class DownloadManagerImpl(
             val totalBytesToDownload = design.files.sumOf { it.size }.toFloat()
             var someFilesFailed = false
             var downloadPercent = 0
-            var currentDownloadedSize = 0
+            var currentDownloadedSize = 0L
             design.files
                 .filter { !getResourceFile(appContext, it.name, surveyData.id).exists() }
                 .forEachIndexed { index, file ->
                 val newStateWithFile = loadingState.copy(
                     currentFileName = file.name,
                     currentDownloadedSize = currentDownloadedSize,
-                    totalSize = totalBytesToDownload.toInt(),
-                    downloadPercent = downloadPercent,
+                        totalSize = totalBytesToDownload.roundToLong(),
+                        downloadPercent = downloadPercent,
                     downloadedFileCount = downloadedFiles
                 )
                 emit(newStateWithFile)
@@ -172,8 +173,8 @@ sealed class DownloadState {
         val downloadedFileCount: Int = 0,
         val currentFileName: String = "",
         val downloadPercent: Int = 0,
-        val totalSize: Int = 0,
-        val currentDownloadedSize: Int = 0,
+        val totalSize: Long = 0,
+        val currentDownloadedSize: Long = 0,
     ) : DownloadState()
 
     data class Result(val surveyData: SurveyData, val someFilesFailed: Boolean) : DownloadState()

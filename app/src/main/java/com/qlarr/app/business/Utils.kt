@@ -32,7 +32,7 @@ inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? =
                 as? T
     }
 
-fun formatBytes(bytes: Int): FormattedBytes {
+fun formatBytes(bytes: Long): FormattedBytes {
     val kilobyte = 1024
     val megabyte = kilobyte * 1024
 

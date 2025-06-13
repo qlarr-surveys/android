@@ -1,13 +1,13 @@
 package com.qlarr.app.business.survey
 
 import android.content.Context
-import com.qlarr.app.api.survey.GuestService
 import com.qlarr.app.api.survey.PublishInfo
 import com.qlarr.app.api.survey.ResponseCount
 import com.qlarr.app.api.survey.Survey
 import com.qlarr.app.api.survey.SurveyDesign
 import com.qlarr.app.api.survey.SurveyService
 import com.qlarr.app.api.survey.UploadResponseRequestData
+import com.qlarr.app.business.guest.GuestSurveyRepository
 import com.qlarr.app.db.ResponseDao
 import com.qlarr.app.db.survey.PublishInfoEntity
 import com.qlarr.app.db.survey.SurveyDao
@@ -84,11 +84,11 @@ interface SurveyRepository {
 
 class SurveyRepositoryImpl(
     private val service: SurveyService,
-    private val guestService: GuestService,
     private val surveyDao: SurveyDao,
     private val context: Context,
     private val responseDao: ResponseDao,
     private val sessionManager: SessionManager,
+    private val guestSurveyRepository: GuestSurveyRepository,
 ) : SurveyRepository {
     override suspend fun getSurveyDbEntity(surveyId: String): SurveyDataEntity? = surveyDao.getSurveyDataById(surveyId)
 
@@ -97,7 +97,7 @@ class SurveyRepositoryImpl(
             val offlineSurveys = getOfflineSurveyList()
             emit(offlineSurveys)
             val list =
-                if (sessionManager.isGuest()) guestService.getGuestSurveyList() else service.getSurveyList()
+                if (sessionManager.isGuest()) guestSurveyRepository.getGuestSurveyList() else service.getSurveyList()
             val surveyList =
                 list.map { survey ->
                     val offlineSurvey = offlineSurveys.firstOrNull { it.id == survey.id }
@@ -135,7 +135,7 @@ class SurveyRepositoryImpl(
     ): SurveyData {
         val design =
             if (sessionManager.isGuest()) {
-                guestService.getGuestSurveyDesign(survey.id, PublishInfo())
+                guestSurveyRepository.getGuestSurveyDesign(survey.id)
             } else {
                 service.getSurveyDesign(survey.id, PublishInfo())
             }
@@ -153,7 +153,7 @@ class SurveyRepositoryImpl(
         val surveyData =
             SurveyData.fromSurveyAndDesign(
                 survey = survey,
-                baseUrl = sessionManager.env()!!.baseUrl,
+                env = sessionManager.env()!!,
                 currentPublishInfo = offlineSurvey?.publishInfo?.toPublishInfo() ?: PublishInfo(),
                 newVersionAvailable = newVersionAvailable,
                 responsesCount = count,
@@ -211,7 +211,7 @@ class SurveyRepositoryImpl(
 
     override suspend fun surveyDesign(id: String): SurveyDesign =
         if (sessionManager.isGuest()) {
-            guestService.getGuestSurveyDesign(id)
+            guestSurveyRepository.getGuestSurveyDesign(id)
         } else {
             service.getSurveyDesign(id)
         }
@@ -228,10 +228,10 @@ class SurveyRepositoryImpl(
     ): Flow<Result<SurveyRepository.DataStream>> =
         flow {
             if (sessionManager.isGuest()) {
-                guestService.getSurveyFile(surveyId, resourceId)
+                guestSurveyRepository.getSurveyFile(surveyId, resourceId)
             } else {
-                service.getSurveyFile(surveyId, resourceId)
-            }.byteStream().use { inputStream ->
+                service.getSurveyFile(surveyId, resourceId).byteStream()
+            }.use { inputStream ->
                 val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
                 var bytes = inputStream.read(buffer)
                 while (bytes >= 0) {

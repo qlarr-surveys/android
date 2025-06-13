@@ -1,0 +1,25 @@
+{
+  "id": "7d48f36c-5642-46a6-8ec4-f68e1e3e329d",
+  "creationDate": "2025-06-13 17:36:30",
+  "lastModified": "2025-06-13 17:39:23",
+  "startDate": null,
+  "endDate": null,
+  "name": "Example",
+  "description": null,
+  "image": "SnO0HjZtTN.jpg",
+  "status": "active",
+  "usage": "mixed",
+  "surveyQuota": -1,
+  "responsesCount": 0,
+  "completeResponseCount": 0,
+  "latestVersion": {
+    "surveyId": "7d48f36c-5642-46a6-8ec4-f68e1e3e329d",
+    "version": 1,
+    "subVersion": 1,
+    "valid": true,
+    "published": false,
+    "lastModified": "2025-06-13 17:39:23",
+    "status": "active"
+  },
+  "publicWithinOrg": true
+}
