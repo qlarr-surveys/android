@@ -1,0 +1,25 @@
+{
+  "id": "66d762b3-eff1-49db-be30-050e6486acec",
+  "creationDate": "2025-05-25 18:33:20",
+  "lastModified": "2025-06-13 17:51:17",
+  "startDate": null,
+  "endDate": null,
+  "name": "Workshop Feedback",
+  "description": "Thank you for participating in our workshop! Your feedback is valuable and will help us improve future events. This survey should take approximately 5-7 minutes to complete.",
+  "image": "L3x313nlI0.jpg",
+  "status": "active",
+  "usage": "mixed",
+  "surveyQuota": -1,
+  "responsesCount": 0,
+  "completeResponseCount": 0,
+  "latestVersion": {
+    "surveyId": "66d762b3-eff1-49db-be30-050e6486acec",
+    "version": 1,
+    "subVersion": 1,
+    "valid": true,
+    "published": false,
+    "lastModified": "2025-06-13 17:51:17",
+    "status": "active"
+  },
+  "publicWithinOrg": true
+}
