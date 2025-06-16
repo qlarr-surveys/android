@@ -63,7 +63,7 @@ class SurveyActivity : ComponentActivity() {
     private var qlarrWebView: QlarrWebView? = null
 
     private val surveyViewModel: SurveyViewModel by viewModel { parametersOf(survey.id) }
-    private val errorDisplayManager: ErrorDisplayManager by inject()
+    private val errorDisplayManager: ErrorDisplayManager by inject { parametersOf(this) }
 
     val survey: SurveyData
         get() =
