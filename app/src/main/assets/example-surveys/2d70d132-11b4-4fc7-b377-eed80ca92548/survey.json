@@ -1,0 +1,25 @@
+{
+  "id": "2d70d132-11b4-4fc7-b377-eed80ca92548",
+  "creationDate": "2025-04-04 10:51:10",
+  "lastModified": "2025-04-07 17:01:07",
+  "startDate": null,
+  "endDate": null,
+  "name": "Theming and Visual Experience",
+  "description": "Explore how Qlarr helps you design visually engaging, branded surveys—no coding needed.",
+  "image": "jkbcIre61m.png",
+  "status": "draft",
+  "usage": "mixed",
+  "surveyQuota": -1,
+  "responsesCount": 0,
+  "completeResponseCount": 0,
+  "latestVersion": {
+    "surveyId": "2d70d132-11b4-4fc7-b377-eed80ca92548",
+    "version": 1,
+    "subVersion": 1,
+    "valid": true,
+    "published": false,
+    "lastModified": "2025-04-07 16:43:58",
+    "status": "draft"
+  },
+  "publicWithinOrg": true
+}
