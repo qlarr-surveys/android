@@ -37,8 +37,14 @@ class GuestSurveyRepositoryImpl(
         val resourcesPath = "$surveyFolderPath/resources"
         val files =
             assetManager.list(resourcesPath)!!.map { filename ->
-                val fd = assetManager.openFd("$resourcesPath/$filename")
-                FileData(filename, fd.length)
+                val length =
+                    assetManager
+                        .open("$resourcesPath/$filename")
+                        .use {
+                            it.available()
+                        }.toLong()
+
+                FileData(filename, length)
             }
         return try {
             assetManager
