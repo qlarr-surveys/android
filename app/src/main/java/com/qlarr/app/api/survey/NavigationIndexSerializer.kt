@@ -1,4 +1,4 @@
-package com.qlarr.backend.expressionmanager
+package com.qlarr.app.api.survey
 
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
@@ -8,34 +8,42 @@ import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
-import com.qlarr.surveyengine.model.exposed.NavigationDirection
 import com.qlarr.surveyengine.model.exposed.NavigationIndex
 
 class NavigationIndexDeserializer : StdDeserializer<NavigationIndex>(NavigationIndex::class.java) {
-    override fun deserialize(p: JsonParser, ctxt: DeserializationContext): NavigationIndex {
+    override fun deserialize(
+        p: JsonParser,
+        ctxt: DeserializationContext,
+    ): NavigationIndex {
         val node: JsonNode = p.codec.readTree(p)
         var objName = ""
         var groupId = ""
+        var questionId = ""
         var groupIds = listOf<String>()
         node.fieldNames().forEach { name ->
             when (name) {
                 "name" -> objName = node[name].textValue()
                 "groupId" -> groupId = node[name].textValue()
+                "questionId" -> questionId = node[name].textValue()
                 "groupIds" -> groupIds = (node[name] as ArrayNode).map { it.textValue() }
             }
         }
-        return when(objName) {
+        return when (objName) {
             "end" -> NavigationIndex.End(groupId)
             "group" -> NavigationIndex.Group(groupId)
             "groups" -> NavigationIndex.Groups(groupIds)
-            "question" -> NavigationIndex.Question(groupId)
+            "question" -> NavigationIndex.Question(questionId)
             else -> throw IllegalStateException("invalid name for NavigationIndex")
         }
     }
 }
 
 class NavigationIndexSerializer : StdSerializer<NavigationIndex>(NavigationIndex::class.java) {
-    override fun serialize(value: NavigationIndex, gen: JsonGenerator, provider: SerializerProvider) {
+    override fun serialize(
+        value: NavigationIndex,
+        gen: JsonGenerator,
+        provider: SerializerProvider,
+    ) {
         gen.writeStartObject()
         gen.writeStringField("name", value.name)
         when (value) {
