@@ -1,0 +1,24 @@
+{
+  "id": "735f9e02-c266-41a8-8121-32554708e98d",
+  "creationDate": "2025-07-06 17:18:07",
+  "lastModified": "2025-07-06 17:19:36",
+  "startDate": null,
+  "endDate": null,
+  "name": "Survey Logic",
+  "description": "Explore Qlarr's smart features like skip logic, show/hide logic, validation, piping values and navigation.",
+  "image": "1uAQFxpT1J.webp",
+  "status": "active",
+  "usage": "web",
+  "surveyQuota": -1,
+  "responsesCount": 0,
+  "completeResponseCount": 0,
+  "latestVersion": {
+    "surveyId": "735f9e02-c266-41a8-8121-32554708e98d",
+    "version": 1,
+    "subVersion": 1,
+    "valid": true,
+    "published": false,
+    "lastModified": "2025-07-06 17:19:36",
+    "status": "active"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "0508ae6d-6e35-4181-abf1-707fa5a24357",
+  "creationDate": "2025-06-29 11:53:21",
+  "lastModified": "2025-06-29 12:06:23",
+  "startDate": null,
+  "endDate": null,
+  "name": "Question Types",
+  "description": "Experience Qlarr’s different question types, designed to capture any response with style, clarity, and precision.",
+  "image": "lWQ1yMeDQt.webp",
+  "status": "active",
+  "usage": "mixed",
+  "surveyQuota": -1,
+  "responsesCount": 0,
+  "completeResponseCount": 0,
+  "latestVersion": {
+    "surveyId": "0508ae6d-6e35-4181-abf1-707fa5a24357",
+    "version": 1,
+    "subVersion": 1,
+    "valid": true,
+    "published": false,
+    "lastModified": "2025-06-29 12:05:44",
+    "status": "active"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "206b9a07-1c52-4fc3-b0d3-badebf256138",
+  "creationDate": "2025-07-06 17:18:31",
+  "lastModified": "2025-07-06 17:19:19",
+  "startDate": null,
+  "endDate": null,
+  "name": "Randomization and Sampling",
+  "description": "See how Qlarr helps reduce bias and streamline surveys with smart randomization and sampling.",
+  "image": "1hJxSbsyNq.webp",
+  "status": "active",
+  "usage": "mixed",
+  "surveyQuota": -1,
+  "responsesCount": 0,
+  "completeResponseCount": 0,
+  "latestVersion": {
+    "surveyId": "206b9a07-1c52-4fc3-b0d3-badebf256138",
+    "version": 1,
+    "subVersion": 1,
+    "valid": true,
+    "published": false,
+    "lastModified": "2025-07-06 17:19:19",
+    "status": "active"
+  }
+}
