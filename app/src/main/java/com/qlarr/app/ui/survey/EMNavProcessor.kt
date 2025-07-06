@@ -19,7 +19,6 @@ import com.qlarr.app.db.model.Response
 import com.qlarr.app.db.model.Response.Companion.STORED_FILENAME_KEY
 import com.qlarr.app.ui.common.FileUtils
 import com.qlarr.surveyengine.ext.JsonExt
-import com.qlarr.surveyengine.ext.engineScript
 import com.qlarr.surveyengine.model.Dependency
 import com.qlarr.surveyengine.model.ReservedCode
 import com.qlarr.surveyengine.model.SurveyLang
@@ -29,6 +28,7 @@ import com.qlarr.surveyengine.model.exposed.NavigationIndex
 import com.qlarr.surveyengine.model.exposed.NavigationMode
 import com.qlarr.surveyengine.model.exposed.SurveyMode
 import com.qlarr.surveyengine.model.toDependency
+import com.qlarr.surveyengine.scriptengine.engineScript
 import com.qlarr.surveyengine.usecase.MaskedValuesUseCase
 import com.qlarr.surveyengine.usecase.NavigationUseCaseWrapper
 import kotlinx.coroutines.CoroutineScope

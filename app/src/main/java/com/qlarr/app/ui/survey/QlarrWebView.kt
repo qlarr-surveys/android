@@ -25,9 +25,9 @@ import com.qlarr.app.BuildConfig
 import com.qlarr.app.api.survey.objectMapper
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.ui.common.FileUtils
-import com.qlarr.surveyengine.ext.commonScript
 import com.qlarr.surveyengine.model.exposed.NavigationDirection
 import com.qlarr.surveyengine.model.exposed.NavigationIndex
+import com.qlarr.surveyengine.scriptengine.commonScript
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.destination
 import id.zelory.compressor.constraint.size
