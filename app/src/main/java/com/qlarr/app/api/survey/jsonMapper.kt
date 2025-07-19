@@ -16,6 +16,7 @@ import com.qlarr.surveyengine.model.ReservedCode
 import com.qlarr.surveyengine.model.SurveyLang
 import com.qlarr.surveyengine.model.exposed.NavigationDirection
 import com.qlarr.surveyengine.model.exposed.NavigationIndex
+import com.qlarr.surveyengine.model.exposed.ReturnType
 
 val objectMapper: ObjectMapper =
     ObjectMapper()
@@ -32,11 +33,13 @@ val objectMapper: ObjectMapper =
                 .addSerializer(NavigationDirectionSerializer())
                 .addSerializer(SurveyLangSerializer())
                 .addSerializer(ReservedCodeSerializer())
+                .addSerializer(ReturnTypeSerializer())
                 .addDeserializer(SurveyLang::class.java, SurveyLangDeserializer())
                 .addDeserializer(NavigationIndex::class.java, NavigationIndexDeserializer())
                 .addDeserializer(NavigationDirection::class.java, NavigationDirectionDeserializer())
                 .addDeserializer(SurveyLang::class.java, SurveyLangDeserializer())
-                .addDeserializer(ReservedCode::class.java, ReservedCodeDeserializer()),
+                .addDeserializer(ReservedCode::class.java, ReservedCodeDeserializer())
+                .addDeserializer(ReturnType::class.java, ReturnTypeDeserializer()),
         ).setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
         .registerModules(JavaTimeModule())
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
