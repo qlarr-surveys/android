@@ -30,16 +30,18 @@ interface SurveyService {
     ): ResponseBody
 
     @Multipart
-    @POST("survey/{surveyId}/offline/response/upload/{fileName}")
+    @POST("survey/{surveyId}/offline/response/{responseId}/upload/{fileName}")
     suspend fun uploadSurveyFile(
         @Path("surveyId") surveyId: String,
+        @Path("responseId") responseId: String,
         @Path("fileName") fileName: String,
         @Part file: MultipartBody.Part
     ): Response<Unit>
 
-    @POST("survey/{surveyId}/offline/response/upload/{fileName}/exists")
+    @POST("survey/{surveyId}/offline/response/{responseId}/upload/{fileName}/exists")
     suspend fun fileExists(
         @Path("surveyId") surveyId: String,
+        @Path("responseId") responseId: String,
         @Path("fileName") fileName: String
     ): Boolean
 
