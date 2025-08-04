@@ -44,6 +44,7 @@ interface SurveyRepository {
 
     suspend fun uploadSurveyResponseFile(
         surveyId: String,
+        responseId: String,
         fileName: String,
         storedFileName: String,
         file: File,
@@ -51,6 +52,7 @@ interface SurveyRepository {
 
     suspend fun fileOnServer(
         surveyId: String,
+        responseId: String,
         fileName: String,
     ): Boolean
 
@@ -255,6 +257,7 @@ class SurveyRepositoryImpl(
 
     override suspend fun uploadSurveyResponseFile(
         surveyId: String,
+        responseId: String,
         fileName: String,
         storedFileName: String,
         file: File,
@@ -269,13 +272,14 @@ class SurveyRepositoryImpl(
                 file.asRequestBody(fileType.toMediaType()),
             )
 
-        service.uploadSurveyFile(surveyId, storedFileName, multipartBody)
+        service.uploadSurveyFile(surveyId, responseId, storedFileName, multipartBody)
     }
 
     override suspend fun fileOnServer(
         surveyId: String,
+        responseId: String,
         fileName: String,
-    ): Boolean = service.fileExists(surveyId, fileName)
+    ): Boolean = service.fileExists(surveyId, responseId, fileName)
 
     override suspend fun uploadSurveyResponse(
         surveyId: String,
