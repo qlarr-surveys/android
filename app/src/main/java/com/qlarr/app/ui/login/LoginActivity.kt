@@ -43,7 +43,7 @@ class LoginActivity : AppCompatActivity() {
             viewModel.loginState.collect { state ->
                 binding.btnLogin.isLoading = state.isLoading
                 if (state.backPressed){
-                    super.onBackPressed()
+                    finish()
                 }
 
                 binding.envSelector.visibleOrGone(state.selection == EnvSelection.NONE)
@@ -86,7 +86,6 @@ class LoginActivity : AppCompatActivity() {
     private fun setupBackPress() {
         onBackPressedDispatcher.addCallback {
             viewModel.onBackPressed()
-            finish()
         }
     }
 

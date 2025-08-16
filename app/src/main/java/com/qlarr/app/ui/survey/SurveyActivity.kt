@@ -352,10 +352,6 @@ class SurveyActivity : ComponentActivity() {
         Toast.makeText(this, R.string.canceled, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-    }
-
     fun reportError(error: Throwable) {
         surveyViewModel.reportError(error)
     }
