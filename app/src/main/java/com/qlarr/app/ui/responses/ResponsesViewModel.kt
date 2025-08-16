@@ -168,12 +168,12 @@ class ResponsesViewModel(
             submitDateString = submitDate?.toFormattedString(),
             editEnabled = !quotaExceeded && submitDate == null,
             deleteEnabled = !isSynced,
-            values = values.valuesToData(),
+            values = toResponseValueData(),
             lang = lang,
         )
 
-    private fun Map<String, Any>.valuesToData() =
-        mapNotNull {
+    private fun Response.toResponseValueData() =
+        values.mapNotNull {
             if ((it.value as? LinkedHashMap<*, *>)?.run {
                     containsKey(KEY_FILENAME) &&
                         containsKey(KEY_STORED_FILENAME) &&
@@ -186,6 +186,7 @@ class ResponsesViewModel(
                         context = getApplication(),
                         fileName = map[KEY_STORED_FILENAME] as String,
                         surveyId = surveyData.id,
+                        responseId = id,
                     )
                 if (file.exists()) {
                     ResponseValueData.FileValueData(

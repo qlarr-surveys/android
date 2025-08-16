@@ -40,38 +40,39 @@ import kotlin.math.roundToInt
 
 @SuppressLint("SetJavaScriptEnabled")
 class QlarrWebView
-@JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null
-) : WebView(context, attrs) {
+    @JvmOverloads
+    constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+    ) : WebView(context, attrs) {
+        val surveyActivity: SurveyActivity? get() = context as? SurveyActivity
 
-    val surveyActivity: SurveyActivity? get() = context as? SurveyActivity
+        private var saverUri: Uri? = null
+        private var operationKey: String? = null
+        private var maxSizeKb: Int? = null
+        private var acceptedTypes: String? = null
 
+        fun resetFileUploadVariables() {
+            saverUri = null
+            maxSizeKb = null
+            operationKey = null
+            acceptedTypes = null
+        }
 
-    private var saverUri: Uri? = null
-    private var operationKey: String? = null
-    private var maxSizeKb: Int? = null
-    private var acceptedTypes: String? = null
-
-
-    fun resetFileUploadVariables() {
-        saverUri = null
-        maxSizeKb = null
-        operationKey = null
-        acceptedTypes = null
-    }
-
-    private lateinit var emNavProcessor: EMNavProcessor
+        private lateinit var emNavProcessor: EMNavProcessor
     private lateinit var survey: SurveyData
         private var insets: WindowInsets = WindowInsets(0, 0, 0, 0)
         private var responseId: String? = null
 
         private fun Int.toRoundedDp(density: Density): Int = with(density) { this@toRoundedDp.toDp().value.roundToInt() }
-        private val qlarrWebViewClient = object : WebViewClient() {
-            override fun onPageFinished(
-                view: WebView?,
-                url: String?,
-            ) {
-                super.onPageFinished(view, url)
+
+        private val qlarrWebViewClient =
+            object : WebViewClient() {
+                override fun onPageFinished(
+                    view: WebView?,
+                    url: String?,
+                ) {
+                    super.onPageFinished(view, url)
                 val density = Density(context)
                 val safeAreaJs = """
             document.documentElement.style.setProperty('--safe-area-inset-top', '${
@@ -101,199 +102,245 @@ class QlarrWebView
             }
 
             override fun shouldInterceptRequest(
-                view: WebView?, request: WebResourceRequest?
-        ): WebResourceResponse? {
-            val url = request?.url.toString()
-            Log.v(TAG, url)
-            return if (url.endsWith("/survey/${survey.id}/run/runtime.js")) {
-                getRuntimeJs()
-            } else if (url.contains("/survey/${survey.id}/resource/")) {
-                val filename = url.substringAfterLast("/")
-                wrapResource(FileUtils.getResourceFile(context, filename, survey.id))
-            } else if (url.contains("/survey/${survey.id}/response/attach")) {
-                val fileUUId = url.substringAfterLast("/")
-                wrapResource(FileUtils.getResponseFile(context, fileUUId, survey.id))
-            } else if (url.startsWith(CUSTOM_DOMAIN) && !url.endsWith("favicon.ico")) {
-                val extension = url.substringAfterLast(".")
-                if (extension == "css" || extension == "js") {
-                    val data =
-                        context.assets.open(url.replace(CUSTOM_DOMAIN, "$REACT_APP_BUILD_FOLDER/"))
-                            .bufferedReader().use {
-                                it.readText()
-                            }
-                    return WebResourceResponse(
-                        if (url.endsWith("js")) "text/javascript" else "text/css",
-                        "utf-8",
-                        data.byteInputStream()
+                view: WebView?,
+                request: WebResourceRequest?,
+            ): WebResourceResponse? {
+                val url = request?.url.toString()
+                Log.v(TAG, url)
+                return if (url.endsWith("/survey/${survey.id}/run/runtime.js")) {
+                    getRuntimeJs()
+                } else if (url.contains("/survey/${survey.id}/resource/")) {
+                    val filename = url.substringAfterLast("/")
+                    wrapResource(FileUtils.getResourceFile(context, filename, survey.id))
+                } else if (url.contains("/survey/${survey.id}/response/$responseId/attach")) {
+                    val fileUUId = url.substringAfterLast("/")
+                    wrapResource(
+                        FileUtils.getResponseFile(
+                            context,
+                            fileUUId,
+                            survey.id,
+                            responseId!!,
+                        ),
                     )
-                } else {
-                    return try {
-                        val data = context.assets.open(
-                            url.replace(
-                                CUSTOM_DOMAIN, "$REACT_APP_BUILD_FOLDER/"
+                } else if (url.startsWith(CUSTOM_DOMAIN) && !url.endsWith("favicon.ico")) {
+                    val extension = url.substringAfterLast(".")
+                    if (extension == "css" || extension == "js") {
+                        val data =
+                            context.assets
+                                .open(url.replace(CUSTOM_DOMAIN, "$REACT_APP_BUILD_FOLDER/"))
+                                .bufferedReader()
+                                .use {
+                                    it.readText()
+                                }
+                        return WebResourceResponse(
+                            if (url.endsWith("js")) "text/javascript" else "text/css",
+                            "utf-8",
+                            data.byteInputStream(),
+                        )
+                    } else {
+                        return try {
+                            val data =
+                                context.assets.open(
+                                    url.replace(
+                                        CUSTOM_DOMAIN,
+                                        "$REACT_APP_BUILD_FOLDER/",
+                                    ),
+                                )
+                            WebResourceResponse(
+                                getMimeTypeFromExtension(extension),
+                                "utf-8",
+                                data,
                             )
-                        )
-                        WebResourceResponse(
-                            getMimeTypeFromExtension(extension), "utf-8", data
-                        )
-                    } catch (e: FileNotFoundException) {
-                        null
+                        } catch (e: FileNotFoundException) {
+                            null
+                        }
                     }
+                } else {
+                    null
                 }
-            } else {
-                null
             }
         }
-    }
 
     fun getMimeTypeFromExtension(extension: String): String? {
         val mimeTypeMap = MimeTypeMap.getSingleton()
         return mimeTypeMap.getMimeTypeFromExtension(extension.lowercase())
     }
 
-    private fun navigate(mapper: ObjectMapper, navigateRequest: NavigateRequest) {
-        emNavProcessor.navigate(navigateRequest, object : NavigationListener {
-            override fun onSuccess(apiNavigationOutput: ApiNavigationOutput) {
-                if (navigateRequest.navigationDirection == NavigationDirection.Resume) {
-                    surveyActivity?.onResponseStarted(apiNavigationOutput.responseId.toString())
-                } else if (apiNavigationOutput.navigationIndex is NavigationIndex.End) {
-                    surveyActivity?.onResponseEnded(apiNavigationOutput.responseId.toString())
-                }
-                val string = mapper.writeValueAsString(apiNavigationOutput)
-
-                loadUrlOnUiThread("javascript:navigateOffline($string)")
-            }
-
-            override fun onError(error: Throwable) {
-                surveyActivity?.reportError(error)
-            }
-        })
-    }
-
-    private val androidJavascriptInterface = object {
-        @Suppress("unused")
-        @JavascriptInterface
-        fun navigate(body: String) {
-            val mapper = objectMapper.registerModule(JavaTimeModule())
-            val navigateRequest: NavigateRequest = mapper.readValue(body)
-            navigate(mapper, navigateRequest)
-        }
-
-        @Suppress("unused")
-        @JavascriptInterface
-        fun onBackPressed() {
-            surveyActivity?.runOnUiThread {
-                surveyActivity?.onBackPressedDispatcher?.onBackPressed()
-            }
-
-        }
-
-        @JavascriptInterface
-        fun start() {
-            val mapper = objectMapper.registerModule(JavaTimeModule())
-            if (responseId == null) {
-                emNavProcessor.start(object : NavigationListener {
-                    override fun onSuccess(apiNavigationOutput: ApiNavigationOutput) {
-                        val string = mapper.writeValueAsString(apiNavigationOutput)
-                        loadUrlOnUiThread("javascript:navigateOffline($string)")
+    private fun navigate(
+        mapper: ObjectMapper,
+        navigateRequest: NavigateRequest,
+    ) {
+        emNavProcessor.navigate(
+            navigateRequest,
+            object : NavigationListener {
+                override fun onSuccess(apiNavigationOutput: ApiNavigationOutput) {
+                    if (navigateRequest.navigationDirection == NavigationDirection.Resume) {
                         surveyActivity?.onResponseStarted(apiNavigationOutput.responseId.toString())
+                    } else if (apiNavigationOutput.navigationIndex is NavigationIndex.End) {
+                        surveyActivity?.onResponseEnded(apiNavigationOutput.responseId.toString())
                     }
+                    val string = mapper.writeValueAsString(apiNavigationOutput)
 
-                    override fun onError(error: Throwable) {
-                        // TODO("Report Error to MainActivity")
-                    }
-                })
-            } else {
-                navigate(
-                    mapper, NavigateRequest(
-                        responseId = UUID.fromString(responseId),
-                        navigationDirection = NavigationDirection.Resume
-                    )
-                )
+                    loadUrlOnUiThread("javascript:navigateOffline($string)")
+                }
+
+                override fun onError(error: Throwable) {
+                    surveyActivity?.reportError(error)
+                }
+            },
+        )
+    }
+
+    private val androidJavascriptInterface =
+        object {
+            @Suppress("unused")
+            @JavascriptInterface
+            fun navigate(body: String) {
+                val mapper = objectMapper.registerModule(JavaTimeModule())
+                val navigateRequest: NavigateRequest = mapper.readValue(body)
+                navigate(mapper, navigateRequest)
             }
 
-        }
-
-        @JavascriptInterface
-        fun capturePhoto(key: String, maxSizeInKb: Int) {
-            maxSizeKb = if (maxSizeInKb > 0) maxSizeInKb else null
-            operationKey = key
-            val uuid = UUID.randomUUID().toString()
-            val file = FileUtils.getResponseFile(context, uuid, survey.id)
-            saverUri =
-                FileProvider.getUriForFile(context, FileUtils.FILE_PROVIDER_AUTHORITY, file)
-            surveyActivity?.takePhoto(saverUri!!)
-        }
-
-        @JavascriptInterface
-        fun scanBarcode(key: String) {
-            operationKey = key
-            surveyActivity?.scanBarcode()
-        }
-
-        @JavascriptInterface
-        fun previewFileUpload(fileName: String, nameWithExt: String) {
-            (context as Activity).runOnUiThread {
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                val file = FileUtils.getResponseFile(context, fileName, survey.id)
-                val uri = FileProvider.getUriForFile(
-                    context,
-                    FileUtils.FILE_PROVIDER_AUTHORITY,
-                    file
-                )
-                intent.setDataAndType(uri, "*/*")
-                context.startActivity(intent)
-            }
-        }
-
-
-        @JavascriptInterface
-        fun captureVideo(key: String, maxSizeInKb: Int) {
-            maxSizeKb = if (maxSizeInKb > 0) maxSizeInKb else null
-            operationKey = key
-            surveyActivity?.takeVideo()
-        }
-
-        @JavascriptInterface
-        fun selectFile(key: String, accepted: String, maxSizeInKb: Int) {
-            operationKey = key
-            surveyActivity?.pickFromGallery(accepted)
-            maxSizeKb = if (maxSizeInKb > 0) maxSizeInKb else null
-            acceptedTypes = accepted.ifEmpty { null }
-        }
-
-        @JavascriptInterface
-        fun uploadFile(key: String, fileName: String) {
-            context.contentResolver.openInputStream(saverUri!!)?.let {
-                it.use { stream ->
-                    val uploadFile = emNavProcessor.uploadFile(
-                        key,
-                        fileName,
-                        stream.readBytes()
-                    )
-                    val string = objectMapper.writeValueAsString(uploadFile)
-                    resetFileUploadVariables()
-                    loadUrlOnUiThread("javascript:onFileUploaded($string)")
+            @Suppress("unused")
+            @JavascriptInterface
+            fun onBackPressed() {
+                surveyActivity?.runOnUiThread {
+                    surveyActivity?.onBackPressedDispatcher?.onBackPressed()
                 }
             }
-        }
 
-        @JavascriptInterface
-        fun uploadDataUrl(key: String, dataUrl: String, fileName: String) {
-            val uploadFile = emNavProcessor.uploadDataUrl(key, dataUrl, fileName)
-            val string = objectMapper.writeValueAsString(uploadFile)
-            loadUrlOnUiThread("javascript:onDataUrlUploaded($string)")
-        }
+            @JavascriptInterface
+            fun start() {
+                val mapper = objectMapper.registerModule(JavaTimeModule())
+                if (responseId == null) {
+                    emNavProcessor.start(
+                        object : NavigationListener {
+                            override fun onSuccess(apiNavigationOutput: ApiNavigationOutput) {
+                                val string = mapper.writeValueAsString(apiNavigationOutput)
+                                loadUrlOnUiThread("javascript:navigateOffline($string)")
+                                val responseId = apiNavigationOutput.responseId.toString()
+                                Log.e("dkjjaskda", responseId)
+                                this@QlarrWebView.responseId = responseId
+                                surveyActivity?.onResponseStarted(responseId)
+                            }
 
-        @JavascriptInterface
-        fun getParam(key: String): String {
-            if (key == "surveyId") {
-                return survey.id
+                            override fun onError(error: Throwable) {
+                                // TODO("Report Error to MainActivity")
+                            }
+                        },
+                    )
+                } else {
+                    navigate(
+                        mapper,
+                        NavigateRequest(
+                            responseId = UUID.fromString(responseId),
+                            navigationDirection = NavigationDirection.Resume,
+                        ),
+                    )
+                }
             }
-            return ""
+
+            @JavascriptInterface
+            fun capturePhoto(
+                key: String,
+                maxSizeInKb: Int,
+            ) {
+                maxSizeKb = if (maxSizeInKb > 0) maxSizeInKb else null
+                operationKey = key
+                val uuid = UUID.randomUUID().toString()
+                val file = FileUtils.getResponseFile(context, uuid, survey.id, responseId!!)
+                saverUri =
+                    FileProvider.getUriForFile(context, FileUtils.FILE_PROVIDER_AUTHORITY, file)
+                surveyActivity?.takePhoto(saverUri!!)
+            }
+
+            @JavascriptInterface
+            fun scanBarcode(key: String) {
+                operationKey = key
+                surveyActivity?.scanBarcode()
+            }
+
+            @JavascriptInterface
+            fun previewFileUpload(
+                fileName: String,
+                nameWithExt: String,
+            ) {
+                (context as Activity).runOnUiThread {
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    val file = FileUtils.getResponseFile(context, fileName, survey.id, responseId!!)
+                    val uri =
+                        FileProvider.getUriForFile(
+                            context,
+                            FileUtils.FILE_PROVIDER_AUTHORITY,
+                            file,
+                        )
+                    intent.setDataAndType(uri, "*/*")
+                    context.startActivity(intent)
+                }
+            }
+
+            @JavascriptInterface
+            fun captureVideo(
+                key: String,
+                maxSizeInKb: Int,
+            ) {
+                maxSizeKb = if (maxSizeInKb > 0) maxSizeInKb else null
+                operationKey = key
+                surveyActivity?.takeVideo()
+            }
+
+            @JavascriptInterface
+            fun selectFile(
+                key: String,
+                accepted: String,
+                maxSizeInKb: Int,
+            ) {
+                operationKey = key
+                surveyActivity?.pickFromGallery(accepted)
+                maxSizeKb = if (maxSizeInKb > 0) maxSizeInKb else null
+                acceptedTypes = accepted.ifEmpty { null }
+            }
+
+            @JavascriptInterface
+            fun uploadFile(
+                key: String,
+                fileName: String,
+            ) {
+                context.contentResolver.openInputStream(saverUri!!)?.let {
+                    it.use { stream ->
+                        val uploadFile =
+                            emNavProcessor.uploadFile(
+                                key,
+                                fileName,
+                                stream.readBytes(),
+                            )
+                        val string = objectMapper.writeValueAsString(uploadFile)
+                        resetFileUploadVariables()
+                        loadUrlOnUiThread("javascript:onFileUploaded($string)")
+                    }
+                }
+            }
+
+            @JavascriptInterface
+            fun uploadDataUrl(
+                key: String,
+                dataUrl: String,
+                fileName: String,
+            ) {
+                val uploadFile = emNavProcessor.uploadDataUrl(key, dataUrl, fileName)
+                val string = objectMapper.writeValueAsString(uploadFile)
+                loadUrlOnUiThread("javascript:onDataUrlUploaded($string)")
+            }
+
+            @JavascriptInterface
+            fun getParam(key: String): String {
+                if (key == "surveyId") {
+                    return survey.id
+                }
+                return ""
+            }
         }
-    }
 
     init {
         addJavascriptInterface(androidJavascriptInterface, JAVASCRIPT_INTERFACE_NAME)
@@ -311,44 +358,56 @@ class QlarrWebView
         webViewClient = qlarrWebViewClient
     }
 
-
     private fun getRuntimeJs(): WebResourceResponse {
         val script = FileUtils.getValidationJson(context, survey.id)?.script
         return WebResourceResponse(
-            "text/javascript", "utf-8", 200, "OK", mutableMapOf(
+            "text/javascript",
+            "utf-8",
+            200,
+            "OK",
+            mutableMapOf(
                 "Access-Control-Allow-Origin" to "*",
                 "Access-Control-Allow-Methods" to "GET,POST,PUT,DELETE",
                 "Access-Control-Allow-Credentials" to "true",
-                "Access-Control-Allow-Headers" to "access-control-allow-origin"
-            ), (script + "\n" + commonScript().script).byteInputStream()
+                "Access-Control-Allow-Headers" to "access-control-allow-origin",
+            ),
+            (script + "\n" + commonScript().script).byteInputStream(),
         )
     }
 
     private fun wrapResource(file: File): WebResourceResponse? {
-        val inputStream = try {
-            FileInputStream(file)
-        } catch (e: FileNotFoundException) {
-            return null
-        }
+        val inputStream =
+            try {
+                FileInputStream(file)
+            } catch (e: FileNotFoundException) {
+                return null
+            }
         return WebResourceResponse(
                 "",
                 "utf-8",
                 200,
                 "OK",
-                mutableMapOf("Access-Control-Allow-Origin" to "*"), inputStream
+            mutableMapOf("Access-Control-Allow-Origin" to "*"),
+            inputStream,
         )
     }
 
-    fun loadSurvey(surveyData: SurveyData, responseId: String?, windowsInsets: WindowInsets) {
+    fun loadSurvey(
+        surveyData: SurveyData,
+        responseId: String?,
+        windowsInsets: WindowInsets,
+    ) {
         this.insets = windowsInsets
         survey = surveyData
-        val data = context.assets.open("$REACT_APP_BUILD_FOLDER/index.html").bufferedReader().use {
-            it.readText()
-        }
+        val data =
+            context.assets.open("$REACT_APP_BUILD_FOLDER/index.html").bufferedReader().use {
+                it.readText()
+            }
         this.responseId = responseId
-        emNavProcessor = EMNavProcessor(context, survey) {
-            loadDataWithBaseURL(CUSTOM_DOMAIN, data, null, null, null)
-        }
+        emNavProcessor =
+            EMNavProcessor(context, survey) {
+                loadDataWithBaseURL(CUSTOM_DOMAIN, data, null, null, null)
+            }
     }
 
     fun onCameraResult() {
@@ -356,33 +415,43 @@ class QlarrWebView
             val size = stream.readBytes().size.toLong()
             val shouldCompress = isSizeViolated(size, true)
             val uuid = saverUri.toString().substringAfterLast("/").substringBefore(".")
-            val result = emNavProcessor.saveFileResponse(
-                fileName = "captured-image.jpg",
-                storedFilename = uuid,
-                fileSize = size,
-                key = operationKey!!
-            )
-            val finalSize = if (shouldCompress) {
-                compress(
-                    FileUtils.getResponseFile(context, uuid.toString(), survey.id),
-                    maxSizeKb!! * 1024L
+            val result =
+                emNavProcessor.saveFileResponse(
+                    fileName = "captured-image.jpg",
+                    storedFilename = uuid,
+                    fileSize = size,
+                    key = operationKey!!,
                 )
-            } else {
-                result.size
-            }
+            val finalSize =
+                if (shouldCompress) {
+                    compress(
+                        FileUtils.getResponseFile(
+                            context,
+                            uuid.toString(),
+                            survey.id,
+                            responseId!!,
+                        ),
+                        maxSizeKb!! * 1024L,
+                    )
+                } else {
+                    result.size
+                }
             loadUrlOnUiThread(
                 "javascript:onPhotoCaptured$operationKey(${
                     objectMapper.writeValueAsString(
-                        result.copy(size = finalSize)
+                        result.copy(size = finalSize),
                     )
-                })"
+                })",
             )
         }
 
         resetFileUploadVariables()
     }
 
-    private fun compress(file: File, size: Long): Long {
+    private fun compress(
+        file: File,
+        size: Long,
+    ): Long {
         runBlocking {
             Compressor.compress(context, file) {
                 size(size) // 2 MB
@@ -412,31 +481,38 @@ class QlarrWebView
                 resetFileUploadVariables()
                 return
             }
-            val result = emNavProcessor.uploadFile(
-                key = operationKey!!,
-                fileName = "captured-video.mp4",
-                byteArray = byteArray
-            )
+            val result =
+                emNavProcessor.uploadFile(
+                    key = operationKey!!,
+                    fileName = "captured-video.mp4",
+                    byteArray = byteArray,
+                )
             loadUrlOnUiThread(
                 "javascript:onVideoCaptured$operationKey(${
                     objectMapper.writeValueAsString(
-                        result
+                        result,
                     )
-                })"
+                })",
             )
         }
 
         resetFileUploadVariables()
     }
 
-    private fun isSizeViolated(size: Long, compressionPossible: Boolean = false): Boolean {
+    private fun isSizeViolated(
+        size: Long,
+        compressionPossible: Boolean = false,
+    ): Boolean {
         val sizeInKb = size / 1024
-        val sizeViolated = maxSizeKb?.let {
-            sizeInKb > it
-        } ?: false
+        val sizeViolated =
+            maxSizeKb?.let {
+                sizeInKb > it
+            } ?: false
         if (sizeViolated) {
             surveyActivity?.showMaxSizeValidation(
-                sizeInKb.toInt(), maxSizeKb!!, compressionPossible
+                sizeInKb.toInt(),
+                maxSizeKb!!,
+                compressionPossible,
             )
         }
         return sizeViolated
@@ -448,9 +524,10 @@ class QlarrWebView
             val cursor = context.contentResolver.query(uri, null, null, null, null)
 
             if (cursor != null && cursor.moveToFirst()) {
-                val displayName = cursor.getString(
-                    cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                )
+                val displayName =
+                    cursor.getString(
+                        cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME),
+                    )
                 val size = cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE))
                 if (isSizeViolated(size)) {
                     resetFileUploadVariables()
@@ -464,9 +541,7 @@ class QlarrWebView
         } catch (e: Exception) {
             resetFileUploadVariables()
         }
-
     }
-
 
     companion object {
         private const val TAG = "QlarrWebView"
@@ -480,5 +555,5 @@ data class NavigateRequest(
     val responseId: UUID?,
     val lang: String? = null,
     val navigationDirection: NavigationDirection? = null,
-    val values: Map<String, Any> = mapOf()
+    val values: Map<String, Any> = mapOf(),
 )

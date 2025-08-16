@@ -23,9 +23,9 @@ object FileUtils {
         context: Context,
         fileName: String,
         surveyId: String,
-        fileType: FileType
+        surveyFolder: SurveyFolder,
     ): File {
-        val folder = File(context.filesDir, "${surveyId}/$fileType")
+        val folder = File(context.filesDir, "$surveyId/$surveyFolder")
         if (!folder.exists()) {
             folder.mkdirs()
         }
@@ -60,21 +60,25 @@ object FileUtils {
             context,
             encode(fileName),
             surveyId,
-            FileType.RESOURCES
+            SurveyFolder.Resources,
         )
     }
 
-    fun getResponseFile(context: Context, fileName: String, surveyId: String): File {
-        return getTargetFile(
+    fun getResponseFile(
+        context: Context,
+        fileName: String,
+        surveyId: String,
+        responseId: String,
+    ): File =
+        getTargetFile(
             context,
             encode(fileName),
             surveyId,
-            FileType.RESPONSES
+            SurveyFolder.Responses(responseId),
         )
-    }
 
     fun getValidationJsonFile(context: Context, surveyId: String): File {
-        return getTargetFile(context, VALIDATION_JSON_FILENAME, surveyId, FileType.DESIGN)
+        return getTargetFile(context, VALIDATION_JSON_FILENAME, surveyId, SurveyFolder.Design)
     }
 
     fun getValidationJson(context: Context, surveyId: String): ValidationJsonOutput? {
@@ -111,15 +115,18 @@ object FileUtils {
         }
     }
 
+    sealed class SurveyFolder(
+        val path: String,
+    ) {
+        data class Responses(
+            private val responseId: String,
+        ) : SurveyFolder("responses/$responseId")
 
-    enum class FileType(private val folderName: String) {
-        RESOURCES("resources"),
-        DESIGN("design"),
-        RESPONSES("responses");
+        data object Resources : SurveyFolder("resources")
 
-        override fun toString(): String {
-            return folderName
-        }
+        data object Design : SurveyFolder("design")
+
+        override fun toString(): String = path
     }
 
     const val FILE_PROVIDER_AUTHORITY = BuildConfig.APPLICATION_ID + ".provider"

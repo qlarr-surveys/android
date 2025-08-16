@@ -83,7 +83,13 @@ class UploadSurveyResponsesUseCaseImpl(
             }.filter {
                 !surveyRepository.fileOnServer(surveyId, response.id, it.storedFileName)
             }.forEach { filename ->
-                val file = FileUtils.getResponseFile(appContext, filename.storedFileName, surveyId)
+                val file =
+                    FileUtils.getResponseFile(
+                        appContext,
+                        filename.storedFileName,
+                        surveyId,
+                        response.id,
+                )
                 if (file.exists()) {
                     surveyRepository.uploadSurveyResponseFile(
                         surveyId,

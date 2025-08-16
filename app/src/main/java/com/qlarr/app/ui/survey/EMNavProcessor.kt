@@ -327,7 +327,8 @@ class EMNavProcessor(
         val responseFile = FileUtils.getResponseFile(
             context = getActivity(),
             fileName = storedFilename,
-            surveyId = survey.id
+            surveyId = survey.id,
+            responseId = responseId.toString(),
         )
         val str = dataUrl.substring(dataUrl.indexOf(",") + 1)
         val imageData: ByteArray = Base64.decode(str, Base64.NO_WRAP)
@@ -349,7 +350,8 @@ class EMNavProcessor(
         val responseFile = FileUtils.getResponseFile(
             context = getActivity(),
             fileName = uuid,
-            surveyId = survey.id
+            surveyId = survey.id,
+            responseId = responseId.toString(),
         )
         responseFile.writeBytes(byteArray)
         return saveFileResponse(
@@ -381,7 +383,8 @@ class EMNavProcessor(
         }
         CoroutineScope(Dispatchers.IO).launch {
             (response.values["$key.value"] as? Map<*, *>)?.get(STORED_FILENAME_KEY)?.let {
-                val file = FileUtils.getResponseFile(getActivity(), it.toString(), survey.id)
+                val file =
+                    FileUtils.getResponseFile(getActivity(), it.toString(), survey.id, response.id)
                 if (file.exists()) {
                     Log.d(TAG, "deleting old file: $it")
                     file.delete()
