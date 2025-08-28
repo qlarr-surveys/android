@@ -140,6 +140,20 @@ class EMNavProcessor(
         ) { navListener.onError(it) }
     }
 
+    private fun maskedValues(values: Map<String, Any>): Map<String, Any> {
+        return buildMap {
+            values.forEach { (key, _) ->
+                if (key.endsWith(".value")) {
+                    val prefix = key.substringBeforeLast(".value")
+                    val maskedKey = "$prefix.masked_value"
+                    values[maskedKey]?.let { maskedValue ->
+                        put(maskedKey, maskedValue)
+                    }
+                }
+            }
+        }
+    }
+
     fun maskedValues(
         values: List<Response>,
     ): Flow<Response> {
@@ -153,27 +167,17 @@ class EMNavProcessor(
             validationJsonOutput.defaultSurveyLang().code
         )
 
-        val maskedValuesUseCaseImpl = measure("init useCase") {
-            MaskedValuesUseCase(processedSurvey = objectMapper.writeValueAsString(validationJsonOutput))
-        }
         return flow {
             values.forEach { response ->
                 val newValues = mutableMapOf<String, Any>()
                 val oldValues = response.values
-                val start = System.currentTimeMillis()
-
-                val maskedValues = maskedValuesUseCase(
-                    maskedValuesUseCaseImpl,
-                    response.values
-                )
-                Log.d("time", "maskedUseCase ${System.currentTimeMillis() - start}")
-
+                val maskedValues = maskedValues(response.values)
                 schema.forEach { column ->
                     val key = "$column.value"
                     oldValues[key]?.let { value ->
                         val newKey = labels[column]?.stripHTMLTags() ?: column
                         val newValue =
-                            maskedValues[Dependency(column, ReservedCode.MaskedValue)]?.toString()
+                            maskedValues[Dependency(column, ReservedCode.MaskedValue).toValueKey()]?.toString()
                                 ?: value
                         newValues[newKey] = newValue
                     }
