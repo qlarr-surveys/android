@@ -15,20 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.compose.AndroidFragment
-import androidx.lifecycle.ViewModelStoreOwner
 import com.qlarr.app.R
 import com.qlarr.app.ui.common.theme.QlarrTheme
 import com.qlarr.app.ui.common.theme.QlarrTopBar
 import com.qlarr.app.ui.common.theme.TopBarIconButton
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun SurveyListScreen(
-    onLogoutFinished: () -> Unit,
-    viewModelStoreOwner: ViewModelStoreOwner
-) {
-    val viewModel = koinViewModel<MainViewModel>(viewModelStoreOwner = viewModelStoreOwner)
-
+fun SurveyListScreen(viewModel: SurveyListViewModel) {
     var dialogShown by remember { mutableStateOf(false) }
 
     QlarrTheme {
@@ -43,24 +36,32 @@ fun SurveyListScreen(
                     TopBarIconButton(iconRes = R.drawable.baseline_logout_24) {
                         dialogShown = true
                     }
-                })
+                },
+            )
         }) { padding ->
             AndroidFragment<MainFragment>(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues = padding)
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues = padding),
             )
             if (dialogShown) {
-                DialogConfirmLogout(onConfirmation = { viewModel.logout(onLogoutFinished) },
-                    onDismiss = { dialogShown = false })
+                DialogConfirmLogout(
+                    onConfirmation = { viewModel.logout() },
+                    onDismiss = { dialogShown = false },
+                )
             }
         }
     }
 }
 
 @Composable
-private fun DialogConfirmLogout(onConfirmation: () -> Unit, onDismiss: () -> Unit) {
-    AlertDialog(onDismissRequest = { },
+private fun DialogConfirmLogout(
+    onConfirmation: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = { },
         title = {
             Text(text = stringResource(id = R.string.logout_are_you_sure))
         },
@@ -69,17 +70,19 @@ private fun DialogConfirmLogout(onConfirmation: () -> Unit, onDismiss: () -> Uni
         },
         confirmButton = {
             TextButton(
-                onClick = onConfirmation
+                onClick = onConfirmation,
             ) {
                 Text(stringResource(id = R.string.logout))
             }
-        }, dismissButton = {
+        },
+        dismissButton = {
             TextButton(
-                onClick = onDismiss
+                onClick = onDismiss,
             ) {
                 Text(stringResource(id = R.string.cancel))
             }
-        })
+        },
+    )
 }
 
 @Composable

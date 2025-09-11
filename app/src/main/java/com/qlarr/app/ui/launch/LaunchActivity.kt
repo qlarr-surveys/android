@@ -13,7 +13,7 @@ import androidx.lifecycle.coroutineScope
 import com.qlarr.app.R
 import com.qlarr.app.ui.common.WebViewUtils
 import com.qlarr.app.ui.login.LoginActivity
-import com.qlarr.app.ui.main.MainActivity
+import com.qlarr.app.ui.main.SurveyListActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -56,7 +56,7 @@ class LaunchActivity : FragmentActivity() {
             viewModel.launchEvents.collect { launchEvent ->
                 when (launchEvent) {
                     is LaunchViewModel.LaunchEvent.UserLoggedIn -> {
-                        startActivity(MainActivity.createIntent(this@LaunchActivity))
+                        startActivity(SurveyListActivity.createIntent(this@LaunchActivity))
                         finish()
                     }
 

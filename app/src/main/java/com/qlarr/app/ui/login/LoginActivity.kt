@@ -11,7 +11,7 @@ import com.qlarr.app.R
 import com.qlarr.app.databinding.ActivityLoginBinding
 import com.qlarr.app.ui.common.error.ErrorDisplayManager
 import com.qlarr.app.ui.common.visibleOrGone
-import com.qlarr.app.ui.main.MainActivity
+import com.qlarr.app.ui.main.SurveyListActivity
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -51,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
                 binding.serverUrl.visibleOrGone(state.selection == EnvSelection.PRIVATE)
 
                 if (state.isLoggedIn) {
-                    startActivity(MainActivity.createIntent(this@LoginActivity))
+                    startActivity(SurveyListActivity.createIntent(this@LoginActivity))
                     finish()
                 }
 

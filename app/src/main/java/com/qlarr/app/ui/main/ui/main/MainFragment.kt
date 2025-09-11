@@ -24,8 +24,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.parameter.parametersOf
 
 class MainFragment : Fragment() {
-
-    private val viewModel: MainViewModel by lazy {
+    private val viewModel: SurveyListViewModel by lazy {
         getViewModel(ownerProducer = { requireActivity() })
     }
     private val errorDisplayManager: ErrorDisplayManager by inject { parametersOf(requireActivity()) }

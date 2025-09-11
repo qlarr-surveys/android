@@ -10,7 +10,7 @@ import com.qlarr.app.business.survey.UploadSurveyResponsesUseCase
 import com.qlarr.app.business.survey.UploadSurveyResponsesUseCaseImpl
 import com.qlarr.app.storage.DownloadManager
 import com.qlarr.app.storage.DownloadManagerImpl
-import com.qlarr.app.ui.main.ui.main.MainViewModel
+import com.qlarr.app.ui.main.ui.main.SurveyListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -44,5 +44,5 @@ val mainModule =
             )
         }
         single<DownloadManager> { DownloadManagerImpl(get(named("appContext")), get()) }
-        viewModel { MainViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { SurveyListViewModel(get(), get(), get(), get(), get(), get(), get()) }
     }

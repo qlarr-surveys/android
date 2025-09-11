@@ -51,7 +51,7 @@
             android:label="" />
 
         <activity
-            android:name="com.qlarr.app.ui.main.MainActivity"
+            android:name="com.qlarr.app.ui.main.SurveyListActivity"
             android:exported="false"
             android:label="" />
         <activity
