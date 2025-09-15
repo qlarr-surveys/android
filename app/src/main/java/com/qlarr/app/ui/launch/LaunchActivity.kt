@@ -19,8 +19,8 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 @SuppressLint("CustomSplashScreen")
 class LaunchActivity : FragmentActivity() {
-
     private val viewModel by lazy { getViewModel<LaunchViewModel>() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (!WebViewUtils.chromeSupported(this)) {
@@ -32,17 +32,18 @@ class LaunchActivity : FragmentActivity() {
         checkPushNotificationPermission()
     }
 
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) {
-        redirect()
-    }
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission(),
+        ) {
+            redirect()
+        }
 
     private fun checkPushNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
-            && ContextCompat.checkSelfPermission(
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            ContextCompat.checkSelfPermission(
                 this,
-                Manifest.permission.POST_NOTIFICATIONS
+                Manifest.permission.POST_NOTIFICATIONS,
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
@@ -74,11 +75,10 @@ class LaunchActivity : FragmentActivity() {
         builder.apply {
             setTitle(R.string.chrome_version_not_supported)
             setNeutralButton(
-                android.R.string.ok
+                android.R.string.ok,
             ) { _, _ ->
                 this@LaunchActivity.finish()
             }
-
         }
         builder.create().show()
     }
