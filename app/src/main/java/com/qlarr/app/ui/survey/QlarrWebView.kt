@@ -245,12 +245,7 @@ class QlarrWebView
                     key: String,
                     maxSizeInKb: Int,
                 ) {
-                    maxSizeKb =
-                        if (maxSizeInKb > 0) {
-                            minOf(maxSizeInKb, IMAGE_MAX_SIZE_KB)
-                        } else {
-                            IMAGE_MAX_SIZE_KB
-                        }
+                    maxSizeKb = if (maxSizeInKb > 0) maxSizeInKb else null
                     operationKey = key
                     val uuid = UUID.randomUUID().toString()
                     val file = FileUtils.getResponseFile(context, uuid, survey.id, responseId!!)
@@ -290,12 +285,7 @@ class QlarrWebView
                     key: String,
                     maxSizeInKb: Int,
                 ) {
-                    maxSizeKb =
-                        if (maxSizeInKb > 0) {
-                            minOf(maxSizeInKb, VIDEO_MAX_SIZE_KB)
-                        } else {
-                            VIDEO_MAX_SIZE_KB
-                        }
+                    maxSizeKb = if (maxSizeInKb > 0) maxSizeInKb else null
                     operationKey = key
                     surveyActivity?.takeVideo()
                 }
@@ -308,12 +298,7 @@ class QlarrWebView
                 ) {
                     operationKey = key
                     surveyActivity?.pickFromGallery(accepted)
-                    maxSizeKb =
-                        if (maxSizeInKb > 0) {
-                            minOf(maxSizeInKb, FILE_MAX_SIZE_KB)
-                        } else {
-                            FILE_MAX_SIZE_KB
-                    }
+                    maxSizeKb = if (maxSizeInKb > 0) maxSizeInKb else null
                     acceptedTypes = accepted.ifEmpty { null }
                 }
 
@@ -378,9 +363,9 @@ class QlarrWebView
             return WebResourceResponse(
                 "text/javascript",
                 "utf-8",
-                200,
-                "OK",
-                mutableMapOf(
+            200,
+            "OK",
+            mutableMapOf(
                     "Access-Control-Allow-Origin" to "*",
                     "Access-Control-Allow-Methods" to "GET,POST,PUT,DELETE",
                     "Access-Control-Allow-Credentials" to "true",
@@ -530,43 +515,39 @@ class QlarrWebView
                     compressionPossible,
                 )
             }
-            return sizeViolated
-        }
+        return sizeViolated
+    }
 
-        @SuppressLint("Range")
-        fun onFileSelected(uri: Uri) {
-            try {
-                val cursor = context.contentResolver.query(uri, null, null, null, null)
+    @SuppressLint("Range")
+    fun onFileSelected(uri: Uri) {
+        try {
+            val cursor = context.contentResolver.query(uri, null, null, null, null)
 
-                if (cursor != null && cursor.moveToFirst()) {
-                    val displayName =
-                        cursor.getString(
-                            cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME),
-                        )
-                    val size = cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE))
-                    if (isSizeViolated(size)) {
-                        resetFileUploadVariables()
-                        return
-                    }
-                    val fileType = context.contentResolver.getType(uri)
-                    saverUri = uri
-                    cursor.close()
-                    loadUrlOnUiThread("javascript:onFileSelected$operationKey(\"$displayName\", $size, \"$fileType\")")
+            if (cursor != null && cursor.moveToFirst()) {
+                val displayName =
+                    cursor.getString(
+                        cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME),
+                    )
+                val size = cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE))
+                if (isSizeViolated(size)) {
+                    resetFileUploadVariables()
+                    return
                 }
-            } catch (e: Exception) {
-                resetFileUploadVariables()
+                val fileType = context.contentResolver.getType(uri)
+                saverUri = uri
+                cursor.close()
+                loadUrlOnUiThread("javascript:onFileSelected$operationKey(\"$displayName\", $size, \"$fileType\")")
             }
+        } catch (e: Exception) {
+            resetFileUploadVariables()
         }
+    }
 
-        companion object {
-            private const val TAG = "QlarrWebView"
-            private const val JAVASCRIPT_INTERFACE_NAME = "Android"
-            private const val CUSTOM_DOMAIN = "http://mywebsite.com/"
-            private const val REACT_APP_BUILD_FOLDER = "react-app"
-
-        private const val VIDEO_MAX_SIZE_KB = 20 * 1024
-        private const val IMAGE_MAX_SIZE_KB = 10 * 1024
-        private const val FILE_MAX_SIZE_KB = 10 * 1024
+    companion object {
+        private const val TAG = "QlarrWebView"
+        private const val JAVASCRIPT_INTERFACE_NAME = "Android"
+        private const val CUSTOM_DOMAIN = "http://mywebsite.com/"
+        private const val REACT_APP_BUILD_FOLDER = "react-app"
     }
 }
 
