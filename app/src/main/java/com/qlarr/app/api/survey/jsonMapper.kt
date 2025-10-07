@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.qlarr.backend.expressionmanager.NavigationDirectionDeserializer
+import com.qlarr.backend.expressionmanager.NavigationDirectionSerializer
 import com.qlarr.backend.expressionmanager.ReservedCodeDeserializer
 import com.qlarr.backend.expressionmanager.ReservedCodeSerializer
 import com.qlarr.backend.expressionmanager.SurveyLangDeserializer

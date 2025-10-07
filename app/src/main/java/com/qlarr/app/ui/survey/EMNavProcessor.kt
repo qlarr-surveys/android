@@ -198,7 +198,7 @@ class EMNavProcessor(
     private fun navigationUseCase(
         lang: String? = null,
         values: Map<String, Any> = mapOf(),
-        navigationMode: NavigationMode? = null,
+        navigationMode: NavigationMode = NavigationMode.GROUP_BY_GROUP,
         navigationIndex: NavigationIndex? = null,
         navigationDirection: NavigationDirection,
         onSuccess: (NavigationJsonOutput, SurveyLang, List<SurveyLang>) -> Unit,
@@ -223,7 +223,7 @@ class EMNavProcessor(
                 processedSurvey = objectMapper.writeValueAsString(validationJsonOutput),
                 values = objectMapper.writeValueAsString(values),
                 navigationIndex = navigationIndex,
-                skipInvalid = validationJsonOutput.surveyNavigationData().skipInvalid,
+                skipInvalid = true,
                 surveyMode = SurveyMode.OFFLINE,
             )
         val script = navigationUseCaseWrapperImpl.getNavigationScript()
