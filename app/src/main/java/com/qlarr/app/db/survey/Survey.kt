@@ -4,6 +4,7 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.qlarr.app.api.survey.PublishInfo
+import com.qlarr.app.api.survey.SurveyNavigationData
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.business.survey.toPublishInfo
 import java.time.LocalDateTime
@@ -28,6 +29,8 @@ data class SurveyDataEntity(
     val description: String = "",
     val imageUrl: String = "",
     val lastSync: LocalDateTime? = null,
+    @Embedded val navigationData: SurveyNavigationData
+
 ) {
     fun toSurveyData(
         localResponseCount: Int,
@@ -56,6 +59,7 @@ data class SurveyDataEntity(
             cachedDesign = cachedDesign,
             cachedAllFiles = cachedAllFiles,
             lastSync = lastSync,
+            surveyNavigationData = navigationData
         )
 }
 

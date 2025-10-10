@@ -3,6 +3,7 @@ package com.qlarr.app.business.survey
 import android.os.Parcelable
 import com.qlarr.app.api.survey.PublishInfo
 import com.qlarr.app.api.survey.Survey
+import com.qlarr.app.api.survey.SurveyNavigationData
 import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 
@@ -30,6 +31,7 @@ data class SurveyData(
     val description: String,
     val imageUrl: String,
     val lastSync: LocalDateTime? = null,
+    val surveyNavigationData: SurveyNavigationData
 ) : Parcelable {
     private val scheduled: Boolean
         get() = startDate != null && startDate.isAfter(LocalDateTime.now())
@@ -115,6 +117,7 @@ data class SurveyData(
                 cachedDesign = cachedDesign,
                 cachedAllFiles = cachedAllFiles,
                 lastSync = lastSync,
+                surveyNavigationData = survey.navigationData
             )
     }
 }

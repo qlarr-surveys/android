@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.qlarr.app.api.survey.NavigationJsonOutput
+import com.qlarr.app.api.survey.SurveyNavigationData
 import com.qlarr.app.api.survey.objectMapper
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.db.QlarrDb
@@ -99,6 +100,7 @@ class EMNavProcessor(
                             responseId = responseId!!,
                             lang = lang,
                             additionalLang = additionalLang,
+                            navigationData = survey.surveyNavigationData
                         )
                 navListener.onSuccess(result)
             },
@@ -130,6 +132,7 @@ class EMNavProcessor(
                             responseId = responseId!!,
                             lang = language,
                             additionalLang = additionalLang,
+                            navigationData = survey.surveyNavigationData
                         )
                 updateResponse(
                     response,
@@ -195,10 +198,9 @@ class EMNavProcessor(
 
     private fun String.stripHTMLTags(): String = replace(Regex("<.*?>"), "")
 
-    private fun navigationUseCase(
+    private fun  navigationUseCase(
         lang: String? = null,
         values: Map<String, Any> = mapOf(),
-        navigationMode: NavigationMode = NavigationMode.GROUP_BY_GROUP,
         navigationIndex: NavigationIndex? = null,
         navigationDirection: NavigationDirection,
         onSuccess: (NavigationJsonOutput, SurveyLang, List<SurveyLang>) -> Unit,
@@ -219,11 +221,11 @@ class EMNavProcessor(
             NavigationUseCaseWrapper.init(
                 lang = lang,
                 navigationDirection = navigationDirection,
-                navigationMode = navigationMode,
+                navigationMode = survey.surveyNavigationData.navigationMode,
                 processedSurvey = objectMapper.writeValueAsString(validationJsonOutput),
                 values = objectMapper.writeValueAsString(values),
                 navigationIndex = navigationIndex,
-                skipInvalid = true,
+                skipInvalid = survey.surveyNavigationData.skipInvalid,
                 surveyMode = SurveyMode.OFFLINE,
             )
         val script = navigationUseCaseWrapperImpl.getNavigationScript()
@@ -411,11 +413,13 @@ fun NavigationJsonOutput.with(
     responseId: UUID,
     lang: SurveyLang,
     additionalLang: List<SurveyLang>,
+    navigationData: SurveyNavigationData,
 ): ApiNavigationOutput =
     ApiNavigationOutput(
         survey,
         state,
         navigationIndex,
+        navigationData,
         responseId,
         lang,
         additionalLang,
@@ -425,6 +429,7 @@ data class ApiNavigationOutput(
     val survey: ObjectNode,
     val state: ObjectNode,
     val navigationIndex: NavigationIndex,
+    val navigationData: SurveyNavigationData,
     val responseId: UUID,
     val lang: SurveyLang,
     val additionalLang: List<SurveyLang>?,

@@ -35,6 +35,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.qlarr.app.R
 import com.qlarr.app.api.survey.PublishInfo
+import com.qlarr.app.api.survey.SurveyNavigationData
 import com.qlarr.app.business.settings.SharedPrefsManager
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.ui.common.compose.boldValueString
@@ -414,5 +415,6 @@ private fun getPreviewSurveyData() = SurveyData(
     imageUrl = "https://www.mojkvart.hr/idnthumb.ashx?src=%2Flang%2Fstranica%2Flogo%2Flogo_672023" +
             ".jpg&mw=398&mh=208&crop=0&forceDimension=1&hash=637123499480553706&level=201",
     cachedDesign = true,
-    cachedAllFiles = true
+    cachedAllFiles = true,
+    surveyNavigationData = SurveyNavigationData()
 )

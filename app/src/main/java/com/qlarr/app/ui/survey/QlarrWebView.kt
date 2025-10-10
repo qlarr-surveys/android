@@ -219,7 +219,6 @@ class QlarrWebView
                                     val string = mapper.writeValueAsString(apiNavigationOutput)
                                     loadUrlOnUiThread("javascript:navigateOffline($string)")
                                     val responseId = apiNavigationOutput.responseId.toString()
-                                    Log.e("dkjjaskda", responseId)
                                     this@QlarrWebView.responseId = responseId
                                     surveyActivity?.onResponseStarted(responseId)
                                 }
