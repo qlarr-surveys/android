@@ -1,11 +1,14 @@
 package com.qlarr.app.api.survey
 
+import android.os.Parcelable
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
 import com.qlarr.surveyengine.model.exposed.NavigationIndex
+import com.qlarr.surveyengine.model.exposed.NavigationMode
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -31,8 +34,22 @@ data class Survey(
     @JsonProperty("surveyQuota") val surveyQuota: Int,
     @JsonProperty("latestVersion") val publishInfo: PublishInfo?,
     @JsonProperty("image") val imageName: String?,
-    @JsonProperty("description") val description: String?
+    @JsonProperty("description") val description: String?,
+    @JsonProperty("navigationData") val navigationData: SurveyNavigationData,
 )
+
+
+@Parcelize
+data class SurveyNavigationData(
+    val navigationMode: NavigationMode = NavigationMode.GROUP_BY_GROUP,
+    val allowPrevious: Boolean = true,
+    val resumeExpiryMillis: Long = TEN_YEARS_MILLIS,
+    val skipInvalid: Boolean = true,
+    val allowIncomplete: Boolean = true,
+    val allowJump: Boolean = true
+) : Parcelable
+
+private const val TEN_YEARS_MILLIS = 31536000000L
 
 data class UploadResponseRequestData(
     val versionId: Int,

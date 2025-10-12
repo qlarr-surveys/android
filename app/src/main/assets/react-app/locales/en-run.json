@@ -1,6 +1,7 @@
 {
     "cancel": "Cancel",
     "choose_file": "Choose File",
+    "remove_file": "Remove File",
     "finish": "Submit",
     "lang": "Language",
     "next": "Next",
@@ -44,5 +45,9 @@
     "validation_pattern_email": "Should look like an email",
     "validation_ranking_count": "Please rank at most {{count}} options",
     "validation_required": "This is required",
-    "word_count": "Word count: {{count}}"
+    "word_count": "Word count: {{count}}",
+    "saveAndContinueLaterTitle" : "Save and continue later",
+    "saveAndContinueLaterDesc":"We’ll save your current progress. You can return to this survey later.",
+    "saveForLater":"Save for later",
+    "linkCopied":"Link copied to clipboard!"
 }

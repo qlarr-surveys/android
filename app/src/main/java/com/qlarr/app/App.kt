@@ -1,6 +1,7 @@
 package com.qlarr.app
 
 import android.app.Application
+import android.webkit.WebView
 import androidx.appcompat.app.AppCompatDelegate
 import coil.ImageLoader
 import coil.ImageLoaderFactory
@@ -21,6 +22,7 @@ class App :
     ImageLoaderFactory {
     override fun onCreate() {
         super.onCreate()
+        WebView.setWebContentsDebuggingEnabled(true)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         startKoin {
             androidContext(this@App)

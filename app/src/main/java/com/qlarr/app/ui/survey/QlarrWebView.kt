@@ -61,46 +61,10 @@ class QlarrWebView
 
         private lateinit var emNavProcessor: EMNavProcessor
         private lateinit var survey: SurveyData
-        private var insets: WindowInsets = WindowInsets(0, 0, 0, 0)
         private var responseId: String? = null
-
-        private fun Int.toRoundedDp(density: Density): Int = with(density) { this@toRoundedDp.toDp().value.roundToInt() }
 
         private val qlarrWebViewClient =
             object : WebViewClient() {
-                override fun onPageFinished(
-                    view: WebView?,
-                    url: String?,
-                ) {
-                    super.onPageFinished(view, url)
-                    val density = Density(context)
-                    val safeAreaJs = """
-            document.documentElement.style.setProperty('--safe-area-inset-top', '${
-                        insets.getTop(
-                            density,
-                        ).toRoundedDp(density)
-                    }px');
-            document.documentElement.style.setProperty('--safe-area-inset-right', '${
-                        insets.getRight(
-                            density,
-                            LayoutDirection.Ltr,
-                        ).toRoundedDp(density)
-                    }px');
-            document.documentElement.style.setProperty('--safe-area-inset-bottom', '${
-                        insets.getBottom(
-                            density,
-                        ).toRoundedDp(density)
-                    }px');
-            document.documentElement.style.setProperty('--safe-area-inset-left', '${
-                        insets.getLeft(
-                            density,
-                            LayoutDirection.Ltr,
-                        ).toRoundedDp(density)
-                    }px');
-            """
-                    evaluateJavascript(safeAreaJs, null)
-                }
-
                 override fun shouldInterceptRequest(
                     view: WebView?,
                     request: WebResourceRequest?,
@@ -219,7 +183,6 @@ class QlarrWebView
                                     val string = mapper.writeValueAsString(apiNavigationOutput)
                                     loadUrlOnUiThread("javascript:navigateOffline($string)")
                                     val responseId = apiNavigationOutput.responseId.toString()
-                                    Log.e("dkjjaskda", responseId)
                                     this@QlarrWebView.responseId = responseId
                                     surveyActivity?.onResponseStarted(responseId)
                                 }
@@ -395,9 +358,7 @@ class QlarrWebView
         fun loadSurvey(
             surveyData: SurveyData,
             responseId: String?,
-            windowsInsets: WindowInsets,
         ) {
-            this.insets = windowsInsets
             survey = surveyData
             val data =
                 context.assets.open("$REACT_APP_BUILD_FOLDER/index.html").bufferedReader().use {

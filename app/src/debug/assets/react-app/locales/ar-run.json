@@ -1,6 +1,7 @@
 {
   "cancel": "إلغاء",
   "choose_file": "اختر ملفًا",
+  "remove_file": "إزالة الملف",
   "finish": "إرسال",
   "lang": "اللغة",
   "next": "التالي",
@@ -44,5 +45,9 @@
   "validation_pattern_email": "يجب أن تبدو كرسالة بريد إلكتروني",
   "validation_ranking_count": "الرجاء تحديد {{count}} على الأكثر من الخيارات",
   "validation_required": "هذا مطلوب",
-  "word_count": "عدد الكلمات: {{count}}"
+  "word_count": "عدد الكلمات: {{count}}",
+  "saveAndContinueLaterTitle": "احفظ وتابع لاحقًا",
+  "saveAndContinueLaterDesc": "سنحفظ تقدمك الحالي. يمكنك العودة إلى هذا الاستبيان لاحقًا.",
+  "saveForLater": "احفظ لوقت لاحق",
+  "linkCopied": "تم نسخ الرابط إلى الحافظة!"
 }
