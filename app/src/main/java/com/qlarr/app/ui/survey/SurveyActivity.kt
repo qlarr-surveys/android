@@ -121,13 +121,13 @@ class SurveyActivity : ComponentActivity() {
                             }
                         }
                     }
-                }) { _ ->
+                }) { padding ->
                     key(reloadCount) {
-                        val insets = WindowInsets.safeDrawing
                         AndroidView(
                             modifier =
                                 Modifier
                                     .fillMaxSize()
+                                    .padding(padding)
                                     .imePadding(),
                             factory = { context ->
                                 QlarrWebView(context).apply {
@@ -143,7 +143,6 @@ class SurveyActivity : ComponentActivity() {
                                 qlarrWebView.loadSurvey(
                                     surveyData = survey,
                                     responseId = responseIdExtra,
-                                    windowsInsets = insets,
                                 )
                             },
                         )
