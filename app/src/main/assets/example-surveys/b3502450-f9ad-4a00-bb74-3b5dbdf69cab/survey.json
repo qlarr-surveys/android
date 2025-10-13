@@ -20,5 +20,14 @@
     "published": false,
     "lastModified": "2025-06-29 12:05:54",
     "status": "active"
-  }
+  },
+  "navigationData": {
+    "navigationMode": "GROUP_BY_GROUP",
+    "allowPrevious": true,
+    "resumeExpiryMillis": 31536000000,
+    "skipInvalid": true,
+    "allowIncomplete": true,
+    "allowJump": true
+  },
+  "publicWithinOrg": true
 }
