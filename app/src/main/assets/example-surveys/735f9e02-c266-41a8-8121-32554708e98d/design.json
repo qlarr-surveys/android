@@ -3886,13 +3886,13 @@
       {
         "code": "before_navigation",
         "text": "[]",
-        "returnType": "list",
+        "returnType": { "type":"list", "values":[] },
         "isActive": false
       },
       {
         "code": "after_navigation",
         "text": "[]",
-        "returnType": "list",
+        "returnType": { "type":"list", "values":[] },
         "isActive": false
       },
       {

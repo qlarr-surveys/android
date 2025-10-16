@@ -51,18 +51,19 @@ class ReturnTypeDeserializer : StdDeserializer<ReturnType>(ReturnType::class.jav
                     "string" -> ReturnType.String
                     "int" -> ReturnType.Int
                     "double" -> ReturnType.Double
-                    "list" -> ReturnType.List
                     "map" -> ReturnType.Map
                     "date" -> ReturnType.Date
                     "file" -> ReturnType.File
+                    "list" -> ReturnType.List(emptySet())
                     else -> throw IllegalArgumentException("Unknown return type: ${node.asText()}")
                 }
             }
 
             node.isObject -> {
-                val type = node.get("type")?.asText()
-                when (type) {
-                    "enum" -> {
+                when (val type = node.get("type")?.asText()) {
+                    "list",
+                    "enum",
+                    -> {
                         val valuesNode =
                             node.get("values")
                                 ?: throw IllegalArgumentException("Missing 'values' field for enum type")
@@ -72,7 +73,7 @@ class ReturnTypeDeserializer : StdDeserializer<ReturnType>(ReturnType::class.jav
                         }
 
                         val values = valuesNode.map { it.asText() }.toSet()
-                        ReturnType.Enum(values)
+                        if (type == "enum") ReturnType.Enum(values) else ReturnType.List(values)
                     }
 
                     else -> throw IllegalArgumentException("Unknown object type: $type")
