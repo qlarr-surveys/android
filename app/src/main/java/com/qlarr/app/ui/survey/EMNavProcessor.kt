@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.qlarr.app.api.survey.NavigationJsonOutput
 import com.qlarr.app.api.survey.SurveyNavigationData
+import com.qlarr.app.api.survey.ValidationJsonOutput
 import com.qlarr.app.api.survey.objectMapper
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.db.QlarrDb
@@ -84,10 +85,40 @@ class EMNavProcessor(
         webView.loadUrl("data:text/html;charset=utf-8;base64,$base64")
     }
 
+    private fun getPrefillValues(validationJsonOutput: ValidationJsonOutput): Map<String, Any> {
+        val prefillQuestionCodes =
+            validationJsonOutput.survey
+                .get("groups")
+                ?.asSequence()
+                ?.flatMap { group ->
+                    group.get("questions")?.asSequence() ?: emptySequence()
+                }?.filter { question ->
+                    question.get("prefill")?.asBoolean() == true
+                }?.mapNotNull { question ->
+                    question.get("code")?.asText()?.let { "$it.value" }
+                }?.toList() ?: emptyList()
+
+        if (prefillQuestionCodes.isEmpty()) return emptyMap()
+
+        return runBlocking {
+            qlarrDb
+                .responseDao()
+                .getLastResponse(survey.id)
+                ?.values
+                ?.filterKeys { it in prefillQuestionCodes }
+                ?: emptyMap()
+        }
+    }
+
     fun start(navListener: NavigationListener) {
+        val validationJsonOutput = FileUtils.getValidationJson(getActivity(), survey.id)!!
+        val prefilledValues = getPrefillValues(validationJsonOutput)
+
         navigationUseCase(
+            validationJsonOutput = validationJsonOutput,
             navigationDirection = NavigationDirection.Start,
             navigationIndex = null,
+            values = prefilledValues,
             onSuccess = { navigationJsonOutput, lang, additionalLang ->
                 responseId = UUID.randomUUID()
                 saveResponse(
@@ -100,7 +131,7 @@ class EMNavProcessor(
                             responseId = responseId!!,
                             lang = lang,
                             additionalLang = additionalLang,
-                            navigationData = survey.surveyNavigationData
+                            navigationData = survey.surveyNavigationData,
                         )
                 navListener.onSuccess(result)
             },
@@ -112,12 +143,14 @@ class EMNavProcessor(
         navListener: NavigationListener,
     ) {
         var response: Response
+        val validationJsonOutput = FileUtils.getValidationJson(getActivity(), survey.id)!!
         responseId = useCaseInput.responseId!!
         runBlocking {
             response = qlarrDb.responseDao().get(responseId.toString())
         }
         val lang = useCaseInput.lang ?: response.lang
         navigationUseCase(
+            validationJsonOutput = validationJsonOutput,
             navigationDirection = useCaseInput.navigationDirection!!,
             navigationIndex = response.navigationIndex,
             lang = lang,
@@ -132,7 +165,7 @@ class EMNavProcessor(
                             responseId = responseId!!,
                             lang = language,
                             additionalLang = additionalLang,
-                            navigationData = survey.surveyNavigationData
+                            navigationData = survey.surveyNavigationData,
                         )
                 updateResponse(
                     response,
@@ -198,7 +231,8 @@ class EMNavProcessor(
 
     private fun String.stripHTMLTags(): String = replace(Regex("<.*?>"), "")
 
-    private fun  navigationUseCase(
+    private fun navigationUseCase(
+        validationJsonOutput: ValidationJsonOutput,
         lang: String? = null,
         values: Map<String, Any> = mapOf(),
         navigationIndex: NavigationIndex? = null,
@@ -206,7 +240,6 @@ class EMNavProcessor(
         onSuccess: (NavigationJsonOutput, SurveyLang, List<SurveyLang>) -> Unit,
         onError: (Throwable) -> Unit,
     ) {
-        val validationJsonOutput = FileUtils.getValidationJson(getActivity(), survey.id)!!
         val currentLang = validationJsonOutput.availableLangByCode(lang)
         val additionalLang =
             mutableListOf(validationJsonOutput.defaultSurveyLang())
