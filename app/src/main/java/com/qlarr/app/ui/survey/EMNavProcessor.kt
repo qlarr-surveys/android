@@ -105,7 +105,7 @@ class EMNavProcessor(
                 .responseDao()
                 .getLastResponse(survey.id)
                 ?.values
-                ?.filterKeys { it in prefillQuestionCodes }
+                ?.filterKeys { it.endsWith(".value") && it in prefillQuestionCodes }
                 ?: emptyMap()
         }
     }
