@@ -20,13 +20,22 @@ class ReturnTypeSerializer : StdSerializer<ReturnType>(ReturnType::class.java) {
             is ReturnType.String -> gen.writeString("string")
             is ReturnType.Int -> gen.writeString("int")
             is ReturnType.Double -> gen.writeString("double")
-            is ReturnType.List -> gen.writeString("list")
             is ReturnType.Map -> gen.writeString("map")
             is ReturnType.Date -> gen.writeString("date")
             is ReturnType.File -> gen.writeString("file")
             is ReturnType.Enum -> {
                 gen.writeStartObject()
                 gen.writeStringField("type", "enum")
+                gen.writeFieldName("values")
+                gen.writeStartArray()
+                value.values.forEach { gen.writeString(it) }
+                gen.writeEndArray()
+                gen.writeEndObject()
+            }
+
+            is ReturnType.List -> {
+                gen.writeStartObject()
+                gen.writeStringField("type", "list")
                 gen.writeFieldName("values")
                 gen.writeStartArray()
                 value.values.forEach { gen.writeString(it) }

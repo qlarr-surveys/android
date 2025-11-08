@@ -30,7 +30,7 @@ fun BackButton(onBackPressed: () -> Unit) {
     IconButton(onClick = onBackPressed) {
         Icon(
             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = stringResource(id = R.string.back)
+            contentDescription = stringResource(id = R.string.back),
         )
     }
 }
@@ -41,31 +41,38 @@ fun QlarrTopBar(
     title: String,
     showBackButton: Boolean = true,
     onBackPressed: () -> Unit = {},
-    actions: @Composable RowScope.() -> Unit = {}
+    actions: @Composable RowScope.() -> Unit = {},
 ) {
-    TopAppBar(title = {
-        Text(text = title)
-    }, navigationIcon = {
-        if (showBackButton) {
-            BackButton(onBackPressed)
-        }
-    }, colors = TopAppBarColors(
-        containerColor = Colors.Primary,
-        scrolledContainerColor = Colors.Primary,
-        navigationIconContentColor = Colors.White,
-        titleContentColor = Colors.White,
-        actionIconContentColor = Colors.White
-    ),
-        actions = actions
+    TopAppBar(
+        title = {
+            Text(text = title)
+        },
+        navigationIcon = {
+            if (showBackButton) {
+                BackButton(onBackPressed)
+            }
+        },
+        colors =
+            TopAppBarColors(
+                containerColor = Colors.Primary,
+                scrolledContainerColor = Colors.Primary,
+                navigationIconContentColor = Colors.White,
+                titleContentColor = Colors.White,
+                actionIconContentColor = Colors.White,
+            ),
+        actions = actions,
     )
 }
 
 @Composable
-fun TopBarIconButton(@DrawableRes iconRes: Int, onClick: () -> Unit) {
+fun TopBarIconButton(
+    @DrawableRes iconRes: Int,
+    onClick: () -> Unit,
+) {
     IconButton(onClick = onClick) {
         Icon(
             painterResource(id = iconRes),
-            contentDescription = null
+            contentDescription = null,
         )
     }
 }
@@ -75,16 +82,16 @@ fun PrimaryActionButton(
     modifier: Modifier = Modifier,
     @StringRes textRes: Int,
     enabled: Boolean = true,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Button(
         modifier = modifier,
         onClick = onClick,
-        enabled = enabled
+        enabled = enabled,
     ) {
         Text(
             text = stringResource(id = textRes),
-            fontSize = 20.sp
+            fontSize = 20.sp,
         )
     }
 }
@@ -94,17 +101,17 @@ fun SecondaryActionButton(
     modifier: Modifier = Modifier,
     @StringRes textRes: Int,
     enabled: Boolean = true,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Button(
         modifier = modifier,
         onClick = onClick,
         enabled = enabled,
-        colors = ButtonDefaults.buttonColors().copy(containerColor = Colors.LightBlue)
+        colors = ButtonDefaults.buttonColors().copy(containerColor = Colors.LightBlue),
     ) {
         Text(
             text = stringResource(id = textRes),
-            fontSize = 20.sp
+            fontSize = 20.sp,
         )
     }
 }
@@ -114,14 +121,14 @@ fun TertiaryActionButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     @StringRes textRes: Int,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     OutlinedButton(
         modifier = modifier,
         onClick = onClick,
         enabled = enabled,
         border = BorderStroke(1.dp, if (enabled) Colors.Primary else Colors.LightGray),
-        colors = ButtonColors(Colors.White, Colors.Primary, Colors.White, Colors.LightGray)
+        colors = ButtonColors(Colors.White, Colors.Primary, Colors.White, Colors.LightGray),
     ) {
         Text(fontSize = 20.sp, text = stringResource(textRes))
     }
@@ -132,10 +139,12 @@ fun TertiaryActionButton(
 private fun PreviewQlarrTopBar() {
     QlarrTheme {
         QlarrTopBar(
-            title = "Lalala", onBackPressed = {},
+            title = "Lalala",
+            onBackPressed = {},
             actions = {
                 TopBarIconButton(iconRes = R.drawable.baseline_logout_24) {}
-            })
+            },
+        )
     }
 }
 
@@ -177,7 +186,7 @@ private fun PreviewTertiaryActionButtonDisabled() {
     QlarrTheme {
         TertiaryActionButton(
             enabled = false,
-            textRes = R.string.survey_item_button_get_missing_files
+            textRes = R.string.survey_item_button_get_missing_files,
         ) {}
     }
 }
