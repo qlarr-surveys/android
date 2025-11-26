@@ -416,5 +416,6 @@ private fun getPreviewSurveyData() = SurveyData(
             ".jpg&mw=398&mh=208&crop=0&forceDimension=1&hash=637123499480553706&level=201",
     cachedDesign = true,
     cachedAllFiles = true,
-    surveyNavigationData = SurveyNavigationData()
+    surveyNavigationData = SurveyNavigationData(),
+    responsesReviewRequired = false
 )

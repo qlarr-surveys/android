@@ -27,7 +27,6 @@ import com.qlarr.surveyengine.model.SurveyLang
 import com.qlarr.surveyengine.model.exposed.ColumnName
 import com.qlarr.surveyengine.model.exposed.NavigationDirection
 import com.qlarr.surveyengine.model.exposed.NavigationIndex
-import com.qlarr.surveyengine.model.exposed.NavigationMode
 import com.qlarr.surveyengine.model.exposed.SurveyMode
 import com.qlarr.surveyengine.scriptengine.engineScript
 import com.qlarr.surveyengine.usecase.NavigationUseCaseWrapper
@@ -300,6 +299,7 @@ class EMNavProcessor(
                     submitDate = null,
                     isSynced = false,
                     values = result.toSave,
+                    isReviewed = !survey.responsesReviewRequired
                 ),
             )
         }

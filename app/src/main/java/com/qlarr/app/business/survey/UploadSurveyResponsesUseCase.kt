@@ -53,7 +53,7 @@ class UploadSurveyResponsesUseCaseImpl(
         val responses =
             responseRepository
                 .getResponses(surveyId)
-                .filter { !it.isSynced && it.submitDate != null }
+                .filter { it.isReviewed && !it.isSynced && it.submitDate != null }
         responses.forEach { response ->
             try {
                 syncResponse(surveyId, response)

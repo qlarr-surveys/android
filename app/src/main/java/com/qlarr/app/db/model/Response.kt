@@ -43,6 +43,7 @@ data class Response(
 
     val version: Int,
 
+    val isReviewed: Boolean
     ) {
     companion object {
         const val STORED_FILENAME_KEY = "stored_filename"

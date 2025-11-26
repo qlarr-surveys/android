@@ -36,6 +36,7 @@ data class Survey(
     @JsonProperty("image") val imageName: String?,
     @JsonProperty("description") val description: String?,
     @JsonProperty("navigationData") val navigationData: SurveyNavigationData,
+    @JsonProperty("responseReviewRequired") val responseReviewRequired: Boolean
 )
 
 

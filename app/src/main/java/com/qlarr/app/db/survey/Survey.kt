@@ -29,8 +29,8 @@ data class SurveyDataEntity(
     val description: String = "",
     val imageUrl: String = "",
     val lastSync: LocalDateTime? = null,
-    @Embedded val navigationData: SurveyNavigationData
-
+    @Embedded val navigationData: SurveyNavigationData,
+    val responseReviewRequired: Boolean
 ) {
     fun toSurveyData(
         localResponseCount: Int,
@@ -59,7 +59,8 @@ data class SurveyDataEntity(
             cachedDesign = cachedDesign,
             cachedAllFiles = cachedAllFiles,
             lastSync = lastSync,
-            surveyNavigationData = navigationData
+            surveyNavigationData = navigationData,
+            responsesReviewRequired = responseReviewRequired
         )
 }
 

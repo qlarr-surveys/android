@@ -325,7 +325,8 @@ class SurveyRepositoryImpl(
             imageUrl = this.imageUrl,
             cachedDesign = this.cachedDesign,
             cachedAllFiles = this.cachedAllFiles,
-            navigationData = this.surveyNavigationData
+            navigationData = this.surveyNavigationData,
+            responseReviewRequired = responsesReviewRequired
         )
 }
 
