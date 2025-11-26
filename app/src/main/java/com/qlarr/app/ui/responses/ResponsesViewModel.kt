@@ -57,7 +57,10 @@ class ResponsesViewModel(
         }
 
         _responsesScreenData.update {
-            it.copy(lastSyncTime = surveyData.lastSync)
+            it.copy(
+                lastSyncTime = surveyData.lastSync,
+                reviewRequired = surveyData.responsesReviewRequired,
+            )
         }
     }
 

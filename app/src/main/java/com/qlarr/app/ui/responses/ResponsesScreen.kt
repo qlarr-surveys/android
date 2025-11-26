@@ -49,7 +49,8 @@ data class ResponsesScreenState(
     val completeResponsesCount: Int = 0,
     val inCompleteResponsesCount: Int = 0,
     val lastSyncTime: LocalDateTime? = null,
-    val isComplete: Boolean = false
+    val isComplete: Boolean = false,
+    val reviewRequired: Boolean = false
 ) {
     fun shouldLoad() = !(isLoading || isComplete)
 }
@@ -129,6 +130,7 @@ private fun ResponseItem(
             modifier = Modifier
                 .background(Colors.LightBlue)
                 .padding(start = 16.dp)
+                .padding(vertical = 6.dp)
         ) {
             Text(
                 modifier = Modifier.weight(1f),
