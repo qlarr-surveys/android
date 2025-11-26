@@ -28,6 +28,7 @@ import com.qlarr.app.ui.common.FileUtils
 import com.qlarr.surveyengine.model.exposed.NavigationDirection
 import com.qlarr.surveyengine.model.exposed.NavigationIndex
 import com.qlarr.surveyengine.scriptengine.commonScript
+import com.qlarr.surveyengine.usecase.ValidationUseCaseWrapper.Companion.new
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.destination
 import id.zelory.compressor.constraint.size
@@ -163,6 +164,18 @@ class QlarrWebView
                     val mapper = objectMapper.registerModule(JavaTimeModule())
                     val navigateRequest: NavigateRequest = mapper.readValue(body)
                     navigate(mapper, navigateRequest)
+                }
+                @Suppress("unused")
+                @JavascriptInterface
+                fun searchAutoComplete(uuid:String, query:String) {
+                    val file = FileUtils.getResourceFile(context, uuid, survey.id)
+                    val list: List<String> =  objectMapper.readValue(file)
+                    val filteredList =  list
+                        .filter { it.startsWith(query, true) }
+                        .sorted()
+                        .take(10)
+                    loadUrlOnUiThread("javascript:searchAutoComplete(${objectMapper.writeValueAsString(filteredList)})")
+
                 }
 
                 @Suppress("unused")
