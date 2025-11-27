@@ -69,7 +69,6 @@ data class ResponsesScreenState(
     val reviewerPassword: String = "",
     val isReviewerLoggedIn: Boolean = false,
     val isReviewerLoggingIn: Boolean = false,
-    val reviewerName: String = "",
 ) {
     fun shouldLoad() = !(isLoading || isComplete)
 }
@@ -117,7 +116,6 @@ fun ResponsesScreen(
                 ReviewerLoginCard(
                     reviewerLoggedIn = screenState.isReviewerLoggedIn,
                     isLoggingIn = screenState.isReviewerLoggingIn,
-                    reviewerName = screenState.reviewerName,
                     username = screenState.reviewerUsername,
                     password = screenState.reviewerPassword,
                     onUsernameChange = onReviewerUsernameChange,
@@ -310,7 +308,6 @@ private fun StatText(
 private fun ReviewerLoginCard(
     reviewerLoggedIn: Boolean,
     isLoggingIn: Boolean,
-    reviewerName: String,
     username: String,
     password: String,
     onUsernameChange: (String) -> Unit,
@@ -346,7 +343,7 @@ private fun ReviewerLoginCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = stringResource(R.string.logged_in_as_reviewer, reviewerName),
+                        text = stringResource(R.string.logged_in_as_reviewer),
                         fontWeight = FontWeight.Medium,
                         fontSize = 14.sp,
                     )
@@ -490,7 +487,7 @@ private fun PreviewResponseItem() {
                 values = listOf(),
                 needsApproval = true,
                 lang = "eng",
-            )
+            ),
         )
     }
 }

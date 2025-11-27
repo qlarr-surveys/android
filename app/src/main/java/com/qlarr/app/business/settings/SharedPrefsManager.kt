@@ -12,6 +12,7 @@ interface SharedPrefsManager {
     var refreshToken: String?
     var userId: String?
     var surveyLastFetchTimeMillis: Long
+    var roles: List<String>
     fun clear()
 
     companion object {
@@ -58,6 +59,13 @@ class SharedPrefsManagerImpl(context: Context) : SharedPrefsManager {
             saveLong(KEY_LAST_SURVEY_FETCH, value)
         }
 
+    override var roles: List<String>
+        get() = preferences.getStringSet(KEY_ROLES, emptySet())?.toList() ?: emptyList()
+        set(value) {
+            editor.putStringSet(KEY_ROLES, value.toSet())
+            editor.apply()
+        }
+
     override fun clear() {
         editor.clear().apply()
     }
@@ -97,5 +105,6 @@ class SharedPrefsManagerImpl(context: Context) : SharedPrefsManager {
         private const val KEY_ENV = "environment"
         private const val KEY_USER_ID = "user_id"
         private const val KEY_LAST_SURVEY_FETCH = "last_survey_fetch"
+        private const val KEY_ROLES = "roles"
     }
 }

@@ -17,6 +17,7 @@ interface ErrorProcessor {
     suspend fun processError(throwable: Throwable)
     suspend fun processLoginError(throwable: Throwable)
     suspend fun roleNotSupported()
+    suspend fun notSupervisor()
     val errors: SharedFlow<ProcessedError>
 }
 
@@ -71,6 +72,10 @@ class ErrorProcessorImpl(private val connectivityChecker: ConnectivityChecker) :
         _errors.emit(ProcessedError.NoOfflineRole)
     }
 
+    override suspend fun notSupervisor() {
+        _errors.emit(ProcessedError.NotSupervisor)
+    }
+
     // TODO proper error handling per code
     private fun processHttpException(throwable: HttpException): ProcessedError {
         return when (throwable.code()) {
@@ -98,6 +103,11 @@ sealed class ProcessedError(val titleRes: Int, val messageRes: Int) {
     object GoogleSignUpNotAllowed : ProcessedError(
         R.string.error_signup_not_allowed_title,
         R.string.error_signup_not_allowed_description
+    )
+
+    object NotSupervisor : ProcessedError(
+        R.string.error_role_not_supported_title,
+        R.string.error_role_not_supported_title
     )
 
     object NoOfflineRole : ProcessedError(

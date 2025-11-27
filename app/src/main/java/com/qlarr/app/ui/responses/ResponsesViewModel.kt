@@ -10,6 +10,7 @@ import com.qlarr.app.AppEvent
 import com.qlarr.app.EventBus
 import com.qlarr.app.business.auth.LoginInteractor
 import com.qlarr.app.business.responses.ResponseRepository
+import com.qlarr.app.business.survey.SessionManager
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.business.survey.SurveyRepository
 import com.qlarr.app.db.model.Response
@@ -33,6 +34,7 @@ class ResponsesViewModel(
     private val errorProcessor: ErrorProcessor,
     private val surveyRepository: SurveyRepository,
     private val loginInteractor: LoginInteractor,
+    private val sessionManager: SessionManager
 ) : AndroidViewModel(application),
     ErrorProcessor by errorProcessor {
     private lateinit var surveyData: SurveyData
@@ -62,7 +64,8 @@ class ResponsesViewModel(
         _responsesScreenData.update {
             it.copy(
                 lastSyncTime = surveyData.lastSync,
-                reviewRequired = true, // surveyData.responsesReviewRequired,
+                reviewRequired = surveyData.responsesReviewRequired,
+                isReviewerLoggedIn = sessionManager.isSupervisor()
             )
         }
     }
@@ -254,11 +257,11 @@ class ResponsesViewModel(
                         it.copy(
                             isReviewerLoggingIn = false,
                             isReviewerLoggedIn = true,
-                            reviewerName = result.firstName + " " + result.lastName,
                             reviewerPassword = "",
                         )
                     }
                 } else {
+                    errorProcessor.notSupervisor()
                     _responsesScreenData.update {
                         it.copy(isReviewerLoggingIn = false)
                     }
@@ -267,6 +270,7 @@ class ResponsesViewModel(
                 _responsesScreenData.update {
                     it.copy(isReviewerLoggingIn = false)
                 }
+                processError(e)
             }
         }
     }
@@ -275,7 +279,6 @@ class ResponsesViewModel(
         _responsesScreenData.update {
             it.copy(
                 isReviewerLoggedIn = false,
-                reviewerName = "",
                 reviewerUsername = "",
                 reviewerPassword = "",
             )

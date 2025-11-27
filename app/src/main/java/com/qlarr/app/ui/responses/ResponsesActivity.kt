@@ -90,7 +90,7 @@ class ResponsesActivity : ComponentActivity() {
                         onReviewerUsernameChange = viewModel::onReviewerUsernameChange,
                         onReviewerPasswordChange = viewModel::onReviewerPasswordChange,
                         onReviewerLoginClick = viewModel::onReviewerLogin,
-                        onReviewerLogoutClick = viewModel::onReviewerLogout
+                        onReviewerLogoutClick = onBackPressedDispatcher::onBackPressed
                     )
                 }
             }

@@ -23,6 +23,7 @@
     <string name="error_signup_not_allowed_title">Sign in failed!</string>
     <string name="error_signup_not_allowed_description">You have to have an existing account to log in through google… go create an account</string>
     <string name="error_role_not_supported_title">Sign in failed!</string>
+    <string name="error_role_not_supported_for_supervisor_description">You must be a Supervisor, Survey Admin or Super Admin to be able to approve responses.</string>
     <string name="error_role_not_supported_description">You must be a surveyor, Survey Admin or Super Admin to be able to log in to this app</string>
     <string name="validation_email_error">Please enter valid email</string>
     <string name="validation_psw_error">Password minimum length is 8</string>
@@ -163,6 +164,6 @@
     <string name="survey_item_button_get_missing_files">Get Missing Files</string>
     <string name="survey_end_finish_action">Finish</string>
     <string name="survey_end_repeat">Start new</string>
-    <string name="logged_in_as_reviewer">Logged in as %s</string>
+    <string name="logged_in_as_reviewer">Logged in with supervisor rights</string>
     <string name="reviewer_required">Reviewer approval required</string>
 </resources>

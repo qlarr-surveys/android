@@ -13,6 +13,7 @@ interface LoginRepository {
     suspend fun login(loginInput: LoginInput): Result<LoginResponse>
     suspend fun googleSignIn(googleSignInInput: GoogleSignInInput): Result<LoginResponse>
     suspend fun logout(): Result<Unit>
+    suspend fun supervisorLogin(loginInput: LoginInput): Result<LoginResponse>
 }
 
 class LoginRepositoryImpl(
@@ -21,6 +22,10 @@ class LoginRepositoryImpl(
     private val surveyRepository: SurveyRepository,
     private val qlarrDb: QlarrDb
 ) : LoginRepository {
+
+    override suspend fun supervisorLogin(loginInput: LoginInput): Result<LoginResponse> {
+        return service.login(loginInput).getResult()
+    }
 
     override suspend fun login(loginInput: LoginInput): Result<LoginResponse> {
         val result = service.login(loginInput).getResult()
