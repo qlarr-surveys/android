@@ -54,7 +54,8 @@ class ResponsesActivity : ComponentActivity() {
             val responsesScreenData by viewModel.responsesScreenData.collectAsState()
 
             QlarrTheme {
-                Scaffold(topBar = {
+                Scaffold(
+                    topBar = {
                     QlarrTopBar(
                         title = stringResource(id = R.string.title_activity_responses),
                         onBackPressed = {
@@ -75,6 +76,9 @@ class ResponsesActivity : ComponentActivity() {
                         onDeleteClicked = { id ->
                             viewModel.deleteResponse(id)
                         },
+                        onApproveClicked = { id ->
+                            viewModel.onApproveResponse(id)
+                        },
                         screenState = responsesScreenData,
                         onFileClicked = { fileData ->
                             FileUtils.openFile(
@@ -82,7 +86,11 @@ class ResponsesActivity : ComponentActivity() {
                                 file = fileData.file,
                                 fileType = fileData.fileType,
                                 onError = { viewModel.handleError(it) })
-                        }
+                        },
+                        onReviewerUsernameChange = viewModel::onReviewerUsernameChange,
+                        onReviewerPasswordChange = viewModel::onReviewerPasswordChange,
+                        onReviewerLoginClick = viewModel::onReviewerLogin,
+                        onReviewerLogoutClick = viewModel::onReviewerLogout
                     )
                 }
             }

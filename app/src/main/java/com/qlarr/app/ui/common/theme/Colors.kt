@@ -12,4 +12,5 @@ object Colors {
     val LightGray2 = Color(0xFFFEF7FF)
     val White = Color(0xffffffff)
     val SurfaceVariant = Color(0xFFE3E1EC)
+    val Green = Color(0xFF4CAF50)
 }

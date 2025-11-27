@@ -108,6 +108,7 @@ enum class Roles {
     SURVEY_ADMIN,
     SURVEYOR,
     ANALYST,
+    SUPERVISOR
 }
 
 enum class EnvSelection {

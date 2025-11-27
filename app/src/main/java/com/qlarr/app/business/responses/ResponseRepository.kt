@@ -11,6 +11,7 @@ interface ResponseRepository {
     suspend fun deleteResponse(responseId: String)
     suspend fun markResponseAsSynced(responseId: String)
     suspend fun getUnsyncedCount(surveyId: String): Int
+    suspend fun approveResponse(responseId: String)
 }
 
 class ResponseRepositoryImpl(
@@ -38,5 +39,9 @@ class ResponseRepositoryImpl(
 
     override suspend fun getUnsyncedCount(surveyId: String) =
         responseDao.countUnsyncedResponses(surveyId)
+
+    override suspend fun approveResponse(responseId: String) {
+        responseDao.approveResponse(responseId)
+    }
 }
 

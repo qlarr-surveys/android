@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.qlarr.app.AppEvent
 import com.qlarr.app.EventBus
+import com.qlarr.app.business.auth.LoginInteractor
 import com.qlarr.app.business.responses.ResponseRepository
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.business.survey.SurveyRepository
@@ -16,6 +17,7 @@ import com.qlarr.app.ui.common.FileUtils
 import com.qlarr.app.ui.common.error.ErrorProcessor
 import com.qlarr.app.ui.common.replaceFirstIf
 import com.qlarr.app.ui.common.toFormattedString
+import com.qlarr.app.ui.login.Roles
 import com.qlarr.app.ui.survey.EMNavProcessor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,6 +32,7 @@ class ResponsesViewModel(
     private val eventBus: EventBus,
     private val errorProcessor: ErrorProcessor,
     private val surveyRepository: SurveyRepository,
+    private val loginInteractor: LoginInteractor,
 ) : AndroidViewModel(application),
     ErrorProcessor by errorProcessor {
     private lateinit var surveyData: SurveyData
@@ -59,7 +62,7 @@ class ResponsesViewModel(
         _responsesScreenData.update {
             it.copy(
                 lastSyncTime = surveyData.lastSync,
-                reviewRequired = surveyData.responsesReviewRequired,
+                reviewRequired = true, // surveyData.responsesReviewRequired,
             )
         }
     }
@@ -173,14 +176,15 @@ class ResponsesViewModel(
             deleteEnabled = !isSynced,
             values = toResponseValueData(),
             lang = lang,
+            needsApproval = surveyData.responsesReviewRequired && !isReviewed,
         )
 
     private fun Response.toResponseValueData() =
         values.mapNotNull {
             if ((it.value as? LinkedHashMap<*, *>)?.run {
                     containsKey(KEY_FILENAME) &&
-                        containsKey(KEY_STORED_FILENAME) &&
-                        containsKey(KEY_TYPE)
+                            containsKey(KEY_STORED_FILENAME) &&
+                            containsKey(KEY_TYPE)
                 } == true
             ) {
                 val map = it.value as LinkedHashMap<*, *>
@@ -218,6 +222,72 @@ class ResponsesViewModel(
         }
     }
 
+    fun onReviewerUsernameChange(username: String) {
+        _responsesScreenData.update { it.copy(reviewerUsername = username) }
+    }
+
+    fun onReviewerPasswordChange(password: String) {
+        _responsesScreenData.update { it.copy(reviewerPassword = password) }
+    }
+
+    fun onReviewerLogin() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _responsesScreenData.update { it.copy(isReviewerLoggingIn = true) }
+            try {
+                val result =
+                    loginInteractor.login(
+                        _responsesScreenData.value.reviewerUsername,
+                        _responsesScreenData.value.reviewerPassword,
+                    )
+                val reviewerRoles = listOf(
+                    Roles.SUPER_ADMIN,
+                    Roles.SURVEY_ADMIN,
+                    Roles.SUPERVISOR,
+                ).map { it.name.lowercase() }
+
+                val hasReviewRights =
+                    result.roles.any { role ->
+                        reviewerRoles.contains(role)
+                    }
+                if (hasReviewRights) {
+                    _responsesScreenData.update {
+                        it.copy(
+                            isReviewerLoggingIn = false,
+                            isReviewerLoggedIn = true,
+                            reviewerName = result.firstName + " " + result.lastName,
+                            reviewerPassword = "",
+                        )
+                    }
+                } else {
+                    _responsesScreenData.update {
+                        it.copy(isReviewerLoggingIn = false)
+                    }
+                }
+            } catch (e: Exception) {
+                _responsesScreenData.update {
+                    it.copy(isReviewerLoggingIn = false)
+                }
+            }
+        }
+    }
+
+    fun onReviewerLogout() {
+        _responsesScreenData.update {
+            it.copy(
+                isReviewerLoggedIn = false,
+                reviewerName = "",
+                reviewerUsername = "",
+                reviewerPassword = "",
+            )
+        }
+    }
+
+    fun onApproveResponse(responseId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            responsesRepository.approveResponse(responseId)
+        }
+    }
+
     companion object {
         private const val PER_PAGE = 10
         const val KEY_TYPE = "type"
@@ -235,6 +305,7 @@ data class ResponseItemData(
     val editEnabled: Boolean,
     val deleteEnabled: Boolean,
     val lang: String,
+    val needsApproval: Boolean = false,
 )
 
 sealed class ResponseValueData(

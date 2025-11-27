@@ -68,4 +68,7 @@ interface ResponseDao {
     @Query("SELECT * FROM response WHERE surveyId = :surveyId AND submitDate IS NOT NULL ORDER BY submitDate DESC LIMIT 1")
     suspend fun getLastResponse(surveyId: String): Response?
 
+    @Query("UPDATE response SET isReviewed = 1 WHERE id = :responseId")
+    suspend fun approveResponse(responseId: String)
+
 }

@@ -119,7 +119,7 @@ data class SurveyData(
                 cachedAllFiles = cachedAllFiles,
                 lastSync = lastSync,
                 surveyNavigationData = survey.navigationData,
-                responsesReviewRequired = survey.responseReviewRequired
+                responsesReviewRequired = true//TODO survey.responseReviewRequired
             )
     }
 }
