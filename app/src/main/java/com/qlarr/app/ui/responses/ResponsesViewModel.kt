@@ -34,7 +34,7 @@ class ResponsesViewModel(
     private val errorProcessor: ErrorProcessor,
     private val surveyRepository: SurveyRepository,
     private val loginInteractor: LoginInteractor,
-    private val sessionManager: SessionManager
+    private val sessionManager: SessionManager,
 ) : AndroidViewModel(application),
     ErrorProcessor by errorProcessor {
     private lateinit var surveyData: SurveyData
@@ -65,7 +65,7 @@ class ResponsesViewModel(
             it.copy(
                 lastSyncTime = surveyData.lastSync,
                 reviewRequired = surveyData.responsesReviewRequired,
-                isReviewerLoggedIn = sessionManager.isSupervisor()
+                isReviewerLoggedIn = sessionManager.isSupervisor(),
             )
         }
     }
@@ -186,8 +186,8 @@ class ResponsesViewModel(
         values.mapNotNull {
             if ((it.value as? LinkedHashMap<*, *>)?.run {
                     containsKey(KEY_FILENAME) &&
-                            containsKey(KEY_STORED_FILENAME) &&
-                            containsKey(KEY_TYPE)
+                        containsKey(KEY_STORED_FILENAME) &&
+                        containsKey(KEY_TYPE)
                 } == true
             ) {
                 val map = it.value as LinkedHashMap<*, *>
@@ -242,11 +242,12 @@ class ResponsesViewModel(
                         _responsesScreenData.value.reviewerUsername,
                         _responsesScreenData.value.reviewerPassword,
                     )
-                val reviewerRoles = listOf(
-                    Roles.SUPER_ADMIN,
-                    Roles.SURVEY_ADMIN,
-                    Roles.SUPERVISOR,
-                ).map { it.name.lowercase() }
+                val reviewerRoles =
+                    listOf(
+                        Roles.SUPER_ADMIN,
+                        Roles.SURVEY_ADMIN,
+                        Roles.SUPERVISOR,
+                    ).map { it.name.lowercase() }
 
                 val hasReviewRights =
                     result.roles.any { role ->
@@ -278,6 +279,15 @@ class ResponsesViewModel(
     fun onApproveResponse(responseId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             responsesRepository.approveResponse(responseId)
+            _responsesScreenData.update { screenData ->
+                screenData.copy(
+                    responses =
+                        screenData.responses.toMutableList().replaceFirstIf(
+                            { response -> response.id == responseId },
+                            { response -> response.copy(needsApproval = false) },
+                        ),
+                )
+            }
         }
     }
 
