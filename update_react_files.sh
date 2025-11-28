@@ -30,6 +30,10 @@ echo "Step 3: Installing dependencies..."
 npm install
 
 echo "Step 4: Building production assets..."
+# Set environment variables for Android native build
+export VITE_FRONT_END_HOST="localhost:3000"
+export VITE_PROTOCOL="http"
+export VITE_BE_URL="http://localhost:8080/"
 npm run build-android
 
 echo "Step 5: Copying production assets..."
@@ -40,6 +44,10 @@ echo "Step 6: Cleaning intermediate build..."
 rm -rf build-android
 
 echo "Step 7: Building debug assets..."
+# Set environment variables
+export VITE_FRONT_END_HOST="localhost:3000"
+export VITE_PROTOCOL="http"
+export VITE_BE_URL="http://localhost:8080/"
 npm run build-android-debuggable
 
 echo "Step 8: Copying debug assets..."

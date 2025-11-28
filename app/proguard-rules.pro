@@ -1,6 +1,12 @@
-# general needed for java library
--keep class org.graalvm.** { *; }
--keep class com.oracle.truffle.js.scriptengine.** { *; }
+# GraalVM classes are not included in Android build (using native WebView instead)
+# Suppress warnings for JVM-only script engine classes from survey-engine-kmp library
+-dontwarn com.oracle.truffle.js.scriptengine.GraalJSScriptEngine
+-dontwarn org.graalvm.polyglot.Context$Builder
+-dontwarn org.graalvm.polyglot.Context
+-dontwarn org.graalvm.polyglot.Engine
+-dontwarn org.graalvm.polyglot.HostAccess
+-dontwarn org.graalvm.polyglot.ResourceLimits$Builder
+-dontwarn org.graalvm.polyglot.ResourceLimits
 
 -dontwarn java.lang.**
 -dontwarn javax.script.**
