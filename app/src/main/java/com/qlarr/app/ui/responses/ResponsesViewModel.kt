@@ -238,7 +238,7 @@ class ResponsesViewModel(
             _responsesScreenData.update { it.copy(isReviewerLoggingIn = true) }
             try {
                 val result =
-                    loginInteractor.login(
+                    loginInteractor.supervisorLogin(
                         _responsesScreenData.value.reviewerUsername,
                         _responsesScreenData.value.reviewerPassword,
                     )
@@ -275,16 +275,6 @@ class ResponsesViewModel(
         }
     }
 
-    fun onReviewerLogout() {
-        _responsesScreenData.update {
-            it.copy(
-                isReviewerLoggedIn = false,
-                reviewerUsername = "",
-                reviewerPassword = "",
-            )
-        }
-    }
-
     fun onApproveResponse(responseId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             responsesRepository.approveResponse(responseId)
@@ -308,7 +298,7 @@ data class ResponseItemData(
     val editEnabled: Boolean,
     val deleteEnabled: Boolean,
     val lang: String,
-    val needsApproval: Boolean = false,
+    val needsApproval: Boolean,
 )
 
 sealed class ResponseValueData(

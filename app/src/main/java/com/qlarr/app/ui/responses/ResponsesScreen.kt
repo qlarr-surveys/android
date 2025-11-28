@@ -17,11 +17,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -34,7 +38,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -42,6 +49,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -158,6 +167,7 @@ fun ResponsesScreen(
                 onDeleteClicked = onDeleteClicked,
                 onApproveClicked = onApproveClicked,
                 onFileClicked = onFileClicked,
+                approvalEnabled = screenState.isReviewerLoggedIn,
             )
         }
     }
@@ -170,6 +180,7 @@ private fun ResponseItem(
     onDeleteClicked: (String) -> Unit = {},
     onApproveClicked: (String) -> Unit = {},
     onFileClicked: (ResponseValueData.FileValueData) -> Unit = {},
+    approvalEnabled: Boolean,
 ) {
     Column {
         Row(
@@ -187,6 +198,7 @@ private fun ResponseItem(
             )
             if (responseItem.needsApproval) {
                 Button(
+                    enabled = approvalEnabled,
                     onClick = { onApproveClicked(responseItem.id) },
                     modifier = Modifier.padding(end = 8.dp),
                 ) {
@@ -387,6 +399,8 @@ private fun ReviewerLoginCard(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
+                var passwordVisible by remember { mutableStateOf(false) }
+
                 OutlinedTextField(
                     value = password,
                     onValueChange = onPasswordChange,
@@ -394,6 +408,15 @@ private fun ReviewerLoginCard(
                     modifier = Modifier.fillMaxWidth(),
                     enabled = !isLoggingIn,
                     singleLine = true,
+                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                    trailingIcon = {
+                        val image =
+                            if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+                        val description = null
+                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                            Icon(imageVector = image, contentDescription = description)
+                        }
+                    },
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -488,6 +511,7 @@ private fun PreviewResponseItem() {
                 needsApproval = true,
                 lang = "eng",
             ),
+            approvalEnabled = true,
         )
     }
 }
