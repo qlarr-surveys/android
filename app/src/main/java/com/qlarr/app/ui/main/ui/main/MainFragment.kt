@@ -79,7 +79,7 @@ class MainFragment : Fragment() {
                     binding.noSurveysAvailable.visibleOrGone(false)
                     binding.fetchingSurveysProgress.visibleOrGone(state.isLoading)
                     binding.recycler.visibleOrGone(true)
-                    adapter.submitList(state.surveyList.sortedBy { it.creationDate })
+                    adapter.submitList(state.surveyList)
                 }
             }
         }
