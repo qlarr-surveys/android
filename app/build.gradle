@@ -120,6 +120,7 @@ dependencies {
 
     implementation("io.coil-kt:coil-compose:$coilVersion")
     implementation("io.coil-kt:coil-video:$coilVersion")
+    implementation("io.coil-kt:coil-svg:$coilVersion")
 
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-jackson:$retrofitVersion"
