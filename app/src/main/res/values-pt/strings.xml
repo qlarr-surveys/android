@@ -92,46 +92,57 @@
     <plurals name="time_interval_days_ago">
         <item quantity="one">%d dias atrás</item>
         <item quantity="many">%d dias atrás</item>
+        <item quantity="other">%d dias atrás</item>
     </plurals>
     <plurals name="time_interval_hours_ago">
         <item quantity="one">%d horas atrás</item>
         <item quantity="many">%d horas atrás</item>
+        <item quantity="other">%d horas atrás</item>
     </plurals>
     <plurals name="time_interval_minutes_ago">
         <item quantity="one">%d minutos atrás</item>
         <item quantity="many">%d minutos atrás</item>
+        <item quantity="other">%d minutos atrás</item>
     </plurals>
     <plurals name="time_interval_months_ago">
         <item quantity="one">em %d meses</item>
         <item quantity="many">em %d há meses</item>
+        <item quantity="other">em %d há meses</item>
     </plurals>
     <plurals name="time_interval_weeks_ago">
         <item quantity="one">%d semanas atrás</item>
         <item quantity="many">%d semanas atrás</item>
+        <item quantity="other">%d semanas atrás</item>
     </plurals>
     <plurals name="time_interval_years_ago">
         <item quantity="one">%d anos atrás</item>
         <item quantity="many">%d anos atrás</item>
+        <item quantity="other">%d anos atrás</item>
     </plurals>
     <plurals name="time_interval_in_days">
         <item quantity="one">em %d dias</item>
         <item quantity="many">em %d dias</item>
+        <item quantity="other">em %d dias</item>
     </plurals>
     <plurals name="time_interval_in_hours">
         <item quantity="one">em %d horas</item>
         <item quantity="many">em %d horas</item>
+        <item quantity="other">em %d horas</item>
     </plurals>
     <plurals name="time_interval_in_months">
         <item quantity="one">em %d há meses</item>
         <item quantity="many">%d meses atrás</item>
+        <item quantity="other">%d meses atrás</item>
     </plurals>
     <plurals name="time_interval_in_weeks">
         <item quantity="one">em %d semanas</item>
         <item quantity="many">em %d semanas</item>
+        <item quantity="other">em %d semanas</item>
     </plurals>
     <plurals name="time_interval_in_years">
         <item quantity="one">em %d anos</item>
         <item quantity="many">em %d anos</item>
+        <item quantity="other">em %d anos</item>
     </plurals>
     <string name="time_interval_just_now">Agora mesmo</string>
     <string name="survey_item_expires">Expirações percentuais</string>
