@@ -163,4 +163,5 @@
     <string name="survey_item_button_get_missing_files">Obtenha arquivos ausentes</string>
     <string name="survey_end_finish_action">Terminar</string>
     <string name="survey_end_repeat">Comece novo</string>
+    <string name="values_saved">Valores salvos com sucesso</string>
 </resources>

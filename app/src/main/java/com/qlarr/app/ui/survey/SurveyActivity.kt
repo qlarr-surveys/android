@@ -166,7 +166,8 @@ class SurveyActivity : ComponentActivity() {
                         Toast.LENGTH_SHORT,
                     ).show()
             } else {
-                finish()
+                qlarrWebView?.saveProgressBeforeQuit()
+//                finish()
             }
         }
     }
@@ -353,6 +354,13 @@ class SurveyActivity : ComponentActivity() {
 
     fun reportError(error: Throwable) {
         surveyViewModel.reportError(error)
+    }
+
+    fun quit() {
+        runOnUiThread {
+            Toast.makeText(this, getString(R.string.values_saved), Toast.LENGTH_SHORT).show()
+        }
+        finish()
     }
 
     companion object {

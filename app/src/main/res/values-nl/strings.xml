@@ -152,4 +152,5 @@
     <string name="survey_item_button_get_missing_files">Ontvang ontbrekende bestanden</string>
     <string name="survey_end_finish_action">Finish</string>
     <string name="survey_end_repeat">Begin nieuw</string>
+    <string name="values_saved">Waarden succesvol opgeslagen</string>
 </resources>

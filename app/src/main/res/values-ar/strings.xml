@@ -196,4 +196,5 @@
     <string name="survey_item_button_get_missing_files">الحصول على الملفات المفقودة</string>
     <string name="survey_end_finish_action">إنهاء</string>
     <string name="survey_end_repeat">بدء جديد</string>
+    <string name="values_saved">تم حفظ القيم بنجاح</string>
 </resources>
