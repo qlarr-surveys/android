@@ -154,5 +154,6 @@
     <string name="survey_item_button_get_missing_files">Fehlende Dateien abrufen</string>
     <string name="survey_end_finish_action">Beenden</string>
     <string name="survey_end_repeat">Neu starten</string>
-    <string name="values_saved">Werte erfolgreich gespeichert</string>
+    <string name="values_saved">Antwort wurde automatisch gespeichert</string>
+    <string name="response_not_auto_saved">Antwort wurde nicht automatisch gespeichert</string>
 </resources>

@@ -178,7 +178,7 @@ constructor(
                         }
 
                         override fun onError(error: Throwable) {
-                            surveyActivity?.reportError(error)
+                            surveyActivity?.reportErrorWithAutoSave(error)
                         }
                     },
                 )

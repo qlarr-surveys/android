@@ -163,5 +163,6 @@
     <string name="survey_item_button_get_missing_files">Get Missing Files</string>
     <string name="survey_end_finish_action">Finish</string>
     <string name="survey_end_repeat">Start new</string>
-    <string name="values_saved">Values saved successfully</string>
+    <string name="values_saved">Response was auto saved</string>
+    <string name="response_not_auto_saved">Response was not auto saved</string>
 </resources>

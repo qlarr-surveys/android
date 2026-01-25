@@ -163,5 +163,6 @@
     <string name="survey_item_button_get_missing_files">Obtener archivos faltantes</string>
     <string name="survey_end_finish_action">Finalizar</string>
     <string name="survey_end_repeat">Comenzar nuevo</string>
-    <string name="values_saved">Valores guardados exitosamente</string>
+    <string name="values_saved">La respuesta se guardó automáticamente</string>
+    <string name="response_not_auto_saved">La respuesta no se guardó automáticamente</string>
 </resources>
