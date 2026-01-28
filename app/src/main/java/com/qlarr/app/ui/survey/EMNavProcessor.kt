@@ -27,7 +27,6 @@ import com.qlarr.surveyengine.model.SurveyLang
 import com.qlarr.surveyengine.model.exposed.ColumnName
 import com.qlarr.surveyengine.model.exposed.NavigationDirection
 import com.qlarr.surveyengine.model.exposed.NavigationIndex
-import com.qlarr.surveyengine.model.exposed.NavigationMode
 import com.qlarr.surveyengine.model.exposed.SurveyMode
 import com.qlarr.surveyengine.scriptengine.engineScript
 import com.qlarr.surveyengine.usecase.NavigationUseCaseWrapper
@@ -86,7 +85,7 @@ class EMNavProcessor(
     }
 
     private fun getPrefillValues(validationJsonOutput: ValidationJsonOutput): Map<String, Any> {
-        val prefillQuestionCodes =
+        val prefillQuestionsCodes =
             validationJsonOutput.survey
                 .get("groups")
                 ?.asSequence()
@@ -95,17 +94,30 @@ class EMNavProcessor(
                 }?.filter { question ->
                     question.get("prefill")?.asBoolean() == true
                 }?.mapNotNull { question ->
-                    question.get("code")?.asText()?.let { "$it.value" }
-                }?.toList() ?: emptyList()
+                    question.get("code")?.asText()
+                }?.toList() ?: return emptyMap()
 
-        if (prefillQuestionCodes.isEmpty()) return emptyMap()
+        if (prefillQuestionsCodes.isEmpty()) return emptyMap()
+
+        val prefillValueKeys =
+            validationJsonOutput.schema
+                .filter {
+                    it.columnName == ColumnName.VALUE
+                }.filter { responseField ->
+                    prefillQuestionsCodes.any {
+                        responseField.componentCode == it ||
+                            responseField.componentCode.startsWith("${it}A")
+                    }
+                }.map { "${it.componentCode}.value" }
+
+        if (prefillValueKeys.isEmpty()) return emptyMap()
 
         return runBlocking {
             qlarrDb
                 .responseDao()
                 .getLastResponse(survey.id)
                 ?.values
-                ?.filterKeys { it.endsWith(".value") && it in prefillQuestionCodes }
+                ?.filterKeys { it in prefillValueKeys }
                 ?: emptyMap()
         }
     }
