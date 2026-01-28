@@ -1,0 +1,157 @@
+<resources>
+    <string name="app_name">Qlarr</string>
+    <string name="title_activity_login">Aanmelden</string>
+    <string name="title_activity_responses">Reacties</string>
+    <string name="title_activity_info">Info</string>
+    <string name="title_survey_list">Onderzoeken</string>
+    <string name="login_hint_server_url">Server Url</string>
+    <string name="login_hint_email">E-mail</string>
+    <string name="login_hint_password">Wachtwoord</string>
+    <string name="login_button_login">Aanmelden</string>
+    <string name="login_button_login_loading">Een ogenblik geduld</string>
+    <string name="error_general_title">Fout</string>
+    <string name="error_network_title">Netwerkfout</string>
+    <string name="error_timeout_title">Time-out</string>
+    <string name="error_general_description">Probeer het later opnieuw.</string>
+    <string name="error_network_description">Geen internet… Controleer je netwerk</string>
+    <string name="error_timeout_description">Alles duurt langer dan het zou moeten… Probeer het later alsjeblieft opnieuw</string>
+    <string name="error_auth_title">Sessie is verlopen.</string>
+    <string name="error_auth_description">Wilt u opnieuw inloggen.</string>
+    <string name="not_found_description">Deze bron is niet te vinden</string>
+    <string name="error_login_title">Inloggen mislukt!</string>
+    <string name="error_login_description">Voer geldige inloggegevens in</string>
+    <string name="error_signup_not_allowed_title">Inloggen mislukt!</string>
+    <string name="error_signup_not_allowed_description">Je moet een bestaand account hebben om via Google in te loggen… Ga een account aanmaken</string>
+    <string name="error_role_not_supported_title">Inloggen mislukt!</string>
+    <string name="error_role_not_supported_description">Je moet landmeter, Survey Admin of Super Admin zijn om in te loggen op deze app</string>
+    <string name="validation_email_error">Voer gelieve geldig e-mailadres in te voeren</string>
+    <string name="validation_psw_error">De minimale wachtwoordlengte is 8</string>
+    <string name="validation_url_error">Ongeldige URL</string>
+    <string name="syncing_survey_title">Synchronisatie%s</string>
+    <string name="syncing_survey_file_order">Downloaden %1$d/%2$d</string>
+    <string name="syncing_survey_file_download_progress">%1$d KB of %2$d KB (%3$d)%%</string>
+    <string name="fetching_surveys_message">Enquêtes ophalen…</string>
+    <string name="no_surveys_message">Geen toegewezen enquêtes beschikbaar… Controleer alsjeblieft Network en zorg dat je enquêtes krijgt toegewezen en ververs later</string>
+    <string name="chrome_version_not_supported">Chrome-versie niet ondersteund</string>
+    <string name="response_sync_status">Gesynchroniseerd: %b</string>
+    <string name="response_start_date">Startdatum: %s</string>
+    <string name="response_submit_date">Verzenddatum: %s</string>
+    <string name="response_lang">Taal: %s</string>
+    <string name="responses_screen_complete_responses">Volledige reacties</string>
+    <string name="responses_screen_incomplete_responses">Onvolledige antwoorden</string>
+    <string name="responses_screen_last_sync_time">Laatste synchronisatie</string>
+    <string name="responses_screen_sync_button">Sync</string>
+    <string name="response_item_started">Begonnen</string>
+    <string name="response_item_completed">Voltooid</string>
+    <string name="response_item_synced">Gesynchroniseerd</string>
+    <string name="response_item_language">Taal</string>
+    <string name="permission_denied">Toestemming geweigerd!!</string>
+    <string name="canceled">Geannuleerd</string>
+    <string name="press_back_to_exit">\"Druk nog eens terug om te vertrekken.</string>
+    <string name="local_responses_count">Lokale reacties: %d</string>
+    <string name="local_complete_responses_count">Lokale Complete Reacties: %d</string>
+    <string name="unlimited_quota">Onbeperkt</string>
+    <string name="survey_quota">Enquêtequotum: %d</string>
+    <string name="user_quota">Gebruikersquotum: %d</string>
+    <string name="no_start_date">Geen startdatum</string>
+    <string name="start_date">Startdatum: %s</string>
+    <string name="no_end_date">Geen einddatum</string>
+    <string name="end_date">Einddatum: %s</string>
+    <string name="kilobytes">%.2f KB</string>
+    <string name="megabytes">%,2f MB</string>
+    <string name="max_size_exceeded">Maximale grootte overschreden</string>
+    <string name="max_size_exceeded_message">Dit bestand (%1$dKB) overschrijdt de maximaal toegestane grootte van %2$dKB</string>
+    <string name="max_size_exceeded_message_compression_note">Dit bestand (%1$dKB) overschrijdt de maximaal toegestane grootte van %2$dKB, wordt gecomprimeerd om aan de beperking te voldoen</string>
+    <string name="login_as_guest">Bekijk voorbeeldenquêtes</string>
+    <string name="notification_channel_uploader_name">Uploadvoortgang</string>
+    <string name="notification_channel_uploader_description">Enquête-antwoorden uploaden
+        Vooruitgang</string>
+    <string name="notification_uploader_title">Uploaden…</string>
+    <string name="notification_uploader_description">Upload met server in uitvoering</string>
+    <string name="sync_time_never">Nooit</string>
+    <string name="back">Terug</string>
+    <string name="survey_creation_date">Gemaakt</string>
+    <string name="survey_last_modified">Laatst bijgewerkt</string>
+    <string name="survey_start_date">Starts</string>
+    <string name="survey_end_date">Einde</string>
+    <string name="survey_new_version_available">Nieuwe versie beschikbaar</string>
+    <string name="survey_local_responses">Totaal aantal lokale antwoorden</string>
+    <string name="survey_local_complete_responses">Volledige reacties</string>
+    <string name="survey_local_incomplete_responses">Onvolledige antwoorden</string>
+    <string name="survey_synced_responses">Gesynchroniseerde antwoorden</string>
+    <string name="survey_unsynced_responses">Om antwoorden te synchroniseren</string>
+    <string name="survey_stats_quota">Resterende quotum</string>
+    <string name="survey_stats_user_quota">Gebruikersquotum links</string>
+    <string name="survey_save_timings">Tijden voor het opslaan</string>
+    <string name="enabled">Ingeschakeld</string>
+    <string name="disabled">Gehandicapt</string>
+    <string name="survey_status">Status</string>
+    <string name="survey_update_available">Nieuwe versie beschikbaar</string>
+    <string name="survey_item_button_responses">Reacties</string>
+    <string name="survey_item_button_info">Info</string>
+    <plurals name="time_interval_days_ago">
+        <item quantity="one">Gisteren</item>
+        <item quantity="other">%d dagen geleden</item>
+    </plurals>
+    <plurals name="time_interval_hours_ago">
+        <item quantity="one">1 uur geleden</item>
+        <item quantity="other">%d uren geleden</item>
+    </plurals>
+    <plurals name="time_interval_minutes_ago">
+        <item quantity="one">1 minuut geleden</item>
+        <item quantity="other">%d minuten geleden</item>
+    </plurals>
+    <plurals name="time_interval_months_ago">
+        <item quantity="one">Vorige maand</item>
+        <item quantity="other">in %d maanden</item>
+    </plurals>
+    <plurals name="time_interval_weeks_ago">
+        <item quantity="one">Vorige week</item>
+        <item quantity="other">%d weken geleden</item>
+    </plurals>
+    <plurals name="time_interval_years_ago">
+        <item quantity="one">Vorig jaar</item>
+        <item quantity="other">%d jaren geleden</item>
+    </plurals>
+    <plurals name="time_interval_in_days">
+        <item quantity="one">Morgen</item>
+        <item quantity="other">in %d dagen</item>
+    </plurals>
+    <plurals name="time_interval_in_hours">
+        <item quantity="one">Volgend uur</item>
+        <item quantity="other">in %d uren</item>
+    </plurals>
+    <plurals name="time_interval_in_months">
+        <item quantity="one">Volgende maand</item>
+        <item quantity="other">in %d maanden geleden</item>
+    </plurals>
+    <plurals name="time_interval_in_weeks">
+        <item quantity="one">Vorige week</item>
+        <item quantity="other">in %d weken</item>
+    </plurals>
+    <plurals name="time_interval_in_years">
+        <item quantity="one">Volgend jaar</item>
+        <item quantity="other">in %d jaren</item>
+    </plurals>
+    <string name="time_interval_just_now">Net net</string>
+    <string name="survey_item_expires">Vervalpercentages</string>
+    <string name="survey_item_starts">Startpercentages</string>
+    <string name="today">Vandaag</string>
+    <string name="survey_item_quota_left">Quotum over: %d</string>
+    <string name="survey_item_button_start">Start</string>
+    <string name="survey_item_button_download">Download</string>
+    <string name="survey_item_button_update">Update</string>
+    <string name="survey_item_button_sync">Sync</string>
+    <string name="logout">Uitloggen</string>
+    <string name="cancel">Annuleren</string>
+    <string name="logout_alert_message">Alle niet-gesynchroniseerde data gaat verloren.</string>
+    <string name="logout_are_you_sure">Weet je zeker dat je wilt uitloggen\?</string>
+    <string name="login_to_private">Inloggen op Private Server</string>
+    <string name="login_to_cloud">Log in op Qlarr.com</string>
+    <string name="guest_warning">\"Je checkt de app als gast.\"</string>
+    <string name="survey_item_button_get_missing_files">Ontvang ontbrekende bestanden</string>
+    <string name="survey_end_finish_action">Finish</string>
+    <string name="survey_end_repeat">Begin nieuw</string>
+    <string name="values_saved">Reactie is automatisch opgeslagen</string>
+    <string name="response_not_auto_saved">Reactie is niet automatisch opgeslagen</string>
+</resources>

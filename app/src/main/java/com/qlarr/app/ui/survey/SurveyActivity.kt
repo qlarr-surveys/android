@@ -16,16 +16,15 @@ import androidx.activity.addCallback
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Scaffold
@@ -61,6 +60,7 @@ class SurveyActivity : ComponentActivity() {
     private var backPressedTime: Long = 0
     private var photoUri: Uri? = null
     private var qlarrWebView: QlarrWebView? = null
+    private var currentToast: Toast? = null
 
     private val surveyViewModel: SurveyViewModel by viewModel { parametersOf(survey.id) }
     private val errorDisplayManager: ErrorDisplayManager by inject { parametersOf(this) }
@@ -159,14 +159,9 @@ class SurveyActivity : ComponentActivity() {
             val t = System.currentTimeMillis()
             if (t - backPressedTime > 3000) { // 3 secs
                 backPressedTime = t
-                Toast
-                    .makeText(
-                        this@SurveyActivity,
-                        R.string.press_back_to_exit,
-                        Toast.LENGTH_SHORT,
-                    ).show()
+                showToast(R.string.press_back_to_exit)
             } else {
-                finish()
+                qlarrWebView?.saveProgressBeforeQuit()
             }
         }
     }
@@ -214,7 +209,7 @@ class SurveyActivity : ComponentActivity() {
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
                 addFlags(
                     Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
                 )
                 putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
             }
@@ -226,7 +221,7 @@ class SurveyActivity : ComponentActivity() {
             Intent(MediaStore.ACTION_VIDEO_CAPTURE).apply {
                 addFlags(
                     Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
                 )
             }
         videoLauncher.launch(intent)
@@ -354,6 +349,26 @@ class SurveyActivity : ComponentActivity() {
     fun reportError(error: Throwable) {
         surveyViewModel.reportError(error)
     }
+
+    fun reportErrorWithAutoSave(error: Throwable) {
+        showToast(R.string.response_not_auto_saved)
+        finish()
+    }
+
+    fun quit() {
+        showToast(R.string.values_saved)
+        finish()
+    }
+
+    private fun showToast(@StringRes text: Int) {
+        runOnUiThread {
+            currentToast?.cancel()
+            currentToast = Toast.makeText(this, text, Toast.LENGTH_SHORT)
+            currentToast?.show()
+        }
+    }
+
+
 
     companion object {
         private const val TAG = "SurveyActivity"
