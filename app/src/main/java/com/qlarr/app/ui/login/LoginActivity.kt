@@ -38,36 +38,37 @@ class LoginActivity : AppCompatActivity() {
                 binding.password.text.toString()
             )
         }
+        lifecycleScope.launch {
+            viewModel.loginEvents.collect {
+                when(it){
+                    LoginEvents.Exit -> finish()
+                    LoginEvents.LoggedIn ->{
+                        startActivity(SurveyListActivity.createIntent(this@LoginActivity))
+                        finish()
+                    }
+                }
+            }
+        }
 
         lifecycleScope.launch {
             viewModel.loginState.collect { state ->
                 binding.btnLogin.isLoading = state.isLoading
-                if (state.backPressed){
-                    finish()
-                }
-
                 binding.envSelector.visibleOrGone(state.selection == EnvSelection.NONE)
                 binding.loginForm.visibleOrGone(state.selection != EnvSelection.NONE)
                 binding.serverUrl.visibleOrGone(state.selection == EnvSelection.PRIVATE)
-
-                if (state.isLoggedIn) {
-                    startActivity(SurveyListActivity.createIntent(this@LoginActivity))
-                    finish()
-                }
-
-                if (state.emailValidationError) {
+                if (state.inputValidation.emailValidationError) {
                     binding.usernameLayout.error =
                         binding.root.context.getString(R.string.validation_email_error)
                 } else {
                     binding.usernameLayout.error = null
                 }
-                if (state.pswValidationError) {
+                if (state.inputValidation.pswValidationError) {
                     binding.passwordLayout.error =
                         binding.root.context.getString(R.string.validation_psw_error)
                 } else {
                     binding.passwordLayout.error = null
                 }
-                if (state.urlValidationError) {
+                if (state.inputValidation.urlValidationError) {
                     binding.serverUrlLayout.error =
                         binding.root.context.getString(R.string.validation_url_error)
                 } else {

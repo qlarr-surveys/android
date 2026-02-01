@@ -18,7 +18,6 @@ import kotlin.math.roundToLong
 
 interface DownloadManager {
     suspend fun downloadSurveyFiles(surveyData: SurveyData): Flow<DownloadState>
-    fun deleteAllFiles(): Unit
 }
 
 class DownloadManagerImpl(
@@ -104,9 +103,7 @@ class DownloadManagerImpl(
         }.flowOn(Dispatchers.IO)
     }
 
-    override fun deleteAllFiles() {
-        FileUtils.deleteAllFiles(appContext)
-    }
+
 
     private fun saveValidationJsonOutput(
         surveyId: String, validationOutput: String

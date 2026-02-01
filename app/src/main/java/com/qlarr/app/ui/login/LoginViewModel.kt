@@ -9,7 +9,9 @@ import com.qlarr.app.business.survey.isValidUrl
 import com.qlarr.app.ui.common.InputUtils
 import com.qlarr.app.ui.common.error.ErrorProcessor
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -22,6 +24,9 @@ class LoginViewModel(
     ErrorProcessor by errorProcessor {
     private val _loginState = MutableStateFlow(LoginState())
     val loginState = _loginState.asStateFlow()
+
+    private val _loginEvents = MutableSharedFlow<LoginEvents>()
+    val loginEvents = _loginEvents.asSharedFlow()
 
     fun login(
         serverUrl: String,
@@ -51,7 +56,9 @@ class LoginViewModel(
                             ).map { it.name.lowercase() }.contains(role)
                         }
                     ) {
-                        _loginState.update { it.copy(isLoggedIn = true, isLoading = false) }
+                        viewModelScope.launch {
+                            _loginEvents.emit(LoginEvents.Exit)
+                        }
                     } else {
                         roleNotSupported()
                         _loginState.update { it.copy(isLoading = false) }
@@ -64,9 +71,12 @@ class LoginViewModel(
                 _loginState.update {
                     it.copy(
                         isLoading = false,
-                        urlValidationError = !isUrlValid,
-                        emailValidationError = !isEmailValid,
-                        pswValidationError = !isPswValid,
+                        inputValidation = InputValidation(
+                            urlValidationError = !isUrlValid,
+                            emailValidationError = !isEmailValid,
+                            pswValidationError = !isPswValid,
+                        )
+
                     )
                 }
             }
@@ -79,27 +89,38 @@ class LoginViewModel(
 
     fun tryAsGuest() {
         sessionManager.saveUserAsGuest()
-        _loginState.update { it.copy(isLoggedIn = true, isLoading = false) }
+        viewModelScope.launch {
+            _loginEvents.emit(LoginEvents.LoggedIn)
+        }
     }
 
     fun onBackPressed() {
         if (_loginState.value.selection != EnvSelection.NONE) {
             _loginState.update { it.copy(selection = EnvSelection.NONE) }
         } else {
-            _loginState.update { it.copy(backPressed = true) }
+            viewModelScope.launch {
+                _loginEvents.emit(LoginEvents.Exit)
+            }
         }
     }
 
     data class LoginState(
-        val backPressed: Boolean = false,
         val selection: EnvSelection = EnvSelection.NONE,
         val isLoading: Boolean = false,
-        val isLoggedIn: Boolean = false,
-        val roleNotSupported: Boolean = false,
-        val pswValidationError: Boolean = false,
-        val emailValidationError: Boolean = false,
-        val urlValidationError: Boolean = false,
+        val inputValidation: InputValidation = InputValidation()
+
     )
+}
+
+data class InputValidation(
+    val pswValidationError: Boolean = false,
+    val emailValidationError: Boolean = false,
+    val urlValidationError: Boolean = false,
+)
+
+sealed interface LoginEvents {
+    data object LoggedIn : LoginEvents
+    data object Exit : LoginEvents
 }
 
 @Suppress("unused")
