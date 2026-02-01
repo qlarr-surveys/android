@@ -25,6 +25,15 @@
     <string name="error_signup_not_allowed_description">Vous devez avoir un compte existant pour vous connecter via Google… créez un compte</string>
     <string name="error_role_not_supported_title">Échec de la connexion !</string>
     <string name="error_role_not_supported_description">Vous devez être enquêteur, administrateur d\'enquête ou super administrateur pour pouvoir vous connecter à cette application</string>
+    <string name="error_different_user_title">Utilisateur différent</string>
+    <string name="error_different_user_description">Vous devez vous connecter en tant que même utilisateur ou réinitialiser la session pour recommencer</string>
+    <string name="session_conflict_dialog_title">Session précédente détectée</string>
+    <string name="session_conflict_dialog_message">Une session précédente a été trouvée:\n\nUtilisateur: %1$s\nEnvironnement: %2$s\n\nVous pouvez soit réinitialiser toutes les données et recommencer, soit continuer à vous connecter au même environnement.</string>
+    <string name="session_conflict_continue_button">Continuer avec %s</string>
+    <string name="session_conflict_reset_button">Réinitialiser et recommencer</string>
+    <string name="session_conflict_unknown_user">Utilisateur inconnu</string>
+    <string name="session_conflict_unknown_env">Environnement inconnu</string>
+    <string name="session_conflict_guest_env">Mode invité</string>
     <string name="validation_email_error">Veuillez entrer un email valide</string>
     <string name="validation_psw_error">La longueur minimale du mot de passe est de 8 caractères</string>
     <string name="validation_url_error">URL invalide</string>

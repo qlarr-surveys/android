@@ -24,6 +24,15 @@
     <string name="error_signup_not_allowed_description">You have to have an existing account to log in through google… go create an account</string>
     <string name="error_role_not_supported_title">Sign in failed!</string>
     <string name="error_role_not_supported_description">You must be a surveyor, Survey Admin or Super Admin to be able to log in to this app</string>
+    <string name="error_different_user_title">Different User</string>
+    <string name="error_different_user_description">You must log in as the same user or reset the session to start fresh</string>
+    <string name="session_conflict_dialog_title">Previous Session Detected</string>
+    <string name="session_conflict_dialog_message">A previous session was found:\n\nUser: %1$s\nEnvironment: %2$s\n\nYou can either reset all data and start fresh, or continue logging into the same environment.</string>
+    <string name="session_conflict_continue_button">Continue with %s</string>
+    <string name="session_conflict_reset_button">Reset and Start Fresh</string>
+    <string name="session_conflict_unknown_user">Unknown User</string>
+    <string name="session_conflict_unknown_env">Unknown Environment</string>
+    <string name="session_conflict_guest_env">Guest Mode</string>
     <string name="validation_email_error">Please enter valid email</string>
     <string name="validation_psw_error">Password minimum length is 8</string>
     <string name="validation_url_error">Invalid URL</string>

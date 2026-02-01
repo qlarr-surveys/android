@@ -8,6 +8,7 @@ import com.qlarr.app.business.survey.SessionManager
 import com.qlarr.app.business.survey.isValidUrl
 import com.qlarr.app.ui.common.InputUtils
 import com.qlarr.app.ui.common.error.ErrorProcessor
+import com.qlarr.app.ui.login.EnvSelection.PRIVATE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,6 +29,24 @@ class LoginViewModel(
     private val _loginEvents = MutableSharedFlow<LoginEvents>()
     val loginEvents = _loginEvents.asSharedFlow()
 
+    init {
+        checkForPreviousSession()
+    }
+
+    private fun checkForPreviousSession() {
+        if (sessionManager.hasPreviousSession()) {
+            _loginState.update {
+                it.copy(
+                    previousSession = PreviousSessionInfo(
+                        userName = sessionManager.getPreviousUserName(),
+                        environment = sessionManager.getPreviousEnv()
+                    ),
+                    showSessionConflictDialog = true
+                )
+            }
+        }
+    }
+
     fun login(
         serverUrl: String,
         email: String,
@@ -38,11 +57,7 @@ class LoginViewModel(
             val trimmedEmail = email.trim()
             val trimmedPsw = password.trim()
             val trimmedUrl = InputUtils.trimServerUrl(serverUrl)
-            val isUrlValid =
-                _loginState.value.selection != EnvSelection.PRIVATE || isValidUrl(trimmedUrl)
-            if (_loginState.value.selection == EnvSelection.PRIVATE && isUrlValid) {
-                sessionManager.saveEnv(BackendEnvironment.Private(trimmedUrl))
-            }
+            val isUrlValid = _loginState.value.selection != PRIVATE || isValidUrl(trimmedUrl)
             val isPswValid = InputUtils.isValidPassword(trimmedPsw)
             val isEmailValid = InputUtils.isValidEmail(trimmedEmail)
             if (isEmailValid && isPswValid && isUrlValid) {
@@ -57,7 +72,7 @@ class LoginViewModel(
                         }
                     ) {
                         viewModelScope.launch {
-                            _loginEvents.emit(LoginEvents.Exit)
+                            _loginEvents.emit(LoginEvents.LoggedIn)
                         }
                     } else {
                         roleNotSupported()
@@ -95,7 +110,9 @@ class LoginViewModel(
     }
 
     fun onBackPressed() {
-        if (_loginState.value.selection != EnvSelection.NONE) {
+        if (_loginState.value.lockedToPreviousEnv) {
+            _loginState.update { it.copy(showSessionConflictDialog = true) }
+        } else if (_loginState.value.selection != EnvSelection.NONE) {
             _loginState.update { it.copy(selection = EnvSelection.NONE) }
         } else {
             viewModelScope.launch {
@@ -104,13 +121,63 @@ class LoginViewModel(
         }
     }
 
+    fun onResetSession() {
+        viewModelScope.launch(Dispatchers.IO) {
+            loginInteractor.clearUser()
+            _loginState.update {
+                it.copy(
+                    showSessionConflictDialog = false,
+                    previousSession = null,
+                    lockedToPreviousEnv = false
+                )
+            }
+        }
+    }
+
+    fun onContinueWithPreviousEnv() {
+        val previousEnv = _loginState.value.previousSession?.environment
+        when (previousEnv) {
+            BackendEnvironment.Guest -> {
+                onResetSession()
+                tryAsGuest()
+            }
+
+            is BackendEnvironment.Private -> {
+                _loginState.update {
+                    it.copy(
+                        selection = PRIVATE,
+                        showSessionConflictDialog = false,
+                    )
+                }
+            }
+
+            null -> {
+                // do nothing
+            }
+        }
+
+    }
+
+    fun cancelSessionConflictDialog() {
+        viewModelScope.launch {
+            _loginEvents.emit(LoginEvents.Exit)
+        }
+    }
+
     data class LoginState(
         val selection: EnvSelection = EnvSelection.NONE,
         val isLoading: Boolean = false,
-        val inputValidation: InputValidation = InputValidation()
-
+        val inputValidation: InputValidation = InputValidation(),
+        val previousSession: PreviousSessionInfo? = null,
+        val showSessionConflictDialog: Boolean = false,
+        val lockedToPreviousEnv: Boolean = false
     )
 }
+
+data class PreviousSessionInfo(
+    val userName: String?,
+    val environment: BackendEnvironment?
+)
 
 data class InputValidation(
     val pswValidationError: Boolean = false,

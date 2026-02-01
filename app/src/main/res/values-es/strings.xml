@@ -25,6 +25,15 @@
     <string name="error_signup_not_allowed_description">Debe tener una cuenta existente para iniciar sesión con Google… Cree una cuenta</string>
     <string name="error_role_not_supported_title">¡Error al iniciar sesión!</string>
     <string name="error_role_not_supported_description">Debe ser Investigador, Supervisor de encuesta o Administrador para acceder a esta aplicación</string>
+    <string name="error_different_user_title">Usuario diferente</string>
+    <string name="error_different_user_description">Debe iniciar sesión con el mismo usuario o restablecer la sesión para comenzar de nuevo</string>
+    <string name="session_conflict_dialog_title">Sesión anterior detectada</string>
+    <string name="session_conflict_dialog_message">Se encontró una sesión anterior:\n\nUsuario: %1$s\nEntorno: %2$s\n\nPuede restablecer todos los datos y comenzar de nuevo, o continuar iniciando sesión en el mismo entorno.</string>
+    <string name="session_conflict_continue_button">Continuar con %s</string>
+    <string name="session_conflict_reset_button">Restablecer y comenzar de nuevo</string>
+    <string name="session_conflict_unknown_user">Usuario desconocido</string>
+    <string name="session_conflict_unknown_env">Entorno desconocido</string>
+    <string name="session_conflict_guest_env">Modo invitado</string>
     <string name="validation_email_error">Por favor, introduzca un correo válido</string>
     <string name="validation_psw_error">La contraseña debe tener al menos 8 caracteres</string>
     <string name="validation_url_error">URL no válida</string>

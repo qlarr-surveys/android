@@ -12,6 +12,7 @@ import com.qlarr.app.db.QlarrDb
 interface LoginRepository {
     suspend fun login(loginInput: LoginInput): Result<LoginResponse>
     suspend fun googleSignIn(googleSignInInput: GoogleSignInInput): Result<LoginResponse>
+    suspend fun clearUser()
     suspend fun logout(): Result<Unit>
 }
 
@@ -25,9 +26,12 @@ class LoginRepositoryImpl(
     override suspend fun login(loginInput: LoginInput): Result<LoginResponse> {
         val result = service.login(loginInput).getResult()
         if (result.isSuccess) {
-            qlarrDb.clearAllTables()
             val loginResponse = result.getOrThrow()
-            sessionManager.saveSession(loginResponse)
+            if (sessionManager.hasPreviousSession() && !sessionManager.sameUser(loginResponse)){
+                return Result.failure(DifferentUserException())
+            } else {
+                sessionManager.saveSession(loginResponse)
+            }
         }
         return result
     }
@@ -35,11 +39,20 @@ class LoginRepositoryImpl(
     override suspend fun googleSignIn(googleSignInInput: GoogleSignInInput): Result<LoginResponse> {
         val result = service.googleSignIn(googleSignInInput).getResult()
         if (result.isSuccess) {
-            qlarrDb.clearAllTables()
             val loginResponse = result.getOrThrow()
-            sessionManager.saveSession(loginResponse)
+            if (sessionManager.hasPreviousSession() && !sessionManager.sameUser(loginResponse)){
+                return Result.failure(DifferentUserException())
+            } else {
+                sessionManager.saveSession(loginResponse)
+            }
         }
         return result
+    }
+
+    override suspend fun clearUser() {
+        qlarrDb.clearAllTables()
+        sessionManager.clearPrefs()
+        surveyRepository.clearSurveyFiles()
     }
 
     override suspend fun logout(): Result<Unit> {
@@ -50,8 +63,8 @@ class LoginRepositoryImpl(
                 // ToDo: Show some toast that logout failed on the server
             }
         }
-        qlarrDb.clearAllTables().runCatching { }
-        surveyRepository.clearSurveyFiles()
         return Result.success(Unit)
     }
 }
+
+class DifferentUserException() : Exception()

@@ -25,6 +25,15 @@
     <string name="error_signup_not_allowed_description">يجب أن يكون لديك حساب حالي لتسجيل الدخول باستخدام Google… أنشئ حسابًا</string>
     <string name="error_role_not_supported_title">فشل تسجيل الدخول!</string>
     <string name="error_role_not_supported_description">يجب أن تكون محققًا أو مسؤول استطلاع أو مسؤولًا عامًا لتسجيل الدخول إلى هذا التطبيق</string>
+    <string name="error_different_user_title">مستخدم مختلف</string>
+    <string name="error_different_user_description">يجب عليك تسجيل الدخول كنفس المستخدم أو إعادة تعيين الجلسة للبدء من جديد</string>
+    <string name="session_conflict_dialog_title">تم اكتشاف جلسة سابقة</string>
+    <string name="session_conflict_dialog_message">تم العثور على جلسة سابقة:\n\nالمستخدم: %1$s\nالبيئة: %2$s\n\nيمكنك إما إعادة تعيين جميع البيانات والبدء من جديد، أو الاستمرار في تسجيل الدخول إلى نفس البيئة.</string>
+    <string name="session_conflict_continue_button">الاستمرار مع %s</string>
+    <string name="session_conflict_reset_button">إعادة التعيين والبدء من جديد</string>
+    <string name="session_conflict_unknown_user">مستخدم غير معروف</string>
+    <string name="session_conflict_unknown_env">بيئة غير معروفة</string>
+    <string name="session_conflict_guest_env">وضع الضيف</string>
     <string name="validation_email_error">يرجى إدخال بريد إلكتروني صالح</string>
     <string name="validation_psw_error">يجب ألا تقل كلمة المرور عن 8 أحرف</string>
     <string name="validation_url_error">رابط غير صالح</string>

@@ -11,7 +11,9 @@ interface SharedPrefsManager {
     var activeToken: String?
     var refreshToken: String?
     var userId: String?
+    var lastUserName: String?
     var surveyLastFetchTimeMillis: Long
+    fun logout()
     fun clear()
 
     companion object {
@@ -52,11 +54,20 @@ class SharedPrefsManagerImpl(context: Context) : SharedPrefsManager {
         get() = getString(KEY_USER_ID)
         set(value) = saveString(KEY_USER_ID, value)
 
+    override var lastUserName: String?
+        get() = getString(KEY_LAST_USER_NAME)
+        set(value) = saveString(KEY_LAST_USER_NAME, value)
+
     override var surveyLastFetchTimeMillis: Long
         get() = getLong(KEY_LAST_SURVEY_FETCH)
         set(value) {
             saveLong(KEY_LAST_SURVEY_FETCH, value)
         }
+
+    override fun logout() {
+        refreshToken = ""
+        activeToken = ""
+    }
 
     override fun clear() {
         editor.clear().apply()
@@ -96,6 +107,7 @@ class SharedPrefsManagerImpl(context: Context) : SharedPrefsManager {
         private const val KEY_IS_GUEST = "is_guest"
         private const val KEY_ENV = "environment"
         private const val KEY_USER_ID = "user_id"
+        private const val KEY_LAST_USER_NAME = "last_user_name"
         private const val KEY_LAST_SURVEY_FETCH = "last_survey_fetch"
     }
 }
