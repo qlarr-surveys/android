@@ -60,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
                 binding.serverUrl.visibleOrGone(state.selection == EnvSelection.PRIVATE)
 
                 // Pre-fill and disable server URL if locked to previous environment
-                if (state.lockedToPreviousEnv && state.previousSession?.environment is BackendEnvironment.Private) {
+                if (state.previousSession?.environment is BackendEnvironment.Private) {
                     binding.serverUrl.setText(state.previousSession.environment.baseUrl)
                     binding.serverUrl.isEnabled = false
                 } else {

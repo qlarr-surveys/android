@@ -25,7 +25,7 @@ interface SessionManager {
     fun clearPrefs()
     fun hasPreviousSession(): Boolean
     fun getPreviousUserName(): String?
-    fun getPreviousEnv(): BackendEnvironment?
+    fun getLastSuccessfulEnv(): BackendEnvironment?
 }
 
 class SessionManagerImpl(
@@ -41,6 +41,7 @@ class SessionManagerImpl(
 
     override fun saveSession(loginResponse: LoginResponse) {
         sharedPrefsManager.userId = loginResponse.id
+        sharedPrefsManager.lastSuccessfulEnv = sharedPrefsManager.env
         sharedPrefsManager.lastUserName = "${loginResponse.firstName} ${loginResponse.lastName}"
         sharedPrefsManager.activeToken = loginResponse.activeToken
         sharedPrefsManager.refreshToken = loginResponse.refreshToken
@@ -53,6 +54,7 @@ class SessionManagerImpl(
     override fun saveUserAsGuest() {
         sharedPrefsManager.isGuest = true
         sharedPrefsManager.env = BackendEnvironment.Guest
+        sharedPrefsManager.lastSuccessfulEnv = BackendEnvironment.Guest
     }
 
     override fun saveEnv(environment: BackendEnvironment) {
@@ -68,7 +70,7 @@ class SessionManagerImpl(
     }
 
     override fun hasPreviousSession(): Boolean {
-        val hasEnv = sharedPrefsManager.env != null
+        val hasEnv = sharedPrefsManager.lastSuccessfulEnv != null
         val hasUserId = !sharedPrefsManager.userId.isNullOrEmpty()
         val hasNoTokens = sharedPrefsManager.activeToken.isNullOrEmpty()
         return (hasEnv || hasUserId) && hasNoTokens
@@ -76,7 +78,7 @@ class SessionManagerImpl(
 
     override fun getPreviousUserName(): String? = sharedPrefsManager.lastUserName
 
-    override fun getPreviousEnv(): BackendEnvironment? = sharedPrefsManager.env
+    override fun getLastSuccessfulEnv(): BackendEnvironment? = sharedPrefsManager.lastSuccessfulEnv
 }
 
 sealed class BackendEnvironment(

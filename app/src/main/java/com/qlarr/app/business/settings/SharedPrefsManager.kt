@@ -8,6 +8,7 @@ interface SharedPrefsManager {
     val isActiveTokenAvailable: Boolean
     var isGuest: Boolean
     var env: BackendEnvironment?
+    var lastSuccessfulEnv: BackendEnvironment?
     var activeToken: String?
     var refreshToken: String?
     var userId: String?
@@ -42,6 +43,11 @@ class SharedPrefsManagerImpl(context: Context) : SharedPrefsManager {
             value = preferences.getString(KEY_ENV, null)
         )
         set(value) = saveString(KEY_ENV, value?.toSharedPrefsString())
+    override var lastSuccessfulEnv: BackendEnvironment?
+        get() = BackendEnvironment.fromSharedPrefsString(
+            value = preferences.getString(KEY_PREV_ENV, null)
+        )
+        set(value) = saveString(KEY_PREV_ENV, value?.toSharedPrefsString())
     override var refreshToken: String?
         get() = getString(KEY_REFRESH_TOKEN)
         set(value) = saveString(KEY_REFRESH_TOKEN, value)
@@ -65,6 +71,7 @@ class SharedPrefsManagerImpl(context: Context) : SharedPrefsManager {
         }
 
     override fun logout() {
+        env = null
         refreshToken = ""
         activeToken = ""
     }
@@ -106,6 +113,7 @@ class SharedPrefsManagerImpl(context: Context) : SharedPrefsManager {
         private const val KEY_REFRESH_TOKEN = "refresh_token"
         private const val KEY_IS_GUEST = "is_guest"
         private const val KEY_ENV = "environment"
+        private const val KEY_PREV_ENV = "KEY_PREV_ENV"
         private const val KEY_USER_ID = "user_id"
         private const val KEY_LAST_USER_NAME = "last_user_name"
         private const val KEY_LAST_SURVEY_FETCH = "last_survey_fetch"

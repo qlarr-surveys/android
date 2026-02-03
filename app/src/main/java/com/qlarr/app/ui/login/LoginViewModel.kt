@@ -37,9 +37,10 @@ class LoginViewModel(
         if (sessionManager.hasPreviousSession()) {
             _loginState.update {
                 it.copy(
+                    lockedToPreviousEnv = true,
                     previousSession = PreviousSessionInfo(
                         userName = sessionManager.getPreviousUserName(),
-                        environment = sessionManager.getPreviousEnv()
+                        environment = sessionManager.getLastSuccessfulEnv()
                     ),
                     showSessionConflictDialog = true
                 )
@@ -61,6 +62,7 @@ class LoginViewModel(
             val isPswValid = InputUtils.isValidPassword(trimmedPsw)
             val isEmailValid = InputUtils.isValidEmail(trimmedEmail)
             if (isEmailValid && isPswValid && isUrlValid) {
+                sessionManager.saveEnv(BackendEnvironment.Private(trimmedUrl))
                 try {
                     val response = loginInteractor.login(trimmedEmail, trimmedPsw)
                     if (response.roles.any { role ->
@@ -138,7 +140,6 @@ class LoginViewModel(
         val previousEnv = _loginState.value.previousSession?.environment
         when (previousEnv) {
             BackendEnvironment.Guest -> {
-                onResetSession()
                 tryAsGuest()
             }
 
