@@ -24,6 +24,15 @@
     <string name="error_signup_not_allowed_description">Je moet een bestaand account hebben om via Google in te loggen… Ga een account aanmaken</string>
     <string name="error_role_not_supported_title">Inloggen mislukt!</string>
     <string name="error_role_not_supported_description">Je moet landmeter, Survey Admin of Super Admin zijn om in te loggen op deze app</string>
+    <string name="error_different_user_title">Andere gebruiker</string>
+    <string name="error_different_user_description">Je moet inloggen als dezelfde gebruiker of de sessie opnieuw instellen om opnieuw te beginnen</string>
+    <string name="session_conflict_dialog_title">Eerdere sessie gedetecteerd</string>
+    <string name="session_conflict_dialog_message">Een eerdere sessie is gevonden:\n\nGebruiker: %1$s\nOmgeving: %2$s\n\nJe kunt alle gegevens opnieuw instellen en opnieuw beginnen, of doorgaan met inloggen in dezelfde omgeving.</string>
+    <string name="session_conflict_continue_button">Doorgaan met %s</string>
+    <string name="session_conflict_reset_button">Opnieuw instellen en opnieuw beginnen</string>
+    <string name="session_conflict_unknown_user">Onbekende gebruiker</string>
+    <string name="session_conflict_unknown_env">Onbekende omgeving</string>
+    <string name="session_conflict_guest_env">Gastmodus</string>
     <string name="validation_email_error">Voer gelieve geldig e-mailadres in te voeren</string>
     <string name="validation_psw_error">De minimale wachtwoordlengte is 8</string>
     <string name="validation_url_error">Ongeldige URL</string>

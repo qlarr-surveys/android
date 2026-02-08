@@ -24,6 +24,15 @@
     <string name="error_signup_not_allowed_description">Você precisa ter uma conta existente para fazer login pelo Google… Vá criar uma conta</string>
     <string name="error_role_not_supported_title">Login falhou!</string>
     <string name="error_role_not_supported_description">Você deve ser topógrafo, administrador de levantamentos ou super administrador para poder fazer login neste aplicativo</string>
+    <string name="error_different_user_title">Usuário diferente</string>
+    <string name="error_different_user_description">Você deve fazer login como o mesmo usuário ou redefinir a sessão para começar do zero</string>
+    <string name="session_conflict_dialog_title">Sessão anterior detectada</string>
+    <string name="session_conflict_dialog_message">Uma sessão anterior foi encontrada:\n\nUsuário: %1$s\nAmbiente: %2$s\n\nVocê pode redefinir todos os dados e começar do zero, ou continuar fazendo login no mesmo ambiente.</string>
+    <string name="session_conflict_continue_button">Continuar com %s</string>
+    <string name="session_conflict_reset_button">Redefinir e começar do zero</string>
+    <string name="session_conflict_unknown_user">Usuário desconhecido</string>
+    <string name="session_conflict_unknown_env">Ambiente desconhecido</string>
+    <string name="session_conflict_guest_env">Modo convidado</string>
     <string name="validation_email_error">Por favor, insira um e-mail válido</string>
     <string name="validation_psw_error">O comprimento mínimo da senha é 8</string>
     <string name="validation_url_error">URL inválida</string>

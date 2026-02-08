@@ -13,6 +13,7 @@ interface SessionManager {
     fun getUserIdOrThrow(): String
 
     fun saveSession(loginResponse: LoginResponse)
+    fun sameUser(loginResponse: LoginResponse): Boolean
 
     fun saveUserAsGuest()
 
@@ -21,6 +22,10 @@ interface SessionManager {
     fun isGuest(): Boolean
 
     fun env(): BackendEnvironment?
+    fun clearPrefs()
+    fun hasPreviousSession(): Boolean
+    fun getPreviousUserName(): String?
+    fun getLastSuccessfulEnv(): BackendEnvironment?
 }
 
 class SessionManagerImpl(
@@ -36,13 +41,20 @@ class SessionManagerImpl(
 
     override fun saveSession(loginResponse: LoginResponse) {
         sharedPrefsManager.userId = loginResponse.id
+        sharedPrefsManager.lastSuccessfulEnv = sharedPrefsManager.env
+        sharedPrefsManager.lastUserName = "${loginResponse.firstName} ${loginResponse.lastName}"
         sharedPrefsManager.activeToken = loginResponse.activeToken
         sharedPrefsManager.refreshToken = loginResponse.refreshToken
+    }
+
+    override fun sameUser(loginResponse: LoginResponse): Boolean {
+        return sharedPrefsManager.userId == loginResponse.id
     }
 
     override fun saveUserAsGuest() {
         sharedPrefsManager.isGuest = true
         sharedPrefsManager.env = BackendEnvironment.Guest
+        sharedPrefsManager.lastSuccessfulEnv = BackendEnvironment.Guest
     }
 
     override fun saveEnv(environment: BackendEnvironment) {
@@ -53,6 +65,20 @@ class SessionManagerImpl(
     override fun isGuest(): Boolean = sharedPrefsManager.isGuest
 
     override fun env(): BackendEnvironment? = sharedPrefsManager.env
+    override fun clearPrefs() {
+        sharedPrefsManager.clear()
+    }
+
+    override fun hasPreviousSession(): Boolean {
+        val hasEnv = sharedPrefsManager.lastSuccessfulEnv != null
+        val hasUserId = !sharedPrefsManager.userId.isNullOrEmpty()
+        val hasNoTokens = sharedPrefsManager.activeToken.isNullOrEmpty()
+        return (hasEnv || hasUserId) && hasNoTokens
+    }
+
+    override fun getPreviousUserName(): String? = sharedPrefsManager.lastUserName
+
+    override fun getLastSuccessfulEnv(): BackendEnvironment? = sharedPrefsManager.lastSuccessfulEnv
 }
 
 sealed class BackendEnvironment(
@@ -86,6 +112,6 @@ fun isValidUrl(url: String): Boolean =
     try {
         url.toHttpUrl()
         true
-    } catch (e: IllegalArgumentException) {
+    } catch (_: IllegalArgumentException) {
         false
     }

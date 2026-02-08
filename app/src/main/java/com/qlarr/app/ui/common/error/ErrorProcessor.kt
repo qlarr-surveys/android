@@ -1,6 +1,7 @@
 package com.qlarr.app.ui.common.error
 
 import com.qlarr.app.R
+import com.qlarr.app.business.auth.DifferentUserException
 import com.qlarr.app.ui.common.ConnectivityChecker
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -54,7 +55,10 @@ class ErrorProcessorImpl(private val connectivityChecker: ConnectivityChecker) :
     }
 
     override suspend fun processLoginError(throwable: Throwable) {
-        return if (throwable is HttpException && throwable.code() in listOf(401, 404)) {
+        return if (throwable is DifferentUserException) {
+            throwable.printStackTrace()
+            _errors.emit(ProcessedError.DifferentUserError)
+        } else if (throwable is HttpException && throwable.code() in listOf(401, 404)) {
             throwable.printStackTrace()
             val errorResponse = throwable.response()?.errorBody()?.string()
             if (!errorResponse.isNullOrEmpty() && errorResponse.contains("SignupNotAllowed")) {
@@ -103,5 +107,10 @@ sealed class ProcessedError(val titleRes: Int, val messageRes: Int) {
     object NoOfflineRole : ProcessedError(
         R.string.error_role_not_supported_title,
         R.string.error_role_not_supported_description
+    )
+
+    object DifferentUserError : ProcessedError(
+        R.string.error_different_user_title,
+        R.string.error_different_user_description
     )
 }

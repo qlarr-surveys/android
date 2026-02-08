@@ -8,10 +8,13 @@ interface SharedPrefsManager {
     val isActiveTokenAvailable: Boolean
     var isGuest: Boolean
     var env: BackendEnvironment?
+    var lastSuccessfulEnv: BackendEnvironment?
     var activeToken: String?
     var refreshToken: String?
     var userId: String?
+    var lastUserName: String?
     var surveyLastFetchTimeMillis: Long
+    fun logout()
     fun clear()
 
     companion object {
@@ -40,6 +43,11 @@ class SharedPrefsManagerImpl(context: Context) : SharedPrefsManager {
             value = preferences.getString(KEY_ENV, null)
         )
         set(value) = saveString(KEY_ENV, value?.toSharedPrefsString())
+    override var lastSuccessfulEnv: BackendEnvironment?
+        get() = BackendEnvironment.fromSharedPrefsString(
+            value = preferences.getString(KEY_PREV_ENV, null)
+        )
+        set(value) = saveString(KEY_PREV_ENV, value?.toSharedPrefsString())
     override var refreshToken: String?
         get() = getString(KEY_REFRESH_TOKEN)
         set(value) = saveString(KEY_REFRESH_TOKEN, value)
@@ -52,11 +60,21 @@ class SharedPrefsManagerImpl(context: Context) : SharedPrefsManager {
         get() = getString(KEY_USER_ID)
         set(value) = saveString(KEY_USER_ID, value)
 
+    override var lastUserName: String?
+        get() = getString(KEY_LAST_USER_NAME)
+        set(value) = saveString(KEY_LAST_USER_NAME, value)
+
     override var surveyLastFetchTimeMillis: Long
         get() = getLong(KEY_LAST_SURVEY_FETCH)
         set(value) {
             saveLong(KEY_LAST_SURVEY_FETCH, value)
         }
+
+    override fun logout() {
+        env = null
+        refreshToken = ""
+        activeToken = ""
+    }
 
     override fun clear() {
         editor.clear().apply()
@@ -95,7 +113,9 @@ class SharedPrefsManagerImpl(context: Context) : SharedPrefsManager {
         private const val KEY_REFRESH_TOKEN = "refresh_token"
         private const val KEY_IS_GUEST = "is_guest"
         private const val KEY_ENV = "environment"
+        private const val KEY_PREV_ENV = "KEY_PREV_ENV"
         private const val KEY_USER_ID = "user_id"
+        private const val KEY_LAST_USER_NAME = "last_user_name"
         private const val KEY_LAST_SURVEY_FETCH = "last_survey_fetch"
     }
 }

@@ -25,6 +25,15 @@
     <string name="error_signup_not_allowed_description">Sie benötigen ein bestehendes Konto, um sich über Google anzumelden… bitte Konto erstellen</string>
     <string name="error_role_not_supported_title">Anmeldung fehlgeschlagen!</string>
     <string name="error_role_not_supported_description">Sie müssen ein Umfrageleiter, Umfrageadministrator oder Superadministrator sein, um sich anzumelden</string>
+    <string name="error_different_user_title">Anderer Benutzer</string>
+    <string name="error_different_user_description">Sie müssen sich als derselbe Benutzer anmelden oder die Sitzung zurücksetzen, um neu zu beginnen</string>
+    <string name="session_conflict_dialog_title">Vorherige Sitzung erkannt</string>
+    <string name="session_conflict_dialog_message">Eine vorherige Sitzung wurde gefunden:\n\nBenutzer: %1$s\nUmgebung: %2$s\n\nSie können entweder alle Daten zurücksetzen und neu beginnen oder sich weiterhin in derselben Umgebung anmelden.</string>
+    <string name="session_conflict_continue_button">Weiter mit %s</string>
+    <string name="session_conflict_reset_button">Zurücksetzen und neu beginnen</string>
+    <string name="session_conflict_unknown_user">Unbekannter Benutzer</string>
+    <string name="session_conflict_unknown_env">Unbekannte Umgebung</string>
+    <string name="session_conflict_guest_env">Gastmodus</string>
     <string name="validation_email_error">Bitte gültige E-Mail eingeben</string>
     <string name="validation_psw_error">Passwort muss mindestens 8 Zeichen lang sein</string>
     <string name="validation_url_error">Ungültige URL</string>
