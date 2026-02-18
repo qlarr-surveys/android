@@ -174,4 +174,7 @@
     <string name="survey_end_repeat">Start new</string>
     <string name="values_saved">Response was auto saved</string>
     <string name="response_not_auto_saved">Response was not auto saved</string>
+    <string name="delete_response_confirmation_title">Delete response?</string>
+    <string name="delete_response_confirmation_message">This response will be permanently deleted and cannot be recovered.</string>
+    <string name="delete">Delete</string>
 </resources>

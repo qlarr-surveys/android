@@ -174,4 +174,7 @@
     <string name="survey_end_repeat">Comenzar nuevo</string>
     <string name="values_saved">La respuesta se guardó automáticamente</string>
     <string name="response_not_auto_saved">La respuesta no se guardó automáticamente</string>
+    <string name="delete_response_confirmation_title">¿Eliminar respuesta?</string>
+    <string name="delete_response_confirmation_message">Esta respuesta se eliminará permanentemente y no podrá recuperarse.</string>
+    <string name="delete">Eliminar</string>
 </resources>
