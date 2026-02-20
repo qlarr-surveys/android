@@ -207,4 +207,7 @@
     <string name="survey_end_repeat">بدء جديد</string>
     <string name="values_saved">تم حفظ الاستجابة تلقائيًا</string>
     <string name="response_not_auto_saved">لم يتم حفظ الاستجابة تلقائيًا</string>
+    <string name="delete_response_confirmation_title">حذف الاستجابة؟</string>
+    <string name="delete_response_confirmation_message">ستُحذف هذه الاستجابة نهائيًا ولا يمكن استعادتها.</string>
+    <string name="delete">حذف</string>
 </resources>

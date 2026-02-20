@@ -165,4 +165,7 @@
     <string name="survey_end_repeat">Neu starten</string>
     <string name="values_saved">Antwort wurde automatisch gespeichert</string>
     <string name="response_not_auto_saved">Antwort wurde nicht automatisch gespeichert</string>
+    <string name="delete_response_confirmation_title">Antwort löschen?</string>
+    <string name="delete_response_confirmation_message">Diese Antwort wird dauerhaft gelöscht und kann nicht wiederhergestellt werden.</string>
+    <string name="delete">Löschen</string>
 </resources>

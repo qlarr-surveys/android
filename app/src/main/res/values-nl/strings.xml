@@ -163,4 +163,7 @@
     <string name="survey_end_repeat">Begin nieuw</string>
     <string name="values_saved">Reactie is automatisch opgeslagen</string>
     <string name="response_not_auto_saved">Reactie is niet automatisch opgeslagen</string>
+    <string name="delete_response_confirmation_title">Reactie verwijderen?</string>
+    <string name="delete_response_confirmation_message">Deze reactie wordt permanent verwijderd en kan niet worden hersteld.</string>
+    <string name="delete">Verwijderen</string>
 </resources>
