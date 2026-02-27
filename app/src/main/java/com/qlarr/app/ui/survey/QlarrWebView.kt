@@ -28,6 +28,9 @@ import com.qlarr.surveyengine.scriptengine.commonScript
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.destination
 import id.zelory.compressor.constraint.size
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.io.FileInputStream
@@ -407,37 +410,39 @@ constructor(
             val size = stream.readBytes().size.toLong()
             val shouldCompress = isSizeViolated(size, true)
             val uuid = saverUri.toString().substringAfterLast("/").substringBefore(".")
-            val result =
-                emNavProcessor.saveFileResponse(
-                    fileName = "captured-image.jpg",
-                    storedFilename = uuid,
-                    fileSize = size,
-                    key = operationKey!!,
+            val key = operationKey!!
+            CoroutineScope(Dispatchers.IO).launch {
+                val result =
+                    emNavProcessor.saveFileResponse(
+                        fileName = "captured-image.jpg",
+                        storedFilename = uuid,
+                        fileSize = size,
+                        key = key,
+                    )
+                val finalSize =
+                    if (shouldCompress) {
+                        compress(
+                            FileUtils.getResponseFile(
+                                context,
+                                uuid.toString(),
+                                survey.id,
+                                responseId!!,
+                            ),
+                            maxSizeKb!! * 1024L,
+                        )
+                    } else {
+                        result.size
+                    }
+                loadUrlOnUiThread(
+                    "javascript:onPhotoCaptured$key(${
+                        objectMapper.writeValueAsString(
+                            result.copy(size = finalSize),
+                        )
+                    })",
                 )
-            val finalSize =
-                if (shouldCompress) {
-                    compress(
-                        FileUtils.getResponseFile(
-                            context,
-                            uuid.toString(),
-                            survey.id,
-                            responseId!!,
-                        ),
-                        maxSizeKb!! * 1024L,
-                    )
-                } else {
-                    result.size
-                }
-            loadUrlOnUiThread(
-                "javascript:onPhotoCaptured$operationKey(${
-                    objectMapper.writeValueAsString(
-                        result.copy(size = finalSize),
-                    )
-                })",
-            )
+                resetFileUploadVariables()
+            }
         }
-
-        resetFileUploadVariables()
     }
 
     private fun compress(
@@ -473,22 +478,24 @@ constructor(
                 resetFileUploadVariables()
                 return
             }
-            val result =
-                emNavProcessor.uploadFile(
-                    key = operationKey!!,
-                    fileName = "captured-video.mp4",
-                    byteArray = byteArray,
-                )
-            loadUrlOnUiThread(
-                "javascript:onVideoCaptured$operationKey(${
-                    objectMapper.writeValueAsString(
-                        result,
+            val key = operationKey!!
+            CoroutineScope(Dispatchers.IO).launch {
+                val result =
+                    emNavProcessor.uploadFile(
+                        key = key,
+                        fileName = "captured-video.mp4",
+                        byteArray = byteArray,
                     )
-                })",
-            )
+                loadUrlOnUiThread(
+                    "javascript:onVideoCaptured$key(${
+                        objectMapper.writeValueAsString(
+                            result,
+                        )
+                    })",
+                )
+                resetFileUploadVariables()
+            }
         }
-
-        resetFileUploadVariables()
     }
 
     private fun isSizeViolated(

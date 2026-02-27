@@ -40,7 +40,6 @@ import java.net.URLConnection
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.UUID
-import kotlin.concurrent.thread
 
 @SuppressLint("SetJavaScriptEnabled")
 class EMNavProcessor(
@@ -315,29 +314,27 @@ class EMNavProcessor(
         )
     }
 
-    private fun updateResponse(
+    private suspend fun updateResponse(
         response: Response,
         surveyLang: String,
         result: NavigationJsonOutput,
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            qlarrDb.responseDao().update(
-                values =
-                    response.values.toMutableMap().apply {
-                        putAll(result.toSave)
-                    },
-                id = response.id,
-                navigationIndex = result.navigationIndex,
-                startDate = response.startDate,
-                submitDate =
-                    if (result.navigationIndex is NavigationIndex.End) {
-                        LocalDateTime.now(ZoneOffset.UTC)
-                    } else {
-                        response.submitDate
-                    },
-                lang = surveyLang,
-            )
-        }
+        qlarrDb.responseDao().update(
+            values =
+                response.values.toMutableMap().apply {
+                    putAll(result.toSave)
+                },
+            id = response.id,
+            navigationIndex = result.navigationIndex,
+            startDate = response.startDate,
+            submitDate =
+                if (result.navigationIndex is NavigationIndex.End) {
+                    LocalDateTime.now(ZoneOffset.UTC)
+                } else {
+                    response.submitDate
+                },
+            lang = surveyLang,
+        )
     }
 
     fun uploadDataUrl(
@@ -393,10 +390,6 @@ class EMNavProcessor(
         key: String,
         fileSize: Long,
     ): ResponseUploadFile {
-        var response: Response
-        runBlocking {
-            response = qlarrDb.responseDao().get(responseId.toString())
-        }
         val responseUploadFile =
             ResponseUploadFile(
                 filename = fileName,
@@ -404,11 +397,8 @@ class EMNavProcessor(
                 size = fileSize,
                 type = URLConnection.guessContentTypeFromName(fileName),
             )
-        val newValues =
-            response.values.toMutableMap().apply {
-                put("$key.value", responseUploadFile)
-            }
-        CoroutineScope(Dispatchers.IO).launch {
+        runBlocking {
+            val response = qlarrDb.responseDao().get(responseId.toString())
             (response.values["$key.value"] as? Map<*, *>)?.get(STORED_FILENAME_KEY)?.let {
                 val file =
                     FileUtils.getResponseFile(getActivity(), it.toString(), survey.id, response.id)
@@ -417,6 +407,10 @@ class EMNavProcessor(
                     file.delete()
                 }
             }
+            val newValues =
+                response.values.toMutableMap().apply {
+                    put("$key.value", responseUploadFile)
+                }
             qlarrDb.responseDao().update(
                 values = newValues,
                 id = response.id,
