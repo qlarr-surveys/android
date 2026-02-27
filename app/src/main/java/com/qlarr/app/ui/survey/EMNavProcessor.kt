@@ -249,7 +249,7 @@ class EMNavProcessor(
         values: Map<String, Any> = mapOf(),
         navigationIndex: NavigationIndex? = null,
         navigationDirection: NavigationDirection,
-        onSuccess: (NavigationJsonOutput, SurveyLang, List<SurveyLang>) -> Unit,
+        onSuccess: suspend (NavigationJsonOutput, SurveyLang, List<SurveyLang>) -> Unit,
         onError: (Throwable) -> Unit,
     ) {
         val currentLang = validationJsonOutput.availableLangByCode(lang)
@@ -276,7 +276,7 @@ class EMNavProcessor(
         val script = navigationUseCaseWrapperImpl.getNavigationScript()
         (webView.context as Activity).runOnUiThread {
             webView.evaluateJavascript("JSON.parse(navigate($script))") { value ->
-                thread {
+                CoroutineScope(Dispatchers.IO).launch {
                     try {
                         onSuccess(
                             objectMapper.readValue(
@@ -296,25 +296,23 @@ class EMNavProcessor(
         }
     }
 
-    private fun saveResponse(
+    private suspend fun saveResponse(
         surveyLang: String,
         result: NavigationJsonOutput,
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            qlarrDb.responseDao().insert(
-                Response(
-                    id = responseId.toString(),
-                    navigationIndex = result.navigationIndex,
-                    lang = surveyLang,
-                    surveyId = survey.id,
-                    version = survey.publishInfo.version,
-                    startDate = LocalDateTime.now(ZoneOffset.UTC),
-                    submitDate = null,
-                    isSynced = false,
-                    values = result.toSave,
-                ),
-            )
-        }
+        qlarrDb.responseDao().insert(
+            Response(
+                id = responseId.toString(),
+                navigationIndex = result.navigationIndex,
+                lang = surveyLang,
+                surveyId = survey.id,
+                version = survey.publishInfo.version,
+                startDate = LocalDateTime.now(ZoneOffset.UTC),
+                submitDate = null,
+                isSynced = false,
+                values = result.toSave,
+            ),
+        )
     }
 
     private fun updateResponse(
