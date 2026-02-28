@@ -213,6 +213,7 @@ class EMNavProcessor(
                 "",
                 validationJsonOutput.defaultSurveyLang().code,
             )
+        val codeIndex = validationJsonOutput.buildCodeIndex()
 
         return flow {
             values.forEach { response ->
@@ -222,7 +223,8 @@ class EMNavProcessor(
                 schema.forEach { column ->
                     val key = "$column.value"
                     oldValues[key]?.let { value ->
-                        val newKey = labels[column]?.stripHTMLTags() ?: column
+                        val prefix = codeIndex[column]?.let { "($it) " } ?: ""
+                        val newKey = "$prefix${labels[column]?.stripHTMLTags() ?: column}"
                         val newValue =
                             maskedValues[
                                 Dependency(
