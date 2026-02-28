@@ -179,7 +179,7 @@ class EMNavProcessor(
                             navigationData = survey.surveyNavigationData,
                         )
                 updateResponse(
-                    response,
+                    response.id,
                     language.code,
                     navigationJsonOutput,
                 )
@@ -317,10 +317,11 @@ class EMNavProcessor(
     }
 
     private suspend fun updateResponse(
-        response: Response,
+        responseId: String,
         surveyLang: String,
         result: NavigationJsonOutput,
     ) {
+        val response = qlarrDb.responseDao().get(responseId)
         qlarrDb.responseDao().update(
             values =
                 response.values.toMutableMap().apply {
