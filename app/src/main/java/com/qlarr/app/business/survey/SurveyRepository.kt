@@ -103,10 +103,18 @@ class SurveyRepositoryImpl(
             val surveyList =
                 list.map { survey ->
                     val offlineSurvey = offlineSurveys.firstOrNull { it.id == survey.id }
-                    return@map if (survey.publishInfo?.requiresUpdates(offlineSurvey?.publishInfo) == true) {
-                        getSurveyDesign(survey, offlineSurvey)
-                    } else {
-                        offlineSurvey ?: getSurveyDesign(survey, null)
+                    return@map when {
+                        survey.publishInfo?.requiresUpdates(offlineSurvey?.publishInfo) == true -> {
+                            getSurveyDesign(survey, offlineSurvey)
+                        }
+
+                        offlineSurvey != null -> {
+                            updateSurveyMetadata(survey, offlineSurvey)
+                        }
+
+                        else -> {
+                            getSurveyDesign(survey, null)
+                        }
                     }
                 }
             offlineSurveys
@@ -170,6 +178,29 @@ class SurveyRepositoryImpl(
             surveyData = surveyData,
         )
         return surveyData
+    }
+
+    private suspend fun updateSurveyMetadata(
+        survey: Survey,
+        offlineSurvey: SurveyData,
+    ): SurveyData {
+        val count = responseDao.countByUserAndSurvey(surveyId = survey.id)
+        val responseCount = responseDao.countCompleteByUserAndSurvey(survey.id)
+        val unsyncedCount = responseDao.countUnsyncedResponses(survey.id)
+        val updated = SurveyData.fromSurveyAndDesign(
+            survey = survey,
+            env = sessionManager.env()!!,
+            currentPublishInfo = offlineSurvey.publishInfo,
+            newVersionAvailable = false,
+            responsesCount = count,
+            completeResponsesCount = responseCount,
+            unsyncedCount = unsyncedCount,
+            cachedDesign = offlineSurvey.cachedDesign,
+            cachedAllFiles = offlineSurvey.cachedAllFiles,
+            lastSync = offlineSurvey.lastSync,
+        )
+        saveSurveyToDB(updated)
+        return updated
     }
 
     override suspend fun getOfflineSurveyList(): List<SurveyData> {
@@ -325,7 +356,7 @@ class SurveyRepositoryImpl(
             imageUrl = this.imageUrl,
             cachedDesign = this.cachedDesign,
             cachedAllFiles = this.cachedAllFiles,
-            navigationData = this.surveyNavigationData
+            navigationData = this.surveyNavigationData,
         )
 }
 
