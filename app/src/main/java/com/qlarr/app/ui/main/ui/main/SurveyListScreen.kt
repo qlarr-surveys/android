@@ -19,10 +19,12 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -56,6 +58,7 @@ import com.qlarr.app.ui.survey.SurveyActivity
 import com.qlarr.app.ui.survey.SurveyInfoActivity
 import com.qlarr.app.ui.survey.SurveyListItem
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SurveyListScreen(viewModel: SurveyListViewModel) {
     val state by viewModel.state.collectAsState()
@@ -93,10 +96,12 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                 },
             )
         }) { padding ->
-            Box(
+            PullToRefreshBox(
+                isRefreshing = false,
+                onRefresh = { viewModel.fetchSurveyList(true) },
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(padding)
+                    .padding(padding),
             ) {
                 Column(modifier = Modifier.fillMaxSize()) {
                     // Guest warning banner
