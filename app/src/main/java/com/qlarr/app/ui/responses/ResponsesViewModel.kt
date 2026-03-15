@@ -167,7 +167,7 @@ class ResponsesViewModel(
             startDateString = startDate.toFormattedString(),
             submitDateString = submitDate?.toFormattedString(),
             editEnabled = !quotaExceeded && submitDate == null,
-            deleteEnabled = !isSynced,
+            deleteEnabled = !isSynced && submitDate == null,
             values = toResponseValueData(),
             lang = lang,
         )
