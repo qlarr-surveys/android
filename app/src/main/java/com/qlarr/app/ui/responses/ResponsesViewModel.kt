@@ -87,7 +87,11 @@ class ResponsesViewModel(
                                 { response.toResponseItemData(surveyData.quotaExceeded()) },
                             )
                     _responsesScreenData.update {
-                        it.copy(responses = newResponses)
+                        it.copy(
+                            responses = newResponses,
+                            completeResponsesCount = surveyData.localCompleteResponsesCount,
+                            inCompleteResponsesCount = surveyData.localResponsesCount - surveyData.localCompleteResponsesCount,
+                        )
                     }
                 }
             }
@@ -154,7 +158,13 @@ class ResponsesViewModel(
                     val count =
                         list.count { it.submitDateString != null && !it.isSynced }
                     val quotaExceeded = surveyData.quotaExceeded(count)
-                    screenData.copy(responses = list.map { it.copy(editEnabled = !quotaExceeded) })
+                    val completeCount = list.count { it.submitDateString != null }
+                    val inCompleteCount = list.size - completeCount
+                    screenData.copy(
+                        responses = list.map { it.copy(editEnabled = !quotaExceeded && it.submitDateString == null) },
+                        completeResponsesCount = completeCount,
+                        inCompleteResponsesCount = inCompleteCount,
+                    )
                 }
             }
         }
