@@ -59,10 +59,12 @@ class LoginViewModel(
             val trimmedPsw = password.trim()
             val trimmedUrl = InputUtils.trimServerUrl(serverUrl)
             val isUrlValid = _loginState.value.selection != PRIVATE || isValidUrl(trimmedUrl)
+            if (_loginState.value.selection == PRIVATE && isUrlValid) {
+                sessionManager.saveEnv(BackendEnvironment.Private(trimmedUrl))
+            }
             val isPswValid = InputUtils.isValidPassword(trimmedPsw)
             val isEmailValid = InputUtils.isValidEmail(trimmedEmail)
             if (isEmailValid && isPswValid && isUrlValid) {
-                sessionManager.saveEnv(BackendEnvironment.Private(trimmedUrl))
                 try {
                     val response = loginInteractor.login(trimmedEmail, trimmedPsw)
                     if (response.roles.any { role ->

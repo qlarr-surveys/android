@@ -27,6 +27,8 @@
     <string name="error_role_not_supported_description">Vous devez être enquêteur, administrateur d\'enquête ou super administrateur pour pouvoir vous connecter à cette application</string>
     <string name="error_different_user_title">Utilisateur différent</string>
     <string name="error_different_user_description">Vous devez vous connecter en tant que même utilisateur ou réinitialiser la session pour recommencer</string>
+    <string name="error_recording_permission_missing_title">Autorisation critique refusée</string>
+    <string name="error_recording_permission_missing_desc">Les autorisations d\'accès à la localisation et d\'enregistrement audio doivent être accordées pour continuer. Veuillez aller dans les paramètres pour accorder les deux autorisations à l\'application</string>
     <string name="session_conflict_dialog_title">Session précédente détectée</string>
     <string name="session_conflict_dialog_message">Une session précédente a été trouvée:\n\nUtilisateur: %1$s\nEnvironnement: %2$s\n\nVous pouvez soit réinitialiser toutes les données et recommencer, soit continuer à vous connecter au même environnement.</string>
     <string name="session_conflict_continue_button">Continuer avec %s</string>
@@ -47,6 +49,7 @@
     <string name="response_start_date">Date de début : %s</string>
     <string name="response_submit_date">Date de soumission : %s</string>
     <string name="response_lang">Langue : %s</string>
+    <string name="response_location">Localisation</string>
     <string name="responses_screen_complete_responses">Réponses complètes</string>
     <string name="responses_screen_incomplete_responses">Réponses incomplètes</string>
     <string name="responses_screen_last_sync_time">Dernière synchronisation</string>
@@ -77,6 +80,10 @@
     <string name="notification_channel_uploader_description">Progression du téléchargement des réponses d\'enquête</string>
     <string name="notification_uploader_title">Téléchargement en cours…</string>
     <string name="notification_uploader_description">Téléchargement en cours avec le serveur</string>
+    <string name="notification_channel_audio_rec_name">Enregistrement audio</string>
+    <string name="notification_channel_audio_rec_description">État de l\'enregistrement audio</string>
+    <string name="notification_audio_recording_title">Enregistrement Audio</string>
+    <string name="notification_audio_recording_description">Enregistrement audio en cours…</string>
     <string name="sync_time_never">Jamais</string>
     <string name="back">Retour</string>
     <string name="survey_creation_date">Créé</string>
@@ -92,6 +99,8 @@
     <string name="survey_stats_quota">Quota restant de l\'enquête</string>
     <string name="survey_stats_user_quota">Quota restant de l\'utilisateur</string>
     <string name="survey_save_timings">Enregistrer les horaires</string>
+    <string name="survey_background_audio">Enregistrement audio</string>
+    <string name="survey_record_gps">Suivi de localisation</string>
     <string name="enabled">Activé</string>
     <string name="disabled">Désactivé</string>
     <string name="survey_status">Statut</string>
@@ -167,7 +176,7 @@
     <string name="logout_alert_message">Toutes les données non synchronisées seront perdues.</string>
     <string name="logout_are_you_sure">Êtes-vous sûr de vouloir vous déconnecter ?</string>
     <string name="login_to_private">Se connecter au serveur privé</string>
-    <string name="login_to_cloud">Se connecter à Qlarr.com</string>
+
     <string name="guest_warning">"Vous explorez l'application en tant qu'invité."</string>
     <string name="survey_item_button_get_missing_files">Obtenir les fichiers manquants</string>
     <string name="survey_end_finish_action">Terminer</string>

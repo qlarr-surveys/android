@@ -34,6 +34,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.decode.VideoFrameDecoder
@@ -42,6 +43,7 @@ import com.qlarr.app.R
 import com.qlarr.app.ui.common.compose.boldDescriptionString
 import com.qlarr.app.ui.common.compose.boldValueString
 import com.qlarr.app.ui.common.theme.Colors
+import com.qlarr.app.ui.audioplayer.AudioPlayer
 import com.qlarr.app.ui.common.theme.QlarrTheme
 import com.qlarr.app.ui.common.toFormattedString
 import java.time.LocalDateTime
@@ -66,7 +68,11 @@ fun ResponsesScreen(
     onEditClicked: (String) -> Unit,
     onDeleteClicked: (String) -> Unit,
     screenState: ResponsesScreenState,
-    onFileClicked: (ResponseValueData.FileValueData) -> Unit
+    onFileClicked: (ResponseValueData.FileValueData) -> Unit,
+    onPlayClicked: (responseId: String, audioPath: String) -> Unit = { _, _ -> },
+    onPauseClicked: (responseId: String, audioPath: String) -> Unit = { _, _ -> },
+    onSeekTo: (responseId: String, audioPath: String, position: Long) -> Unit = { _, _, _ -> },
+    onMapClicked: (ResponseEventData.LocationData) -> Unit,
 ) {
     val lazyListState = rememberLazyListState()
     var pendingDeleteId by remember { mutableStateOf<String?>(null) }
@@ -116,7 +122,11 @@ fun ResponsesScreen(
                 responseItem = it,
                 onEditClicked = onEditClicked,
                 onDeleteClicked = { id -> pendingDeleteId = id },
-                onFileClicked = onFileClicked
+                onFileClicked = onFileClicked,
+                onPlayClicked = onPlayClicked,
+                onPauseClicked = onPauseClicked,
+                sliderPositionChanged = onSeekTo,
+                onMapClicked = onMapClicked,
             )
         }
     }
@@ -160,6 +170,10 @@ private fun ResponseItem(
     onEditClicked: (String) -> Unit = {},
     onDeleteClicked: (String) -> Unit = {},
     onFileClicked: (ResponseValueData.FileValueData) -> Unit = {},
+    onPlayClicked: (responseId: String, audioPath: String) -> Unit = { _, _ -> },
+    onPauseClicked: (responseId: String, audioPath: String) -> Unit = { _, _ -> },
+    sliderPositionChanged: (responseId: String, audioPath: String, position: Long) -> Unit = { _, _, _ -> },
+    onMapClicked: (ResponseEventData.LocationData) -> Unit = {},
 ) {
     Column {
         Row(
@@ -213,6 +227,30 @@ private fun ResponseItem(
                     value = responseItem.lang
                 )
             )
+        }
+
+        responseItem.events.forEach { eventData ->
+            when (eventData) {
+                is ResponseEventData.AudioRecordingData -> {
+                    AudioPlayer(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        sliderPositionChanged = {
+                            sliderPositionChanged(responseItem.id, eventData.audioPath, it)
+                        },
+                        onPlayClicked = { onPlayClicked(responseItem.id, eventData.audioPath) },
+                        onPauseClicked = { onPauseClicked(responseItem.id, eventData.audioPath) },
+                        totalAudioDuration = eventData.audioDuration,
+                        currentTime = eventData.currentTime,
+                        isPlaying = eventData.isPlaying,
+                    )
+                }
+                is ResponseEventData.LocationData -> {
+                    Location(
+                        location = eventData,
+                        modifier = Modifier.clickable { onMapClicked(eventData) }
+                    )
+                }
+            }
         }
 
         responseItem.values.forEach { value ->
@@ -276,6 +314,26 @@ private fun StatText(
     )
 }
 
+@Composable
+private fun Location(modifier: Modifier = Modifier, location: ResponseEventData.LocationData) {
+    Row(
+        modifier = modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = Modifier.weight(1f),
+            text = boldDescriptionString(
+                description = stringResource(id = R.string.response_location),
+                value = "${location.longitude}, ${location.latitude}"
+            )
+        )
+        Icon(
+            painter = painterResource(id = R.drawable.ic_location),
+            contentDescription = null
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun PreviewResponseScreen() {
@@ -286,6 +344,7 @@ private fun PreviewResponseScreen() {
         deleteEnabled = true,
         startDateString = LocalDateTime.now().toFormattedString(),
         submitDateString = null,
+        events = listOf(),
         values = listOf(),
         lang = "eng"
     )
@@ -296,6 +355,10 @@ private fun PreviewResponseScreen() {
             onEditClicked = {},
             onDeleteClicked = {},
             onFileClicked = {},
+            onPlayClicked = { _, _ -> },
+            onPauseClicked = { _, _ -> },
+            onSeekTo = { _, _, _ -> },
+            onMapClicked = {},
             screenState = ResponsesScreenState(
                 isLoading = false,
                 responses = listOf(
@@ -324,6 +387,7 @@ private fun PreviewResponseItem() {
                 deleteEnabled = true,
                 startDateString = LocalDateTime.now().toFormattedString(),
                 submitDateString = null,
+                events = listOf(),
                 values = listOf(),
                 lang = "eng"
             )

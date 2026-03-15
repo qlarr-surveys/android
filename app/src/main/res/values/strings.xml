@@ -18,6 +18,8 @@
     <string name="error_auth_title">Session expired.</string>
     <string name="error_auth_description">Please sign in again.</string>
     <string name="not_found_description">This resource is not found</string>
+    <string name="error_recording_permission_missing_title">Critical permission denied</string>
+    <string name="error_recording_permission_missing_desc">Access Location and Record Audio permissions must be granted to proceed. Please go to settings to grant app both permissions</string>
     <string name="error_login_title">Sign in failed!</string>
     <string name="error_login_description">Please enter valid credentials</string>
     <string name="error_signup_not_allowed_title">Sign in failed!</string>
@@ -75,8 +77,12 @@
     <string name="notification_channel_uploader_name">Upload progress</string>
     <string name="notification_channel_uploader_description">Survey responses upload
         progress</string>
+    <string name="notification_channel_audio_rec_name">Audio recording</string>
+    <string name="notification_channel_audio_rec_description">Audio recording status</string>
     <string name="notification_uploader_title">Uploading…</string>
     <string name="notification_uploader_description">Upload with server in progress</string>
+    <string name="notification_audio_recording_title">Audio Recording</string>
+    <string name="notification_audio_recording_description">Recording audio in progress…</string>
     <string name="sync_time_never">Never</string>
     <string name="back">Back</string>
     <string name="survey_creation_date">Created</string>
@@ -94,6 +100,8 @@
     <string name="survey_save_timings">Save timings</string>
     <string name="enabled">Enabled</string>
     <string name="disabled">Disabled</string>
+    <string name="survey_background_audio">Audio recording</string>
+    <string name="survey_record_gps">Location tracking</string>
     <string name="survey_status">Status</string>
     <string name="survey_update_available">New version available</string>
     <string name="survey_item_button_responses">Responses</string>
@@ -162,12 +170,12 @@
     <string name="survey_item_button_download">Download</string>
     <string name="survey_item_button_update">Update</string>
     <string name="survey_item_button_sync">Sync</string>
+    <string name="response_location">Location</string>
     <string name="logout">Logout</string>
     <string name="cancel">Cancel</string>
     <string name="logout_alert_message">All non synced data will be lost.</string>
     <string name="logout_are_you_sure">Are you sure you want to logout?</string>
     <string name="login_to_private">Login to Private Server</string>
-    <string name="login_to_cloud">Login to Qlarr.com</string>
     <string name="guest_warning">"You are checking the app as the guest. "</string>
     <string name="survey_item_button_get_missing_files">Get Missing Files</string>
     <string name="survey_end_finish_action">Finish</string>

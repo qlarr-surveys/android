@@ -2,6 +2,7 @@ package com.qlarr.app.db
 
 import androidx.room.TypeConverter
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.qlarr.app.api.survey.ResponseEvent
 import com.qlarr.app.api.survey.objectMapper
 import com.qlarr.surveyengine.model.SurveyLang
 import com.qlarr.surveyengine.model.exposed.NavigationIndex
@@ -42,6 +43,18 @@ class LocalDateConverter {
 
     @TypeConverter
     fun toDateString(date: LocalDateTime?): String? = date?.toString()
+}
+
+class ResponseEventListConverter {
+    @TypeConverter
+    fun fromString(value: String): List<ResponseEvent> {
+        return objectMapper.readValue(value, jacksonTypeRef<List<ResponseEvent>>())
+    }
+
+    @TypeConverter
+    fun toString(list: List<ResponseEvent>): String {
+        return objectMapper.writeValueAsString(list)
+    }
 }
 
 class SurveyLangConverter {

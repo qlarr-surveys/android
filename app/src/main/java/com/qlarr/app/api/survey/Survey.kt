@@ -32,6 +32,10 @@ data class Survey(
     @JsonProperty("completeResponseCount") val totalResponseCount: Int,
     @JsonProperty("userResponsesCount") val syncedResponseCount: Int,
     @JsonProperty("surveyQuota") val surveyQuota: Int,
+    @JsonProperty("userQuota") val userQuota: Int,
+    @JsonProperty("saveTimings") val saveTimings: Boolean,
+    @JsonProperty("backgroundAudio") val backgroundAudio: Boolean,
+    @JsonProperty("recordGps") val recordGps: Boolean,
     @JsonProperty("latestVersion") val publishInfo: PublishInfo?,
     @JsonProperty("image") val imageName: String?,
     @JsonProperty("description") val description: String?,
@@ -54,11 +58,10 @@ private const val TEN_YEARS_MILLIS = 31536000000L
 data class UploadResponseRequestData(
     val versionId: Int,
     val lang: String,
+    val events: List<ResponseEvent> = listOf(),
     val values: Map<String, Any> = mapOf(),
     val startDate: LocalDateTime,
     val submitDate: LocalDateTime?,
     val userId: String,
     val navigationIndex: NavigationIndex
 )
-
-const val DATE_TIME_UTC_FORMAT = "yyyy-MM-dd HH:mm:ss"

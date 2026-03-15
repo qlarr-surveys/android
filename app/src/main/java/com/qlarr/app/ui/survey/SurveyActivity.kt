@@ -1,13 +1,18 @@
 package com.qlarr.app.ui.survey
 
 import android.Manifest.permission
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.Manifest.permission.RECORD_AUDIO
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import android.os.Bundle
+import android.os.Looper
 import android.os.Parcelable
+import android.os.PersistableBundle
 import android.provider.MediaStore
 import android.view.ViewGroup.LayoutParams
 import android.widget.Toast
@@ -38,22 +43,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat.checkSelfPermission
+import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
 import com.qlarr.app.R
+import com.qlarr.app.api.survey.ResponseEvent
 import com.qlarr.app.business.parcelable
+import com.qlarr.app.business.responses.ResponseRepository
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.ui.common.error.ErrorDisplayManager
 import com.qlarr.app.ui.common.theme.Colors
 import com.qlarr.app.ui.common.theme.PrimaryActionButton
 import com.qlarr.app.ui.common.theme.QlarrTheme
 import com.qlarr.app.ui.common.theme.TertiaryActionButton
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 class SurveyActivity : ComponentActivity() {
     private lateinit var responseId: String
@@ -61,6 +78,12 @@ class SurveyActivity : ComponentActivity() {
     private var photoUri: Uri? = null
     private var qlarrWebView: QlarrWebView? = null
     private var currentToast: Toast? = null
+
+    private lateinit var locationCallback: LocationCallback
+    private var requestingLocationUpdates = false
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private val responseRepository: ResponseRepository by inject()
+    private var audioServiceStarted: Boolean = false
 
     private val surveyViewModel: SurveyViewModel by viewModel { parametersOf(survey.id) }
     private val errorDisplayManager: ErrorDisplayManager by inject { parametersOf(this) }
@@ -86,6 +109,8 @@ class SurveyActivity : ComponentActivity() {
         }
 
         val responseIdExtra: String? = intent.getStringExtra(RESPONSE_ID)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         setContent {
             val showBottomBar by surveyViewModel.showBottomBar.collectAsState()
@@ -152,6 +177,23 @@ class SurveyActivity : ComponentActivity() {
 
             setupBackPress()
         }
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                super.onLocationResult(locationResult)
+                locationResult.lastLocation?.let {
+                    if (!requestingLocationUpdates) return@let
+                    stopLocationUpdates()
+                    val event = ResponseEvent.Location(
+                        it.longitude, it.latitude, LocalDateTime.now(ZoneOffset.UTC)
+                    )
+                    lifecycle.coroutineScope.launch(Dispatchers.IO) {
+                        responseRepository.addEvent(responseId, event)
+                    }
+                }
+            }
+        }
+        updateValuesFromBundle(savedInstanceState)
     }
 
     private fun setupBackPress() {
@@ -168,6 +210,7 @@ class SurveyActivity : ComponentActivity() {
 
     fun onResponseStarted(responseId: String) {
         this.responseId = responseId
+        checkAudioAndLocationPermissionAndRecord()
         surveyViewModel.responseStarted(responseId)
     }
 
@@ -182,6 +225,7 @@ class SurveyActivity : ComponentActivity() {
     }
 
     fun onResponseEnded(responseId: String) {
+        stopRecording()
         surveyViewModel.responseEnded(responseId = responseId)
     }
 
@@ -248,6 +292,16 @@ class SurveyActivity : ComponentActivity() {
                 }
             } else {
                 notifyPermissionDenied()
+            }
+        }
+
+    private val requestRecordingPermissionsLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
+            if (results.all { it.value }) {
+                recordLocation()
+                recordAudio()
+            } else {
+                notifyRecordPermissionDenied()
             }
         }
 
@@ -368,12 +422,120 @@ class SurveyActivity : ComponentActivity() {
         }
     }
 
+    private fun createLocationRequest() =
+        LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000).build()
 
+    private fun updateValuesFromBundle(savedInstanceState: Bundle?) {
+        savedInstanceState ?: return
+        if (savedInstanceState.keySet().contains(REQUESTING_LOCATION_UPDATES_KEY)) {
+            requestingLocationUpdates = savedInstanceState.getBoolean(
+                REQUESTING_LOCATION_UPDATES_KEY
+            )
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        outState.putBoolean(REQUESTING_LOCATION_UPDATES_KEY, requestingLocationUpdates)
+        super.onSaveInstanceState(outState, outPersistentState)
+    }
+
+    private fun startLocationUpdates() {
+        if (checkSelfPermission(this, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
+            return
+        }
+        fusedLocationClient.requestLocationUpdates(
+            createLocationRequest(),
+            locationCallback,
+            Looper.getMainLooper()
+        )
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (audioServiceStarted) {
+            AudioRecordingService.resume(this)
+        }
+    }
+
+    override fun onStop() {
+        if (audioServiceStarted) {
+            if (isFinishing) {
+                AudioRecordingService.stop(this)
+                audioServiceStarted = false
+            } else {
+                AudioRecordingService.pause(this)
+            }
+        }
+        super.onStop()
+    }
+
+    private fun stopLocationUpdates() {
+        requestingLocationUpdates = false
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
+    private fun checkAudioAndLocationPermissionAndRecord() {
+        val shouldRequestAudio =
+            survey.backgroundAudio && checkSelfPermission(this, RECORD_AUDIO) != PERMISSION_GRANTED
+        val shouldRequestLocation = survey.recordGps && checkSelfPermission(
+            this, ACCESS_FINE_LOCATION
+        ) != PERMISSION_GRANTED
+        if (shouldRequestAudio || shouldRequestLocation) {
+            val permissions = mutableListOf<String>().apply {
+                if (shouldRequestAudio) add(RECORD_AUDIO)
+                if (shouldRequestLocation) addAll(listOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION))
+            }
+            requestRecordingPermissionsLauncher.launch(permissions.toTypedArray())
+        } else {
+            recordLocation()
+            recordAudio()
+        }
+    }
+
+    private fun recordAudio() {
+        if (survey.backgroundAudio) {
+            audioServiceStarted = true
+            AudioRecordingService.start(this, survey, responseId)
+        }
+    }
+
+    private fun recordLocation() {
+        if (survey.recordGps) {
+            requestingLocationUpdates = true
+            startLocationUpdates()
+        }
+    }
+
+    private fun stopRecording() {
+        if (audioServiceStarted) {
+            AudioRecordingService.stop(this)
+            audioServiceStarted = false
+        }
+        stopLocationUpdates()
+    }
+
+    private fun notifyRecordPermissionDenied() {
+        val builder = AlertDialog.Builder(this)
+        builder.apply {
+            setTitle(R.string.error_recording_permission_missing_title)
+            setMessage(R.string.error_recording_permission_missing_desc)
+            setNeutralButton(android.R.string.ok) { _, _ ->
+                this@SurveyActivity.finish()
+            }
+        }
+        builder.create().show()
+    }
+
+    override fun onDestroy() {
+        stopRecording()
+        super.onDestroy()
+    }
 
     companion object {
         private const val TAG = "SurveyActivity"
         private const val EXTRA_SURVEY = "survey"
         private const val RESPONSE_ID = "response_id"
+        private const val REQUESTING_LOCATION_UPDATES_KEY = "requesting_location_updates_key"
 
         fun createIntent(
             context: Context,

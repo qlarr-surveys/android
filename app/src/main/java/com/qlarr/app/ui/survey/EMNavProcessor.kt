@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.qlarr.app.api.survey.NavigationJsonOutput
+import com.qlarr.app.api.survey.ResponseEvent
 import com.qlarr.app.api.survey.SurveyNavigationData
 import com.qlarr.app.api.survey.ValidationJsonOutput
 import com.qlarr.app.api.survey.objectMapper
@@ -28,6 +29,7 @@ import com.qlarr.surveyengine.model.exposed.ColumnName
 import com.qlarr.surveyengine.model.exposed.NavigationDirection
 import com.qlarr.surveyengine.model.exposed.NavigationIndex
 import com.qlarr.surveyengine.model.exposed.SurveyMode
+import com.qlarr.surveyengine.model.exposed.stringIndex
 import com.qlarr.surveyengine.scriptengine.engineScript
 import com.qlarr.surveyengine.usecase.NavigationUseCaseWrapper
 import kotlinx.coroutines.CoroutineScope
@@ -143,6 +145,7 @@ class EMNavProcessor(
                             lang = lang,
                             additionalLang = additionalLang,
                             navigationData = survey.surveyNavigationData,
+                            saveTimings = survey.saveTimings,
                         )
                 navListener.onSuccess(result)
             },
@@ -153,20 +156,20 @@ class EMNavProcessor(
         useCaseInput: NavigateRequest,
         navListener: NavigationListener,
     ) {
-        var response: Response
         val validationJsonOutput = FileUtils.getValidationJson(getActivity(), survey.id)!!
         responseId = useCaseInput.responseId!!
+        val current: Response
         runBlocking {
-            response = qlarrDb.responseDao().get(responseId.toString())
+            current = qlarrDb.responseDao().get(responseId.toString())
         }
-        val lang = useCaseInput.lang ?: response.lang
+        val lang = useCaseInput.lang ?: current.lang
         navigationUseCase(
             validationJsonOutput = validationJsonOutput,
             navigationDirection = useCaseInput.navigationDirection!!,
-            navigationIndex = response.navigationIndex,
+            navigationIndex = current.navigationIndex,
             lang = lang,
             values =
-                response.values.toMutableMap().apply {
+                current.values.toMutableMap().apply {
                     putAll(useCaseInput.values)
                 },
             onSuccess = { navigationJsonOutput, language, additionalLang ->
@@ -177,11 +180,14 @@ class EMNavProcessor(
                             lang = language,
                             additionalLang = additionalLang,
                             navigationData = survey.surveyNavigationData,
+                            saveTimings = survey.saveTimings,
                         )
                 updateResponse(
-                    response.id,
+                    current.id,
                     language.code,
                     navigationJsonOutput,
+                    useCaseInput.navigationDirection,
+                    useCaseInput.events,
                 )
                 navListener.onSuccess(result)
             },
@@ -312,6 +318,14 @@ class EMNavProcessor(
                 submitDate = null,
                 isSynced = false,
                 values = result.toSave,
+                events = if (survey.saveTimings) listOf(
+                    ResponseEvent.Navigation(
+                        from = "",
+                        to = result.navigationIndex.stringIndex(),
+                        direction = NavigationDirection.Start,
+                        time = LocalDateTime.now(ZoneOffset.UTC)
+                    )
+                ) else emptyList()
             ),
         )
     }
@@ -320,23 +334,38 @@ class EMNavProcessor(
         responseId: String,
         surveyLang: String,
         result: NavigationJsonOutput,
+        navigationDirection: NavigationDirection,
+        events: List<ResponseEvent.Value>,
     ) {
-        val response = qlarrDb.responseDao().get(responseId)
-        qlarrDb.responseDao().update(
+        val current = qlarrDb.responseDao().get(responseId)
+        qlarrDb.responseDao().updateAndAppendOldEvents(
             values =
-                response.values.toMutableMap().apply {
+                current.values.toMutableMap().apply {
                     putAll(result.toSave)
                 },
-            id = response.id,
+            id = current.id,
             navigationIndex = result.navigationIndex,
-            startDate = response.startDate,
+            startDate = current.startDate,
             submitDate =
                 if (result.navigationIndex is NavigationIndex.End) {
                     LocalDateTime.now(ZoneOffset.UTC)
                 } else {
-                    response.submitDate
+                    current.submitDate
                 },
             lang = surveyLang,
+            events = mutableListOf<ResponseEvent>().apply {
+                if (survey.saveTimings) {
+                    add(
+                        ResponseEvent.Navigation(
+                            from = current.navigationIndex.stringIndex(),
+                            to = result.navigationIndex.stringIndex(),
+                            direction = navigationDirection,
+                            time = LocalDateTime.now(ZoneOffset.UTC)
+                        )
+                    )
+                    addAll(events)
+                }
+            }
         )
     }
 
@@ -346,7 +375,7 @@ class EMNavProcessor(
         fileName: String,
     ): ResponseUploadFile {
         val uuid = UUID.randomUUID()
-        val storedFilename = uuid.toString()
+        val storedFilename = "$uuid.${fileName.substringAfterLast(".")}"
         val responseFile =
             FileUtils.getResponseFile(
                 context = getActivity(),
@@ -414,13 +443,9 @@ class EMNavProcessor(
                 response.values.toMutableMap().apply {
                     put("$key.value", responseUploadFile)
                 }
-            qlarrDb.responseDao().update(
-                values = newValues,
+            qlarrDb.responseDao().updateValues(
                 id = response.id,
-                startDate = response.startDate,
-                submitDate = response.submitDate,
-                navigationIndex = response.navigationIndex,
-                lang = response.lang,
+                values = newValues,
             )
         }
         return responseUploadFile
@@ -454,6 +479,7 @@ fun NavigationJsonOutput.with(
     lang: SurveyLang,
     additionalLang: List<SurveyLang>,
     navigationData: SurveyNavigationData,
+    saveTimings: Boolean,
 ): ApiNavigationOutput =
     ApiNavigationOutput(
         survey,
@@ -463,6 +489,7 @@ fun NavigationJsonOutput.with(
         responseId,
         lang,
         additionalLang,
+        saveTimings,
     )
 
 data class ApiNavigationOutput(
@@ -473,6 +500,7 @@ data class ApiNavigationOutput(
     val responseId: UUID,
     val lang: SurveyLang,
     val additionalLang: List<SurveyLang>?,
+    val saveTimings: Boolean,
 )
 
 fun <T> measure(

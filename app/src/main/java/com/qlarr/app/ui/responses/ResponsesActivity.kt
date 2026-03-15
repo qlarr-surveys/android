@@ -2,6 +2,7 @@ package com.qlarr.app.ui.responses
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.MenuItem
@@ -82,11 +83,27 @@ class ResponsesActivity : ComponentActivity() {
                                 file = fileData.file,
                                 fileType = fileData.fileType,
                                 onError = { viewModel.handleError(it) })
-                        }
+                        },
+                        onPlayClicked = viewModel::onPlayClicked,
+                        onPauseClicked = viewModel::onPauseClicked,
+                        onSeekTo = viewModel::onSeekToo,
+                        onMapClicked = {
+                            val gmmIntentUri = Uri.parse("geo:${it.latitude},${it.longitude}")
+                            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                            mapIntent.setPackage("com.google.android.apps.maps")
+                            mapIntent.resolveActivity(packageManager)?.let {
+                                startActivity(mapIntent)
+                            }
+                        },
                     )
                 }
             }
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.pauseCurrentlyPlaying()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

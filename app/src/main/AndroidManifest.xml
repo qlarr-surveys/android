@@ -7,6 +7,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
@@ -22,6 +26,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Qlarr"
         android:usesCleartextTraffic="true">
+
+        <service
+                android:name=".ui.survey.AudioRecordingService"
+                android:enabled="true"
+                android:exported="false"
+                android:foregroundServiceType="microphone" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

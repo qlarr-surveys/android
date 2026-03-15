@@ -27,6 +27,8 @@
     <string name="error_role_not_supported_description">يجب أن تكون محققًا أو مسؤول استطلاع أو مسؤولًا عامًا لتسجيل الدخول إلى هذا التطبيق</string>
     <string name="error_different_user_title">مستخدم مختلف</string>
     <string name="error_different_user_description">يجب عليك تسجيل الدخول كنفس المستخدم أو إعادة تعيين الجلسة للبدء من جديد</string>
+    <string name="error_recording_permission_missing_title">تم رفض الإذن الحرج</string>
+    <string name="error_recording_permission_missing_desc">يجب منح أذونات الوصول إلى الموقع وتسجيل الصوت للمتابعة. يرجى الذهاب إلى الإعدادات لمنح التطبيق كلا الإذنين</string>
     <string name="session_conflict_dialog_title">تم اكتشاف جلسة سابقة</string>
     <string name="session_conflict_dialog_message">تم العثور على جلسة سابقة:\n\nالمستخدم: %1$s\nالبيئة: %2$s\n\nيمكنك إما إعادة تعيين جميع البيانات والبدء من جديد، أو الاستمرار في تسجيل الدخول إلى نفس البيئة.</string>
     <string name="session_conflict_continue_button">الاستمرار مع %s</string>
@@ -47,6 +49,7 @@
     <string name="response_start_date">تاريخ البدء: %s</string>
     <string name="response_submit_date">تاريخ الإرسال: %s</string>
     <string name="response_lang">اللغة: %s</string>
+    <string name="response_location">الموقع</string>
     <string name="responses_screen_complete_responses">الردود المكتملة</string>
     <string name="responses_screen_incomplete_responses">الردود غير المكتملة</string>
     <string name="responses_screen_last_sync_time">آخر مزامنة</string>
@@ -77,6 +80,10 @@
     <string name="notification_channel_uploader_description">تقدم تحميل ردود الاستطلاع</string>
     <string name="notification_uploader_title">جارٍ التحميل…</string>
     <string name="notification_uploader_description">جارٍ التحميل إلى الخادم</string>
+    <string name="notification_channel_audio_rec_name">تسجيل الصوت</string>
+    <string name="notification_channel_audio_rec_description">حالة تسجيل الصوت</string>
+    <string name="notification_audio_recording_title">تسجيل صوتي</string>
+    <string name="notification_audio_recording_description">تسجيل الصوت جارٍ…</string>
     <string name="sync_time_never">أبدًا</string>
     <string name="back">رجوع</string>
     <string name="survey_creation_date">تاريخ الإنشاء</string>
@@ -92,6 +99,8 @@
     <string name="survey_stats_quota">الحد المتبقي للاستطلاع</string>
     <string name="survey_stats_user_quota">الحد المتبقي للمستخدم</string>
     <string name="survey_save_timings">حفظ التوقيتات</string>
+    <string name="survey_background_audio">تسجيل الصوت</string>
+    <string name="survey_record_gps">تتبع الموقع</string>
     <string name="enabled">مفعل</string>
     <string name="disabled">معطل</string>
     <string name="survey_status">الحالة</string>
@@ -200,7 +209,7 @@
     <string name="logout_alert_message">سيتم فقدان جميع البيانات غير المُزامنة.</string>
     <string name="logout_are_you_sure">هل أنت متأكد أنك تريد تسجيل الخروج؟</string>
     <string name="login_to_private">تسجيل الدخول إلى الخادم الخاص</string>
-    <string name="login_to_cloud">تسجيل الدخول إلى Qlarr.com</string>
+
     <string name="guest_warning">أنت تتصفح التطبيق كضيف.</string>
     <string name="survey_item_button_get_missing_files">الحصول على الملفات المفقودة</string>
     <string name="survey_end_finish_action">إنهاء</string>

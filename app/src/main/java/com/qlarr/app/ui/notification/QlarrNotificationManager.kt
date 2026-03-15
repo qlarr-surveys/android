@@ -10,6 +10,7 @@ import com.qlarr.app.R
 
 interface QlarrNotificationManager {
     fun createUploadInProgressNotification(): Notification
+    fun createAudioRecordingNotification(): Notification
 }
 
 class QlarrNotificationManagerImpl(
@@ -38,5 +39,16 @@ class QlarrNotificationManagerImpl(
             .setContentText(context.getString(R.string.notification_uploader_description))
             .setSmallIcon(R.mipmap.ic_launcher_round)
             .setAutoCancel(true)
+            .build()
+
+    override fun createAudioRecordingNotification(): Notification =
+        NotificationCompat.Builder(
+            context,
+            QlarrNotificationChannels.AudioRecording.getChannelId()
+        )
+            .setContentTitle(context.getString(R.string.notification_audio_recording_title))
+            .setContentText(context.getString(R.string.notification_audio_recording_description))
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+            .setSmallIcon(R.drawable.baseline_record_voice_over_24)
             .build()
 }
