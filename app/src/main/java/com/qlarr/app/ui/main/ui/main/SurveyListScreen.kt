@@ -122,7 +122,7 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                         }
                     }
 
-                    if (!state.isLoading && state.surveyList.isEmpty()) {
+                    if (!state.showLoading && state.surveyList.isEmpty()) {
                         // Empty state
                         Box(
                             modifier = Modifier.fillMaxSize(),
@@ -181,7 +181,7 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                 }
 
                 // Loading overlay
-                if (state.isLoading) {
+                if (state.showLoading) {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()

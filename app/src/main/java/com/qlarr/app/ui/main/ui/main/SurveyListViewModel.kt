@@ -32,8 +32,9 @@ class SurveyListViewModel(
 ) : ViewModel(),
     ErrorProcessor by errorProcessor {
     private val _firstLoad = MutableStateFlow(true)
+    private val _isFetching = MutableStateFlow(false)
     private val _state =
-        MutableStateFlow(State(isLoading = true, isGuest = sharedPrefsManager.isGuest))
+        MutableStateFlow(State(showLoading = true, isGuest = sharedPrefsManager.isGuest))
     val state = _state.asStateFlow()
 
     private val _uiEvents = MutableSharedFlow<UiEvents>()
@@ -117,13 +118,15 @@ class SurveyListViewModel(
     }
 
     fun fetchSurveyList(triggeredByUser: Boolean) {
+        if (_isFetching.value) return
+        _isFetching.value = true
         viewModelScope.launch(Dispatchers.IO) {
-            _state.update { _state.value.copy(isLoading = _firstLoad.value || triggeredByUser) }
+            _state.update { _state.value.copy(showLoading = _firstLoad.value || triggeredByUser) }
             _firstLoad.value = false
             surveyRepository
                 .getSurveyList()
                 .catch {
-                    if (triggeredByUser || _firstLoad.value) {
+                    if (triggeredByUser) {
                         processError(it)
                     }
                 }.collect { list ->
@@ -142,7 +145,8 @@ class SurveyListViewModel(
                     }
                     sharedPrefsManager.surveyLastFetchTimeMillis = System.currentTimeMillis()
                 }
-            _state.update { _state.value.copy(isLoading = false) }
+            _state.update { _state.value.copy(showLoading = false) }
+            _isFetching.value = false
         }
     }
 
@@ -166,7 +170,7 @@ class SurveyListViewModel(
                             _state.value.surveyList.map {
                                 if (it.id == result.surveyData.id) result.surveyData else it
                             }
-                        _state.update { _state.value.copy(isLoading = false, surveyList = newList) }
+                        _state.update { _state.value.copy(showLoading = false, surveyList = newList) }
                         _downloadState.update { DownloadState.Idle }
                     }
                 }
@@ -195,7 +199,7 @@ class SurveyListViewModel(
 
     data class State(
         val isGuest: Boolean,
-        val isLoading: Boolean,
+        val showLoading: Boolean,
         val surveyList: List<SurveyData> = emptyList(),
     )
 
