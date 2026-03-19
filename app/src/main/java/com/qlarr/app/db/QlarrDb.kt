@@ -54,7 +54,6 @@ abstract class QlarrDb : RoomDatabase() {
                     "qlarr_db"
                 )
                     .addMigrations(MIGRATION_1_2)
-                    .fallbackToDestructiveMigration()
                     .build()
 
                 INSTANCE = instance

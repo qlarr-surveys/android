@@ -19,6 +19,8 @@ import com.qlarr.app.ui.common.FileUtils
 import com.qlarr.app.ui.notification.QlarrNotificationManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.io.IOException
@@ -34,6 +36,8 @@ class AudioRecordingService : Service() {
     private var mediaRecorder: MediaRecorder? = null
 
     private val responseRepository: ResponseRepository by inject()
+
+    private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     private var status: Status = Status.INITIAL
 
@@ -101,9 +105,14 @@ class AudioRecordingService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy")
-        mediaRecorder?.stop()
+        try {
+            mediaRecorder?.stop()
+        } catch (e: IllegalStateException) {
+            Log.w(TAG, "MediaRecorder stop failed", e)
+        }
         mediaRecorder?.reset()
         mediaRecorder?.release()
+        serviceScope.cancel()
     }
 
     private fun startForegroundService() {
@@ -122,7 +131,7 @@ class AudioRecordingService : Service() {
         val event = ResponseEvent.VoiceRecording(
             uuid.toString(), LocalDateTime.now(ZoneOffset.UTC)
         )
-        CoroutineScope(Dispatchers.IO).launch {
+        serviceScope.launch {
             responseRepository.addEvent(responseId, event)
         }
         @Suppress("DEPRECATION")
