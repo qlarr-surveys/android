@@ -123,7 +123,7 @@ class SurveyListViewModel(
             surveyRepository
                 .getSurveyList()
                 .catch {
-                    if (triggeredByUser || _firstLoad.value) {
+                    if (triggeredByUser) {
                         processError(it)
                     }
                 }.collect { list ->

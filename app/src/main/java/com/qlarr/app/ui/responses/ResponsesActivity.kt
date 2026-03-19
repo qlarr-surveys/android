@@ -86,7 +86,7 @@ class ResponsesActivity : ComponentActivity() {
                         },
                         onPlayClicked = viewModel::onPlayClicked,
                         onPauseClicked = viewModel::onPauseClicked,
-                        onSeekTo = viewModel::onSeekToo,
+                        onSeekTo = viewModel::onSeekTo,
                         onMapClicked = {
                             val gmmIntentUri = Uri.parse("geo:${it.latitude},${it.longitude}")
                             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)

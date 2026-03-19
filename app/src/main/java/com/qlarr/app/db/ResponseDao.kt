@@ -73,6 +73,7 @@ interface ResponseDao {
         )
     }
 
+    @Transaction
     suspend fun addEvent(responseId: String, event: ResponseEvent) {
         val response = get(responseId)
         updateAndAppendOldEvents(

@@ -334,7 +334,7 @@ class ResponsesViewModel(
         )
     }
 
-    fun onSeekToo(responseId: String, audioPath: String, position: Long) {
+    fun onSeekTo(responseId: String, audioPath: String, position: Long) {
         _responsesScreenData.updatePlayingAudio(
             responseId = responseId,
             audioPath = audioPath,
