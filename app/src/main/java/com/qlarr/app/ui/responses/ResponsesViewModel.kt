@@ -1,13 +1,19 @@
 package com.qlarr.app.ui.responses
 
 import android.app.Application
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.media3.common.MediaItem
+import androidx.media3.common.PlaybackException
+import androidx.media3.common.Player
+import androidx.media3.exoplayer.ExoPlayer
 import com.qlarr.app.AppEvent
 import com.qlarr.app.EventBus
+import com.qlarr.app.api.survey.ResponseEvent
 import com.qlarr.app.business.responses.ResponseRepository
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.business.survey.SurveyRepository
@@ -22,6 +28,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 class ResponsesViewModel(
@@ -38,6 +45,39 @@ class ResponsesViewModel(
     lateinit var emNavProcessor: EMNavProcessor
     private var currentPage: Int = 0
     private val timingHandler = Handler(Looper.getMainLooper())
+
+    private val exoPlayer by lazy {
+        ExoPlayer.Builder(application).build().also { player ->
+            player.addListener(object : Player.Listener {
+                override fun onPlaybackStateChanged(playbackState: Int) {
+                    if (playbackState == Player.STATE_ENDED) {
+                        stopCurrentMedia()
+                    }
+                }
+
+                override fun onPlayerError(error: PlaybackException) {
+                    stopCurrentMedia()
+                }
+
+                private fun stopCurrentMedia() {
+                    timingHandler.removeCallbacksAndMessages(null)
+                    currentPlayingMedia?.let { media ->
+                        _responsesScreenData.updatePlayingAudio(
+                            responseId = media.responseId,
+                            audioPath = media.path,
+                            isPlaying = false,
+                            time = 0
+                        )
+                    }
+                    currentPlayingMedia = null
+                }
+            })
+        }
+    }
+
+    private var currentPlayingMedia: CurrentPlayingMedia? = null
+
+    data class CurrentPlayingMedia(val path: String = "", val responseId: String = "")
 
     fun init(surveyData: SurveyData) {
         this.surveyData = surveyData
@@ -101,6 +141,13 @@ class ResponsesViewModel(
     fun refresh() {
         viewModelScope.launch(Dispatchers.IO) {
             if (!_responsesScreenData.value.isLoading) {
+                currentPlayingMedia?.let {
+                    withContext(Dispatchers.Main) {
+                        timingHandler.removeCallbacksAndMessages(null)
+                        exoPlayer.stop()
+                        currentPlayingMedia = null
+                    }
+                }
                 currentPage = 0
                 _responsesScreenData.update { it.copy(isComplete = false, responses = emptyList()) }
                 loadNext()
@@ -152,6 +199,13 @@ class ResponsesViewModel(
 
     fun deleteResponse(responseId: String) {
         viewModelScope.launch(Dispatchers.IO) {
+            if (currentPlayingMedia?.responseId == responseId) {
+                withContext(Dispatchers.Main) {
+                    timingHandler.removeCallbacksAndMessages(null)
+                    exoPlayer.stop()
+                    currentPlayingMedia = null
+                }
+            }
             responsesRepository.deleteResponse(responseId).let {
                 _responsesScreenData.update { screenData ->
                     val list = screenData.responses.filter { it.id != responseId }
@@ -178,6 +232,7 @@ class ResponsesViewModel(
             submitDateString = submitDate?.toFormattedString(),
             editEnabled = !quotaExceeded && submitDate == null,
             deleteEnabled = !isSynced && submitDate == null,
+            events = toListEventData(),
             values = toResponseValueData(),
             lang = lang,
         )
@@ -217,11 +272,154 @@ class ResponsesViewModel(
         super.onCleared()
         timingHandler.removeCallbacksAndMessages(null)
         emNavProcessor.destroy()
+        exoPlayer.release()
     }
 
     fun handleError(it: Exception) {
         viewModelScope.launch {
             processError(it)
+        }
+    }
+
+    fun onPlayClicked(responseItemId: String, audioPath: String) {
+        _responsesScreenData.value.responses.find { it.id == responseItemId }?.let { item ->
+            item.events.find { event ->
+                (event as? ResponseEventData.AudioRecordingData)?.audioPath == audioPath
+            }?.let {
+                val audioData = (it as ResponseEventData.AudioRecordingData)
+                when {
+                    currentPlayingMedia?.path != audioData.audioPath -> {
+                        if (currentPlayingMedia != null) {
+                            _responsesScreenData.updatePlayingAudio(
+                                currentPlayingMedia!!.responseId,
+                                currentPlayingMedia!!.path, false
+                            )
+                        }
+                        currentPlayingMedia = CurrentPlayingMedia(audioData.audioPath, item.id)
+                        exoPlayer.stop()
+                        exoPlayer.removeMediaItems(0, exoPlayer.mediaItemCount)
+                        exoPlayer.addMediaItem(MediaItem.fromUri(audioData.audioPath))
+                        exoPlayer.prepare()
+                    }
+                    exoPlayer.currentPosition <= audioData.audioDuration -> {
+                        exoPlayer.seekTo(0)
+                    }
+                }
+                exoPlayer.seekTo(audioData.currentTime)
+                exoPlayer.play()
+                timingHandler.removeCallbacksAndMessages(null)
+                timingHandler.post(object : Runnable {
+                    override fun run() {
+                        _responsesScreenData.updatePlayingAudio(
+                            responseId = item.id,
+                            audioPath = audioData.audioPath,
+                            isPlaying = exoPlayer.isPlaying,
+                            time = exoPlayer.currentPosition.roundToThousand()
+                        )
+                        timingHandler.postDelayed(this, 1000)
+                    }
+                })
+            }
+        }
+    }
+
+    fun onPauseClicked(responseId: String, audioPath: String) {
+        exoPlayer.pause()
+        timingHandler.removeCallbacksAndMessages(null)
+        _responsesScreenData.updatePlayingAudio(
+            responseId = responseId,
+            audioPath = audioPath,
+            isPlaying = false,
+            time = exoPlayer.currentPosition.roundToThousand()
+        )
+    }
+
+    fun onSeekTo(responseId: String, audioPath: String, position: Long) {
+        _responsesScreenData.updatePlayingAudio(
+            responseId = responseId,
+            audioPath = audioPath,
+            time = position
+        )
+        _responsesScreenData.getCurrentAudio()?.audioPath?.let { path ->
+            if (currentPlayingMedia?.path == path) {
+                exoPlayer.seekTo(position)
+            }
+        }
+    }
+
+    fun pauseCurrentlyPlaying() {
+        currentPlayingMedia?.let { current ->
+            _responsesScreenData.value.responses.forEach { response ->
+                response.events.forEach { event ->
+                    if ((event as? ResponseEventData.AudioRecordingData)?.audioPath == current.path) {
+                        onPauseClicked(response.id, event.audioPath)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun MutableStateFlow<ResponsesScreenState>.updatePlayingAudio(
+        responseId: String,
+        audioPath: String,
+        isPlaying: Boolean? = null,
+        time: Long? = null
+    ) {
+        if (isPlaying == null && time == null) return
+        val responseIndex = value.responses.indexOfFirst { it.id == responseId }
+        if (responseIndex == -1) return
+        val response = value.responses[responseIndex]
+        val eventIndex = response.events.indexOfFirst {
+            (it as? ResponseEventData.AudioRecordingData)?.audioPath == audioPath
+        }
+        if (eventIndex == -1) return
+        val newEvent = (response.events[eventIndex] as ResponseEventData.AudioRecordingData).let { old ->
+            old.copy(
+                isPlaying = isPlaying ?: old.isPlaying,
+                currentTime = time?.roundToThousand() ?: old.currentTime
+            )
+        }
+        val newEvents = response.events.toMutableList().apply { set(eventIndex, newEvent) }
+        val newResponses = value.responses.toMutableList().apply {
+            set(responseIndex, response.copy(events = newEvents))
+        }
+        update { this.value.copy(responses = newResponses) }
+    }
+
+    private fun MutableStateFlow<ResponsesScreenState>.getCurrentAudio(): ResponseEventData.AudioRecordingData? {
+        return currentPlayingMedia?.let {
+            value.responses.forEach { response ->
+                if (response.id == currentPlayingMedia?.responseId) {
+                    response.events.forEach {
+                        if ((it as? ResponseEventData.AudioRecordingData)?.audioPath == currentPlayingMedia!!.path) {
+                            return@let it
+                        }
+                    }
+                }
+            }
+            null
+        }
+    }
+
+    private fun Response.toListEventData() = events.mapNotNull {
+        when (it) {
+            is ResponseEvent.VoiceRecording -> {
+                val file = it.getFile(
+                    context = this@ResponsesViewModel.getApplication(),
+                    surveyId = surveyData.id,
+                    responseId = id
+                )
+                if (file.exists()) {
+                    ResponseEventData.AudioRecordingData(
+                        FileUtils.getDuration(file.absolutePath)?.roundToThousand() ?: 0,
+                        file.absolutePath
+                    )
+                } else null
+            }
+            is ResponseEvent.Location -> {
+                ResponseEventData.LocationData(longitude = it.longitude, latitude = it.latitude)
+            }
+            else -> null
         }
     }
 
@@ -238,6 +436,7 @@ data class ResponseItemData(
     val isSynced: Boolean,
     val startDateString: String,
     val submitDateString: String?,
+    val events: List<ResponseEventData>,
     val values: List<ResponseValueData>,
     val editEnabled: Boolean,
     val deleteEnabled: Boolean,
@@ -258,4 +457,30 @@ sealed class ResponseValueData(
         val fileType: String,
         override val key: String,
     ) : ResponseValueData(key)
+}
+
+sealed interface ResponseEventData {
+    data class AudioRecordingData(
+        val audioDuration: Long, val audioPath: String, val isPlaying: Boolean = false,
+        val currentTime: Long = 0
+    ) : ResponseEventData
+
+    data class LocationData(
+        val longitude: Double = 0.0, val latitude: Double = 0.0
+    ) : ResponseEventData
+}
+
+private fun ResponseEvent.VoiceRecording.getFile(
+    context: Context,
+    surveyId: String,
+    responseId: String
+) = FileUtils.getResponseFile(context, fileName, surveyId, responseId)
+
+private fun Long.roundToThousand(): Long {
+    val remainder = this % 1000
+    return if (remainder >= 500) {
+        this + (1000 - remainder)
+    } else {
+        this - remainder
+    }
 }

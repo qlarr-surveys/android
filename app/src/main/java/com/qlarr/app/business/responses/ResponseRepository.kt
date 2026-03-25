@@ -1,5 +1,6 @@
 package com.qlarr.app.business.responses
 
+import com.qlarr.app.api.survey.ResponseEvent
 import com.qlarr.app.db.ResponseDao
 import com.qlarr.app.db.model.Response
 
@@ -9,6 +10,7 @@ interface ResponseRepository {
     suspend fun getResponses(surveyId: String): List<Response>
     suspend fun getResponses(surveyId: String, page: Int, perPage: Int): List<Response>
     suspend fun deleteResponse(responseId: String)
+    suspend fun addEvent(responseId: String, event: ResponseEvent)
     suspend fun markResponseAsSynced(responseId: String)
     suspend fun getUnsyncedCount(surveyId: String): Int
 }
@@ -32,6 +34,9 @@ class ResponseRepositoryImpl(
     override suspend fun deleteResponse(responseId: String) {
         return responseDao.deleteById(responseId)
     }
+
+    override suspend fun addEvent(responseId: String, event: ResponseEvent) =
+        responseDao.addEvent(responseId, event)
 
     override suspend fun markResponseAsSynced(responseId: String) =
         responseDao.markResponseAsSynced(responseId)

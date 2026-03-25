@@ -27,6 +27,8 @@
     <string name="error_role_not_supported_description">Debe ser Investigador, Supervisor de encuesta o Administrador para acceder a esta aplicación</string>
     <string name="error_different_user_title">Usuario diferente</string>
     <string name="error_different_user_description">Debe iniciar sesión con el mismo usuario o restablecer la sesión para comenzar de nuevo</string>
+    <string name="error_recording_permission_missing_title">Permiso crítico denegado</string>
+    <string name="error_recording_permission_missing_desc">Se deben conceder los permisos de acceso a la ubicación y grabación de audio para continuar. Por favor, vaya a la configuración para conceder ambos permisos a la aplicación</string>
     <string name="session_conflict_dialog_title">Sesión anterior detectada</string>
     <string name="session_conflict_dialog_message">Se encontró una sesión anterior:\n\nUsuario: %1$s\nEntorno: %2$s\n\nPuede restablecer todos los datos y comenzar de nuevo, o continuar iniciando sesión en el mismo entorno.</string>
     <string name="session_conflict_continue_button">Continuar con %s</string>
@@ -47,6 +49,7 @@
     <string name="response_start_date">Fecha de inicio: %s</string>
     <string name="response_submit_date">Fecha de envío: %s</string>
     <string name="response_lang">Idioma: %s</string>
+    <string name="response_location">Ubicación</string>
     <string name="responses_screen_complete_responses">Respuestas completas</string>
     <string name="responses_screen_incomplete_responses">Respuestas incompletas</string>
     <string name="responses_screen_last_sync_time">Última sincronización</string>
@@ -77,6 +80,10 @@
     <string name="notification_channel_uploader_description">Progreso al subir respuestas de encuestas</string>
     <string name="notification_uploader_title">Subiendo…</string>
     <string name="notification_uploader_description">Subiendo al servidor</string>
+    <string name="notification_channel_audio_rec_name">Grabación de audio</string>
+    <string name="notification_channel_audio_rec_description">Estado de la grabación de audio</string>
+    <string name="notification_audio_recording_title">Grabación de Audio</string>
+    <string name="notification_audio_recording_description">Grabación de audio en curso…</string>
     <string name="sync_time_never">Nunca</string>
     <string name="back">Atrás</string>
     <string name="survey_creation_date">Fecha de creación</string>
@@ -92,6 +99,8 @@
     <string name="survey_stats_quota">Cupo restante de encuesta</string>
     <string name="survey_stats_user_quota">Cupo restante del usuario</string>
     <string name="survey_save_timings">Guardar tiempos</string>
+    <string name="survey_background_audio">Grabación de audio</string>
+    <string name="survey_record_gps">Seguimiento de ubicación</string>
     <string name="enabled">Habilitado</string>
     <string name="disabled">Deshabilitado</string>
     <string name="survey_status">Estado</string>
@@ -167,7 +176,7 @@
     <string name="logout_alert_message">Todos los datos no sincronizados se perderán.</string>
     <string name="logout_are_you_sure">¿Estás seguro de que deseas cerrar sesión?</string>
     <string name="login_to_private">Iniciar sesión en el servidor privado</string>
-    <string name="login_to_cloud">Iniciar sesión en Qlarr.com</string>
+
     <string name="guest_warning">Estás utilizando la aplicación como invitado.</string>
     <string name="survey_item_button_get_missing_files">Obtener archivos faltantes</string>
     <string name="survey_end_finish_action">Finalizar</string>

@@ -287,6 +287,36 @@ private fun SurveyData.getSurveyStats() =
             R.string.survey_stats_quota,
             surveyQuotaLeft()?.toString() ?: LocalContext.current.getString(R.string.unlimited_quota),
         ),
+        SurveyStatsData(
+            R.drawable.ic_group,
+            R.string.survey_stats_user_quota,
+            userQuotaLeft()?.toString() ?: LocalContext.current.getString(R.string.unlimited_quota),
+        ),
+        SurveyStatsData(
+            R.drawable.ic_stopwatch,
+            R.string.survey_save_timings,
+            saveTimings.toEnabledDisabledString(),
+        ),
+        SurveyStatsData(
+            R.drawable.ic_mic,
+            R.string.survey_background_audio,
+            backgroundAudio.toEnabledDisabledString(),
+        ),
+        SurveyStatsData(
+            R.drawable.ic_location,
+            R.string.survey_record_gps,
+            recordGps.toEnabledDisabledString(),
+        ),
+    )
+
+@Composable
+private fun Boolean.toEnabledDisabledString() =
+    stringResource(
+        id = if (this) {
+            R.string.enabled
+        } else {
+            R.string.disabled
+        }
     )
 
 data class SurveyStatsData(
@@ -439,6 +469,7 @@ private fun getPreviewSurveyData() =
         status = "Aktivan",
         usage = "ki zna",
         surveyQuota = 20,
+        userQuota = 10,
         publishInfo = PublishInfo(1, 1),
         newVersionAvailable = false,
         localResponsesCount = 10,
@@ -446,6 +477,9 @@ private fun getPreviewSurveyData() =
         localUnsyncedResponsesCount = 3,
         syncedResponseCount = 5,
         totalResponseCount = 10,
+        saveTimings = true,
+        backgroundAudio = true,
+        recordGps = true,
         description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
         imageUrl =
             "https://www.mojkvart.hr/idnthumb.ashx?src=%2Flang%2Fstranica%2Flogo%2Flogo_672023" +

@@ -26,6 +26,8 @@
     <string name="error_role_not_supported_description">Você deve ser topógrafo, administrador de levantamentos ou super administrador para poder fazer login neste aplicativo</string>
     <string name="error_different_user_title">Usuário diferente</string>
     <string name="error_different_user_description">Você deve fazer login como o mesmo usuário ou redefinir a sessão para começar do zero</string>
+    <string name="error_recording_permission_missing_title">Permissão crítica negada</string>
+    <string name="error_recording_permission_missing_desc">As permissões de acesso à localização e gravação de áudio devem ser concedidas para continuar. Por favor, vá para as configurações para conceder ambas as permissões ao aplicativo</string>
     <string name="session_conflict_dialog_title">Sessão anterior detectada</string>
     <string name="session_conflict_dialog_message">Uma sessão anterior foi encontrada:\n\nUsuário: %1$s\nAmbiente: %2$s\n\nVocê pode redefinir todos os dados e começar do zero, ou continuar fazendo login no mesmo ambiente.</string>
     <string name="session_conflict_continue_button">Continuar com %s</string>
@@ -46,6 +48,7 @@
     <string name="response_start_date">Data de Início: %s</string>
     <string name="response_submit_date">Data de envio: %s</string>
     <string name="response_lang">Linguagem: %s</string>
+    <string name="response_location">Localização</string>
     <string name="responses_screen_complete_responses">Respostas completas</string>
     <string name="responses_screen_incomplete_responses">Respostas incompletas</string>
     <string name="responses_screen_last_sync_time">Última sincronização</string>
@@ -77,6 +80,10 @@
         Progresso</string>
     <string name="notification_uploader_title">Enviando…</string>
     <string name="notification_uploader_description">Upload com servidor em andamento</string>
+    <string name="notification_channel_audio_rec_name">Gravação de áudio</string>
+    <string name="notification_channel_audio_rec_description">Estado da gravação de áudio</string>
+    <string name="notification_audio_recording_title">Gravação de Áudio</string>
+    <string name="notification_audio_recording_description">Gravação de áudio em andamento…</string>
     <string name="sync_time_never">Nunca</string>
     <string name="back">Voltar</string>
     <string name="survey_creation_date">Criação</string>
@@ -92,6 +99,8 @@
     <string name="survey_stats_quota">Restante a cota de levantamento</string>
     <string name="survey_stats_user_quota">Resta a cota de usuários</string>
     <string name="survey_save_timings">Tempos de salvação</string>
+    <string name="survey_background_audio">Gravação de áudio</string>
+    <string name="survey_record_gps">Rastreamento de localização</string>
     <string name="enabled">Ativado</string>
     <string name="disabled">Deficiente</string>
     <string name="survey_status">Status</string>
@@ -167,7 +176,7 @@
     <string name="logout_alert_message">Todos os dados não sincronizados serão perdidos.</string>
     <string name="logout_are_you_sure">Tem certeza de que quer fazer logout\?</string>
     <string name="login_to_private">Faça login no servidor privado</string>
-    <string name="login_to_cloud">Faça login para Qlarr.com</string>
+
     <string name="guest_warning">\"Você está verificando o aplicativo como convidado.\"</string>
     <string name="survey_item_button_get_missing_files">Obtenha arquivos ausentes</string>
     <string name="survey_end_finish_action">Terminar</string>

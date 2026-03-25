@@ -27,6 +27,8 @@
     <string name="error_role_not_supported_description">Sie müssen ein Umfrageleiter, Umfrageadministrator oder Superadministrator sein, um sich anzumelden</string>
     <string name="error_different_user_title">Anderer Benutzer</string>
     <string name="error_different_user_description">Sie müssen sich als derselbe Benutzer anmelden oder die Sitzung zurücksetzen, um neu zu beginnen</string>
+    <string name="error_recording_permission_missing_title">Kritische Berechtigung verweigert</string>
+    <string name="error_recording_permission_missing_desc">Die Berechtigungen für den Zugriff auf den Standort und die Audioaufnahme müssen erteilt werden, um fortzufahren. Bitte gehen Sie zu den Einstellungen, um der App beide Berechtigungen zu erteilen</string>
     <string name="session_conflict_dialog_title">Vorherige Sitzung erkannt</string>
     <string name="session_conflict_dialog_message">Eine vorherige Sitzung wurde gefunden:\n\nBenutzer: %1$s\nUmgebung: %2$s\n\nSie können entweder alle Daten zurücksetzen und neu beginnen oder sich weiterhin in derselben Umgebung anmelden.</string>
     <string name="session_conflict_continue_button">Weiter mit %s</string>
@@ -47,6 +49,7 @@
     <string name="response_start_date">Startdatum: %s</string>
     <string name="response_submit_date">Einreichdatum: %s</string>
     <string name="response_lang">Sprache: %s</string>
+    <string name="response_location">Standort</string>
     <string name="responses_screen_complete_responses">Abgeschlossene Antworten</string>
     <string name="responses_screen_incomplete_responses">Unvollständige Antworten</string>
     <string name="responses_screen_last_sync_time">Letzte Synchronisierung</string>
@@ -77,6 +80,10 @@
     <string name="notification_channel_uploader_description">Fortschritt beim Hochladen von Umfrageantworten</string>
     <string name="notification_uploader_title">Wird hochgeladen…</string>
     <string name="notification_uploader_description">Upload zum Server läuft</string>
+    <string name="notification_channel_audio_rec_name">Audioaufnahme</string>
+    <string name="notification_channel_audio_rec_description">Status der Audioaufnahme</string>
+    <string name="notification_audio_recording_title">Audioaufnahme</string>
+    <string name="notification_audio_recording_description">Audioaufnahme läuft…</string>
     <string name="sync_time_never">Nie</string>
     <string name="back">Zurück</string>
     <string name="survey_creation_date">Erstellt</string>
@@ -92,6 +99,8 @@
     <string name="survey_stats_quota">Verbleibendes Umfragenkontingent</string>
     <string name="survey_stats_user_quota">Verbleibendes Benutzerkontingent</string>
     <string name="survey_save_timings">Zeiten speichern</string>
+    <string name="survey_background_audio">Audioaufnahme</string>
+    <string name="survey_record_gps">Standortverfolgung</string>
     <string name="enabled">Aktiviert</string>
     <string name="disabled">Deaktiviert</string>
     <string name="survey_status">Status</string>
@@ -158,7 +167,7 @@
     <string name="logout_alert_message">Alle nicht synchronisierten Daten gehen verloren.</string>
     <string name="logout_are_you_sure">Möchten Sie sich wirklich abmelden?</string>
     <string name="login_to_private">Anmelden am privaten Server</string>
-    <string name="login_to_cloud">Anmelden bei Qlarr.com</string>
+
     <string name="guest_warning">„Sie verwenden die App als Gast.“</string>
     <string name="survey_item_button_get_missing_files">Fehlende Dateien abrufen</string>
     <string name="survey_end_finish_action">Beenden</string>

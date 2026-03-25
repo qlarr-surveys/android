@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.qlarr.app.BuildConfig
+import com.qlarr.app.api.survey.ResponseEvent
 import com.qlarr.app.api.survey.objectMapper
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.ui.common.FileUtils
@@ -114,7 +115,7 @@ constructor(
                                 "utf-8",
                                 data,
                             )
-                        } catch (e: FileNotFoundException) {
+                        } catch (_: FileNotFoundException) {
                             null
                         }
                     }
@@ -168,11 +169,12 @@ constructor(
             @JavascriptInterface
             fun autoSaveValues(valuesToSave: String) {
                 val mapper = objectMapper.registerModule(JavaTimeModule())
-                val values: Map<String, Any> = mapper.readValue(valuesToSave)
+                val autoSaveValues: AutoSaveValues = mapper.readValue(valuesToSave)
                 emNavProcessor.navigate(
                     NavigateRequest(
                         navigationDirection = NavigationDirection.Resume,
-                        values = values,
+                        values = autoSaveValues.values,
+                        events = autoSaveValues.events,
                         responseId = UUID.fromString(responseId!!)
                     ),
                     object : NavigationListener {
@@ -559,4 +561,10 @@ data class NavigateRequest(
     val lang: String? = null,
     val navigationDirection: NavigationDirection? = null,
     val values: Map<String, Any> = mapOf(),
+    val events: List<ResponseEvent.Value> = listOf(),
+)
+
+data class AutoSaveValues(
+    val values: Map<String, Any>,
+    val events: List<ResponseEvent.Value> = listOf()
 )

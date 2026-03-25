@@ -13,6 +13,11 @@ enum class QlarrNotificationChannels(
     val descriptions: Int,
     val importance: Int = NotificationManager.IMPORTANCE_DEFAULT
 ) {
+    AudioRecording(
+        id = "audio_recording",
+        channelName = R.string.notification_channel_audio_rec_name,
+        descriptions = R.string.notification_channel_audio_rec_description
+    ),
     Uploader(
         id = "uploader",
         channelName = R.string.notification_channel_uploader_name,

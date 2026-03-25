@@ -88,9 +88,14 @@
 -keep class com.qlarr.app.db.** { *; }
 -keep class com.qlarr.app.ui.survey.NavigateRequest { *; }
 -keep class com.qlarr.app.ui.survey.ApiNavigationOutput { *; }
+-keep class com.qlarr.app.ui.survey.AutoSaveValues { *; }
 -keep class com.qlarr.app.ui.survey.ResponseUploadFile { *; }
 -keep class com.qlarr.app.ui.survey.NavigationListener { *; }
 
 # -------------------SURVEY ENGINE
 -keep class com.qlarr.surveyengine.** { *; }
+
+-keep class com.qlarr.app.ui.survey.AudioRecordingService { *; }
+
+-keep class com.google.android.gms.location.** { *; }
 

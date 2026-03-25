@@ -48,8 +48,8 @@ class DownloadManagerImpl(
                 val newStateWithFile = loadingState.copy(
                     currentFileName = file.name,
                     currentDownloadedSize = currentDownloadedSize,
-                        totalSize = totalBytesToDownload.roundToLong(),
-                        downloadPercent = downloadPercent,
+                    totalSize = totalBytesToDownload.roundToLong(),
+                    downloadPercent = downloadPercent,
                     downloadedFileCount = downloadedFiles
                 )
                 emit(newStateWithFile)

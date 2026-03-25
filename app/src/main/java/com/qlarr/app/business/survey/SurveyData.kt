@@ -6,6 +6,7 @@ import com.qlarr.app.api.survey.Survey
 import com.qlarr.app.api.survey.SurveyNavigationData
 import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
+import kotlin.math.min
 
 @Parcelize
 data class SurveyData(
@@ -20,6 +21,7 @@ data class SurveyData(
     val status: String,
     val usage: String,
     val surveyQuota: Int,
+    val userQuota: Int,
     val publishInfo: PublishInfo,
     val newVersionAvailable: Boolean,
     val localResponsesCount: Int,
@@ -27,6 +29,9 @@ data class SurveyData(
     val localUnsyncedResponsesCount: Int,
     val syncedResponseCount: Int,
     val totalResponseCount: Int,
+    val saveTimings: Boolean,
+    val backgroundAudio: Boolean,
+    val recordGps: Boolean,
     val isSyncing: Boolean = false,
     val description: String,
     val imageUrl: String,
@@ -64,7 +69,11 @@ data class SurveyData(
 
     fun quotaExceeded(newUnsyncedCount: Int? = null): Boolean {
         val finalUnsyncedCount = newUnsyncedCount ?: localUnsyncedResponsesCount
-        return surveyQuota > 0 && (finalUnsyncedCount + totalResponseCount) >= surveyQuota
+        val userQuotaExceeded =
+            userQuota > 0 && (finalUnsyncedCount + syncedResponseCount) >= userQuota
+        val totalQuotaExceeded =
+            surveyQuota > 0 && (finalUnsyncedCount + totalResponseCount) >= surveyQuota
+        return userQuotaExceeded || totalQuotaExceeded
     }
 
     fun surveyQuotaLeft(): Int? =
@@ -74,7 +83,18 @@ data class SurveyData(
             null
         }
 
-    fun quotaLeft(): Int? = surveyQuotaLeft()
+    fun userQuotaLeft(): Int? = if (userQuota > 0) {
+        userQuota - (localUnsyncedResponsesCount + syncedResponseCount)
+    } else {
+        null
+    }
+
+    fun quotaLeft(): Int? {
+        return min(
+            surveyQuotaLeft() ?: Int.MAX_VALUE,
+            userQuotaLeft() ?: Int.MAX_VALUE
+        ).takeIf { it < Int.MAX_VALUE }
+    }
 
     companion object {
         fun fromSurveyAndDesign(
@@ -99,6 +119,7 @@ data class SurveyData(
                 status = survey.status,
                 usage = survey.usage,
                 surveyQuota = survey.surveyQuota,
+                userQuota = survey.userQuota,
                 publishInfo = currentPublishInfo,
                 newVersionAvailable = newVersionAvailable,
                 localResponsesCount = responsesCount,
@@ -106,12 +127,15 @@ data class SurveyData(
                 localUnsyncedResponsesCount = unsyncedCount,
                 syncedResponseCount = survey.syncedResponseCount,
                 totalResponseCount = survey.totalResponseCount,
+                saveTimings = survey.saveTimings,
+                backgroundAudio = survey.backgroundAudio,
+                recordGps = survey.recordGps,
                 description = survey.description ?: "",
                 imageUrl =
                     survey.imageName?.let { name ->
                         when (env) {
                             BackendEnvironment.Guest -> "${env.baseUrl}/${survey.id}/resources/$name"
-                            is BackendEnvironment.Private -> "${env.baseUrl}/survey/${survey.id}/resource/$name"
+                            else -> "${env.baseUrl}/survey/${survey.id}/resource/$name"
                         }
                     } ?: "",
                 cachedDesign = cachedDesign,

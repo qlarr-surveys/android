@@ -26,6 +26,8 @@
     <string name="error_role_not_supported_description">Je moet landmeter, Survey Admin of Super Admin zijn om in te loggen op deze app</string>
     <string name="error_different_user_title">Andere gebruiker</string>
     <string name="error_different_user_description">Je moet inloggen als dezelfde gebruiker of de sessie opnieuw instellen om opnieuw te beginnen</string>
+    <string name="error_recording_permission_missing_title">Kritieke toestemming geweigerd</string>
+    <string name="error_recording_permission_missing_desc">Locatietoegang en audio-opname toestemmingen moeten worden verleend om door te gaan. Ga naar instellingen om de app beide toestemmingen te verlenen</string>
     <string name="session_conflict_dialog_title">Eerdere sessie gedetecteerd</string>
     <string name="session_conflict_dialog_message">Een eerdere sessie is gevonden:\n\nGebruiker: %1$s\nOmgeving: %2$s\n\nJe kunt alle gegevens opnieuw instellen en opnieuw beginnen, of doorgaan met inloggen in dezelfde omgeving.</string>
     <string name="session_conflict_continue_button">Doorgaan met %s</string>
@@ -46,6 +48,7 @@
     <string name="response_start_date">Startdatum: %s</string>
     <string name="response_submit_date">Verzenddatum: %s</string>
     <string name="response_lang">Taal: %s</string>
+    <string name="response_location">Locatie</string>
     <string name="responses_screen_complete_responses">Volledige reacties</string>
     <string name="responses_screen_incomplete_responses">Onvolledige antwoorden</string>
     <string name="responses_screen_last_sync_time">Laatste synchronisatie</string>
@@ -77,6 +80,10 @@
         Vooruitgang</string>
     <string name="notification_uploader_title">Uploaden…</string>
     <string name="notification_uploader_description">Upload met server in uitvoering</string>
+    <string name="notification_channel_audio_rec_name">Audio-opname</string>
+    <string name="notification_channel_audio_rec_description">Status van de audio-opname</string>
+    <string name="notification_audio_recording_title">Audio-opname</string>
+    <string name="notification_audio_recording_description">Audio-opname bezig…</string>
     <string name="sync_time_never">Nooit</string>
     <string name="back">Terug</string>
     <string name="survey_creation_date">Gemaakt</string>
@@ -92,6 +99,8 @@
     <string name="survey_stats_quota">Resterende quotum</string>
     <string name="survey_stats_user_quota">Gebruikersquotum links</string>
     <string name="survey_save_timings">Tijden voor het opslaan</string>
+    <string name="survey_background_audio">Audio-opname</string>
+    <string name="survey_record_gps">Locatietracking</string>
     <string name="enabled">Ingeschakeld</string>
     <string name="disabled">Gehandicapt</string>
     <string name="survey_status">Status</string>
@@ -156,7 +165,7 @@
     <string name="logout_alert_message">Alle niet-gesynchroniseerde data gaat verloren.</string>
     <string name="logout_are_you_sure">Weet je zeker dat je wilt uitloggen\?</string>
     <string name="login_to_private">Inloggen op Private Server</string>
-    <string name="login_to_cloud">Log in op Qlarr.com</string>
+
     <string name="guest_warning">\"Je checkt de app als gast.\"</string>
     <string name="survey_item_button_get_missing_files">Ontvang ontbrekende bestanden</string>
     <string name="survey_end_finish_action">Finish</string>
