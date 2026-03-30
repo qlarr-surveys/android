@@ -8,6 +8,8 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import android.util.AttributeSet
 import android.util.Log
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputConnection
 import android.webkit.JavascriptInterface
 import android.webkit.MimeTypeMap
 import android.webkit.WebResourceRequest
@@ -57,6 +59,12 @@ constructor(
         maxSizeKb = null
         operationKey = null
         acceptedTypes = null
+    }
+
+        override fun onCreateInputConnection(outAttrs: EditorInfo): InputConnection? {
+            val connection = super.onCreateInputConnection(outAttrs) ?: return null
+            outAttrs.imeOptions = EditorInfo.IME_FLAG_NO_ENTER_ACTION
+            return connection
     }
 
     private lateinit var emNavProcessor: EMNavProcessor
