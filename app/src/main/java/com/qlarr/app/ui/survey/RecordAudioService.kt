@@ -165,7 +165,6 @@ class AudioRecordingService : Service() {
 
     private fun pauseRecording() {
         mediaRecorder?.pause()
-        ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
         status = Status.PAUSED
     }
 
@@ -190,23 +189,24 @@ class AudioRecordingService : Service() {
             ContextCompat.startForegroundService(context, intent)
         }
 
-        /** will cause crash if there is no permission as it also calls startForegroundService */
         fun stop(context: Context) {
-            startWithAction(context, STOP_FOREGROUND_ACTION)
+            sendAction(context, STOP_FOREGROUND_ACTION)
         }
 
         fun pause(context: Context) {
-            startWithAction(context, PAUSE_FOREGROUND_ACTION)
+            sendAction(context, PAUSE_FOREGROUND_ACTION)
         }
 
         fun resume(context: Context) {
-            startWithAction(context, RESUME_FOREGROUND_ACTION)
+            sendAction(context, RESUME_FOREGROUND_ACTION)
         }
 
-        private fun startWithAction(context: Context, action: String) {
+        private fun sendAction(
+            context: Context,
+            action: String) {
             val intent = Intent(context, AudioRecordingService::class.java)
             intent.action = action
-            ContextCompat.startForegroundService(context, intent)
+            context.startService(intent)
         }
     }
 
