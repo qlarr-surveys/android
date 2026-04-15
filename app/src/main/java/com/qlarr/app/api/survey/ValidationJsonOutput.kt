@@ -13,6 +13,7 @@ import com.qlarr.surveyengine.model.exposed.ResponseField
 data class ValidationJsonOutput(
     val survey: ObjectNode = JsonNodeFactory.instance.objectNode(),
     val schema: List<ResponseField> = listOf(),
+    val replacements: Map<String, String> = mapOf(),
     val impactMap: StringImpactMap = mapOf(),
     val componentIndexList: List<ComponentIndex> = listOf(),
     val skipMap: Map<String, List<NotSkippedInstructionManifesto>> = mapOf(),
