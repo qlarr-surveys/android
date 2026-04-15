@@ -90,7 +90,7 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.9.1'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.9.4'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4'
-    implementation('com.github.qlarr-surveys:survey-engine-kmp:14d2a1d04e') {
+    implementation('com.github.qlarr-surveys:survey-engine-kmp:d7767c7def2e') {
         exclude group: 'org.graalvm.js', module: 'js'
         exclude group: 'org.graalvm.js', module: 'js-scriptengine'
     }
