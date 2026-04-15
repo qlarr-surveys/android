@@ -203,7 +203,7 @@ constructor(
                 val file = FileUtils.getResourceFile(context, uuid, survey.id)
                 val list: List<String> = objectMapper.readValue(file)
                 val filteredList = list
-                    .filter { it.startsWith(query, true) }
+                    .filter { it.contains(query, true) }
                     .sorted()
                     .take(10)
                 loadUrlOnUiThread(
