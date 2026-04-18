@@ -394,28 +394,6 @@ class EMNavProcessor(
         )
     }
 
-    fun uploadFile(
-        key: String,
-        fileName: String,
-        byteArray: ByteArray,
-    ): ResponseUploadFile {
-        val uuid = UUID.randomUUID().toString()
-        val responseFile =
-            FileUtils.getResponseFile(
-                context = getActivity(),
-                fileName = uuid,
-                surveyId = survey.id,
-                responseId = responseId.toString(),
-            )
-        responseFile.writeBytes(byteArray)
-        return saveFileResponse(
-            fileName = fileName,
-            storedFilename = uuid,
-            key = key,
-            fileSize = responseFile.length(),
-        )
-    }
-
     fun saveFileResponse(
         fileName: String,
         storedFilename: String,

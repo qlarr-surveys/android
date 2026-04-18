@@ -315,7 +315,8 @@ constructor(
             ) {
                     val uri = saverUri ?: return
                     val uuid = UUID.randomUUID().toString()
-                    val dest = FileUtils.getResponseFile(context, uuid, survey.id, responseId!!)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val dest = FileUtils.getResponseFile(context, uuid, survey.id, responseId!!)
                     context.contentResolver.openInputStream(uri)?.use { input ->
                         dest.outputStream().use { input.copyTo(it) }
                     }
@@ -329,6 +330,7 @@ constructor(
                     val string = objectMapper.writeValueAsString(uploadFile)
                     resetFileUploadVariables()
                     loadUrlOnUiThread("javascript:onFileUploaded($string)")
+                    }
             }
 
             @JavascriptInterface
