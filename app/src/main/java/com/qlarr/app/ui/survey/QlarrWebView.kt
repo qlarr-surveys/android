@@ -478,22 +478,36 @@ constructor(
         fun onVideoResult(contentUri: Uri?) {
             val uri = contentUri ?: return
             val querySize = queryContentSize(uri)
-        if (querySize != null && isSizeViolated(querySize)) {
+            if (querySize != null && isSizeViolated(querySize)) {
                 resetFileUploadVariables()
                 return
             }
             val key = operationKey!!
             val uuid = UUID.randomUUID().toString()
+            val maxKb = maxSizeKb
             CoroutineScope(Dispatchers.IO).launch {
                 val dest = FileUtils.getResponseFile(context, uuid, survey.id, responseId!!)
                 context.contentResolver.openInputStream(uri)?.use { input ->
                     dest.outputStream().use { input.copyTo(it) }
                 }
+                val actualSize = dest.length()
+                if (maxKb != null && actualSize / 1024 > maxKb) {
+                    dest.delete()
+                    (context as Activity).runOnUiThread {
+                        surveyActivity?.showMaxSizeValidation(
+                            (actualSize / 1024).toInt(),
+                            maxKb,
+                            false,
+                        )
+                    }
+                    resetFileUploadVariables()
+                    return@launch
+                }
                 val result =
                     emNavProcessor.saveFileResponse(
                         fileName = "captured-video.mp4",
                         storedFilename = uuid,
-                        fileSize = dest.length(),
+                        fileSize = actualSize,
                         key = key,
                     )
                 loadUrlOnUiThread(
