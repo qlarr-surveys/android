@@ -313,19 +313,24 @@ constructor(
                 key: String,
                 fileName: String,
             ) {
-                context.contentResolver.openInputStream(saverUri!!)?.let {
-                    it.use { stream ->
-                        val uploadFile =
-                            emNavProcessor.uploadFile(
-                                key,
-                                fileName,
-                                stream.readBytes(),
-                            )
-                        val string = objectMapper.writeValueAsString(uploadFile)
-                        resetFileUploadVariables()
-                        loadUrlOnUiThread("javascript:onFileUploaded($string)")
+                    val uri = saverUri ?: return
+                    val uuid = UUID.randomUUID().toString()
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val dest = FileUtils.getResponseFile(context, uuid, survey.id, responseId!!)
+                    context.contentResolver.openInputStream(uri)?.use { input ->
+                        dest.outputStream().use { input.copyTo(it) }
                     }
-                }
+                    val uploadFile =
+                        emNavProcessor.saveFileResponse(
+                            fileName = fileName,
+                            storedFilename = uuid,
+                            fileSize = dest.length(),
+                            key = key,
+                        )
+                    val string = objectMapper.writeValueAsString(uploadFile)
+                    resetFileUploadVariables()
+                    loadUrlOnUiThread("javascript:onFileUploaded($string)")
+                    }
             }
 
             @JavascriptInterface
@@ -412,14 +417,15 @@ constructor(
         emNavProcessor =
             EMNavProcessor(context, survey) {
                 loadDataWithBaseURL(CUSTOM_DOMAIN, data, null, null, null)
-            }
-    }
+                }
+        }
 
-    fun onCameraResult() {
-        context.contentResolver.openInputStream(saverUri!!)?.use { stream ->
-            val size = stream.readBytes().size.toLong()
+        fun onCameraResult() {
+            val uri = saverUri ?: return
+            val uuid = uri.toString().substringAfterLast("/").substringBefore(".")
+            val file = FileUtils.getResponseFile(context, uuid, survey.id, responseId!!)
+        val size = file.length()
             val shouldCompress = isSizeViolated(size, true)
-            val uuid = saverUri.toString().substringAfterLast("/").substringBefore(".")
             val key = operationKey!!
             CoroutineScope(Dispatchers.IO).launch {
                 val result =
@@ -431,15 +437,7 @@ constructor(
                     )
                 val finalSize =
                     if (shouldCompress) {
-                        compress(
-                            FileUtils.getResponseFile(
-                                context,
-                                uuid.toString(),
-                                survey.id,
-                                responseId!!,
-                            ),
-                            maxSizeKb!! * 1024L,
-                        )
+                        compress(file, maxSizeKb!! * 1024L)
                     } else {
                         result.size
                     }
@@ -451,7 +449,6 @@ constructor(
                     })",
                 )
                 resetFileUploadVariables()
-            }
         }
     }
 
@@ -470,31 +467,48 @@ constructor(
 
     fun onBarcodeScanned(contents: String) {
         loadUrlOnUiThread("javascript:onBarcodeScanned$operationKey(\"$contents\")")
-    }
-
-    private fun loadUrlOnUiThread(url: String) {
-        (context as Activity).runOnUiThread {
-            loadUrl(url)
         }
-    }
 
-    fun onVideoResult(contentUri: Uri?) {
-        val stream = context.contentResolver.openInputStream(contentUri!!)
+        private fun loadUrlOnUiThread(url: String) {
+            (context as Activity).runOnUiThread {
+                loadUrl(url)
+            }
+        }
 
-        stream?.use {
-            val byteArray = stream.readBytes()
-            val size = byteArray.size.toLong()
-            if (isSizeViolated(size)) {
+        fun onVideoResult(contentUri: Uri?) {
+            val uri = contentUri ?: return
+            val querySize = queryContentSize(uri)
+            if (querySize != null && isSizeViolated(querySize)) {
                 resetFileUploadVariables()
                 return
             }
             val key = operationKey!!
+            val uuid = UUID.randomUUID().toString()
+            val maxKb = maxSizeKb
             CoroutineScope(Dispatchers.IO).launch {
+                val dest = FileUtils.getResponseFile(context, uuid, survey.id, responseId!!)
+                context.contentResolver.openInputStream(uri)?.use { input ->
+                    dest.outputStream().use { input.copyTo(it) }
+                }
+                val actualSize = dest.length()
+                if (maxKb != null && actualSize / 1024 > maxKb) {
+                    dest.delete()
+                    (context as Activity).runOnUiThread {
+                        surveyActivity?.showMaxSizeValidation(
+                            (actualSize / 1024).toInt(),
+                            maxKb,
+                            false,
+                        )
+                    }
+                    resetFileUploadVariables()
+                    return@launch
+                }
                 val result =
-                    emNavProcessor.uploadFile(
-                        key = key,
+                    emNavProcessor.saveFileResponse(
                         fileName = "captured-video.mp4",
-                        byteArray = byteArray,
+                        storedFilename = uuid,
+                        fileSize = actualSize,
+                        key = key,
                     )
                 loadUrlOnUiThread(
                     "javascript:onVideoCaptured$key(${
@@ -506,7 +520,13 @@ constructor(
                 resetFileUploadVariables()
             }
         }
-    }
+
+        private fun queryContentSize(uri: Uri): Long? =
+            context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                if (!cursor.moveToFirst()) return@use null
+                val idx = cursor.getColumnIndex(OpenableColumns.SIZE)
+            if (idx == -1 || cursor.isNull(idx)) null else cursor.getLong(idx)
+        }
 
     private fun isSizeViolated(
         size: Long,
