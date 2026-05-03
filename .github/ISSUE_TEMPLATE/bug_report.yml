@@ -1,0 +1,67 @@
+---
+name: Bug report
+description: Create a report to help us improve
+title: '[Bug] '
+labels:
+  - bug
+
+body:
+  - type: input
+    id: device-model
+    attributes:
+      label: Device model
+      description: e.g., Pixel 7, Samsung Galaxy S23
+      placeholder: ''
+    validations:
+      required: true
+  - type: input
+    id: android-version
+    attributes:
+      label: Android version
+      placeholder: '17, 16, Oreo, etc.'
+    validations:
+      required: true
+  - type: input
+    id: app-version
+    attributes:
+      label: App version
+      description: Version number or commit hash
+      placeholder: ''
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Be specific about how to trigger the bug
+      placeholder: '1. Open the app&#10;2. Navigate to...'
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should happen?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What actually happens?
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logcat / Crash logs
+      description: Relevant log output or crash stack trace
+  - type: checkboxes
+    id: network
+    attributes:
+      label: Network conditions tested
+      options:
+        - label: WiFi
+        - label: Mobile data
+        - label: Airplane mode (offline)
+        - label: Poor connectivity
