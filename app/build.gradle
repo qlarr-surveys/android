@@ -79,42 +79,42 @@ android {
 
 ext {
     room_version = '2.7.1'
-    exoplayer_version = '1.4.1'
-    okhttp_version = '5.3.0'
+    exoplayer_version = '1.10.0'
+    okhttp_version = '5.3.2'
     coilVersion = '2.7.0'
-    koinVersion = '4.1.1'
+    koinVersion = '4.2.1'
     retrofitVersion = '3.0.0'
 }
 
 dependencies {
-    implementation 'androidx.annotation:annotation:1.9.1'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.9.4'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4'
+    implementation 'androidx.annotation:annotation:1.10.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.10.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.10.0'
     implementation('com.github.qlarr-surveys:survey-engine-kmp:d7767c7def2e') {
         exclude group: 'org.graalvm.js', module: 'js'
         exclude group: 'org.graalvm.js', module: 'js-scriptengine'
     }
-    implementation 'androidx.core:core-ktx:1.17.0'
+    implementation 'androidx.core:core-ktx:1.18.0'
     implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'com.google.android.material:material:1.13.0'
     implementation 'com.google.android.gms:play-services-location:21.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.9.6'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.9.6'
-    implementation "androidx.work:work-runtime-ktx:2.11.0"
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.9.8'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.9.8'
+    implementation "androidx.work:work-runtime-ktx:2.11.2"
     implementation "androidx.core:core-splashscreen:1.2.0"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation 'androidx.lifecycle:lifecycle-process:2.9.4'
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0"
+    implementation 'androidx.lifecycle:lifecycle-process:2.10.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.3.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
-    implementation "androidx.webkit:webkit:1.14.0"
-    //    last version supporting android api 21
+    implementation "androidx.webkit:webkit:1.16.0"
+    //    Jackson 2.20+ requires minSdk 26 (uses MethodHandle.invoke); pin to 2.19.x for API 24 support
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.19.2'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.19.2'
 
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0'
 
     implementation "io.insert-koin:koin-android:$koinVersion"
     implementation "io.insert-koin:koin-androidx-workmanager:$koinVersion"
@@ -144,7 +144,7 @@ dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
 
     // compose
-    implementation platform('androidx.compose:compose-bom:2025.11.00')
+    implementation platform('androidx.compose:compose-bom:2026.05.00')
     implementation 'androidx.compose.material3:material3'
     implementation 'androidx.compose.material:material-icons-extended'
     implementation 'androidx.activity:activity-compose'
