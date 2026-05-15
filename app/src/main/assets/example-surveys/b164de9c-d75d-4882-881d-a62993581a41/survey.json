@@ -1,0 +1,37 @@
+{
+  "id": "b164de9c-d75d-4882-881d-a62993581a41",
+  "creationDate": "2026-05-13 20:52:35",
+  "lastModified": "2026-05-13 20:53:12",
+  "startDate": null,
+  "endDate": null,
+  "name": "Survey Logic",
+  "description": "Explore Qlarr's smart features like skip logic, show/hide logic, validation, piping values and navigation.",
+  "image": "1uAQFxpT1J.webp",
+  "status": "active",
+  "usage": "web",
+  "surveyQuota": -1,
+  "responsesCount": 0,
+  "completeResponseCount": 0,
+  "latestVersion": {
+    "surveyId": "b164de9c-d75d-4882-881d-a62993581a41",
+    "version": 1,
+    "subVersion": 1,
+    "valid": true,
+    "published": false,
+    "lastModified": "2026-05-13 20:53:12",
+    "status": "active"
+  },
+  "navigationData": {
+    "navigationMode": "GROUP_BY_GROUP",
+    "allowPrevious": true,
+    "resumeExpiryMillis": 31536000000,
+    "skipInvalid": true,
+    "allowIncomplete": true,
+    "allowJump": true
+  },
+  "saveIp": true,
+  "saveTimings": true,
+  "backgroundAudio": true,
+  "recordGps": true,
+  "publicWithinOrg": true
+}

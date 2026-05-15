@@ -1,0 +1,37 @@
+{
+  "id": "9a064a8d-cfc6-4dd8-8f88-c2e0f1640f28",
+  "creationDate": "2026-05-13 20:33:44",
+  "lastModified": "2026-05-13 20:37:03",
+  "startDate": null,
+  "endDate": null,
+  "name": "Question Types",
+  "description": "Experience Qlarr’s different question types, designed to capture any response with style, clarity, and precision.",
+  "image": "lWQ1yMeDQt.webp",
+  "status": "active",
+  "usage": "mixed",
+  "surveyQuota": -1,
+  "responsesCount": 0,
+  "completeResponseCount": 0,
+  "latestVersion": {
+    "surveyId": "9a064a8d-cfc6-4dd8-8f88-c2e0f1640f28",
+    "version": 1,
+    "subVersion": 1,
+    "valid": true,
+    "published": false,
+    "lastModified": "2026-05-13 20:37:03",
+    "status": "active"
+  },
+  "navigationData": {
+    "navigationMode": "GROUP_BY_GROUP",
+    "allowPrevious": true,
+    "resumeExpiryMillis": 31536000000,
+    "skipInvalid": true,
+    "allowIncomplete": true,
+    "allowJump": true
+  },
+  "saveIp": true,
+  "saveTimings": true,
+  "backgroundAudio": true,
+  "recordGps": true,
+  "publicWithinOrg": true
+}

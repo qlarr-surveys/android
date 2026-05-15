@@ -1,0 +1,37 @@
+{
+  "id": "8141f5e2-dd33-4511-8633-85fc87b49026",
+  "creationDate": "2026-05-13 20:33:33",
+  "lastModified": "2026-05-13 20:37:19",
+  "startDate": null,
+  "endDate": null,
+  "name": "Randomization and Sampling",
+  "description": "See how Qlarr helps reduce bias and streamline surveys with smart randomization and sampling.",
+  "image": "1hJxSbsyNq.webp",
+  "status": "active",
+  "usage": "mixed",
+  "surveyQuota": -1,
+  "responsesCount": 0,
+  "completeResponseCount": 0,
+  "latestVersion": {
+    "surveyId": "8141f5e2-dd33-4511-8633-85fc87b49026",
+    "version": 1,
+    "subVersion": 1,
+    "valid": true,
+    "published": false,
+    "lastModified": "2026-05-13 20:37:19",
+    "status": "active"
+  },
+  "navigationData": {
+    "navigationMode": "GROUP_BY_GROUP",
+    "allowPrevious": true,
+    "resumeExpiryMillis": 31536000000,
+    "skipInvalid": true,
+    "allowIncomplete": true,
+    "allowJump": true
+  },
+  "saveIp": true,
+  "saveTimings": true,
+  "backgroundAudio": true,
+  "recordGps": true,
+  "publicWithinOrg": true
+}

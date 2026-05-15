@@ -1,0 +1,37 @@
+{
+  "id": "3f231aed-5768-4645-8df1-4fe3b0c7dba2",
+  "creationDate": "2026-05-13 20:33:13",
+  "lastModified": "2026-05-13 20:37:35",
+  "startDate": null,
+  "endDate": null,
+  "name": "Theming and Visual Experience",
+  "description": "Explore how Qlarr helps you design visually engaging, branded surveys—no coding needed.",
+  "image": "jkbcIre61m.webp",
+  "status": "active",
+  "usage": "mixed",
+  "surveyQuota": -1,
+  "responsesCount": 0,
+  "completeResponseCount": 0,
+  "latestVersion": {
+    "surveyId": "3f231aed-5768-4645-8df1-4fe3b0c7dba2",
+    "version": 1,
+    "subVersion": 1,
+    "valid": true,
+    "published": false,
+    "lastModified": "2026-05-13 20:37:35",
+    "status": "active"
+  },
+  "navigationData": {
+    "navigationMode": "GROUP_BY_GROUP",
+    "allowPrevious": true,
+    "resumeExpiryMillis": 31536000000,
+    "skipInvalid": true,
+    "allowIncomplete": true,
+    "allowJump": true
+  },
+  "saveIp": true,
+  "saveTimings": true,
+  "backgroundAudio": true,
+  "recordGps": true,
+  "publicWithinOrg": true
+}
