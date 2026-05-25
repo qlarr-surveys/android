@@ -12,4 +12,8 @@ object Colors {
     val LightGray2 = Color(0xFFFEF7FF)
     val White = Color(0xffffffff)
     val SurfaceVariant = Color(0xFFE3E1EC)
+
+    val BrandNavy = Color(0xFF1B1E5C)
+    val Ink = Color(0xFF1F1B3A)
+    val Muted = Color(0xFF6B6783)
 }

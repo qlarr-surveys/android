@@ -175,4 +175,6 @@
     <string name="delete_response_confirmation_title">Reactie verwijderen?</string>
     <string name="delete_response_confirmation_message">Deze reactie wordt permanent verwijderd en kan niet worden hersteld.</string>
     <string name="delete">Verwijderen</string>
+    <string name="welcome_title">Welkom bij Qlarr</string>
+    <string name="welcome_tagline">Verzamel enquêtereacties overal — zelfs offline.</string>
 </resources>

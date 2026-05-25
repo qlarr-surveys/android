@@ -186,4 +186,6 @@
     <string name="delete_response_confirmation_title">¿Eliminar respuesta?</string>
     <string name="delete_response_confirmation_message">Esta respuesta se eliminará permanentemente y no podrá recuperarse.</string>
     <string name="delete">Eliminar</string>
+    <string name="welcome_title">Bienvenido a Qlarr</string>
+    <string name="welcome_tagline">Recopila respuestas de encuestas en cualquier lugar, incluso sin conexión.</string>
 </resources>

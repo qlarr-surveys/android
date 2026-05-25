@@ -177,4 +177,6 @@
     <string name="delete_response_confirmation_title">Antwort löschen?</string>
     <string name="delete_response_confirmation_message">Diese Antwort wird dauerhaft gelöscht und kann nicht wiederhergestellt werden.</string>
     <string name="delete">Löschen</string>
+    <string name="welcome_title">Willkommen bei Qlarr</string>
+    <string name="welcome_tagline">Erfassen Sie Umfrageantworten überall – auch offline.</string>
 </resources>

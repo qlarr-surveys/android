@@ -186,4 +186,6 @@
     <string name="delete_response_confirmation_title">Supprimer la réponse ?</string>
     <string name="delete_response_confirmation_message">Cette réponse sera définitivement supprimée et ne pourra pas être récupérée.</string>
     <string name="delete">Supprimer</string>
+    <string name="welcome_title">Bienvenue sur Qlarr</string>
+    <string name="welcome_tagline">Recueillez des réponses aux enquêtes partout — même hors ligne.</string>
 </resources>
