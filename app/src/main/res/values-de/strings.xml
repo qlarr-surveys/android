@@ -163,8 +163,9 @@
     <string name="survey_item_button_update">Aktualisieren</string>
     <string name="survey_item_button_sync">Synchronisieren</string>
     <string name="logout">Abmelden</string>
+    <string name="logout_anyway">Trotzdem abmelden</string>
     <string name="cancel">Abbrechen</string>
-    <string name="logout_alert_message">Alle nicht synchronisierten Daten gehen verloren.</string>
+    <string name="logout_alert_message">Alle Umfrageantworten, die nicht mit dem Server synchronisiert wurden, gehen verloren.</string>
     <string name="logout_are_you_sure">Möchten Sie sich wirklich abmelden?</string>
     <string name="login_to_private">Anmelden am privaten Server</string>
 

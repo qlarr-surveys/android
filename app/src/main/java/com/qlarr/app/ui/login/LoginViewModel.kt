@@ -34,17 +34,25 @@ class LoginViewModel(
     }
 
     private fun checkForPreviousSession() {
-        if (sessionManager.hasPreviousSession()) {
-            _loginState.update {
-                it.copy(
-                    lockedToPreviousEnv = true,
-                    previousSession = PreviousSessionInfo(
-                        userName = sessionManager.getPreviousUserName(),
-                        environment = sessionManager.getLastSuccessfulEnv()
-                    ),
-                    showSessionConflictDialog = true
-                )
+        if (!sessionManager.hasPreviousSession()) return
+        if (sessionManager.getLastSuccessfulEnv() == BackendEnvironment.Guest) {
+            // Guests hold no server-side account, so a leftover guest session is
+            // meaningless — clear it silently instead of prompting to resolve a conflict.
+            viewModelScope.launch(Dispatchers.IO) {
+                loginInteractor.clearUser()
             }
+            return
+        }
+        _loginState.update {
+            it.copy(
+                lockedToPreviousEnv = true,
+                previousSession =
+                    PreviousSessionInfo(
+                        userName = sessionManager.getPreviousUserName(),
+                        environment = sessionManager.getLastSuccessfulEnv(),
+                    ),
+                showSessionConflictDialog = true,
+            )
         }
     }
 

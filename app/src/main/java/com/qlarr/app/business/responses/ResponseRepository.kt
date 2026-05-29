@@ -13,6 +13,8 @@ interface ResponseRepository {
     suspend fun addEvent(responseId: String, event: ResponseEvent)
     suspend fun markResponseAsSynced(responseId: String)
     suspend fun getUnsyncedCount(surveyId: String): Int
+
+    suspend fun hasUnsyncedResponses(): Boolean
 }
 
 class ResponseRepositoryImpl(
@@ -43,5 +45,6 @@ class ResponseRepositoryImpl(
 
     override suspend fun getUnsyncedCount(surveyId: String) =
         responseDao.countUnsyncedResponses(surveyId)
-}
 
+    override suspend fun hasUnsyncedResponses() = responseDao.countAllUnsyncedResponses() > 0
+}

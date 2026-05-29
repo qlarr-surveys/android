@@ -16,11 +16,13 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -43,7 +45,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.qlarr.app.R
 import com.qlarr.app.business.ByteSize
@@ -63,6 +64,7 @@ import com.qlarr.app.ui.survey.SurveyListItem
 fun SurveyListScreen(viewModel: SurveyListViewModel) {
     val state by viewModel.state.collectAsState()
     val downloadState by viewModel.downloadState.collectAsState()
+    val hasUnsyncedResponses by viewModel.hasUnsyncedResponses.collectAsState()
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
     val columns = if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) 1 else 2
@@ -91,6 +93,7 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                         viewModel.fetchSurveyList(true)
                     }
                     TopBarIconButton(iconRes = R.drawable.baseline_logout_24) {
+                        viewModel.checkUnsyncedResponses()
                         logoutDialogShown = true
                     }
                 },
@@ -280,6 +283,7 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
             // Logout confirmation dialog
             if (logoutDialogShown) {
                 DialogConfirmLogout(
+                    hasUnsyncedResponses = hasUnsyncedResponses,
                     onConfirmation = { viewModel.logout() },
                     onDismiss = { logoutDialogShown = false },
                 )
@@ -314,6 +318,7 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
 
 @Composable
 private fun DialogConfirmLogout(
+    hasUnsyncedResponses: Boolean,
     onConfirmation: () -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -322,21 +327,33 @@ private fun DialogConfirmLogout(
         title = {
             Text(text = stringResource(id = R.string.logout_are_you_sure))
         },
-        text = {
-            Text(text = stringResource(id = R.string.logout_alert_message))
+        text =
+            if (hasUnsyncedResponses) {
+                { Text(text = stringResource(id = R.string.logout_alert_message)) }
+            } else {
+                null
         },
         confirmButton = {
             TextButton(
                 onClick = onConfirmation,
-            ) {
-                Text(stringResource(id = R.string.logout))
+                colors =
+                    ButtonDefaults.textButtonColors(
+                        contentColor = MaterialTheme.colorScheme.error,
+                    ),
+                    ) {
+                Text(
+                    stringResource(
+                        id = if (hasUnsyncedResponses) R.string.logout_anyway else R.string.logout,
+                    ),
+                    fontSize = 16.sp,
+                )
             }
         },
         dismissButton = {
             TextButton(
                 onClick = onDismiss,
             ) {
-                Text(stringResource(id = R.string.cancel))
+                Text(stringResource(id = R.string.cancel), fontSize = 16.sp)
             }
         },
     )
@@ -344,8 +361,16 @@ private fun DialogConfirmLogout(
 
 @Composable
 @Preview(showBackground = true)
-private fun PreviewDialogConfirmLogout() {
+private fun PreviewDialogConfirmLogoutUnsynced() {
     QlarrTheme {
-        DialogConfirmLogout(onConfirmation = {}, onDismiss = {})
+        DialogConfirmLogout(hasUnsyncedResponses = true, onConfirmation = {}, onDismiss = {})
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun PreviewDialogConfirmLogoutSynced() {
+    QlarrTheme {
+        DialogConfirmLogout(hasUnsyncedResponses = false, onConfirmation = {}, onDismiss = {})
     }
 }

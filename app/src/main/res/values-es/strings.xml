@@ -172,8 +172,9 @@
     <string name="survey_item_button_update">Actualizar</string>
     <string name="survey_item_button_sync">Sincronizar</string>
     <string name="logout">Cerrar sesión</string>
+    <string name="logout_anyway">Cerrar sesión de todos modos</string>
     <string name="cancel">Cancelar</string>
-    <string name="logout_alert_message">Todos los datos no sincronizados se perderán.</string>
+    <string name="logout_alert_message">Se perderán todas las respuestas de la encuesta que no estén sincronizadas con el servidor.</string>
     <string name="logout_are_you_sure">¿Estás seguro de que deseas cerrar sesión?</string>
     <string name="login_to_private">Iniciar sesión en el servidor privado</string>
 

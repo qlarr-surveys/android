@@ -172,8 +172,9 @@
     <string name="survey_item_button_update">Mettre à jour</string>
     <string name="survey_item_button_sync">Synchroniser</string>
     <string name="logout">Se déconnecter</string>
+    <string name="logout_anyway">Se déconnecter quand même</string>
     <string name="cancel">Annuler</string>
-    <string name="logout_alert_message">Toutes les données non synchronisées seront perdues.</string>
+    <string name="logout_alert_message">Toutes les réponses au questionnaire non synchronisées avec le serveur seront perdues.</string>
     <string name="logout_are_you_sure">Êtes-vous sûr de vouloir vous déconnecter ?</string>
     <string name="login_to_private">Se connecter au serveur privé</string>
 

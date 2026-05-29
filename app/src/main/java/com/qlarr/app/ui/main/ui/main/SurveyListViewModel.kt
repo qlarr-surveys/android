@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.qlarr.app.AppEvent
 import com.qlarr.app.EventBus
 import com.qlarr.app.business.auth.LogoutUseCase
+import com.qlarr.app.business.responses.ResponseRepository
 import com.qlarr.app.business.settings.SharedPrefsManager
 import com.qlarr.app.business.survey.BackgroundSync
 import com.qlarr.app.business.survey.SurveyData
@@ -28,6 +29,7 @@ class SurveyListViewModel(
     private val backgroundSync: BackgroundSync,
     private val eventBus: EventBus,
     private val sharedPrefsManager: SharedPrefsManager,
+    private val responseRepository: ResponseRepository,
     errorProcessor: ErrorProcessor,
 ) : ViewModel(),
     ErrorProcessor by errorProcessor {
@@ -43,6 +45,9 @@ class SurveyListViewModel(
     private val _downloadState: MutableStateFlow<DownloadState> =
         MutableStateFlow(DownloadState.Idle)
     val downloadState = _downloadState.asStateFlow()
+
+    private val _hasUnsyncedResponses = MutableStateFlow(false)
+    val hasUnsyncedResponses = _hasUnsyncedResponses.asStateFlow()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -183,6 +188,12 @@ class SurveyListViewModel(
             if (surveyRepository.shouldSync()) {
                 backgroundSync.startSurveySync()
             }
+        }
+    }
+
+    fun checkUnsyncedResponses() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _hasUnsyncedResponses.value = responseRepository.hasUnsyncedResponses()
         }
     }
 

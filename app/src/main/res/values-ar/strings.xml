@@ -205,8 +205,9 @@
     <string name="survey_item_button_update">تحديث</string>
     <string name="survey_item_button_sync">مزامنة</string>
     <string name="logout">تسجيل الخروج</string>
+    <string name="logout_anyway">تسجيل الخروج على أي حال</string>
     <string name="cancel">إلغاء</string>
-    <string name="logout_alert_message">سيتم فقدان جميع البيانات غير المُزامنة.</string>
+    <string name="logout_alert_message">سيتم فقدان جميع إجابات الاستبيان التي لم تتم مزامنتها مع الخادم.</string>
     <string name="logout_are_you_sure">هل أنت متأكد أنك تريد تسجيل الخروج؟</string>
     <string name="login_to_private">تسجيل الدخول إلى الخادم الخاص</string>
 
