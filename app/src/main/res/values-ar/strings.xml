@@ -207,7 +207,9 @@
     <string name="logout">تسجيل الخروج</string>
     <string name="logout_anyway">تسجيل الخروج على أي حال</string>
     <string name="cancel">إلغاء</string>
-    <string name="logout_alert_message">سيتم فقدان جميع إجابات الاستبيان التي لم تتم مزامنتها مع الخادم.</string>
+    <string name="logout_alert_message">هل أنت متأكد أنك تريد تسجيل الخروج؟ سيتم فقدان جميع إجابات الاستبيان التي لم تتم مزامنتها مع الخادم.</string>
+    <string name="logout_warning_title">تحذير! تم اكتشاف بيانات غير مُزامنة</string>
+    <string name="logout_synced_message">تمت مزامنة جميع البيانات مع الخادم. سيتم حذف البيانات المحلية.</string>
     <string name="logout_are_you_sure">هل أنت متأكد أنك تريد تسجيل الخروج؟</string>
     <string name="login_to_private">تسجيل الدخول إلى الخادم الخاص</string>
 

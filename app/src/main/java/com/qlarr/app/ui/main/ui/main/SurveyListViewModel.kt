@@ -46,8 +46,8 @@ class SurveyListViewModel(
         MutableStateFlow(DownloadState.Idle)
     val downloadState = _downloadState.asStateFlow()
 
-    private val _hasUnsyncedResponses = MutableStateFlow(false)
-    val hasUnsyncedResponses = _hasUnsyncedResponses.asStateFlow()
+    private val _logoutDialog = MutableStateFlow<LogoutDialog>(LogoutDialog.Hidden)
+    val logoutDialog = _logoutDialog.asStateFlow()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -191,21 +191,42 @@ class SurveyListViewModel(
         }
     }
 
-    fun checkUnsyncedResponses() {
+    fun onLogoutClicked() {
         viewModelScope.launch(Dispatchers.IO) {
-            _hasUnsyncedResponses.value = responseRepository.hasUnsyncedResponses()
+            _logoutDialog.value =
+                LogoutDialog.Visible(
+                    hasUnsynced = responseRepository.hasUnsyncedResponses(),
+                )
         }
+    }
+
+    fun dismissLogoutDialog() {
+        _logoutDialog.value = LogoutDialog.Hidden
     }
 
     fun logout() {
         viewModelScope.launch(Dispatchers.IO) {
-            logoutUseCase()
+            logoutUseCase(clearAllData = true)
+            _uiEvents.emit(UiEvents.GoToLogin)
+        }
+    }
+
+    fun sessionExpiredLogout() {
+        viewModelScope.launch(Dispatchers.IO) {
+            logoutUseCase(clearAllData = false)
             _uiEvents.emit(UiEvents.GoToLogin)
         }
     }
 
     sealed class UiEvents {
         object GoToLogin : UiEvents()
+    }
+
+    sealed interface LogoutDialog {
+        data object Hidden : LogoutDialog
+
+        data class Visible(
+            val hasUnsynced: Boolean) : LogoutDialog
     }
 
     data class State(

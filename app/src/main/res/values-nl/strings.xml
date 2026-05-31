@@ -163,7 +163,9 @@
     <string name="logout">Uitloggen</string>
     <string name="logout_anyway">Toch uitloggen</string>
     <string name="cancel">Annuleren</string>
-    <string name="logout_alert_message">Alle enquêteantwoorden die niet met de server zijn gesynchroniseerd, gaan verloren.</string>
+    <string name="logout_alert_message">Weet je zeker dat je wilt uitloggen\? Alle enquêteantwoorden die niet met de server zijn gesynchroniseerd, gaan verloren.</string>
+    <string name="logout_warning_title">Waarschuwing! Niet-gesynchroniseerde data gedetecteerd</string>
+    <string name="logout_synced_message">Alle data is gesynchroniseerd met de server. Lokale data wordt verwijderd.</string>
     <string name="logout_are_you_sure">Weet je zeker dat je wilt uitloggen\?</string>
     <string name="login_to_private">Inloggen op Private Server</string>
 

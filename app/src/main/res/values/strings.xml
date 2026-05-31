@@ -174,8 +174,10 @@
     <string name="logout">Logout</string>
     <string name="logout_anyway">Logout anyway</string>
     <string name="cancel">Cancel</string>
-    <string name="logout_alert_message">All survey responses that are not synced to the server will be lost.</string>
+    <string name="logout_alert_message">Are you sure you want to logout? All survey responses that are not synced to the server will be lost.</string>
     <string name="logout_are_you_sure">Are you sure you want to logout?</string>
+    <string name="logout_warning_title">Warning! Unsynced data detected</string>
+    <string name="logout_synced_message">All data is synced to the server. Local data will be deleted.</string>
     <string name="login_to_private">Login to Private Server</string>
     <string name="welcome_title">Welcome to Qlarr</string>
     <string name="welcome_tagline">Collect survey responses anywhere — even offline.</string>

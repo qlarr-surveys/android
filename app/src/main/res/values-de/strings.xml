@@ -165,7 +165,9 @@
     <string name="logout">Abmelden</string>
     <string name="logout_anyway">Trotzdem abmelden</string>
     <string name="cancel">Abbrechen</string>
-    <string name="logout_alert_message">Alle Umfrageantworten, die nicht mit dem Server synchronisiert wurden, gehen verloren.</string>
+    <string name="logout_alert_message">Möchten Sie sich wirklich abmelden? Alle Umfrageantworten, die nicht mit dem Server synchronisiert wurden, gehen verloren.</string>
+    <string name="logout_warning_title">Warnung! Nicht synchronisierte Daten erkannt</string>
+    <string name="logout_synced_message">Alle Daten sind mit dem Server synchronisiert. Lokale Daten werden gelöscht.</string>
     <string name="logout_are_you_sure">Möchten Sie sich wirklich abmelden?</string>
     <string name="login_to_private">Anmelden am privaten Server</string>
 

@@ -174,7 +174,9 @@
     <string name="logout">Desconectar</string>
     <string name="logout_anyway">Desconectar mesmo assim</string>
     <string name="cancel">Cancelar</string>
-    <string name="logout_alert_message">Todas as respostas do questionário que não foram sincronizadas com o servidor serão perdidas.</string>
+    <string name="logout_alert_message">Tem certeza de que quer fazer logout\? Todas as respostas do questionário que não foram sincronizadas com o servidor serão perdidas.</string>
+    <string name="logout_warning_title">Aviso! Dados não sincronizados detectados</string>
+    <string name="logout_synced_message">Todos os dados estão sincronizados com o servidor. Os dados locais serão excluídos.</string>
     <string name="logout_are_you_sure">Tem certeza de que quer fazer logout\?</string>
     <string name="login_to_private">Faça login no servidor privado</string>
 

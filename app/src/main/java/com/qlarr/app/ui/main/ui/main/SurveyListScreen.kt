@@ -64,12 +64,11 @@ import com.qlarr.app.ui.survey.SurveyListItem
 fun SurveyListScreen(viewModel: SurveyListViewModel) {
     val state by viewModel.state.collectAsState()
     val downloadState by viewModel.downloadState.collectAsState()
-    val hasUnsyncedResponses by viewModel.hasUnsyncedResponses.collectAsState()
+    val logoutDialog by viewModel.logoutDialog.collectAsState()
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
     val columns = if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) 1 else 2
 
-    var logoutDialogShown by remember { mutableStateOf(false) }
     var errorDialogState by remember { mutableStateOf<ProcessedError?>(null) }
 
     LaunchedEffect(Unit) {
@@ -93,8 +92,7 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                         viewModel.fetchSurveyList(true)
                     }
                     TopBarIconButton(iconRes = R.drawable.baseline_logout_24) {
-                        viewModel.checkUnsyncedResponses()
-                        logoutDialogShown = true
+                        viewModel.onLogoutClicked()
                     }
                 },
             )
@@ -280,12 +278,12 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                 }
             }
 
-            // Logout confirmation dialog
-            if (logoutDialogShown) {
+            // Logout confirmation dialog — only renders once the unsynced query has returned.
+            (logoutDialog as? SurveyListViewModel.LogoutDialog.Visible)?.let { dialog ->
                 DialogConfirmLogout(
-                    hasUnsyncedResponses = hasUnsyncedResponses,
+                    hasUnsyncedResponses = dialog.hasUnsynced,
                     onConfirmation = { viewModel.logout() },
-                    onDismiss = { logoutDialogShown = false },
+                    onDismiss = { viewModel.dismissLogoutDialog() },
                 )
             }
 
@@ -304,7 +302,7 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                         TextButton(onClick = {
                             errorDialogState = null
                             if (isAuthError) {
-                                viewModel.logout()
+                                viewModel.sessionExpiredLogout()
                             }
                         }) {
                             Text(stringResource(id = android.R.string.ok))
@@ -325,13 +323,30 @@ private fun DialogConfirmLogout(
     AlertDialog(
         onDismissRequest = { },
         title = {
-            Text(text = stringResource(id = R.string.logout_are_you_sure))
+            Text(
+                text =
+                    stringResource(
+                        id =
+                            if (hasUnsyncedResponses) {
+                                R.string.logout_warning_title
+                            } else {
+                                R.string.logout_are_you_sure
+                            },
+                    ),
+            )
         },
-        text =
-            if (hasUnsyncedResponses) {
-                { Text(text = stringResource(id = R.string.logout_alert_message)) }
-            } else {
-                null
+        text = {
+            Text(
+                text =
+                    stringResource(
+                        id =
+                            if (hasUnsyncedResponses) {
+                                R.string.logout_alert_message
+                            } else {
+                        R.string.logout_synced_message
+                    },
+                        ),
+                    )
         },
         confirmButton = {
             TextButton(
