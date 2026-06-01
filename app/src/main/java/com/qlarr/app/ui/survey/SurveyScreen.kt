@@ -3,6 +3,7 @@ package com.qlarr.app.ui.survey
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -53,7 +54,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
+import coil.compose.SubcomposeAsyncImage
+import coil.compose.SubcomposeAsyncImageContent
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.qlarr.app.R
@@ -708,7 +711,9 @@ private fun SurveyTitleAndInfo(
 }
 
 @Composable
-private fun SurveyPhoto(imageUrl: String, height: androidx.compose.ui.unit.Dp = 200.dp,
+private fun SurveyPhoto(
+    imageUrl: String,
+    height: androidx.compose.ui.unit.Dp = 200.dp,
 ) {
     Box(
         modifier =
@@ -716,9 +721,9 @@ private fun SurveyPhoto(imageUrl: String, height: androidx.compose.ui.unit.Dp = 
                 .fillMaxWidth()
             .height(height)
             .background(Colors.DarkGray),
-            contentAlignment = Alignment.BottomStart,
+        contentAlignment = Alignment.Center,
     ) {
-        AsyncImage(
+        SubcomposeAsyncImage(
             model =
                 ImageRequest
                     .Builder(LocalContext.current)
@@ -729,11 +734,24 @@ private fun SurveyPhoto(imageUrl: String, height: androidx.compose.ui.unit.Dp = 
                         "Bearer ${SharedPrefsManager.instance(LocalContext.current).activeToken}",
                     ).build(),
             modifier = Modifier.fillMaxSize(),
-            placeholder = painterResource(id = R.drawable.logo512),
-            error = painterResource(id = R.drawable.logo512),
             contentScale = ContentScale.Fit,
             contentDescription = null,
-        )
+        ) {
+            if (painter.state is AsyncImagePainter.State.Success) {
+                SubcomposeAsyncImageContent()
+            } else {
+                // Loading / error / no-cover → inset logo so it doesn't reach the edges.
+                Image(
+                    painter = painterResource(id = R.drawable.logo512),
+                    contentDescription = null,
+                    contentScale = ContentScale.Fit,
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(24.dp),
+                        )
+            }
+        }
     }
 }
 
