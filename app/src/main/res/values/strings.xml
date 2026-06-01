@@ -170,6 +170,13 @@
     <string name="survey_item_button_download">Download</string>
     <string name="survey_item_button_update">Update</string>
     <string name="survey_item_button_sync">Sync</string>
+    <string name="survey_item_button_quota_reached">Quota reached</string>
+    <string name="survey_sync_all_synced">All synced</string>
+    <string name="survey_sync_not_synced">Not synced</string>
+    <string name="survey_quota_your">Your quota</string>
+    <string name="survey_quota_survey">Survey quota</string>
+    <string name="survey_quota_left_format">%1$s of %2$s left</string>
+    <string name="survey_quota_reached">Reached</string>
     <string name="response_location">Location</string>
     <string name="logout">Logout</string>
     <string name="logout_anyway">Logout anyway</string>

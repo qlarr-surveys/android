@@ -204,6 +204,13 @@
     <string name="survey_item_button_download">تنزيل</string>
     <string name="survey_item_button_update">تحديث</string>
     <string name="survey_item_button_sync">مزامنة</string>
+    <string name="survey_item_button_quota_reached">تم بلوغ الحصة</string>
+    <string name="survey_sync_all_synced">تمت المزامنة بالكامل</string>
+    <string name="survey_sync_not_synced">غير متزامن</string>
+    <string name="survey_quota_your">حصتك</string>
+    <string name="survey_quota_survey">حصة الاستبيان</string>
+    <string name="survey_quota_left_format">%1$s من %2$s متبقٍ</string>
+    <string name="survey_quota_reached">تم البلوغ</string>
     <string name="logout">تسجيل الخروج</string>
     <string name="logout_anyway">تسجيل الخروج على أي حال</string>
     <string name="cancel">إلغاء</string>

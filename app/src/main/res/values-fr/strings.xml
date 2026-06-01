@@ -171,6 +171,13 @@
     <string name="survey_item_button_download">Télécharger</string>
     <string name="survey_item_button_update">Mettre à jour</string>
     <string name="survey_item_button_sync">Synchroniser</string>
+    <string name="survey_item_button_quota_reached">Quota atteint</string>
+    <string name="survey_sync_all_synced">Tout synchronisé</string>
+    <string name="survey_sync_not_synced">Non synchronisé</string>
+    <string name="survey_quota_your">Votre quota</string>
+    <string name="survey_quota_survey">Quota de l\'enquête</string>
+    <string name="survey_quota_left_format">%1$s sur %2$s restants</string>
+    <string name="survey_quota_reached">Atteint</string>
     <string name="logout">Se déconnecter</string>
     <string name="logout_anyway">Se déconnecter quand même</string>
     <string name="cancel">Annuler</string>

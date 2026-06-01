@@ -7,6 +7,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -51,6 +52,7 @@ import com.qlarr.app.business.ByteSize
 import com.qlarr.app.business.formatBytes
 import com.qlarr.app.storage.DownloadState
 import com.qlarr.app.ui.common.error.ProcessedError
+import com.qlarr.app.ui.common.theme.Colors
 import com.qlarr.app.ui.common.theme.QlarrTheme
 import com.qlarr.app.ui.common.theme.QlarrTopBar
 import com.qlarr.app.ui.common.theme.TopBarIconButton
@@ -104,7 +106,12 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                     .fillMaxSize()
                     .padding(padding),
             ) {
-                Column(modifier = Modifier.fillMaxSize()) {
+                Column(
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .background(Colors.Page),
+                ) {
                     // Guest warning banner
                     if (state.isGuest) {
                         Card(
@@ -142,17 +149,15 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                         LazyVerticalGrid(
                             columns = GridCells.Fixed(columns),
                             modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(14.dp),
+                            verticalArrangement = Arrangement.spacedBy(14.dp),
+                            horizontalArrangement = Arrangement.spacedBy(14.dp),
                         ) {
                             items(
                                 items = state.surveyList,
                                 key = { it.id },
                             ) { surveyData ->
                                 SurveyListItem(
-                                    modifier = Modifier.padding(
-                                        bottom = 8.dp,
-                                        start = 8.dp,
-                                        end = 8.dp,
-                                    ),
                                     surveyData = surveyData,
                                     onStartClick = {
                                         context.startActivity(
