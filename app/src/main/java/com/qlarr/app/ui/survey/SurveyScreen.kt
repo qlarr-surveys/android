@@ -40,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -54,11 +55,13 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
+import coil.size.Precision
 import com.qlarr.app.R
 import com.qlarr.app.api.survey.PublishInfo
 import com.qlarr.app.api.survey.SurveyNavigationData
@@ -124,7 +127,10 @@ fun SurveyListItem(
             AccentRail(surveyData.syncState())
             Column(modifier = Modifier.weight(1f)) {
                 Box {
-                    SurveyPhoto(imageUrl = surveyData.imageUrl, height = 132.dp)
+                    SurveyPhoto(
+                        imageUrl = surveyData.imageUrl,
+                        height = 200.dp,
+                    )
                     val syncState = surveyData.syncState()
                     if (syncState != SyncState.NONE) {
                         SyncBadge(
@@ -710,29 +716,55 @@ private fun SurveyTitleAndInfo(
     }
 }
 
+// Resolution of the backdrop copy. Tiny on purpose: the GPU upscales it (with
+// bicubic FilterQuality.High) into a smooth color wash, giving a heavy "blur"
+// that works on every API level (unlike Modifier.blur, which is API 31+).
+// Lower = softer.
+private const val BACKDROP_RESOLUTION = 12
+
 @Composable
 private fun SurveyPhoto(
     imageUrl: String,
     height: androidx.compose.ui.unit.Dp = 200.dp,
 ) {
+    val context = LocalContext.current
+    val token = SharedPrefsManager.instance(context).activeToken
+
+    fun coverRequest(builder: ImageRequest.Builder.() -> Unit = {}) =
+        ImageRequest
+            .Builder(context)
+            .data(imageUrl)
+            .decoderFactory(SvgDecoder.Factory())
+            .addHeader("Authorization", "Bearer $token")
+            .apply(builder)
+            .build()
+
     Box(
         modifier =
             Modifier
                 .fillMaxWidth()
-            .height(height)
-            .background(Colors.DarkGray),
+                .height(height)
+                .background(Colors.DarkGray),
         contentAlignment = Alignment.Center,
     ) {
-        SubcomposeAsyncImage(
+        // Backdrop: a tiny copy of the cover, cropped to fill and upscaled by the
+        // GPU into a soft color wash behind the fitted image.
+        AsyncImage(
             model =
-                ImageRequest
-                    .Builder(LocalContext.current)
-                    .data(imageUrl)
-                    .decoderFactory(SvgDecoder.Factory())
-                    .addHeader(
-                        "Authorization",
-                        "Bearer ${SharedPrefsManager.instance(LocalContext.current).activeToken}",
-                    ).build(),
+                coverRequest {
+                    size(BACKDROP_RESOLUTION, BACKDROP_RESOLUTION)
+                    // EXACT so Coil keeps decoding the tiny bitmap instead of
+                    // reusing the full-res cover once it's in the memory cache.
+                    precision(Precision.EXACT)
+                },
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            filterQuality = FilterQuality.High,
+            modifier = Modifier.fillMaxSize(),
+        )
+        // Foreground: the full cover, fitted and centered.
+        SubcomposeAsyncImage(
+            model = coverRequest(),
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Fit,
             contentDescription = null,
