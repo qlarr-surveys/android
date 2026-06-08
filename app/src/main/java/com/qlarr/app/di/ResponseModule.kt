@@ -11,6 +11,7 @@ val responsesModule = module {
             get(),
             get(),
             get(),
+            get(),
             get()
         )
     }

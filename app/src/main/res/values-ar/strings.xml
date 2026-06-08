@@ -231,4 +231,27 @@
     <string name="delete">حذف</string>
     <string name="welcome_title">مرحبًا بك في Qlarr</string>
     <string name="welcome_tagline">اجمع ردود الاستبيانات في أي مكان — حتى دون اتصال بالإنترنت.</string>
+    <string name="response_status_draft">مسودة</string>
+    <string name="response_status_pending">قيد الانتظار</string>
+    <string name="response_status_uploaded">تم الرفع</string>
+    <string name="responses_summary_complete">مكتمل</string>
+    <string name="responses_summary_drafts">مسودات</string>
+    <string name="responses_summary_uploaded">تم الرفع</string>
+    <string name="responses_last_sync">آخر مزامنة %1$s</string>
+    <string name="responses_pending_count">%1$d قيد الانتظار</string>
+    <string name="responses_sync_all">مزامنة الكل</string>
+    <string name="responses_filter_all">الكل</string>
+    <string name="responses_filter_pending">قيد الانتظار</string>
+    <string name="responses_filter_uploaded">تم الرفع</string>
+    <string name="responses_filter_empty">لا توجد ردود تطابق عامل التصفية هذا.</string>
+    <string name="response_when_submitted">أُرسلت %1$s</string>
+    <string name="response_when_started">بدأت %1$s</string>
+    <string name="response_media_text_only">سجل نصي فقط</string>
+    <string name="response_media_cleared">سجل نصي فقط · تم مسح الوسائط</string>
+    <string name="response_draft_progress">%1$d%% مكتمل</string>
+    <string name="response_action_view">عرض</string>
+    <string name="response_action_continue">متابعة</string>
+    <string name="responses_empty_title">لا توجد ردود بعد</string>
+    <string name="responses_empty_subtitle">ستظهر هنا الردود التي تجمعها لهذا الاستبيان.</string>
+    <string name="responses_empty_action">ابدأ ردًا</string>
 </resources>

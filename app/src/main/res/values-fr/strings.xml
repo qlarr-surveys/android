@@ -198,4 +198,27 @@
     <string name="delete">Supprimer</string>
     <string name="welcome_title">Bienvenue sur Qlarr</string>
     <string name="welcome_tagline">Recueillez des réponses aux enquêtes partout — même hors ligne.</string>
+    <string name="response_status_draft">Brouillon</string>
+    <string name="response_status_pending">En attente</string>
+    <string name="response_status_uploaded">Envoyé</string>
+    <string name="responses_summary_complete">Terminé</string>
+    <string name="responses_summary_drafts">Brouillons</string>
+    <string name="responses_summary_uploaded">Envoyés</string>
+    <string name="responses_last_sync">Dernière synchronisation %1$s</string>
+    <string name="responses_pending_count">%1$d en attente</string>
+    <string name="responses_sync_all">Tout synchroniser</string>
+    <string name="responses_filter_all">Tous</string>
+    <string name="responses_filter_pending">En attente</string>
+    <string name="responses_filter_uploaded">Envoyés</string>
+    <string name="responses_filter_empty">Aucune réponse ne correspond à ce filtre.</string>
+    <string name="response_when_submitted">Envoyée %1$s</string>
+    <string name="response_when_started">Commencée %1$s</string>
+    <string name="response_media_text_only">Enregistrement texte uniquement</string>
+    <string name="response_media_cleared">Enregistrement texte uniquement · médias supprimés</string>
+    <string name="response_draft_progress">%1$d%% terminé</string>
+    <string name="response_action_view">Voir</string>
+    <string name="response_action_continue">Continuer</string>
+    <string name="responses_empty_title">Aucune réponse pour l\'instant</string>
+    <string name="responses_empty_subtitle">Les réponses que vous recueillez pour cette enquête apparaîtront ici.</string>
+    <string name="responses_empty_action">Démarrer une réponse</string>
 </resources>

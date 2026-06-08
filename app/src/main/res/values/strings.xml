@@ -197,4 +197,27 @@
     <string name="delete_response_confirmation_title">Delete response?</string>
     <string name="delete_response_confirmation_message">This response will be permanently deleted and cannot be recovered.</string>
     <string name="delete">Delete</string>
+    <string name="response_status_draft">Draft</string>
+    <string name="response_status_pending">Pending</string>
+    <string name="response_status_uploaded">Uploaded</string>
+    <string name="responses_summary_complete">Complete</string>
+    <string name="responses_summary_drafts">Drafts</string>
+    <string name="responses_summary_uploaded">Uploaded</string>
+    <string name="responses_last_sync">Last sync %1$s</string>
+    <string name="responses_pending_count">%1$d pending</string>
+    <string name="responses_sync_all">Sync all</string>
+    <string name="responses_filter_all">All</string>
+    <string name="responses_filter_pending">Pending</string>
+    <string name="responses_filter_uploaded">Uploaded</string>
+    <string name="responses_filter_empty">No responses match this filter.</string>
+    <string name="response_when_submitted">Submitted %1$s</string>
+    <string name="response_when_started">Started %1$s</string>
+    <string name="response_media_text_only">Text record only</string>
+    <string name="response_media_cleared">Text record only · media cleared</string>
+    <string name="response_draft_progress">%1$d%% complete</string>
+    <string name="response_action_view">View</string>
+    <string name="response_action_continue">Continue</string>
+    <string name="responses_empty_title">No responses yet</string>
+    <string name="responses_empty_subtitle">Responses you collect for this survey will appear here.</string>
+    <string name="responses_empty_action">Start a response</string>
 </resources>

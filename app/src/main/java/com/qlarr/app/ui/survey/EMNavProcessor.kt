@@ -42,6 +42,7 @@ import java.net.URLConnection
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.UUID
+import kotlin.math.roundToInt
 
 @SuppressLint("SetJavaScriptEnabled")
 class EMNavProcessor(
@@ -250,6 +251,72 @@ class EMNavProcessor(
 
     private fun String.stripHTMLTags(): String = replace(Regex("<.*?>"), "")
 
+    /**
+     * Draft completion as a percentage, stepped to the nearest 5% and clamped to 5–95%
+     * (a draft never reads 0% or 100%).
+     * - Multi-page surveys: position of the page (group) we stopped on / total pages.
+     * - Single-page surveys: answered questions / total questions on that page.
+     */
+    fun draftProgress(response: Response): Int {
+        val validationJsonOutput =
+            FileUtils.getValidationJson(getActivity(), survey.id) ?: return MIN_PROGRESS
+        val groups =
+            validationJsonOutput.survey
+                .get("groups")
+                ?.toList()
+                .orEmpty()
+        val totalGroups = groups.size
+        val pct: Double =
+            if (totalGroups > 1) {
+                val currentCode =
+                    when (val ni = response.navigationIndex) {
+                        is NavigationIndex.Group -> {
+                            ni.groupId
+                        }
+
+                        is NavigationIndex.End -> {
+                            ni.groupId
+                        }
+
+                        is NavigationIndex.Groups -> {
+                            ni.groupIds.lastOrNull()
+                        }
+
+                        is NavigationIndex.Question -> {
+                            groups
+                                .firstOrNull { group ->
+                                    group
+                                        .get("questions")
+                                        ?.any { it.get("code")?.asText() == ni.questionId } == true
+                                }?.get("code")
+                                ?.asText()
+                        }
+                    }
+                val idx = groups.indexOfFirst { it.get("code")?.asText() == currentCode }
+                if (idx < 0) 0.0 else (idx + 1).toDouble() / totalGroups * 100.0
+            } else {
+                val questions =
+                    groups
+                        .firstOrNull()
+                        ?.get("questions")
+                        ?.toList()
+                        .orEmpty()
+                if (questions.isEmpty()) {
+                    0.0
+                } else {
+                    val answered =
+                        questions.count { q ->
+                            val code = q.get("code")?.asText() ?: return@count false
+                            response.values.keys.any {
+                                (it == "$code.value" || it.startsWith("${code}A")) && it.endsWith(".value")
+                            }
+                        }
+                    answered.toDouble() / questions.size * 100.0
+                }
+            }
+        return ((pct / 5.0).roundToInt() * 5).coerceIn(MIN_PROGRESS, MAX_PROGRESS)
+    }
+
     private fun navigationUseCase(
         validationJsonOutput: ValidationJsonOutput,
         lang: String? = null,
@@ -318,14 +385,19 @@ class EMNavProcessor(
                 submitDate = null,
                 isSynced = false,
                 values = result.toSave,
-                events = if (survey.saveTimings) listOf(
-                    ResponseEvent.Navigation(
-                        from = "",
-                        to = result.navigationIndex.stringIndex(),
-                        direction = NavigationDirection.Start,
-                        time = LocalDateTime.now(ZoneOffset.UTC)
-                    )
-                ) else emptyList()
+                events =
+                    if (survey.saveTimings) {
+                        listOf(
+                            ResponseEvent.Navigation(
+                                from = "",
+                                to = result.navigationIndex.stringIndex(),
+                                direction = NavigationDirection.Start,
+                                time = LocalDateTime.now(ZoneOffset.UTC),
+                            ),
+                        )
+                    } else {
+                        emptyList()
+                    },
             ),
         )
     }
@@ -353,19 +425,20 @@ class EMNavProcessor(
                     current.submitDate
                 },
             lang = surveyLang,
-            events = mutableListOf<ResponseEvent>().apply {
-                if (survey.saveTimings) {
-                    add(
-                        ResponseEvent.Navigation(
-                            from = current.navigationIndex.stringIndex(),
-                            to = result.navigationIndex.stringIndex(),
-                            direction = navigationDirection,
-                            time = LocalDateTime.now(ZoneOffset.UTC)
+            events =
+                mutableListOf<ResponseEvent>().apply {
+                    if (survey.saveTimings) {
+                        add(
+                            ResponseEvent.Navigation(
+                                from = current.navigationIndex.stringIndex(),
+                                to = result.navigationIndex.stringIndex(),
+                                direction = navigationDirection,
+                                time = LocalDateTime.now(ZoneOffset.UTC),
+                            ),
                         )
-                    )
-                    addAll(events)
-                }
-            }
+                        addAll(events)
+                    }
+                },
         )
     }
 
@@ -435,6 +508,8 @@ class EMNavProcessor(
 
     companion object {
         private const val TAG = "EMNavProcessor"
+        private const val MIN_PROGRESS = 5
+        private const val MAX_PROGRESS = 95
     }
 }
 

@@ -187,4 +187,27 @@
     <string name="delete">Verwijderen</string>
     <string name="welcome_title">Welkom bij Qlarr</string>
     <string name="welcome_tagline">Verzamel enquêtereacties overal — zelfs offline.</string>
+    <string name="response_status_draft">Concept</string>
+    <string name="response_status_pending">In behandeling</string>
+    <string name="response_status_uploaded">Geüpload</string>
+    <string name="responses_summary_complete">Voltooid</string>
+    <string name="responses_summary_drafts">Concepten</string>
+    <string name="responses_summary_uploaded">Geüpload</string>
+    <string name="responses_last_sync">Laatste synchronisatie %1$s</string>
+    <string name="responses_pending_count">%1$d in behandeling</string>
+    <string name="responses_sync_all">Alles synchroniseren</string>
+    <string name="responses_filter_all">Alle</string>
+    <string name="responses_filter_pending">In behandeling</string>
+    <string name="responses_filter_uploaded">Geüpload</string>
+    <string name="responses_filter_empty">Geen reacties komen overeen met dit filter.</string>
+    <string name="response_when_submitted">Ingediend %1$s</string>
+    <string name="response_when_started">Gestart %1$s</string>
+    <string name="response_media_text_only">Alleen tekstregistratie</string>
+    <string name="response_media_cleared">Alleen tekstregistratie · media gewist</string>
+    <string name="response_draft_progress">%1$d%% voltooid</string>
+    <string name="response_action_view">Bekijken</string>
+    <string name="response_action_continue">Doorgaan</string>
+    <string name="responses_empty_title">Nog geen reacties</string>
+    <string name="responses_empty_subtitle">Reacties die u voor deze enquête verzamelt, verschijnen hier.</string>
+    <string name="responses_empty_action">Een reactie starten</string>
 </resources>

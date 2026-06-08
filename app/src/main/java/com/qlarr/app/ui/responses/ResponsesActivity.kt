@@ -2,7 +2,6 @@ package com.qlarr.app.ui.responses
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.MenuItem
@@ -18,10 +17,10 @@ import androidx.lifecycle.lifecycleScope
 import com.qlarr.app.R
 import com.qlarr.app.business.parcelable
 import com.qlarr.app.business.survey.SurveyData
-import com.qlarr.app.ui.common.FileUtils
 import com.qlarr.app.ui.common.error.ErrorDisplayManager
 import com.qlarr.app.ui.common.theme.QlarrTheme
 import com.qlarr.app.ui.common.theme.QlarrTopBar
+import com.qlarr.app.ui.common.theme.TopBarIconButton
 import com.qlarr.app.ui.survey.EMNavProcessor
 import com.qlarr.app.ui.survey.SurveyActivity
 import kotlinx.coroutines.launch
@@ -58,42 +57,33 @@ class ResponsesActivity : ComponentActivity() {
                 Scaffold(topBar = {
                     QlarrTopBar(
                         title = stringResource(id = R.string.title_activity_responses),
+                        subtitle = survey.name,
                         onBackPressed = {
                             onBackPressedDispatcher.onBackPressed()
-                        })
+                        },
+                        actions = {
+                            TopBarIconButton(iconRes = R.drawable.ic_sync) {
+                                viewModel.syncAll()
+                            }
+                        },
+                    )
                 }) { padding ->
                     ResponsesScreen(
-                        modifier = Modifier
-                            .padding(padding),
+                        modifier = Modifier.padding(padding),
+                        screenState = responsesScreenData,
                         onLoadNext = viewModel::loadNext,
-                        onEditClicked = { id ->
+                        onFilterChange = viewModel::setFilter,
+                        onSyncAll = viewModel::syncAll,
+                        onContinueClicked = { id ->
                             startActivity(
-                                SurveyActivity.createIntent(
-                                    this@ResponsesActivity, survey, id
-                                )
+                                SurveyActivity.createIntent(this@ResponsesActivity, survey, id),
                             )
                         },
-                        onDeleteClicked = { id ->
-                            viewModel.deleteResponse(id)
-                        },
-                        screenState = responsesScreenData,
-                        onFileClicked = { fileData ->
-                            FileUtils.openFile(
-                                context = this,
-                                file = fileData.file,
-                                fileType = fileData.fileType,
-                                onError = { viewModel.handleError(it) })
-                        },
-                        onPlayClicked = viewModel::onPlayClicked,
-                        onPauseClicked = viewModel::onPauseClicked,
-                        onSeekTo = viewModel::onSeekTo,
-                        onMapClicked = {
-                            val gmmIntentUri = Uri.parse("geo:${it.latitude},${it.longitude}")
-                            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-                            mapIntent.setPackage("com.google.android.apps.maps")
-                            mapIntent.resolveActivity(packageManager)?.let {
-                                startActivity(mapIntent)
-                            }
+                        onDeleteClicked = { id -> viewModel.deleteResponse(id) },
+                        onStartResponse = {
+                            startActivity(
+                                SurveyActivity.createIntent(this@ResponsesActivity, survey),
+                            )
                         },
                     )
                 }

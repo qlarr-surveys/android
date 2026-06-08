@@ -198,4 +198,27 @@
     <string name="delete">Excluir</string>
     <string name="welcome_title">Bem-vindo ao Qlarr</string>
     <string name="welcome_tagline">Colete respostas de pesquisas em qualquer lugar — mesmo offline.</string>
+    <string name="response_status_draft">Rascunho</string>
+    <string name="response_status_pending">Pendente</string>
+    <string name="response_status_uploaded">Enviado</string>
+    <string name="responses_summary_complete">Concluído</string>
+    <string name="responses_summary_drafts">Rascunhos</string>
+    <string name="responses_summary_uploaded">Enviados</string>
+    <string name="responses_last_sync">Última sincronização %1$s</string>
+    <string name="responses_pending_count">%1$d pendentes</string>
+    <string name="responses_sync_all">Sincronizar tudo</string>
+    <string name="responses_filter_all">Todas</string>
+    <string name="responses_filter_pending">Pendentes</string>
+    <string name="responses_filter_uploaded">Enviadas</string>
+    <string name="responses_filter_empty">Nenhuma resposta corresponde a este filtro.</string>
+    <string name="response_when_submitted">Enviada %1$s</string>
+    <string name="response_when_started">Iniciada %1$s</string>
+    <string name="response_media_text_only">Apenas registro de texto</string>
+    <string name="response_media_cleared">Apenas registro de texto · mídia removida</string>
+    <string name="response_draft_progress">%1$d%% concluído</string>
+    <string name="response_action_view">Ver</string>
+    <string name="response_action_continue">Continuar</string>
+    <string name="responses_empty_title">Ainda não há respostas</string>
+    <string name="responses_empty_subtitle">As respostas que você coletar para esta pesquisa aparecerão aqui.</string>
+    <string name="responses_empty_action">Iniciar uma resposta</string>
 </resources>

@@ -30,6 +30,11 @@ object Colors {
     val WarnBg = Color(0xFFFBEBD6)
     val WarnLine = Color(0x52A35A00) // rgba(163,90,0,0.32)
 
+    // Draft / incomplete response — slate (calm, not urgent)
+    val Slate = Color(0xFF4A5170)
+    val SlateBg = Color(0xFFECEEF5)
+    val SlateLine = Color(0x424A5170) // rgba(74,81,112,0.26)
+
     // Quota
     val QuotaInk = Color(0xFF3949AB)
     val QuotaTrack = Color(0x1A211C36) // rgba(33,28,54,0.10)

@@ -189,4 +189,27 @@
     <string name="delete">Löschen</string>
     <string name="welcome_title">Willkommen bei Qlarr</string>
     <string name="welcome_tagline">Erfassen Sie Umfrageantworten überall – auch offline.</string>
+    <string name="response_status_draft">Entwurf</string>
+    <string name="response_status_pending">Ausstehend</string>
+    <string name="response_status_uploaded">Hochgeladen</string>
+    <string name="responses_summary_complete">Abgeschlossen</string>
+    <string name="responses_summary_drafts">Entwürfe</string>
+    <string name="responses_summary_uploaded">Hochgeladen</string>
+    <string name="responses_last_sync">Letzte Synchronisierung %1$s</string>
+    <string name="responses_pending_count">%1$d ausstehend</string>
+    <string name="responses_sync_all">Alle synchronisieren</string>
+    <string name="responses_filter_all">Alle</string>
+    <string name="responses_filter_pending">Ausstehend</string>
+    <string name="responses_filter_uploaded">Hochgeladen</string>
+    <string name="responses_filter_empty">Keine Antworten entsprechen diesem Filter.</string>
+    <string name="response_when_submitted">Übermittelt %1$s</string>
+    <string name="response_when_started">Begonnen %1$s</string>
+    <string name="response_media_text_only">Nur Textaufzeichnung</string>
+    <string name="response_media_cleared">Nur Textaufzeichnung · Medien gelöscht</string>
+    <string name="response_draft_progress">%1$d%% abgeschlossen</string>
+    <string name="response_action_view">Ansehen</string>
+    <string name="response_action_continue">Fortsetzen</string>
+    <string name="responses_empty_title">Noch keine Antworten</string>
+    <string name="responses_empty_subtitle">Antworten, die Sie für diese Umfrage sammeln, erscheinen hier.</string>
+    <string name="responses_empty_action">Antwort beginnen</string>
 </resources>

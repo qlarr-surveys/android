@@ -198,4 +198,27 @@
     <string name="delete">Eliminar</string>
     <string name="welcome_title">Bienvenido a Qlarr</string>
     <string name="welcome_tagline">Recopila respuestas de encuestas en cualquier lugar, incluso sin conexión.</string>
+    <string name="response_status_draft">Borrador</string>
+    <string name="response_status_pending">Pendiente</string>
+    <string name="response_status_uploaded">Subido</string>
+    <string name="responses_summary_complete">Completo</string>
+    <string name="responses_summary_drafts">Borradores</string>
+    <string name="responses_summary_uploaded">Subidos</string>
+    <string name="responses_last_sync">Última sincronización %1$s</string>
+    <string name="responses_pending_count">%1$d pendientes</string>
+    <string name="responses_sync_all">Sincronizar todo</string>
+    <string name="responses_filter_all">Todos</string>
+    <string name="responses_filter_pending">Pendientes</string>
+    <string name="responses_filter_uploaded">Subidos</string>
+    <string name="responses_filter_empty">Ninguna respuesta coincide con este filtro.</string>
+    <string name="response_when_submitted">Enviada %1$s</string>
+    <string name="response_when_started">Iniciada %1$s</string>
+    <string name="response_media_text_only">Solo registro de texto</string>
+    <string name="response_media_cleared">Solo registro de texto · medios eliminados</string>
+    <string name="response_draft_progress">%1$d%% completado</string>
+    <string name="response_action_view">Ver</string>
+    <string name="response_action_continue">Continuar</string>
+    <string name="responses_empty_title">Aún no hay respuestas</string>
+    <string name="responses_empty_subtitle">Las respuestas que recopiles para esta encuesta aparecerán aquí.</string>
+    <string name="responses_empty_action">Iniciar una respuesta</string>
 </resources>
