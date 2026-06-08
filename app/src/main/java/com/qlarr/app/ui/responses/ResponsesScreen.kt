@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -18,6 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -85,8 +87,15 @@ data class ResponsesScreenState(
 
     val totalResponsesCount: Int get() = completeResponsesCount + inCompleteResponsesCount
 
-    /** Pending = everything not yet uploaded (drafts + complete-unsynced). */
-    val pendingResponsesCount: Int get() = totalResponsesCount - uploadedResponsesCount
+    /** Drafts = incomplete responses (not submitted). */
+    val draftResponsesCount: Int get() = inCompleteResponsesCount
+
+    /** Pending = complete but not yet uploaded — the actually-uploadable responses. */
+    val pendingResponsesCount: Int
+        get() =
+            (completeResponsesCount - uploadedResponsesCount).coerceAtLeast(
+                0,
+        )
 }
 
 @Composable
@@ -309,28 +318,42 @@ private fun FilterChipsRow(
     state: ResponsesScreenState,
     onFilterChange: (ResponsesFilter) -> Unit,
 ) {
-    Row(
-        modifier = Modifier.padding(horizontal = 2.dp),
+    LazyRow(
+        contentPadding = PaddingValues(horizontal = 2.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        FilterChip(
-            label = stringResource(R.string.responses_filter_all),
-            count = state.totalResponsesCount,
-            selected = state.activeFilter == ResponsesFilter.ALL,
-            onClick = { onFilterChange(ResponsesFilter.ALL) },
-        )
-        FilterChip(
-            label = stringResource(R.string.responses_filter_pending),
-            count = state.pendingResponsesCount,
-            selected = state.activeFilter == ResponsesFilter.PENDING,
-            onClick = { onFilterChange(ResponsesFilter.PENDING) },
-        )
-        FilterChip(
-            label = stringResource(R.string.responses_filter_uploaded),
-            count = state.uploadedResponsesCount,
-            selected = state.activeFilter == ResponsesFilter.UPLOADED,
-            onClick = { onFilterChange(ResponsesFilter.UPLOADED) },
-        )
+        item {
+            FilterChip(
+                label = stringResource(R.string.responses_filter_all),
+                count = state.totalResponsesCount,
+                selected = state.activeFilter == ResponsesFilter.ALL,
+                onClick = { onFilterChange(ResponsesFilter.ALL) },
+            )
+        }
+        item {
+            FilterChip(
+                label = stringResource(R.string.responses_summary_drafts),
+                count = state.draftResponsesCount,
+                selected = state.activeFilter == ResponsesFilter.DRAFT,
+                onClick = { onFilterChange(ResponsesFilter.DRAFT) },
+            )
+        }
+        item {
+            FilterChip(
+                label = stringResource(R.string.responses_filter_pending),
+                count = state.pendingResponsesCount,
+                selected = state.activeFilter == ResponsesFilter.PENDING,
+                onClick = { onFilterChange(ResponsesFilter.PENDING) },
+            )
+        }
+        item {
+            FilterChip(
+                label = stringResource(R.string.responses_filter_uploaded),
+                count = state.uploadedResponsesCount,
+                selected = state.activeFilter == ResponsesFilter.UPLOADED,
+                onClick = { onFilterChange(ResponsesFilter.UPLOADED) },
+            )
+        }
     }
 }
 

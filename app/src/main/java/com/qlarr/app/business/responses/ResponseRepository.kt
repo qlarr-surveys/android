@@ -4,7 +4,7 @@ import com.qlarr.app.api.survey.ResponseEvent
 import com.qlarr.app.db.ResponseDao
 import com.qlarr.app.db.model.Response
 
-enum class ResponsesFilter { ALL, PENDING, UPLOADED }
+enum class ResponsesFilter { ALL, DRAFT, PENDING, UPLOADED }
 
 interface ResponseRepository {
 
@@ -58,14 +58,14 @@ class ResponseRepositoryImpl(
                 responseDao.getByUserAndSurvey(surveyId, page, perPage)
             }
 
-            // "Pending" = every response not yet uploaded (drafts + complete-unsynced).
+            // "Drafts" = incomplete responses (not submitted).
+            ResponsesFilter.DRAFT -> {
+                responseDao.getDrafts(surveyId, page, perPage)
+            }
+
+            // "Pending" = complete but not yet uploaded — the actually-uploadable responses.
             ResponsesFilter.PENDING -> {
-                responseDao.getByUserAndSurveyFiltered(
-                    surveyId,
-                    synced = false,
-                    page = page,
-                    perPage = perPage,
-                )
+                responseDao.getPendingUpload(surveyId, page, perPage)
             }
 
             ResponsesFilter.UPLOADED -> {
