@@ -8,6 +8,7 @@ import com.qlarr.app.api.survey.UploadResponseRequestData
 import com.qlarr.app.business.responses.ResponseRepository
 import com.qlarr.app.db.model.Response
 import com.qlarr.app.ui.common.FileUtils
+import com.qlarr.app.ui.common.error.isConnectivityError
 import com.qlarr.app.ui.responses.ResponsesViewModel.Companion.KEY_FILENAME
 import com.qlarr.app.ui.responses.ResponsesViewModel.Companion.KEY_STORED_FILENAME
 import com.qlarr.app.ui.responses.ResponsesViewModel.Companion.KEY_TYPE
@@ -15,7 +16,12 @@ import com.qlarr.app.ui.responses.ResponsesViewModel.Companion.KEY_TYPE
 interface UploadSurveyResponsesUseCase {
     suspend operator fun invoke()
 
-    suspend fun uploadSurvey(surveyId: String)
+    /**
+     * Uploads every complete, unsynced response for [surveyId] and returns how many were synced.
+     * Throws on the first failure so user-triggered syncs can surface the error; the automatic
+     * [invoke] path catches per-survey and stays silent.
+     */
+    suspend fun uploadSurvey(surveyId: String): Int
 }
 
 class UploadSurveyResponsesUseCaseImpl(
@@ -49,19 +55,28 @@ class UploadSurveyResponsesUseCaseImpl(
         }
     }
 
-    override suspend fun uploadSurvey(surveyId: String) {
+    override suspend fun uploadSurvey(surveyId: String): Int {
         eventBus.emitEvent(AppEvent.UploadingSurveyResponse(surveyId))
         val responses =
             responseRepository
                 .getResponses(surveyId)
                 .filter { !it.isSynced && it.submitDate != null }
+        var synced = 0
+        var firstError: Exception? = null
         responses.forEach { response ->
             try {
                 syncResponse(surveyId, response)
+                synced++
             } catch (e: Exception) {
-                reportError(e)
+                // Network/transport down — every remaining upload will fail too, so stop now.
+                if (e.isConnectivityError()) throw e
+                // Backend rejected this one response: skip it and keep delivering the rest,
+                // then rethrow the first failure at the end so the caller can surface it.
+                if (firstError == null) firstError = e
             }
         }
+        firstError?.let { throw it }
+        return synced
     }
 
     private suspend fun syncResponse(
@@ -132,7 +147,7 @@ class UploadSurveyResponsesUseCaseImpl(
             val surveyData = surveyRepository.updateSurveyAfterSync(surveyId, result.getOrThrow())
             eventBus.emitEvent(AppEvent.UploadedSurveyResponse(response.id, surveyData))
         } else {
-            reportError(result.exceptionOrNull())
+            throw result.exceptionOrNull() ?: IllegalStateException("Response upload failed")
         }
     }
 

@@ -29,17 +29,13 @@ class ErrorProcessorImpl(private val connectivityChecker: ConnectivityChecker) :
     // TODO: check if no internet connection
     override suspend fun processError(throwable: Throwable) {
         throwable.printStackTrace()
-        val processedError = when (throwable) {
-            is HttpException -> {
-                processHttpException(throwable)
-            }
+        val processedError =
+            when {
+                throwable is HttpException -> {
+                    processHttpException(throwable)
+                }
 
-            is UnknownHostException,
-            is SocketTimeoutException,
-            is ConnectException,
-            is InterruptedIOException,
-            is NoRouteToHostException,
-            is SSLException -> {
+                throwable.isConnectivityError() -> {
                 if (connectivityChecker.networkAvailable) {
                     ProcessedError.Timeout
                 } else {
@@ -83,8 +79,24 @@ class ErrorProcessorImpl(private val connectivityChecker: ConnectivityChecker) :
             else -> ProcessedError.GeneralError
         }
     }
-
 }
+
+/**
+ * Transport-level failures — the request never got a response (network down, DNS, timeout, TLS).
+ * Distinct from an [HttpException], which means the backend answered with an error for that request.
+ */
+fun Throwable.isConnectivityError(): Boolean =
+    when (this) {
+        is UnknownHostException,
+        is SocketTimeoutException,
+        is ConnectException,
+        is InterruptedIOException,
+        is NoRouteToHostException,
+        is SSLException,
+        -> true
+
+        else -> false
+    }
 
 sealed class ProcessedError(val titleRes: Int, val messageRes: Int) {
     object AuthError : ProcessedError(R.string.error_auth_title, R.string.error_auth_description)

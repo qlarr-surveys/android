@@ -207,6 +207,9 @@
     <string name="responses_last_sync">Dernière synchronisation %1$s</string>
     <string name="responses_pending_count">%1$d en attente</string>
     <string name="responses_sync_all">Tout synchroniser</string>
+    <string name="responses_syncing">Synchronisation…</string>
+    <string name="responses_sync_complete">Synchronisation terminée</string>
+    <string name="responses_sync_none">Rien à synchroniser</string>
     <string name="responses_filter_all">Tous</string>
     <string name="responses_filter_pending">En attente</string>
     <string name="responses_filter_uploaded">Envoyés</string>

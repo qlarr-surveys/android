@@ -196,6 +196,9 @@
     <string name="responses_last_sync">Laatste synchronisatie %1$s</string>
     <string name="responses_pending_count">%1$d in behandeling</string>
     <string name="responses_sync_all">Alles synchroniseren</string>
+    <string name="responses_syncing">Synchroniseren…</string>
+    <string name="responses_sync_complete">Synchronisatie voltooid</string>
+    <string name="responses_sync_none">Niets om te synchroniseren</string>
     <string name="responses_filter_all">Alle</string>
     <string name="responses_filter_pending">In behandeling</string>
     <string name="responses_filter_uploaded">Geüpload</string>

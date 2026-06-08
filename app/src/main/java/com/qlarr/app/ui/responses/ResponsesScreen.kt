@@ -38,6 +38,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -229,7 +230,7 @@ private fun SummaryHeader(
                 overflow = TextOverflow.Ellipsis,
             )
             if (state.pendingResponsesCount > 0) {
-                SyncAllPill(enabled = !state.isSyncing, onClick = onSyncAll)
+                SyncAllPill(syncing = state.isSyncing, onClick = onSyncAll)
             }
         }
     }
@@ -265,7 +266,7 @@ private fun Dot() {
 
 @Composable
 private fun SyncAllPill(
-    enabled: Boolean,
+    syncing: Boolean,
     onClick: () -> Unit,
 ) {
     Row(
@@ -273,23 +274,31 @@ private fun SyncAllPill(
             Modifier
                 .height(34.dp)
                 .clip(RoundedCornerShape(17.dp))
-                .background(if (enabled) Colors.Primary else Colors.DisabledBg)
-                .clickable(enabled = enabled, onClick = onClick)
+                .background(if (syncing) Colors.DisabledBg else Colors.Primary)
+                .clickable(enabled = !syncing, onClick = onClick)
                 .padding(horizontal = 15.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(7.dp),
     ) {
-        Icon(
-            imageVector = Icons.Filled.Sync,
-            contentDescription = null,
-            tint = if (enabled) Colors.White else Colors.DisabledInk,
-            modifier = Modifier.size(16.dp),
-        )
+        if (syncing) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(16.dp),
+                strokeWidth = 2.dp,
+                color = Colors.DisabledInk,
+            )
+        } else {
+            Icon(
+                imageVector = Icons.Filled.Sync,
+                contentDescription = null,
+                tint = Colors.White,
+                modifier = Modifier.size(16.dp),
+            )
+        }
         Text(
-            text = stringResource(R.string.responses_sync_all),
+            text = stringResource(if (syncing) R.string.responses_syncing else R.string.responses_sync_all),
             fontSize = 13.5.sp,
             fontWeight = FontWeight.SemiBold,
-            color = if (enabled) Colors.White else Colors.DisabledInk,
+            color = if (syncing) Colors.DisabledInk else Colors.White,
         )
     }
 }
@@ -341,7 +350,8 @@ private fun FilterChip(
                 .border(
                     BorderStroke(1.dp, if (selected) Colors.Primary else Colors.Hairline),
                     RoundedCornerShape(17.dp),
-                ).clickable(onClick = onClick)
+                )
+                .clickable(onClick = onClick)
                 .padding(horizontal = 14.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.dp),

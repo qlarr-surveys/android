@@ -240,6 +240,9 @@
     <string name="responses_last_sync">آخر مزامنة %1$s</string>
     <string name="responses_pending_count">%1$d قيد الانتظار</string>
     <string name="responses_sync_all">مزامنة الكل</string>
+    <string name="responses_syncing">جارٍ المزامنة…</string>
+    <string name="responses_sync_complete">اكتملت المزامنة</string>
+    <string name="responses_sync_none">لا شيء للمزامنة</string>
     <string name="responses_filter_all">الكل</string>
     <string name="responses_filter_pending">قيد الانتظار</string>
     <string name="responses_filter_uploaded">تم الرفع</string>

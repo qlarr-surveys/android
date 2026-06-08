@@ -8,16 +8,20 @@ import android.view.MenuItem
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import com.qlarr.app.R
 import com.qlarr.app.business.parcelable
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.ui.common.error.ErrorDisplayManager
+import com.qlarr.app.ui.common.theme.Colors
 import com.qlarr.app.ui.common.theme.QlarrTheme
 import com.qlarr.app.ui.common.theme.QlarrTopBar
 import com.qlarr.app.ui.common.theme.TopBarIconButton
@@ -62,8 +66,19 @@ class ResponsesActivity : ComponentActivity() {
                             onBackPressedDispatcher.onBackPressed()
                         },
                         actions = {
-                            TopBarIconButton(iconRes = R.drawable.ic_sync) {
-                                viewModel.syncAll()
+                            if (responsesScreenData.isSyncing) {
+                                CircularProgressIndicator(
+                                    modifier =
+                                        Modifier
+                                            .padding(end = 16.dp)
+                                            .size(22.dp),
+                                    strokeWidth = 2.dp,
+                                    color = Colors.White,
+                                )
+                            } else {
+                                TopBarIconButton(iconRes = R.drawable.ic_sync) {
+                                    viewModel.syncAll()
+                                }
                             }
                         },
                     )

@@ -5,6 +5,8 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
@@ -13,6 +15,7 @@ import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.qlarr.app.AppEvent
 import com.qlarr.app.EventBus
+import com.qlarr.app.R
 import com.qlarr.app.api.survey.ResponseEvent
 import com.qlarr.app.business.responses.ResponseRepository
 import com.qlarr.app.business.responses.ResponsesFilter
@@ -97,6 +100,7 @@ class ResponsesViewModel(
                 when {
                     event is AppEvent.UploadedSurveyResponse && event.survey.id == surveyData.id -> {
                         this@ResponsesViewModel.surveyData = event.survey
+                        _responsesScreenData.update { it.copy(lastSyncTime = event.survey.lastSync) }
                         refresh()
                     }
 
@@ -382,13 +386,20 @@ class ResponsesViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             _responsesScreenData.update { it.copy(isSyncing = true) }
             try {
-                uploadUseCase.uploadSurvey(surveyData.id)
+                val synced = uploadUseCase.uploadSurvey(surveyData.id)
+                toast(if (synced > 0) R.string.responses_sync_complete else R.string.responses_sync_none)
             } catch (e: Exception) {
                 handleError(e)
             } finally {
                 _responsesScreenData.update { it.copy(isSyncing = false) }
             }
         }
+    }
+
+    private suspend fun toast(
+        @StringRes messageRes: Int,
+    ) = withContext(Dispatchers.Main) {
+        Toast.makeText(getApplication(), messageRes, Toast.LENGTH_SHORT).show()
     }
 
     fun handleError(it: Exception) {
