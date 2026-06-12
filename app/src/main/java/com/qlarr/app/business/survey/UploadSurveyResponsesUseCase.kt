@@ -22,6 +22,15 @@ interface UploadSurveyResponsesUseCase {
      * [invoke] path catches per-survey and stays silent.
      */
     suspend fun uploadSurvey(surveyId: String): Int
+
+    /**
+     * Uploads a single complete, unsynced response and returns whether it was synced. Throws on
+     * failure (connectivity or backend rejection) so a user-triggered single sync can surface it.
+     * On success the engine clears the response's media files (same path as [uploadSurvey]).
+     */
+    suspend fun uploadResponse(
+        surveyId: String,
+        responseId: String): Boolean
 }
 
 class UploadSurveyResponsesUseCaseImpl(
@@ -77,6 +86,16 @@ class UploadSurveyResponsesUseCaseImpl(
         }
         firstError?.let { throw it }
         return synced
+    }
+
+    override suspend fun uploadResponse(
+        surveyId: String,
+        responseId: String,
+    ): Boolean {
+        val response = responseRepository.getResponse(responseId)
+        if (response.isSynced || response.submitDate == null) return false
+        syncResponse(surveyId, response)
+        return true
     }
 
     private suspend fun syncResponse(

@@ -224,4 +224,62 @@
     <string name="responses_empty_title">Aucune réponse pour l\'instant</string>
     <string name="responses_empty_subtitle">Les réponses que vous recueillez pour cette enquête apparaîtront ici.</string>
     <string name="responses_empty_action">Démarrer une réponse</string>
+    <!-- Response detail screen -->
+    <string name="response_detail_title">Réponse n° %1$d</string>
+    <string name="response_meta_status">Statut</string>
+    <string name="response_meta_started">Commencée</string>
+    <string name="response_meta_submitted">Envoyée</string>
+    <string name="response_meta_not_submitted">— non envoyée</string>
+    <string name="response_meta_language">Langue</string>
+    <string name="response_meta_disqualified">Disqualifiée</string>
+    <string name="response_meta_response_id">ID de réponse</string>
+    <string name="response_yes">Oui</string>
+    <string name="response_no">Non</string>
+    <string name="response_banner_pending_sub">En attente d\'envoi</string>
+    <string name="response_banner_uploaded_sub">Synchronisée · média effacé</string>
+    <string name="response_freed_banner">Média envoyé &amp; effacé pour libérer de l\'espace</string>
+    <string name="response_section_recordings">Enregistrements vocaux</string>
+    <string name="response_section_locations">Positions</string>
+    <string name="response_recording_n">Enregistrement %1$d</string>
+    <string name="response_audio_cleared">Envoyé · audio effacé de l\'appareil</string>
+    <string name="response_open_map">Ouvrir la carte</string>
+    <string name="response_tab_answers">Réponses</string>
+    <string name="response_tab_events">Événements</string>
+    <string name="response_not_answered">Pas encore répondu</string>
+    <string name="response_no_answers">Aucune réponse enregistrée</string>
+    <string name="response_no_events">Aucun événement enregistré</string>
+    <string name="response_answer_cleared">Effacé · média envoyé</string>
+
+    <!-- Survey Info screen (redesign) -->
+    <string name="info_status_active">Active</string>
+    <string name="info_status_scheduled">Planifiée</string>
+    <string name="info_status_expired">Expirée</string>
+    <string name="info_update_banner">Nouvelle version disponible — mettez à jour pour obtenir les dernières questions.</string>
+    <string name="info_meta_dates">Créée %1$s · Mise à jour %2$s</string>
+    <string name="info_sync_offline_title">Pas encore sur cet appareil</string>
+    <string name="info_sync_offline_sub">Téléchargez pour collecter des réponses hors ligne.</string>
+    <string name="info_sync_ready_title">Prête à collecter</string>
+    <string name="info_sync_ready_sub">Aucune réponse pour l\'instant — appuyez sur Démarrer pour commencer.</string>
+    <plurals name="info_sync_pending_title">
+        <item quantity="one">%1$d réponse en attente de synchronisation</item>
+        <item quantity="other">%1$d réponses en attente de synchronisation</item>
+    </plurals>
+    <string name="info_sync_pending_sub">Dernière synchronisation %1$s · nécessite une connexion</string>
+    <string name="info_sync_pending_sub_never">Pas encore synchronisé · nécessite une connexion</string>
+    <string name="info_sync_synced_title">Toutes les réponses synchronisées</string>
+    <string name="info_sync_synced_sub">%1$d envoyées · dernière synchronisation %2$s</string>
+    <string name="info_sync_synced_sub_nodate">%1$d envoyées</string>
+    <string name="info_sync_syncing_title">Synchronisation…</string>
+    <string name="info_sync_syncing_sub">Envoi de vos réponses</string>
+    <string name="info_section_responses">Réponses</string>
+    <string name="info_section_recorded">Enregistré avec les réponses</string>
+    <string name="info_section_limits">Limites</string>
+    <string name="info_view_all">Tout voir</string>
+    <string name="info_responses_on_device">sur l\'appareil</string>
+    <string name="info_responses_total">au total</string>
+    <string name="info_responses_breakdown">%1$d terminées · %2$d brouillon</string>
+    <string name="info_responses_to_upload">%1$d encore à envoyer</string>
+    <string name="info_responses_all_uploaded">Tout envoyé</string>
+    <string name="info_quota_shared">Partagé entre les collecteurs · à la dernière synchronisation</string>
+    <string name="info_chip_off">· désactivé</string>
 </resources>

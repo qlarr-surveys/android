@@ -21,7 +21,15 @@ import com.qlarr.app.db.QlarrDb
 import com.qlarr.app.db.model.Response
 import com.qlarr.app.db.model.Response.Companion.STORED_FILENAME_KEY
 import com.qlarr.app.ui.common.FileUtils
+import com.qlarr.app.ui.common.toFormattedString
+import com.qlarr.app.ui.responses.AnswerPage
+import com.qlarr.app.ui.responses.AnswerRow
+import com.qlarr.app.ui.responses.AnswerValue
+import com.qlarr.app.ui.responses.ResponseValueData
+import com.qlarr.app.ui.responses.ResponsesViewModel
+import com.qlarr.app.ui.responses.TimelineEntry
 import com.qlarr.surveyengine.ext.JsonExt
+import com.qlarr.surveyengine.ext.splitToComponentCodes
 import com.qlarr.surveyengine.model.Dependency
 import com.qlarr.surveyengine.model.ReservedCode
 import com.qlarr.surveyengine.model.SurveyLang
@@ -39,6 +47,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.net.URLConnection
+import java.time.Duration
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.UUID
@@ -250,6 +259,175 @@ class EMNavProcessor(
     }
 
     private fun String.stripHTMLTags(): String = replace(Regex("<.*?>"), "")
+
+    /**
+     * Builds the Response **Detail** content for one response: answers grouped by survey page
+     * (matching the web app — page header rows + question→answer rows) and the navigation/answer
+     * timeline (only populated when the survey records timings). [includeUnanswered] adds
+     * "not answered" rows for draft questions with no value yet.
+     */
+    fun detailContent(
+        response: Response,
+        includeUnanswered: Boolean,
+    ): DetailContent {
+        val validationJsonOutput =
+            FileUtils.getValidationJson(getActivity(), survey.id)
+                ?: return DetailContent(emptyList(), emptyList())
+        val codeIndex = validationJsonOutput.buildCodeIndex()
+        val labels =
+            JsonExt.labels(
+                validationJsonOutput.survey.toString(),
+                "",
+                validationJsonOutput.defaultSurveyLang().code,
+            )
+        val valueColumns =
+            validationJsonOutput.schema
+                .filter { it.columnName == ColumnName.VALUE }
+                .map { it.componentCode }
+                .toSet()
+        val masked = maskedValues(response.values)
+
+        // Mirror the backend (ResponseService.getResponseById): show the masked value with the raw
+        // value in parentheses, falling back to the raw value when there is no masked value.
+        fun maskedOrRaw(code: String): String? {
+            val raw = response.values["$code.value"]?.toString()
+            val maskedValue =
+                masked[Dependency(code, ReservedCode.MaskedValue).toValueKey()]?.toString()
+            return maskedValue?.let { "$it ($raw)" } ?: raw
+        }
+
+        // Mirror the backend label build: split the code into its component segments
+        // (e.g. "Q1A1" -> ["Q1", "A1"]); when it is an answer within a question, the first
+        // segment is the question. Avoids treating a nested answer code as the question.
+        fun questionLabel(code: String): String {
+            val parts = code.splitToComponentCodes()
+            return if (parts.size > 1) {
+                val q = parts[0]
+                val question =
+                    "(${codeIndex[q] ?: q}) ${labels[q]?.stripHTMLTags().orEmpty()}".trim()
+                "$question - ${labels[code]?.stripHTMLTags() ?: code}"
+            } else {
+                "(${codeIndex[code] ?: code}) ${labels[code]?.stripHTMLTags() ?: code}".trim()
+            }
+        }
+
+        // Page-grouped answers, in survey order.
+        val pages = mutableListOf<AnswerPage>()
+        var title: String? = null
+        var rows = mutableListOf<AnswerRow>()
+        validationJsonOutput.componentIndexList.forEach { ci ->
+            val code = ci.code
+            when {
+                code.startsWith("G") -> {
+                    title?.let { pages.add(AnswerPage(it, rows)) }
+                    title =
+                        "${codeIndex[code] ?: ""} · ${labels[code]?.stripHTMLTags() ?: code}".trim()
+                    rows = mutableListOf()
+                }
+
+                code in valueColumns -> {
+                    val raw = response.values["$code.value"]
+                    val answer: AnswerValue? =
+                        when {
+                            raw == null -> {
+                                if (includeUnanswered) AnswerValue.NotAnswered else null
+                            }
+
+                            raw.isFileMap() -> {
+                                val map = raw as Map<*, *>
+                                val storedName =
+                                    map[ResponsesViewModel.KEY_STORED_FILENAME] as String
+                                val filename = map[ResponsesViewModel.KEY_FILENAME] as String
+                                val file =
+                                    FileUtils.getResponseFile(
+                                        getActivity(),
+                                        storedName,
+                                        survey.id,
+                                        response.id,
+                                    )
+                                if (file.exists()) {
+                                    AnswerValue.File(
+                                        ResponseValueData.FileValueData(
+                                            filename = filename,
+                                            file = file,
+                                            fileType = map[ResponsesViewModel.KEY_TYPE] as String,
+                                            key = questionLabel(code),
+                                        ),
+                                    )
+                                } else {
+                                    AnswerValue.Cleared(filename)
+                                }
+                            }
+
+                            else -> {
+                                AnswerValue.Text(maskedOrRaw(code).orEmpty())
+                            }
+                        }
+                    if (answer != null && title != null) {
+                        rows.add(AnswerRow(questionLabel(code), answer))
+                    }
+                }
+            }
+        }
+        title?.let { pages.add(AnswerPage(it, rows)) }
+
+        // Navigation + answer timeline. Voice/Location events have their own sections, but still
+        // advance the clock so deltas stay chronological.
+        var prevTime: LocalDateTime? = null
+        val timeline =
+            response.events.mapNotNull { event ->
+                val delta = prevTime?.let { formatDelta(it, event.time) }
+                prevTime = event.time
+                when (event) {
+                    is ResponseEvent.Navigation -> {
+                        TimelineEntry.Nav(
+                            from = codeIndex[event.from] ?: event.from.ifBlank { "Start" },
+                            to = codeIndex[event.to] ?: event.to.ifBlank { "End" },
+                            tag = event.direction.name.uppercase(),
+                            timeLabel = event.time.toFormattedString(),
+                            delta = delta,
+                        )
+                    }
+
+                    is ResponseEvent.Value -> {
+                        TimelineEntry.Answer(
+                            question = questionLabel(event.code),
+                            value = maskedOrRaw(event.code).orEmpty(),
+                            timeLabel = event.time.toFormattedString(),
+                            delta = delta,
+                        )
+                    }
+
+                    else -> {
+                        null
+                    }
+                }
+            }
+
+        return DetailContent(pages, timeline)
+    }
+
+    private fun Any.isFileMap(): Boolean =
+        (this as? Map<*, *>)?.run {
+            containsKey(ResponsesViewModel.KEY_FILENAME) &&
+                containsKey(ResponsesViewModel.KEY_STORED_FILENAME) &&
+                containsKey(ResponsesViewModel.KEY_TYPE)
+        } == true
+
+    /** Frontend-style elapsed-time label between two events ("+2.0s", "+1m 4s"); null if not after. */
+    private fun formatDelta(
+        from: LocalDateTime,
+        to: LocalDateTime,
+    ): String? {
+        val ms = Duration.between(from, to).toMillis()
+        if (ms <= 0) return null
+        val seconds = ms / 1000.0
+        return when {
+            seconds < 60 -> "+%.1fs".format(seconds)
+            seconds < 3600 -> "+${(seconds / 60).toInt()}m ${(seconds % 60).toInt()}s"
+            else -> "+${(seconds / 3600).toInt()}h ${((seconds % 3600) / 60).toInt()}m"
+        }
+    }
 
     /**
      * Draft completion as a percentage, stepped to the nearest 5% and clamped to 5–95%
@@ -512,6 +690,12 @@ class EMNavProcessor(
         private const val MAX_PROGRESS = 95
     }
 }
+
+/** Page-grouped answers + navigation/answer timeline for one response's Detail screen. */
+data class DetailContent(
+    val answerPages: List<AnswerPage>,
+    val timeline: List<TimelineEntry>,
+)
 
 data class ResponseUploadFile(
     val filename: String,

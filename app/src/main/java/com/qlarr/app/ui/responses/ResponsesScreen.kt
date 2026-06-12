@@ -82,6 +82,8 @@ data class ResponsesScreenState(
     val lastSyncTime: LocalDateTime? = null,
     val isComplete: Boolean = false,
     val activeFilter: ResponsesFilter = ResponsesFilter.ALL,
+    /** Non-null when the Detail view is open for one response. */
+    val detail: ResponseDetailData? = null,
 ) {
     fun shouldLoad() = !(isLoading || isComplete)
 

@@ -102,10 +102,12 @@ class ResponsesViewModel(
                         this@ResponsesViewModel.surveyData = event.survey
                         _responsesScreenData.update { it.copy(lastSyncTime = event.survey.lastSync) }
                         refresh()
+                        rebuildDetailIfOpen(event.responseId)
                     }
 
                     event is AppEvent.ResponseEnded -> {
                         refreshSingleResponse(event.responseId)
+                        rebuildDetailIfOpen(event.responseId)
                     }
 
                     event is AppEvent.UploadingResponse -> {
@@ -378,6 +380,59 @@ class ResponsesViewModel(
         if (_responsesScreenData.value.activeFilter == filter) return
         _responsesScreenData.update { it.copy(activeFilter = filter) }
         refresh()
+    }
+
+    // ── Detail screen ────────────────────────────────────────────────
+
+    /** Open the Detail view for [responseId]: build its page-grouped answers + event timeline. */
+    fun openDetail(responseId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val detail = buildDetail(responseId)
+            _responsesScreenData.update { it.copy(detail = detail) }
+        }
+    }
+
+    fun closeDetail() {
+        pauseCurrentlyPlaying()
+        _responsesScreenData.update { it.copy(detail = null) }
+    }
+
+    /** Rebuild the open detail (e.g. after a sync clears media, or a draft is edited). */
+    private fun rebuildDetailIfOpen(responseId: String) {
+        if (_responsesScreenData.value.detail?.responseId != responseId) return
+        viewModelScope.launch(Dispatchers.IO) {
+            val detail = buildDetail(responseId)
+            _responsesScreenData.update {
+                if (it.detail?.responseId == responseId) it.copy(detail = detail) else it
+            }
+        }
+    }
+
+    private suspend fun buildDetail(responseId: String): ResponseDetailData {
+        val raw = responsesRepository.getResponse(responseId)
+        val content = emNavProcessor.detailContent(raw, includeUnanswered = raw.submitDate == null)
+        return ResponseDetailData(
+            responseId = responseId,
+            disqualified = raw.values["Survey.disqualified"] as? Boolean ?: false,
+            answerPages = content.answerPages,
+            timeline = content.timeline,
+        )
+    }
+
+    /** Upload a single response (Detail screen Sync action); engine clears its media on success. */
+    fun syncResponse(responseId: String) {
+        if (_responsesScreenData.value.isSyncing) return
+        viewModelScope.launch(Dispatchers.IO) {
+            _responsesScreenData.update { it.copy(isSyncing = true) }
+            try {
+                val synced = uploadUseCase.uploadResponse(surveyData.id, responseId)
+                toast(if (synced) R.string.responses_sync_complete else R.string.responses_sync_none)
+            } catch (e: Exception) {
+                handleError(e)
+            } finally {
+                _responsesScreenData.update { it.copy(isSyncing = false) }
+            }
+        }
     }
 
     /** Upload every pending response for this survey; the engine clears media files on success. */

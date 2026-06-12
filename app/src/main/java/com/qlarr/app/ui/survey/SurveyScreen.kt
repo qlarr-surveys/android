@@ -1,6 +1,5 @@
 package com.qlarr.app.ui.survey
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -67,42 +66,13 @@ import com.qlarr.app.api.survey.PublishInfo
 import com.qlarr.app.api.survey.SurveyNavigationData
 import com.qlarr.app.business.settings.SharedPrefsManager
 import com.qlarr.app.business.survey.SurveyData
-import com.qlarr.app.ui.common.compose.boldValueString
 import com.qlarr.app.ui.common.theme.Colors
 import com.qlarr.app.ui.common.theme.QlarrTheme
 import com.qlarr.app.ui.common.theme.TertiaryActionButton
 import com.qlarr.app.ui.common.toElapsedTime
-import com.qlarr.app.ui.common.toFormattedString
 import java.time.LocalDateTime
 import java.time.Month
 import kotlin.math.max
-
-@Composable
-fun SurveyInfoScreen(
-    modifier: Modifier = Modifier,
-    surveyData: SurveyData,
-) {
-    Column(modifier = modifier) {
-        SurveyPhoto(surveyData.imageUrl)
-        if (surveyData.description.isNotEmpty()) {
-            SurveyDescription(text = surveyData.description)
-        }
-        Column(modifier = Modifier.padding(16.dp)) {
-            surveyData.getSurveyStats().forEach { data ->
-                if (data.value != null && data.value != "-1") {
-                    SurveyStats(
-                        iconRes = data.iconRes,
-                        text =
-                            boldValueString(
-                                descriptionRes = data.stringRes,
-                                value = data.value,
-                            ),
-                    )
-                }
-            }
-        }
-    }
-}
 
 // ── Survey-list card · variation C (accent rail + chips) ─────────────────
 
@@ -565,103 +535,6 @@ private fun RowScope.CardQuotaReachedButton() {
     }
 }
 
-// TODO: show update available
-@Composable
-private fun SurveyData.getSurveyStats() =
-    listOf(
-        SurveyStatsData(
-            R.drawable.ic_checkmark,
-            R.string.survey_status,
-            status,
-        ),
-        SurveyStatsData(
-            R.drawable.ic_calendar,
-            R.string.survey_creation_date,
-            creationDate.toFormattedString(),
-        ),
-        SurveyStatsData(
-            R.drawable.ic_calendar_edit,
-            R.string.survey_last_modified,
-            lastModified.toFormattedString(),
-        ),
-        SurveyStatsData(
-            R.drawable.ic_calendar_month,
-            R.string.survey_start_date,
-            startDate?.toFormattedString(),
-        ),
-        SurveyStatsData(
-            R.drawable.ic_calendar_month,
-            R.string.survey_end_date,
-            endDate?.toFormattedString(),
-        ),
-        SurveyStatsData(
-            R.drawable.ic_list,
-            R.string.survey_local_complete_responses,
-            localCompleteResponsesCount.toString(),
-        ),
-        SurveyStatsData(
-            R.drawable.ic_list,
-            R.string.survey_local_incomplete_responses,
-            (localResponsesCount - localCompleteResponsesCount).toString(),
-        ),
-        SurveyStatsData(
-            R.drawable.ic_list,
-            R.string.survey_local_responses,
-            localResponsesCount.toString(),
-        ),
-        SurveyStatsData(
-            R.drawable.ic_sync,
-            R.string.survey_synced_responses,
-            syncedResponseCount.toString(),
-        ),
-        SurveyStatsData(
-            R.drawable.ic_sync_failed,
-            R.string.survey_unsynced_responses,
-            localUnsyncedResponsesCount.toString(),
-        ),
-        SurveyStatsData(
-            R.drawable.ic_baseline_assignment_24,
-            R.string.survey_stats_quota,
-            surveyQuotaLeft()?.toString() ?: LocalContext.current.getString(R.string.unlimited_quota),
-        ),
-        SurveyStatsData(
-            R.drawable.ic_group,
-            R.string.survey_stats_user_quota,
-            userQuotaLeft()?.toString() ?: LocalContext.current.getString(R.string.unlimited_quota),
-        ),
-        SurveyStatsData(
-            R.drawable.ic_stopwatch,
-            R.string.survey_save_timings,
-            saveTimings.toEnabledDisabledString(),
-        ),
-        SurveyStatsData(
-            R.drawable.ic_mic,
-            R.string.survey_background_audio,
-            backgroundAudio.toEnabledDisabledString(),
-        ),
-        SurveyStatsData(
-            R.drawable.ic_location,
-            R.string.survey_record_gps,
-            recordGps.toEnabledDisabledString(),
-        ),
-    )
-
-@Composable
-private fun Boolean.toEnabledDisabledString() =
-    stringResource(
-        id = if (this) {
-            R.string.enabled
-        } else {
-            R.string.disabled
-        }
-    )
-
-data class SurveyStatsData(
-    @DrawableRes val iconRes: Int,
-    @StringRes val stringRes: Int,
-    val value: String?,
-)
-
 @Composable
 private fun SurveyDescription(
     modifier: Modifier = Modifier,
@@ -788,22 +661,6 @@ private fun SurveyPhoto(
 }
 
 @Composable
-private fun SurveyStats(
-    modifier: Modifier = Modifier,
-    @DrawableRes iconRes: Int,
-    text: AnnotatedString,
-) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Icon(painter = painterResource(id = iconRes), contentDescription = null)
-        Text(
-            modifier = modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-            fontSize = 16.sp,
-            text = text,
-        )
-    }
-}
-
-@Composable
 @Preview(showBackground = true, backgroundColor = 0xFFF2EDF7)
 private fun PreviewSurveyListItem() {
     QlarrTheme {
@@ -911,15 +768,7 @@ private fun PreviewSurveyListItemMissingFiles() {
     }
 }
 
-@Composable
-@Preview(showBackground = true)
-private fun PreviewSurveyInfoScreen() {
-    SurveyInfoScreen(
-        surveyData = getPreviewSurveyData(),
-    )
-}
-
-private fun getPreviewSurveyData() =
+internal fun getPreviewSurveyData() =
     SurveyData(
         id = "someID",
         creationDate = LocalDateTime.of(2020, Month.MARCH, 2, 2, 1, 2),

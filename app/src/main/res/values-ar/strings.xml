@@ -257,4 +257,66 @@
     <string name="responses_empty_title">لا توجد ردود بعد</string>
     <string name="responses_empty_subtitle">ستظهر هنا الردود التي تجمعها لهذا الاستبيان.</string>
     <string name="responses_empty_action">ابدأ ردًا</string>
+    <!-- Response detail screen -->
+    <string name="response_detail_title">الرد رقم %1$d</string>
+    <string name="response_meta_status">الحالة</string>
+    <string name="response_meta_started">بدأ</string>
+    <string name="response_meta_submitted">أُرسل</string>
+    <string name="response_meta_not_submitted">— لم يُرسل</string>
+    <string name="response_meta_language">اللغة</string>
+    <string name="response_meta_disqualified">مستبعد</string>
+    <string name="response_meta_response_id">معرّف الرد</string>
+    <string name="response_yes">نعم</string>
+    <string name="response_no">لا</string>
+    <string name="response_banner_pending_sub">بانتظار الرفع</string>
+    <string name="response_banner_uploaded_sub">مُزامن · تم مسح الوسائط</string>
+    <string name="response_freed_banner">تم رفع الوسائط ومسحها لتوفير المساحة</string>
+    <string name="response_section_recordings">التسجيلات الصوتية</string>
+    <string name="response_section_locations">المواقع</string>
+    <string name="response_recording_n">تسجيل %1$d</string>
+    <string name="response_audio_cleared">تم الرفع · حُذف الصوت من الجهاز</string>
+    <string name="response_open_map">فتح الخريطة</string>
+    <string name="response_tab_answers">الإجابات</string>
+    <string name="response_tab_events">الأحداث</string>
+    <string name="response_not_answered">لم تتم الإجابة بعد</string>
+    <string name="response_no_answers">لا توجد إجابات مسجلة</string>
+    <string name="response_no_events">لا توجد أحداث مسجلة</string>
+    <string name="response_answer_cleared">تم المسح · رُفعت الوسائط</string>
+
+    <!-- Survey Info screen (redesign) -->
+    <string name="info_status_active">نشط</string>
+    <string name="info_status_scheduled">مجدول</string>
+    <string name="info_status_expired">منتهٍ</string>
+    <string name="info_update_banner">يتوفر إصدار جديد — حدِّث للحصول على أحدث الأسئلة.</string>
+    <string name="info_meta_dates">أُنشئ %1$s · حُدِّث %2$s</string>
+    <string name="info_sync_offline_title">غير موجود على هذا الجهاز بعد</string>
+    <string name="info_sync_offline_sub">نزِّل لجمع الردود دون اتصال.</string>
+    <string name="info_sync_ready_title">جاهز للجمع</string>
+    <string name="info_sync_ready_sub">لا توجد ردود بعد — اضغط ابدأ للبدء.</string>
+    <plurals name="info_sync_pending_title">
+        <item quantity="zero">%1$d رد في انتظار المزامنة</item>
+        <item quantity="one">رد واحد في انتظار المزامنة</item>
+        <item quantity="two">ردّان في انتظار المزامنة</item>
+        <item quantity="few">%1$d ردود في انتظار المزامنة</item>
+        <item quantity="many">%1$d ردًا في انتظار المزامنة</item>
+        <item quantity="other">%1$d رد في انتظار المزامنة</item>
+    </plurals>
+    <string name="info_sync_pending_sub">آخر مزامنة %1$s · يحتاج إلى اتصال</string>
+    <string name="info_sync_pending_sub_never">لم تتم المزامنة بعد · يحتاج إلى اتصال</string>
+    <string name="info_sync_synced_title">تمت مزامنة جميع الردود</string>
+    <string name="info_sync_synced_sub">تم رفع %1$d · آخر مزامنة %2$s</string>
+    <string name="info_sync_synced_sub_nodate">تم رفع %1$d</string>
+    <string name="info_sync_syncing_title">جارٍ المزامنة…</string>
+    <string name="info_sync_syncing_sub">يتم رفع ردودك</string>
+    <string name="info_section_responses">الردود</string>
+    <string name="info_section_recorded">مُسجَّل مع الردود</string>
+    <string name="info_section_limits">الحدود</string>
+    <string name="info_view_all">عرض الكل</string>
+    <string name="info_responses_on_device">على الجهاز</string>
+    <string name="info_responses_total">الإجمالي</string>
+    <string name="info_responses_breakdown">%1$d مكتملة · %2$d مسودة</string>
+    <string name="info_responses_to_upload">%1$d بانتظار الرفع</string>
+    <string name="info_responses_all_uploaded">تم رفع الكل</string>
+    <string name="info_quota_shared">مشترك بين جامعي البيانات · حتى آخر مزامنة</string>
+    <string name="info_chip_off">· معطّل</string>
 </resources>
