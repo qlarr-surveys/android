@@ -6,7 +6,7 @@ import com.qlarr.app.AppEvent
 import com.qlarr.app.EventBus
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.business.survey.SurveyRepository
-import com.qlarr.app.business.survey.UploadSurveyResponsesUseCase
+import com.qlarr.app.business.survey.SyncCoordinator
 import com.qlarr.app.storage.DownloadManager
 import com.qlarr.app.storage.DownloadState
 import com.qlarr.app.ui.common.error.ErrorProcessor
@@ -18,13 +18,14 @@ import kotlinx.coroutines.launch
 
 /**
  * Drives the redesigned Survey Info screen. Seeded with the [SurveyData] snapshot passed from the
- * list, then keeps itself fresh: Download and single-survey Sync run in place and the local row is
- * re-read (counts, lastSync) on every action and on resume, plus live [EventBus] updates.
+ * list, then keeps itself fresh: Download runs in place, syncing is delegated to the app-wide
+ * [SyncCoordinator], and the local row is re-read (counts, lastSync) on every relevant
+ * [EventBus] update and on resume.
  */
 class SurveyInfoViewModel(
     private val surveyRepository: SurveyRepository,
     private val downloadManager: DownloadManager,
-    private val uploadUseCase: UploadSurveyResponsesUseCase,
+    private val syncCoordinator: SyncCoordinator,
     private val eventBus: EventBus,
     errorProcessor: ErrorProcessor,
 ) : ViewModel(),
@@ -40,34 +41,33 @@ class SurveyInfoViewModel(
         started = true
         _state.value = State(survey = initial)
         observeEvents(initial.id)
+        observeSyncing()
         refresh()
     }
 
     private fun observeEvents(surveyId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             eventBus.events.collect { event ->
-                when (event) {
-                    is AppEvent.UploadedSurveyResponse -> {
-                        if (event.survey.id == surveyId) updateSurvey(event.survey)
+                val updated =
+                    when (event) {
+                        is AppEvent.UploadedSurveyResponse -> event.survey.takeIf { it.id == surveyId }
+                        is AppEvent.ResponseStarted -> event.survey.takeIf { it.id == surveyId }
+                        is AppEvent.ResponseEnded -> event.survey.takeIf { it.id == surveyId }
+                        else -> null
                     }
-
-                    is AppEvent.ResponseStarted -> {
-                        if (event.survey.id == surveyId) updateSurvey(event.survey)
-                    }
-
-                    is AppEvent.ResponseEnded -> {
-                        if (event.survey.id == surveyId) updateSurvey(event.survey)
-                    }
-
-                    is AppEvent.UploadingSurveyResponse -> {
-                        setSyncing(event.surveyId == surveyId)
-                    }
-
-                    is AppEvent.UploadingResponse -> {
-                        if (!event.uploading) setSyncing(false)
-                    }
-                }
+                updated?.let { updateSurvey(it) }
             }
+        }
+    }
+
+    private fun observeSyncing() {
+        viewModelScope.launch(Dispatchers.IO) {
+            syncCoordinator.isSyncing.collect { syncing ->
+                _state.update { it?.copy(isSyncing = syncing) }
+            }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            syncCoordinator.syncErrors.collect { processError(it) }
         }
     }
 
@@ -109,28 +109,11 @@ class SurveyInfoViewModel(
     }
 
     fun sync() {
-        val survey = _state.value?.survey ?: return
-        viewModelScope.launch(Dispatchers.IO) {
-            setSyncing(true)
-            try {
-                uploadUseCase.uploadSurvey(survey.id)
-            } catch (e: Exception) {
-                processError(e)
-            } finally {
-                refresh()
-                setSyncing(false)
-            }
-        }
+        syncCoordinator.requestSync(userInitiated = true)
     }
 
     private fun updateSurvey(survey: SurveyData) {
-        _state.update { current ->
-            current?.copy(survey = survey.copy(isSyncing = current.survey.isSyncing))
-        }
-    }
-
-    private fun setSyncing(syncing: Boolean) {
-        _state.update { it?.copy(isSyncing = syncing) }
+        _state.update { it?.copy(survey = survey) }
     }
 
     data class State(

@@ -30,4 +30,8 @@ sealed class AppEvent {
     data class UploadedSurveyResponse(val responseId:String, val survey: SurveyData) : AppEvent()
     data class ResponseStarted(val responseId: String, val survey: SurveyData) : AppEvent()
     data class ResponseEnded(val responseId: String, val survey: SurveyData) : AppEvent()
+
+    data class SyncFailed(
+        val throwable: Throwable,
+    ) : AppEvent()
 }

@@ -11,7 +11,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.qlarr.app.R
 import com.qlarr.app.business.parcelable
 import com.qlarr.app.business.survey.SurveyData
@@ -40,7 +42,9 @@ class SurveyInfoActivity : ComponentActivity() {
         viewModel.start(seed)
 
         lifecycleScope.launch {
-            viewModel.errors.collect { error -> errorDisplayManager.displayError(error) }
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.errors.collect { error -> errorDisplayManager.displayError(error) }
+            }
         }
 
         setContent {

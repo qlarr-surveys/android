@@ -7,9 +7,9 @@ import com.qlarr.app.EventBus
 import com.qlarr.app.business.auth.LogoutUseCase
 import com.qlarr.app.business.responses.ResponseRepository
 import com.qlarr.app.business.settings.SharedPrefsManager
-import com.qlarr.app.business.survey.BackgroundSync
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.business.survey.SurveyRepository
+import com.qlarr.app.business.survey.SyncCoordinator
 import com.qlarr.app.storage.DownloadManager
 import com.qlarr.app.storage.DownloadState
 import com.qlarr.app.ui.common.error.ErrorProcessor
@@ -26,7 +26,7 @@ class SurveyListViewModel(
     private val surveyRepository: SurveyRepository,
     private val logoutUseCase: LogoutUseCase,
     private val downloadManager: DownloadManager,
-    private val backgroundSync: BackgroundSync,
+    private val syncCoordinator: SyncCoordinator,
     private val eventBus: EventBus,
     private val sharedPrefsManager: SharedPrefsManager,
     private val responseRepository: ResponseRepository,
@@ -65,28 +65,8 @@ class SurveyListViewModel(
                         updateSurveyData(event.survey)
                     }
 
-                    is AppEvent.UploadingResponse -> {
-                        if (!event.uploading) {
-                            _state.update {
-                                _state.value.copy(
-                                    surveyList =
-                                        _state.value.surveyList.map {
-                                            it.copy(isSyncing = false)
-                                        },
-                                )
-                            }
-                        }
-                    }
-
-                    is AppEvent.UploadingSurveyResponse -> {
-                        _state.update {
-                            _state.value.copy(
-                                surveyList =
-                                    _state.value.surveyList.map {
-                                        it.copy(isSyncing = it.id == event.surveyId)
-                                    },
-                            )
-                        }
+                    else -> {
+                        Unit
                     }
                 }
             }
@@ -184,11 +164,7 @@ class SurveyListViewModel(
     }
 
     private fun uploadSurveyResponses() {
-        viewModelScope.launch(Dispatchers.IO) {
-            if (surveyRepository.shouldSync()) {
-                backgroundSync.startSurveySync()
-            }
-        }
+        syncCoordinator.requestSync()
     }
 
     fun onLogoutClicked() {

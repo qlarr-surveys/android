@@ -46,6 +46,7 @@ class UploadSurveyResponsesUseCaseImpl(
                 return
             }
             eventBus.emitEvent(AppEvent.UploadingResponse(true))
+            var firstError: Exception? = null
             surveyRepository
                 .getOfflineSurveyList()
                 .filter {
@@ -56,10 +57,13 @@ class UploadSurveyResponsesUseCaseImpl(
                         uploadSurvey(it.id)
                     } catch (e: Exception) {
                         reportError(e)
+                        if (firstError == null) firstError = e
                     }
                 }
+            firstError?.let { eventBus.emitEvent(AppEvent.SyncFailed(it)) }
             eventBus.emitEvent(AppEvent.UploadingResponse(false))
         } catch (e: java.lang.Exception) {
+            eventBus.emitEvent(AppEvent.SyncFailed(e))
             eventBus.emitEvent(AppEvent.UploadingResponse(false))
         }
     }

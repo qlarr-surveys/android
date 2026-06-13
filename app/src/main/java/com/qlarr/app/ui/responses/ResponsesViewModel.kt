@@ -21,7 +21,7 @@ import com.qlarr.app.business.responses.ResponseRepository
 import com.qlarr.app.business.responses.ResponsesFilter
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.business.survey.SurveyRepository
-import com.qlarr.app.business.survey.UploadSurveyResponsesUseCase
+import com.qlarr.app.business.survey.SyncCoordinator
 import com.qlarr.app.db.model.Response
 import com.qlarr.app.ui.common.FileUtils
 import com.qlarr.app.ui.common.error.ErrorProcessor
@@ -42,7 +42,7 @@ class ResponsesViewModel(
     private val eventBus: EventBus,
     private val errorProcessor: ErrorProcessor,
     private val surveyRepository: SurveyRepository,
-    private val uploadUseCase: UploadSurveyResponsesUseCase,
+    private val syncCoordinator: SyncCoordinator,
 ) : AndroidViewModel(application),
     ErrorProcessor by errorProcessor {
     private lateinit var surveyData: SurveyData
@@ -109,16 +109,16 @@ class ResponsesViewModel(
                         refreshSingleResponse(event.responseId)
                         rebuildDetailIfOpen(event.responseId)
                     }
-
-                    event is AppEvent.UploadingResponse -> {
-                        _responsesScreenData.update { it.copy(isSyncing = event.uploading) }
-                    }
-
-                    event is AppEvent.UploadingSurveyResponse && event.surveyId == surveyData.id -> {
-                        _responsesScreenData.update { it.copy(isSyncing = true) }
-                    }
                 }
             }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            syncCoordinator.isSyncing.collect { syncing ->
+                _responsesScreenData.update { it.copy(isSyncing = syncing) }
+            }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            syncCoordinator.syncErrors.collect { processError(it) }
         }
 
         _responsesScreenData.update {
@@ -419,34 +419,22 @@ class ResponsesViewModel(
         )
     }
 
-    /** Upload a single response (Detail screen Sync action); engine clears its media on success. */
-    fun syncResponse(responseId: String) {
-        if (_responsesScreenData.value.isSyncing) return
-        viewModelScope.launch(Dispatchers.IO) {
-            _responsesScreenData.update { it.copy(isSyncing = true) }
-            try {
-                val synced = uploadUseCase.uploadResponse(surveyData.id, responseId)
-                toast(if (synced) R.string.responses_sync_complete else R.string.responses_sync_none)
-            } catch (e: Exception) {
-                handleError(e)
-            } finally {
-                _responsesScreenData.update { it.copy(isSyncing = false) }
-            }
-        }
+    /** Trigger an app-wide sync of all pending responses; ignored while one is already running. */
+    fun syncAll() {
+        syncCoordinator.requestSync()
     }
 
-    /** Upload every pending response for this survey; the engine clears media files on success. */
-    fun syncAll() {
-        if (_responsesScreenData.value.isSyncing) return
+    /** Upload a single response (Detail screen Sync action); engine clears its media on success. */
+    fun syncResponse(responseId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            _responsesScreenData.update { it.copy(isSyncing = true) }
             try {
-                val synced = uploadUseCase.uploadSurvey(surveyData.id)
-                toast(if (synced > 0) R.string.responses_sync_complete else R.string.responses_sync_none)
+                when (syncCoordinator.syncResponse(surveyData.id, responseId)) {
+                    true -> toast(R.string.responses_sync_complete)
+                    false -> toast(R.string.responses_sync_none)
+                    null -> Unit // a sync was already in progress
+                }
             } catch (e: Exception) {
                 handleError(e)
-            } finally {
-                _responsesScreenData.update { it.copy(isSyncing = false) }
             }
         }
     }
@@ -457,7 +445,7 @@ class ResponsesViewModel(
         Toast.makeText(getApplication(), messageRes, Toast.LENGTH_SHORT).show()
     }
 
-    fun handleError(it: Exception) {
+    private fun handleError(it: Exception) {
         viewModelScope.launch {
             processError(it)
         }

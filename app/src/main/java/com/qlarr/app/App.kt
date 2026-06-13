@@ -1,11 +1,11 @@
 package com.qlarr.app
 
 import android.app.Application
-import android.webkit.WebView
 import androidx.appcompat.app.AppCompatDelegate
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import coil.request.CachePolicy
+import com.qlarr.app.business.survey.SyncCoordinator
 import com.qlarr.app.di.androidModule
 import com.qlarr.app.di.guestModule
 import com.qlarr.app.di.launchModule
@@ -23,19 +23,21 @@ class App :
     override fun onCreate() {
         super.onCreate()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        startKoin {
-            androidContext(this@App)
-            modules(
-                androidModule,
-                loginModule,
-                launchModule,
-                mainModule,
-                refreshTokenModule,
-                responsesModule,
-                surveyModule,
-                guestModule,
-            )
-        }
+        val koinApp =
+            startKoin {
+                androidContext(this@App)
+                modules(
+                    androidModule,
+                    loginModule,
+                    launchModule,
+                    mainModule,
+                    refreshTokenModule,
+                    responsesModule,
+                    surveyModule,
+                    guestModule,
+                )
+            }
+        koinApp.koin.get<SyncCoordinator>().start()
     }
 
     override fun newImageLoader(): ImageLoader =
