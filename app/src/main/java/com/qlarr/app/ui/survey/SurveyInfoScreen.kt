@@ -1009,7 +1009,7 @@ private fun InfoCard(
 ) = InfoCard(PaddingValues(padding), content)
 
 @Composable
-@Preview(showBackground = true, backgroundColor = 0xFFF2EDF7)
+@Preview(showBackground = true, backgroundColor = 0xFFF5F6FA)
 private fun PreviewSurveyInfoScreen() {
     QlarrTheme {
         SurveyInfoScreen(

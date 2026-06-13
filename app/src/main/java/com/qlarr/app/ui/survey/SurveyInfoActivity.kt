@@ -18,6 +18,7 @@ import com.qlarr.app.R
 import com.qlarr.app.business.parcelable
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.ui.common.error.ErrorDisplayManager
+import com.qlarr.app.ui.common.theme.Colors
 import com.qlarr.app.ui.common.theme.QlarrTheme
 import com.qlarr.app.ui.common.theme.QlarrTopBar
 import com.qlarr.app.ui.responses.ResponsesActivity
@@ -54,6 +55,7 @@ class SurveyInfoActivity : ComponentActivity() {
 
             QlarrTheme {
                 Scaffold(
+                    containerColor = Colors.Page,
                     topBar = {
                         QlarrTopBar(
                             title = stringResource(id = R.string.title_activity_info),

@@ -18,7 +18,7 @@ object Colors {
     val Muted = Color(0xFF6B6783)
 
     // Survey-list redesign tokens (variation C)
-    val Page = Color(0xFFF2EDF7)
+    val Page = Color(0xFFF5F6FA)
     val Faint = Color(0xFF9A95AC)
     val Hairline = Color(0x17211C36) // rgba(33,28,54,0.09)
 

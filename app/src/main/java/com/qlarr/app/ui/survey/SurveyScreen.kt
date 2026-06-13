@@ -661,7 +661,7 @@ private fun SurveyPhoto(
 }
 
 @Composable
-@Preview(showBackground = true, backgroundColor = 0xFFF2EDF7)
+@Preview(showBackground = true, backgroundColor = 0xFFF5F6FA)
 private fun PreviewSurveyListItem() {
     QlarrTheme {
         SurveyListItem(modifier = Modifier.padding(14.dp), surveyData = getPreviewSurveyData())
@@ -669,7 +669,7 @@ private fun PreviewSurveyListItem() {
 }
 
 @Composable
-@Preview(showBackground = true, backgroundColor = 0xFFF2EDF7)
+@Preview(showBackground = true, backgroundColor = 0xFFF5F6FA)
 private fun PreviewSurveyListItemSynced() {
     QlarrTheme {
         SurveyListItem(
@@ -680,7 +680,7 @@ private fun PreviewSurveyListItemSynced() {
 }
 
 @Composable
-@Preview(showBackground = true, backgroundColor = 0xFFF2EDF7)
+@Preview(showBackground = true, backgroundColor = 0xFFF5F6FA)
 private fun PreviewSurveyListItemNoResponses() {
     QlarrTheme {
         SurveyListItem(
@@ -697,7 +697,7 @@ private fun PreviewSurveyListItemNoResponses() {
 }
 
 @Composable
-@Preview(showBackground = true, backgroundColor = 0xFFF2EDF7)
+@Preview(showBackground = true, backgroundColor = 0xFFF5F6FA)
 private fun PreviewSurveyListItemNotDownloaded() {
     QlarrTheme {
         SurveyListItem(
@@ -712,7 +712,7 @@ private fun PreviewSurveyListItemNotDownloaded() {
 }
 
 @Composable
-@Preview(showBackground = true, backgroundColor = 0xFFF2EDF7)
+@Preview(showBackground = true, backgroundColor = 0xFFF5F6FA)
 private fun PreviewSurveyUpdateAvailableListItem() {
     QlarrTheme {
         SurveyListItem(
@@ -723,7 +723,7 @@ private fun PreviewSurveyUpdateAvailableListItem() {
 }
 
 @Composable
-@Preview(showBackground = true, backgroundColor = 0xFFF2EDF7)
+@Preview(showBackground = true, backgroundColor = 0xFFF5F6FA)
 private fun PreviewSurveyNearQuotaListItem() {
     QlarrTheme {
         SurveyListItem(
@@ -741,7 +741,7 @@ private fun PreviewSurveyNearQuotaListItem() {
 }
 
 @Composable
-@Preview(showBackground = true, backgroundColor = 0xFFF2EDF7)
+@Preview(showBackground = true, backgroundColor = 0xFFF5F6FA)
 private fun PreviewSurveyQuotaReachedListItem() {
     QlarrTheme {
         SurveyListItem(
@@ -758,7 +758,7 @@ private fun PreviewSurveyQuotaReachedListItem() {
 }
 
 @Composable
-@Preview(showBackground = true, backgroundColor = 0xFFF2EDF7)
+@Preview(showBackground = true, backgroundColor = 0xFFF5F6FA)
 private fun PreviewSurveyListItemMissingFiles() {
     QlarrTheme {
         SurveyListItem(

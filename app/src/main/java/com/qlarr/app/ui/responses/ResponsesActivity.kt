@@ -85,7 +85,7 @@ class ResponsesActivity : ComponentActivity() {
             QlarrTheme {
                 BackHandler(enabled = detail != null) { viewModel.closeDetail() }
 
-                Scaffold(topBar = {
+                Scaffold(containerColor = Colors.Page, topBar = {
                     if (detail != null && detailItem != null) {
                         QlarrTopBar(
                             title =
