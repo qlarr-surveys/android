@@ -53,7 +53,7 @@ data class SurveyDataEntity(
             surveyQuota = quota,
             userQuota = userQuota,
             publishInfo = publishInfoEntity.toPublishInfo(),
-            newVersionAvailable = false,
+            newVersionAvailable = newVersionAvailable,
             localResponsesCount = localResponseCount,
             localCompleteResponsesCount = localCompleteResponseCount,
             localUnsyncedResponsesCount = localUnsyncedResponseCount,
