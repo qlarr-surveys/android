@@ -157,7 +157,14 @@ private fun InfoHeader(survey: SurveyData) {
         modifier = Modifier.padding(start = 18.dp, end = 18.dp, top = 18.dp, bottom = 2.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        StatusPill(survey.surveyStatus)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            StatusPill(survey.surveyStatus)
+            VersionChip(survey.publishInfo.version)
+        }
         Text(
             text = survey.name,
             fontSize = 23.sp,
@@ -194,9 +201,7 @@ private fun InfoHeader(survey: SurveyData) {
                 fontSize = 12.5.sp,
                 fontWeight = FontWeight.Medium,
                 color = Colors.Faint,
-                modifier = Modifier.weight(1f, fill = false),
             )
-            VersionChip(survey.publishInfo.version)
         }
     }
 }
