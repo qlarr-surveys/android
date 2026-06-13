@@ -335,7 +335,7 @@ private fun QuotaBar(
                 )
             } else {
                 Text(
-                    text = quotaLeftText(left = left, cap = cap, near = near),
+                    text = quotaLeftText(used = used, cap = cap, near = near),
                     color = Colors.Muted,
                     fontSize = 12.5.sp,
                 )
@@ -361,16 +361,16 @@ private fun QuotaBar(
     }
 }
 
-// Localized "{left} of {cap} left" with the count bolded for emphasis.
+// Localized "{used} out of {cap}" with the count bolded for emphasis.
 @Composable
 private fun quotaLeftText(
-    left: Int,
+    used: Int,
     cap: Int,
     near: Boolean,
 ): AnnotatedString {
-    val leftStr = left.toString()
-    val full = stringResource(id = R.string.survey_quota_left_format, leftStr, cap.toString())
-    val idx = full.indexOf(leftStr)
+    val usedStr = used.toString()
+    val full = stringResource(id = R.string.survey_quota_left_format, usedStr, cap.toString())
+    val idx = full.indexOf(usedStr)
     return buildAnnotatedString {
         if (idx < 0) {
             append(full)
@@ -383,9 +383,9 @@ private fun quotaLeftText(
                 color = if (near) Colors.Warn else Colors.Ink,
             ),
         ) {
-            append(leftStr)
+            append(usedStr)
         }
-        append(full.substring(idx + leftStr.length))
+        append(full.substring(idx + usedStr.length))
     }
 }
 

@@ -2,7 +2,6 @@ package com.qlarr.app.ui.survey
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -18,7 +17,6 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
@@ -60,9 +58,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -671,7 +667,6 @@ private fun LimitsSection(survey: SurveyData) {
                         label = stringResource(R.string.survey_quota_survey),
                         used = survey.surveyQuota - (survey.surveyQuotaLeft() ?: 0),
                         cap = survey.surveyQuota,
-                        shared = true,
                     )
                 }
                 if (hasUserQuota) {
@@ -680,7 +675,6 @@ private fun LimitsSection(survey: SurveyData) {
                         label = stringResource(R.string.survey_quota_your),
                         used = survey.userQuota - (survey.userQuotaLeft() ?: 0),
                         cap = survey.userQuota,
-                        shared = false,
                     )
                 }
             }
@@ -706,7 +700,9 @@ private fun UnlimitedRow(
     label: String,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
@@ -732,7 +728,6 @@ private fun QuotaBar(
     label: String,
     used: Int,
     cap: Int,
-    shared: Boolean,
 ) {
     val left = max(0, cap - used)
     val reached = cap > 0 && used >= cap
@@ -779,7 +774,7 @@ private fun QuotaBar(
                     text =
                         stringResource(
                             R.string.survey_quota_left_format,
-                            (if (shared) "~" else "") + left.toString(),
+                            used.toString(),
                             cap.toString(),
                         ),
                     fontSize = 12.5.sp,
@@ -802,39 +797,7 @@ private fun QuotaBar(
                         .fillMaxHeight()
                         .clip(RoundedCornerShape(4.dp))
                         .background(tone),
-            ) {
-                if (shared && !reached) {
-                    HatchOverlay()
-                }
-            }
-        }
-        if (shared) {
-            Text(
-                text = stringResource(R.string.info_quota_shared),
-                fontSize = 11.sp,
-                color = Colors.Faint,
             )
-        }
-    }
-}
-
-// Diagonal hatch drawn over a shared-quota fill, signalling "shared across collectors".
-@Composable
-private fun HatchOverlay() {
-    Canvas(modifier = Modifier.fillMaxSize()) {
-        val step = 9.dp.toPx()
-        val w = size.width
-        val h = size.height
-        var x = 0f
-        while (x < w + h) {
-            drawLine(
-                color = Color.White.copy(alpha = 0.5f),
-                start = Offset(x, 0f),
-                end = Offset(x - h, h),
-                strokeWidth = 4.dp.toPx(),
-                cap = StrokeCap.Butt,
-            )
-            x += step
         }
     }
 }
@@ -913,7 +876,9 @@ private fun RowScope.BarPrimaryButton(
     Button(
         onClick = onClick,
         enabled = enabled,
-        modifier = Modifier.weight(1f).height(46.dp),
+        modifier = Modifier
+            .weight(1f)
+            .height(46.dp),
         shape = RoundedCornerShape(23.dp),
         colors =
             ButtonDefaults.buttonColors(
@@ -941,7 +906,9 @@ private fun RowScope.BarPrimaryButton(
 private fun RowScope.BarTonalButton(onClick: () -> Unit) {
     Button(
         onClick = onClick,
-        modifier = Modifier.weight(1f).height(46.dp),
+        modifier = Modifier
+            .weight(1f)
+            .height(46.dp),
         shape = RoundedCornerShape(23.dp),
         colors =
             ButtonDefaults.buttonColors(
@@ -970,7 +937,9 @@ private fun RowScope.BarDisabledButton() {
     Button(
         onClick = {},
         enabled = false,
-        modifier = Modifier.weight(1f).height(46.dp),
+        modifier = Modifier
+            .weight(1f)
+            .height(46.dp),
         shape = RoundedCornerShape(23.dp),
         colors =
             ButtonDefaults.buttonColors(
@@ -1000,7 +969,9 @@ private fun SectionLabel(
     right: (@Composable () -> Unit)? = null,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 0.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 4.dp, vertical = 0.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {

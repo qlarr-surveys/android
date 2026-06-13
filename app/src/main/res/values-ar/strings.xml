@@ -209,7 +209,7 @@
     <string name="survey_sync_not_synced">غير متزامن</string>
     <string name="survey_quota_your">حصتك</string>
     <string name="survey_quota_survey">حصة الاستبيان</string>
-    <string name="survey_quota_left_format">%1$s من %2$s متبقٍ</string>
+    <string name="survey_quota_left_format">%1$s من %2$s</string>
     <string name="survey_quota_reached">تم البلوغ</string>
     <string name="logout">تسجيل الخروج</string>
     <string name="logout_anyway">تسجيل الخروج على أي حال</string>

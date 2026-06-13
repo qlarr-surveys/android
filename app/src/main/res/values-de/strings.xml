@@ -167,7 +167,7 @@
     <string name="survey_sync_not_synced">Nicht synchronisiert</string>
     <string name="survey_quota_your">Ihr Kontingent</string>
     <string name="survey_quota_survey">Umfrage-Kontingent</string>
-    <string name="survey_quota_left_format">%1$s von %2$s übrig</string>
+    <string name="survey_quota_left_format">%1$s von %2$s</string>
     <string name="survey_quota_reached">Erreicht</string>
     <string name="logout">Abmelden</string>
     <string name="logout_anyway">Trotzdem abmelden</string>

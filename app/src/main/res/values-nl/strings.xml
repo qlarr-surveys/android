@@ -165,7 +165,7 @@
     <string name="survey_sync_not_synced">Niet gesynchroniseerd</string>
     <string name="survey_quota_your">Jouw quotum</string>
     <string name="survey_quota_survey">Enquêtequotum</string>
-    <string name="survey_quota_left_format">%1$s van %2$s over</string>
+    <string name="survey_quota_left_format">%1$s van %2$s</string>
     <string name="survey_quota_reached">Bereikt</string>
     <string name="logout">Uitloggen</string>
     <string name="logout_anyway">Toch uitloggen</string>

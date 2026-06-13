@@ -176,7 +176,7 @@
     <string name="survey_sync_not_synced">Non synchronisé</string>
     <string name="survey_quota_your">Votre quota</string>
     <string name="survey_quota_survey">Quota de l\'enquête</string>
-    <string name="survey_quota_left_format">%1$s sur %2$s restants</string>
+    <string name="survey_quota_left_format">%1$s sur %2$s</string>
     <string name="survey_quota_reached">Atteint</string>
     <string name="logout">Se déconnecter</string>
     <string name="logout_anyway">Se déconnecter quand même</string>
