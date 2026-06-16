@@ -10,12 +10,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.qlarr.app.R
 import com.qlarr.app.ui.common.theme.Colors
 
-/**
- * Per-response status — a pure function of two stored booleans:
- *   submitDate == null            -> DRAFT     (incomplete entry)
- *   submitDate != null && !synced -> PENDING   (complete, not uploaded)
- *   synced                        -> UPLOADED  (synced; media cleared)
- */
 enum class ResponseStatus { DRAFT, PENDING, UPLOADED }
 
 fun responseStatus(
@@ -28,7 +22,6 @@ fun responseStatus(
         else -> ResponseStatus.PENDING
     }
 
-/** Visual tokens shared by the card, chips and (later) the detail screen. */
 data class ResponseStatusTokens(
     val ink: Color,
     val bg: Color,

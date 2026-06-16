@@ -19,7 +19,6 @@ interface ResponseRepository {
         filter: ResponsesFilter,
     ): List<Response>
 
-    /** Response ids ordered oldest-first; position + 1 = the human-facing ordinal (#1 = oldest). */
     suspend fun getOrderedIds(surveyId: String): List<String>
 
     suspend fun countUploaded(surveyId: String): Int
@@ -58,12 +57,10 @@ class ResponseRepositoryImpl(
                 responseDao.getByUserAndSurvey(surveyId, page, perPage)
             }
 
-            // "Drafts" = incomplete responses (not submitted).
             ResponsesFilter.DRAFT -> {
                 responseDao.getDrafts(surveyId, page, perPage)
             }
 
-            // "Pending" = complete but not yet uploaded — the actually-uploadable responses.
             ResponsesFilter.PENDING -> {
                 responseDao.getPendingUpload(surveyId, page, perPage)
             }

@@ -107,7 +107,6 @@ interface ResponseDao {
         perPage: Int,
     ): List<Response>
 
-    /** Drafts = incomplete (not submitted). */
     @Query(
         "SELECT * FROM response WHERE surveyId = :surveyId AND submitDate IS NULL " +
             "ORDER BY startDate DESC LIMIT :perPage OFFSET (:page*:perPage)",
@@ -118,7 +117,6 @@ interface ResponseDao {
         perPage: Int,
     ): List<Response>
 
-    /** Pending upload = complete (submitted) but not yet synced. */
     @Query(
         "SELECT * FROM response WHERE surveyId = :surveyId AND submitDate IS NOT NULL AND is_synced = 0 " +
             "ORDER BY startDate DESC LIMIT :perPage OFFSET (:page*:perPage)",
@@ -127,7 +125,6 @@ interface ResponseDao {
         surveyId: String,
         page: Int, perPage: Int): List<Response>
 
-    /** Response ids ordered oldest-first; position + 1 = the human-facing ordinal (#1 = oldest). */
     @Query("SELECT id FROM response WHERE surveyId = :surveyId ORDER BY startDate ASC")
     suspend fun getOrderedIds(surveyId: String): List<String>
 

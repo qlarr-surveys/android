@@ -215,7 +215,6 @@
     <string name="responses_empty_title">Noch keine Antworten</string>
     <string name="responses_empty_subtitle">Antworten, die Sie für diese Umfrage sammeln, erscheinen hier.</string>
     <string name="responses_empty_action">Antwort beginnen</string>
-    <!-- Response detail screen -->
     <string name="response_detail_title">Antwort #%1$d</string>
     <string name="response_meta_status">Status</string>
     <string name="response_meta_started">Begonnen</string>
@@ -241,7 +240,6 @@
     <string name="response_no_events">Keine Ereignisse erfasst</string>
     <string name="response_answer_cleared">Gelöscht · Medien hochgeladen</string>
 
-    <!-- Survey Info screen (redesign) -->
     <string name="info_status_active">Aktiv</string>
     <string name="info_status_scheduled">Geplant</string>
     <string name="info_status_expired">Abgelaufen</string>

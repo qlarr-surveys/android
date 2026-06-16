@@ -46,5 +46,5 @@ val mainModule =
         }
         single<DownloadManager> { DownloadManagerImpl(get(named("appContext")), get()) }
         viewModel { SurveyListViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { SurveyInfoViewModel(get(), get(), get(), get(), get()) }
+        viewModel { SurveyInfoViewModel(get(), get(), get(), get(), get(), get()) }
     }

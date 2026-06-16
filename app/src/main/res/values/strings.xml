@@ -223,7 +223,6 @@
     <string name="responses_empty_title">No responses yet</string>
     <string name="responses_empty_subtitle">Responses you collect for this survey will appear here.</string>
     <string name="responses_empty_action">Start a response</string>
-    <!-- Response detail screen -->
     <string name="response_detail_title">Response #%1$d</string>
     <string name="response_meta_status">Status</string>
     <string name="response_meta_started">Started</string>
@@ -249,7 +248,6 @@
     <string name="response_no_events">No events recorded</string>
     <string name="response_answer_cleared">Cleared · media uploaded</string>
 
-    <!-- Survey Info screen (redesign) -->
     <string name="info_status_active">Active</string>
     <string name="info_status_scheduled">Scheduled</string>
     <string name="info_status_expired">Expired</string>

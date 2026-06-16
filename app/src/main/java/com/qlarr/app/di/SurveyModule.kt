@@ -7,6 +7,6 @@ import org.koin.dsl.module
 val surveyModule =
     module {
         viewModel { (surveyId: String) ->
-            SurveyViewModel(surveyId, get(), get(), get())
+            SurveyViewModel(surveyId, get(), get(), get(), get())
         }
     }

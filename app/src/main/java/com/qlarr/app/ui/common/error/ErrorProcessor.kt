@@ -26,7 +26,6 @@ class ErrorProcessorImpl(private val connectivityChecker: ConnectivityChecker) :
     private val _errors = MutableSharedFlow<ProcessedError>()
     override val errors = _errors.asSharedFlow()
 
-    // TODO: check if no internet connection
     override suspend fun processError(throwable: Throwable) {
         throwable.printStackTrace()
         val processedError =
@@ -71,7 +70,6 @@ class ErrorProcessorImpl(private val connectivityChecker: ConnectivityChecker) :
         _errors.emit(ProcessedError.NoOfflineRole)
     }
 
-    // TODO proper error handling per code
     private fun processHttpException(throwable: HttpException): ProcessedError {
         return when (throwable.code()) {
             401 -> ProcessedError.AuthError
@@ -81,10 +79,6 @@ class ErrorProcessorImpl(private val connectivityChecker: ConnectivityChecker) :
     }
 }
 
-/**
- * Transport-level failures — the request never got a response (network down, DNS, timeout, TLS).
- * Distinct from an [HttpException], which means the backend answered with an error for that request.
- */
 fun Throwable.isConnectivityError(): Boolean =
     when (this) {
         is UnknownHostException,
@@ -97,6 +91,13 @@ fun Throwable.isConnectivityError(): Boolean =
 
         else -> false
     }
+
+fun Throwable?.isAlreadySynced(): Boolean {
+    val http = this as? HttpException ?: return false
+    if (http.code() != 400) return false
+    val body = runCatching { http.response()?.errorBody()?.string() }.getOrNull()
+    return body?.contains("ResponseAlreadySyncedException") == true
+}
 
 sealed class ProcessedError(val titleRes: Int, val messageRes: Int) {
     object AuthError : ProcessedError(R.string.error_auth_title, R.string.error_auth_description)

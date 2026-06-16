@@ -8,6 +8,7 @@ import com.qlarr.app.api.survey.UploadResponseRequestData
 import com.qlarr.app.business.responses.ResponseRepository
 import com.qlarr.app.db.model.Response
 import com.qlarr.app.ui.common.FileUtils
+import com.qlarr.app.ui.common.error.isAlreadySynced
 import com.qlarr.app.ui.common.error.isConnectivityError
 import com.qlarr.app.ui.responses.ResponsesViewModel.Companion.KEY_FILENAME
 import com.qlarr.app.ui.responses.ResponsesViewModel.Companion.KEY_STORED_FILENAME
@@ -16,18 +17,8 @@ import com.qlarr.app.ui.responses.ResponsesViewModel.Companion.KEY_TYPE
 interface UploadSurveyResponsesUseCase {
     suspend operator fun invoke()
 
-    /**
-     * Uploads every complete, unsynced response for [surveyId] and returns how many were synced.
-     * Throws on the first failure so user-triggered syncs can surface the error; the automatic
-     * [invoke] path catches per-survey and stays silent.
-     */
     suspend fun uploadSurvey(surveyId: String): Int
 
-    /**
-     * Uploads a single complete, unsynced response and returns whether it was synced. Throws on
-     * failure (connectivity or backend rejection) so a user-triggered single sync can surface it.
-     * On success the engine clears the response's media files (same path as [uploadSurvey]).
-     */
     suspend fun uploadResponse(
         surveyId: String,
         responseId: String): Boolean
@@ -46,7 +37,6 @@ class UploadSurveyResponsesUseCaseImpl(
                 return
             }
             eventBus.emitEvent(AppEvent.UploadingResponse(true))
-            var firstError: Exception? = null
             surveyRepository
                 .getOfflineSurveyList()
                 .filter {
@@ -57,13 +47,10 @@ class UploadSurveyResponsesUseCaseImpl(
                         uploadSurvey(it.id)
                     } catch (e: Exception) {
                         reportError(e)
-                        if (firstError == null) firstError = e
                     }
                 }
-            firstError?.let { eventBus.emitEvent(AppEvent.SyncFailed(it)) }
             eventBus.emitEvent(AppEvent.UploadingResponse(false))
         } catch (e: java.lang.Exception) {
-            eventBus.emitEvent(AppEvent.SyncFailed(e))
             eventBus.emitEvent(AppEvent.UploadingResponse(false))
         }
     }
@@ -81,10 +68,7 @@ class UploadSurveyResponsesUseCaseImpl(
                 syncResponse(surveyId, response)
                 synced++
             } catch (e: Exception) {
-                // Network/transport down — every remaining upload will fail too, so stop now.
                 if (e.isConnectivityError()) throw e
-                // Backend rejected this one response: skip it and keep delivering the rest,
-                // then rethrow the first failure at the end so the caller can surface it.
                 if (firstError == null) firstError = e
             }
         }
@@ -150,7 +134,6 @@ class UploadSurveyResponsesUseCaseImpl(
                 }
             }
 
-        // 3. upload response row
         val uploadData =
             UploadResponseRequestData(
                 versionId = response.version,
@@ -164,13 +147,23 @@ class UploadSurveyResponsesUseCaseImpl(
             )
         val result =
             surveyRepository.uploadSurveyResponse(surveyId, response.id, uploadData)
-        if (result.isSuccess) {
-            // 4. mark response as synced
-            responseRepository.markResponseAsSynced(response.id)
-            val surveyData = surveyRepository.updateSurveyAfterSync(surveyId, result.getOrThrow())
-            eventBus.emitEvent(AppEvent.UploadedSurveyResponse(response.id, surveyData))
-        } else {
-            throw result.exceptionOrNull() ?: IllegalStateException("Response upload failed")
+        when {
+            result.isSuccess -> {
+                responseRepository.markResponseAsSynced(response.id)
+                val surveyData =
+                    surveyRepository.updateSurveyAfterSync(surveyId, result.getOrThrow())
+                eventBus.emitEvent(AppEvent.UploadedSurveyResponse(response.id, surveyData))
+            }
+
+            result.exceptionOrNull().isAlreadySynced() -> {
+                responseRepository.markResponseAsSynced(response.id)
+                val surveyData = surveyRepository.getOfflineSurvey(surveyId)
+                eventBus.emitEvent(AppEvent.UploadedSurveyResponse(response.id, surveyData))
+            }
+
+            else -> {
+                throw result.exceptionOrNull() ?: IllegalStateException("Response upload failed")
+            }
         }
     }
 

@@ -224,7 +224,6 @@
     <string name="responses_empty_title">Aún no hay respuestas</string>
     <string name="responses_empty_subtitle">Las respuestas que recopiles para esta encuesta aparecerán aquí.</string>
     <string name="responses_empty_action">Iniciar una respuesta</string>
-    <!-- Response detail screen -->
     <string name="response_detail_title">Respuesta n.º %1$d</string>
     <string name="response_meta_status">Estado</string>
     <string name="response_meta_started">Iniciada</string>
@@ -250,7 +249,6 @@
     <string name="response_no_events">No hay eventos registrados</string>
     <string name="response_answer_cleared">Borrado · multimedia subida</string>
 
-    <!-- Survey Info screen (redesign) -->
     <string name="info_status_active">Activa</string>
     <string name="info_status_scheduled">Programada</string>
     <string name="info_status_expired">Caducada</string>

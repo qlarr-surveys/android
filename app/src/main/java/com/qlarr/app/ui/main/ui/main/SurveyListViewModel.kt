@@ -7,9 +7,9 @@ import com.qlarr.app.EventBus
 import com.qlarr.app.business.auth.LogoutUseCase
 import com.qlarr.app.business.responses.ResponseRepository
 import com.qlarr.app.business.settings.SharedPrefsManager
+import com.qlarr.app.business.survey.BackgroundSync
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.business.survey.SurveyRepository
-import com.qlarr.app.business.survey.SyncCoordinator
 import com.qlarr.app.storage.DownloadManager
 import com.qlarr.app.storage.DownloadState
 import com.qlarr.app.ui.common.error.ErrorProcessor
@@ -26,7 +26,7 @@ class SurveyListViewModel(
     private val surveyRepository: SurveyRepository,
     private val logoutUseCase: LogoutUseCase,
     private val downloadManager: DownloadManager,
-    private val syncCoordinator: SyncCoordinator,
+    private val backgroundSync: BackgroundSync,
     private val eventBus: EventBus,
     private val sharedPrefsManager: SharedPrefsManager,
     private val responseRepository: ResponseRepository,
@@ -164,7 +164,11 @@ class SurveyListViewModel(
     }
 
     private fun uploadSurveyResponses() {
-        syncCoordinator.requestSync()
+        viewModelScope.launch(Dispatchers.IO) {
+            if (surveyRepository.shouldSync()) {
+                backgroundSync.startSurveySync()
+            }
+        }
     }
 
     fun onLogoutClicked() {

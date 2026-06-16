@@ -74,7 +74,6 @@ import java.time.LocalDateTime
 import java.time.Month
 import kotlin.math.max
 
-// ── Survey-list card · variation C (accent rail + chips) ─────────────────
 
 @Composable
 fun SurveyListItem(
@@ -156,7 +155,6 @@ fun SurveyListItem(
 
 private enum class SyncState { NONE, SYNCED, PENDING }
 
-// Sync is meaningful only once a downloaded survey has local responses.
 private fun SurveyData.syncState(): SyncState =
     when {
         !cachedDesign || localResponsesCount == 0 -> SyncState.NONE
@@ -205,8 +203,6 @@ private fun SurveyMetaRow(surveyData: SurveyData) {
     }
 }
 
-// Sync status as a pill badge floating on the cover's top-right corner.
-// White-ish surface so it stays legible over real cover photos.
 @Composable
 private fun SyncBadge(
     synced: Boolean,
@@ -240,8 +236,6 @@ private fun SyncBadge(
     }
 }
 
-// Shows a single quota bar — whichever of user / survey quota is closest to
-// its cap (fewest left) — and only once that quota crosses 80% used.
 @Composable
 private fun SurveyQuota(surveyData: SurveyData) {
     data class Quota(
@@ -361,7 +355,6 @@ private fun QuotaBar(
     }
 }
 
-// Localized "{used} out of {cap}" with the count bolded for emphasis.
 @Composable
 private fun quotaLeftText(
     used: Int,
@@ -389,12 +382,6 @@ private fun quotaLeftText(
     }
 }
 
-// Action bar — the full button state machine:
-//   not downloaded         → Download (full width, when downloadable)
-//   downloaded, 0 responses → Start (full width)
-//   has local responses     → Responses + Start
-//   server has new version  → Start becomes Update
-//   quota reached           → Start becomes disabled "Quota reached"
 @Composable
 private fun SurveyActionBar(
     surveyData: SurveyData,
@@ -589,10 +576,6 @@ private fun SurveyTitleAndInfo(
     }
 }
 
-// Resolution of the backdrop copy. Tiny on purpose: the GPU upscales it (with
-// bicubic FilterQuality.High) into a smooth color wash, giving a heavy "blur"
-// that works on every API level (unlike Modifier.blur, which is API 31+).
-// Lower = softer.
 private const val BACKDROP_RESOLUTION = 12
 
 @Composable
@@ -620,14 +603,10 @@ private fun SurveyPhoto(
                 .background(Colors.DarkGray),
         contentAlignment = Alignment.Center,
     ) {
-        // Backdrop: a tiny copy of the cover, cropped to fill and upscaled by the
-        // GPU into a soft color wash behind the fitted image.
         AsyncImage(
             model =
                 coverRequest {
                     size(BACKDROP_RESOLUTION, BACKDROP_RESOLUTION)
-                    // EXACT so Coil keeps decoding the tiny bitmap instead of
-                    // reusing the full-res cover once it's in the memory cache.
                     precision(Precision.EXACT)
                 },
             contentDescription = null,
@@ -635,7 +614,6 @@ private fun SurveyPhoto(
             filterQuality = FilterQuality.High,
             modifier = Modifier.fillMaxSize(),
         )
-        // Foreground: the full cover, fitted and centered.
         SubcomposeAsyncImage(
             model = coverRequest(),
             modifier = Modifier.fillMaxSize(),
@@ -645,7 +623,6 @@ private fun SurveyPhoto(
             if (painter.state is AsyncImagePainter.State.Success) {
                 SubcomposeAsyncImageContent()
             } else {
-                // Loading / error / no-cover → inset logo so it doesn't reach the edges.
                 Image(
                     painter = painterResource(id = R.drawable.logo512),
                     contentDescription = null,

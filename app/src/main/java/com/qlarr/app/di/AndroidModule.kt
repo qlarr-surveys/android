@@ -11,7 +11,6 @@ import com.qlarr.app.business.survey.BackgroundSync
 import com.qlarr.app.business.survey.BackgroundSyncImpl
 import com.qlarr.app.business.survey.SessionManager
 import com.qlarr.app.business.survey.SessionManagerImpl
-import com.qlarr.app.business.survey.SyncCoordinator
 import com.qlarr.app.db.QlarrDb
 import com.qlarr.app.ui.common.ConnectivityChecker
 import com.qlarr.app.ui.common.ConnectivityCheckerImpl
@@ -42,7 +41,6 @@ val androidModule = module {
     }
     single { WorkManager.getInstance(get()) }
     single<BackgroundSync> { BackgroundSyncImpl(get()) }
-    single { SyncCoordinator(get(), get(), get(), get(), get()) }
     single<ConnectivityChecker> { ConnectivityCheckerImpl(get()) }
     factory<ErrorProcessor> { ErrorProcessorImpl(get()) }
     factory<ErrorDisplayManager> { (context: Context) -> ErrorDisplayManagerImpl(context, get()) }

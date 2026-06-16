@@ -99,7 +99,6 @@ class SurveyInfoActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Counts / lastSync may have changed while collecting or syncing on other screens.
         viewModel.refresh()
     }
 

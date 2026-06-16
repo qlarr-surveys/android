@@ -17,37 +17,30 @@ object Colors {
     val Ink = Color(0xFF1F1B3A)
     val Muted = Color(0xFF6B6783)
 
-    // Survey-list redesign tokens (variation C)
     val Page = Color(0xFFF5F6FA)
     val Faint = Color(0xFF9A95AC)
-    val Hairline = Color(0x17211C36) // rgba(33,28,54,0.09)
+    val Hairline = Color(0x17211C36)
 
-    // Sync status — synced (green) / pending (amber)
     val SyncOk = Color(0xFF1E7B45)
     val SyncOkBg = Color(0xFFE6F4EA)
-    val SyncOkLine = Color(0x4D1E7B45) // rgba(30,123,69,0.30)
+    val SyncOkLine = Color(0x4D1E7B45)
     val Warn = Color(0xFFA35A00)
     val WarnBg = Color(0xFFFBEBD6)
-    val WarnLine = Color(0x52A35A00) // rgba(163,90,0,0.32)
+    val WarnLine = Color(0x52A35A00)
 
-    // Draft / incomplete response — slate (calm, not urgent)
     val Slate = Color(0xFF4A5170)
     val SlateBg = Color(0xFFECEEF5)
-    val SlateLine = Color(0x424A5170) // rgba(74,81,112,0.26)
+    val SlateLine = Color(0x424A5170)
 
-    // Quota
     val QuotaInk = Color(0xFF3949AB)
-    val QuotaTrack = Color(0x1A211C36) // rgba(33,28,54,0.10)
+    val QuotaTrack = Color(0x1A211C36)
 
-    // Quota reached (hard gate) — Material error tone
     val Danger = Color(0xFFB3261E)
     val DangerBg = Color(0xFFFCEAE8)
 
-    // Disabled action button
-    val DisabledBg = Color(0x17211C36) // rgba(33,28,54,0.09)
+    val DisabledBg = Color(0x17211C36)
     val DisabledInk = Faint
 
-    // Responses (tonal) — derived from LightBlue
-    val ResponsesTonalBg = Color(0x211E88E5) // rgba(30,136,229,0.13)
+    val ResponsesTonalBg = Color(0x211E88E5)
     val ResponsesTonalInk = Color(0xFF1565C0)
 }

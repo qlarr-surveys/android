@@ -19,9 +19,10 @@ import com.qlarr.app.R
 import com.qlarr.app.api.survey.ResponseEvent
 import com.qlarr.app.business.responses.ResponseRepository
 import com.qlarr.app.business.responses.ResponsesFilter
+import com.qlarr.app.business.survey.BackgroundSync
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.business.survey.SurveyRepository
-import com.qlarr.app.business.survey.SyncCoordinator
+import com.qlarr.app.business.survey.UploadSurveyResponsesUseCase
 import com.qlarr.app.db.model.Response
 import com.qlarr.app.ui.common.FileUtils
 import com.qlarr.app.ui.common.error.ErrorProcessor
@@ -42,7 +43,8 @@ class ResponsesViewModel(
     private val eventBus: EventBus,
     private val errorProcessor: ErrorProcessor,
     private val surveyRepository: SurveyRepository,
-    private val syncCoordinator: SyncCoordinator,
+    private val backgroundSync: BackgroundSync,
+    private val uploadUseCase: UploadSurveyResponsesUseCase,
 ) : AndroidViewModel(application),
     ErrorProcessor by errorProcessor {
     private lateinit var surveyData: SurveyData
@@ -51,7 +53,6 @@ class ResponsesViewModel(
     lateinit var emNavProcessor: EMNavProcessor
     private var currentPage: Int = 0
 
-    /** Oldest-first ordinal per response id (#1 = oldest). Recomputed on every full refresh. */
     private var ordinalById: Map<String, Int> = emptyMap()
     private val timingHandler = Handler(Looper.getMainLooper())
 
@@ -109,16 +110,16 @@ class ResponsesViewModel(
                         refreshSingleResponse(event.responseId)
                         rebuildDetailIfOpen(event.responseId)
                     }
+
+                    event is AppEvent.UploadingSurveyResponse -> {
+                        _responsesScreenData.update { it.copy(isSyncing = true) }
+                    }
+
+                    event is AppEvent.UploadingResponse -> {
+                        _responsesScreenData.update { it.copy(isSyncing = event.uploading) }
+                    }
                 }
             }
-        }
-        viewModelScope.launch(Dispatchers.IO) {
-            syncCoordinator.isSyncing.collect { syncing ->
-                _responsesScreenData.update { it.copy(isSyncing = syncing) }
-            }
-        }
-        viewModelScope.launch(Dispatchers.IO) {
-            syncCoordinator.syncErrors.collect { processError(it) }
         }
 
         _responsesScreenData.update {
@@ -263,7 +264,6 @@ class ResponsesViewModel(
             }
             val deleted = _responsesScreenData.value.responses.find { it.id == responseId }
             responsesRepository.deleteResponse(responseId)
-            // Deleting renumbers ordinals (#1 = oldest), so recompute the index.
             ordinalById =
                 responsesRepository
                     .getOrderedIds(surveyData.id)
@@ -313,7 +313,6 @@ class ResponsesViewModel(
             startDateString = raw.startDate.toFormattedString(),
             submitDateString = raw.submitDate?.toFormattedString(),
             editEnabled = !quotaExceeded && raw.submitDate == null,
-            // Delete is offered for drafts + pending; uploaded responses keep only the text record.
             deleteEnabled = status != ResponseStatus.UPLOADED,
             events = masked.toListEventData(),
             values = masked.toResponseValueData(),
@@ -326,7 +325,6 @@ class ResponsesViewModel(
         )
     }
 
-    /** Mime types of the file (photo/video) answers stored on this response. */
     private fun Response.fileResponseTypes(): List<String> =
         values.values.mapNotNull { value ->
             (value as? Map<*, *>)
@@ -382,9 +380,7 @@ class ResponsesViewModel(
         refresh()
     }
 
-    // ── Detail screen ────────────────────────────────────────────────
 
-    /** Open the Detail view for [responseId]: build its page-grouped answers + event timeline. */
     fun openDetail(responseId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val detail = buildDetail(responseId)
@@ -397,7 +393,6 @@ class ResponsesViewModel(
         _responsesScreenData.update { it.copy(detail = null) }
     }
 
-    /** Rebuild the open detail (e.g. after a sync clears media, or a draft is edited). */
     private fun rebuildDetailIfOpen(responseId: String) {
         if (_responsesScreenData.value.detail?.responseId != responseId) return
         viewModelScope.launch(Dispatchers.IO) {
@@ -419,19 +414,21 @@ class ResponsesViewModel(
         )
     }
 
-    /** Trigger an app-wide sync of all pending responses; ignored while one is already running. */
     fun syncAll() {
-        syncCoordinator.requestSync()
+        viewModelScope.launch(Dispatchers.IO) {
+            if (surveyRepository.shouldSync()) {
+                backgroundSync.startSurveySync()
+            }
+        }
     }
 
-    /** Upload a single response (Detail screen Sync action); engine clears its media on success. */
     fun syncResponse(responseId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                when (syncCoordinator.syncResponse(surveyData.id, responseId)) {
-                    true -> toast(R.string.responses_sync_complete)
-                    false -> toast(R.string.responses_sync_none)
-                    null -> Unit // a sync was already in progress
+                if (uploadUseCase.uploadResponse(surveyData.id, responseId)) {
+                    toast(R.string.responses_sync_complete)
+                } else {
+                    toast(R.string.responses_sync_none)
                 }
             } catch (e: Exception) {
                 handleError(e)
@@ -643,7 +640,6 @@ data class ResponseItemData(
     val videos: Int = 0,
     val audios: Int = 0,
     val locations: Int = 0,
-    /** Draft completion %, stepped to 5 and clamped 5–95; null unless DRAFT. */
     val draftProgress: Int? = null,
 )
 

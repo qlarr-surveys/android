@@ -76,7 +76,6 @@ import com.qlarr.app.ui.common.toElapsedTime
 import com.qlarr.app.ui.common.toFormattedString
 import kotlin.math.max
 
-// ── Derived per-survey signals ───────────────────────────────────────────
 private class InfoSignals(
     survey: SurveyData,
 ) {
@@ -123,7 +122,6 @@ fun SurveyInfoScreen(
     }
 }
 
-// ── Update banner ────────────────────────────────────────────────────────
 @Composable
 private fun UpdateBanner() {
     Row(
@@ -150,7 +148,6 @@ private fun UpdateBanner() {
     }
 }
 
-// ── Header (title-led, no banner) ────────────────────────────────────────
 @Composable
 private fun InfoHeader(survey: SurveyData) {
     Column(
@@ -289,7 +286,6 @@ private fun StatusPill(status: SurveyStatus) {
     }
 }
 
-// ── Sync-status hero card (4 variants) ───────────────────────────────────
 @Composable
 private fun SyncHeroCard(
     survey: SurveyData,
@@ -487,7 +483,6 @@ private fun HeroSyncButton(
     }
 }
 
-// ── Responses section (two stat cards: on-device vs. server total) ───────
 @Composable
 private fun ResponsesSection(
     s: InfoSignals,
@@ -600,7 +595,6 @@ private fun StatCard(
     }
 }
 
-// ── Capture settings (chips) ─────────────────────────────────────────────
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun CaptureSection(survey: SurveyData) {
@@ -657,7 +651,6 @@ private fun CaptureChip(
     }
 }
 
-// ── Limits (quota) ───────────────────────────────────────────────────────
 @Composable
 private fun LimitsSection(survey: SurveyData) {
     val hasSurveyQuota = survey.surveyQuota > 0
@@ -807,7 +800,6 @@ private fun QuotaBar(
     }
 }
 
-// ── Sticky bottom action bar (state machine) ─────────────────────────────
 @Composable
 fun SurveyInfoBottomBar(
     survey: SurveyData,
@@ -967,7 +959,6 @@ private fun RowScope.BarDisabledButton() {
     }
 }
 
-// ── Small shared primitives ──────────────────────────────────────────────
 @Composable
 private fun SectionLabel(
     @StringRes labelRes: Int,

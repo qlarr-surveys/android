@@ -257,7 +257,6 @@
     <string name="responses_empty_title">لا توجد ردود بعد</string>
     <string name="responses_empty_subtitle">ستظهر هنا الردود التي تجمعها لهذا الاستبيان.</string>
     <string name="responses_empty_action">ابدأ ردًا</string>
-    <!-- Response detail screen -->
     <string name="response_detail_title">الرد رقم %1$d</string>
     <string name="response_meta_status">الحالة</string>
     <string name="response_meta_started">بدأ</string>
@@ -283,7 +282,6 @@
     <string name="response_no_events">لا توجد أحداث مسجلة</string>
     <string name="response_answer_cleared">تم المسح · رُفعت الوسائط</string>
 
-    <!-- Survey Info screen (redesign) -->
     <string name="info_status_active">نشط</string>
     <string name="info_status_scheduled">مجدول</string>
     <string name="info_status_expired">منتهٍ</string>

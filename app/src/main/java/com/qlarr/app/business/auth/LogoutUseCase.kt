@@ -13,11 +13,8 @@ class LogoutUseCaseImpl(
     override suspend fun invoke(clearAllData: Boolean) {
         loginRepository.logout()
         if (clearAllData) {
-            // Manual logout: wipe local DB, prefs and downloaded files so no
-            // "previous session" lingers on next launch.
             loginRepository.clearUser()
         } else {
-            // Session expired (401): keep user/env so re-login is one tap.
             sharedPrefsManager.logout()
         }
     }

@@ -55,12 +55,6 @@ import com.qlarr.app.R
 import com.qlarr.app.ui.audioplayer.AudioPlayer
 import com.qlarr.app.ui.common.theme.Colors
 
-/**
- * Response **Detail** screen (Phase 2). Renders one response in full: status banner, meta block,
- * freed-space banner (uploaded), voice-recordings + locations sections, and Answers | Events tabs.
- * [item] is the live list item (status, dates, media counts, audio playback state); [detail] holds
- * the page-grouped answers + event timeline built by [ResponsesViewModel.openDetail].
- */
 @Composable
 fun ResponseDetailScreen(
     modifier: Modifier = Modifier,
@@ -122,7 +116,6 @@ fun ResponseDetailScreen(
     }
 }
 
-// ── Status banner ────────────────────────────────────────────────────
 @Composable
 private fun StatusBanner(
     item: ResponseItemData,
@@ -227,7 +220,6 @@ private fun BannerAction(
     }
 }
 
-// ── Meta block ───────────────────────────────────────────────────────
 @Composable
 private fun MetaBlock(
     item: ResponseItemData,
@@ -290,7 +282,6 @@ private fun MetaRow(
     }
 }
 
-// ── Freed-space banner (uploaded only) ───────────────────────────────
 @Composable
 private fun FreedSpaceBanner() {
     Row(
@@ -320,7 +311,6 @@ private fun FreedSpaceBanner() {
     }
 }
 
-// ── Voice recordings ─────────────────────────────────────────────────
 @Composable
 private fun RecordingsSection(
     item: ResponseItemData,
@@ -335,7 +325,6 @@ private fun RecordingsSection(
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         if (item.status == ResponseStatus.UPLOADED || recordings.isEmpty()) {
-            // Media cleared on upload — only the count survives.
             repeat(item.audios) { index ->
                 RecordingCard(index + 1) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -408,7 +397,6 @@ private fun RecordingCard(
     }
 }
 
-// ── Locations ────────────────────────────────────────────────────────
 @Composable
 private fun LocationsSection(
     item: ResponseItemData,
@@ -516,7 +504,6 @@ private fun SectionHeader(
     }
 }
 
-// ── Tabs ─────────────────────────────────────────────────────────────
 @Composable
 private fun DetailTabs(
     active: Int,
@@ -556,7 +543,6 @@ private fun DetailTabs(
     }
 }
 
-// ── Answers panel ────────────────────────────────────────────────────
 @Composable
 private fun AnswerPageCard(
     page: AnswerPage,
@@ -688,7 +674,6 @@ private fun AnswerRowView(
     }
 }
 
-// ── Events panel ─────────────────────────────────────────────────────
 @Composable
 private fun TimelineCard(entries: List<TimelineEntry>) {
     Column(

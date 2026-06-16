@@ -112,7 +112,6 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                             .fillMaxSize()
                             .background(Colors.Page),
                 ) {
-                    // Guest warning banner
                     if (state.isGuest) {
                         Card(
                             modifier = Modifier.fillMaxWidth(),
@@ -131,7 +130,6 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                     }
 
                     if (!state.showLoading && state.surveyList.isEmpty()) {
-                        // Empty state
                         Box(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center,
@@ -145,7 +143,6 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                             )
                         }
                     } else {
-                        // Survey list
                         LazyVerticalGrid(
                             columns = GridCells.Fixed(columns),
                             modifier = Modifier.fillMaxSize(),
@@ -186,7 +183,6 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                     }
                 }
 
-                // Loading overlay
                 if (state.showLoading) {
                     Box(
                         modifier = Modifier
@@ -215,7 +211,6 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                     }
                 }
 
-                // Download progress overlay
                 val currentDownloadState = downloadState
                 if (currentDownloadState is DownloadState.Loading) {
                     Box(
@@ -283,7 +278,6 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                 }
             }
 
-            // Logout confirmation dialog — only renders once the unsynced query has returned.
             (logoutDialog as? SurveyListViewModel.LogoutDialog.Visible)?.let { dialog ->
                 DialogConfirmLogout(
                     hasUnsyncedResponses = dialog.hasUnsynced,
@@ -292,7 +286,6 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                 )
             }
 
-            // Error dialog
             errorDialogState?.let { error ->
                 val isAuthError = error is ProcessedError.AuthError
                 AlertDialog(

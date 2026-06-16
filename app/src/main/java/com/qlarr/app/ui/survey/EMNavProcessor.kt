@@ -260,12 +260,6 @@ class EMNavProcessor(
 
     private fun String.stripHTMLTags(): String = replace(Regex("<.*?>"), "")
 
-    /**
-     * Builds the Response **Detail** content for one response: answers grouped by survey page
-     * (matching the web app — page header rows + question→answer rows) and the navigation/answer
-     * timeline (only populated when the survey records timings). [includeUnanswered] adds
-     * "not answered" rows for draft questions with no value yet.
-     */
     fun detailContent(
         response: Response,
         includeUnanswered: Boolean,
@@ -287,8 +281,6 @@ class EMNavProcessor(
                 .toSet()
         val masked = maskedValues(response.values)
 
-        // Mirror the backend (ResponseService.getResponseById): show the masked value with the raw
-        // value in parentheses, falling back to the raw value when there is no masked value.
         fun maskedOrRaw(code: String): String? {
             val raw = response.values["$code.value"]?.toString()
             val maskedValue =
@@ -296,9 +288,6 @@ class EMNavProcessor(
             return maskedValue?.let { "$it ($raw)" } ?: raw
         }
 
-        // Mirror the backend label build: split the code into its component segments
-        // (e.g. "Q1A1" -> ["Q1", "A1"]); when it is an answer within a question, the first
-        // segment is the question. Avoids treating a nested answer code as the question.
         fun questionLabel(code: String): String {
             val parts = code.splitToComponentCodes()
             return if (parts.size > 1) {
@@ -311,7 +300,6 @@ class EMNavProcessor(
             }
         }
 
-        // Page-grouped answers, in survey order.
         val pages = mutableListOf<AnswerPage>()
         var title: String? = null
         var rows = mutableListOf<AnswerRow>()
@@ -371,8 +359,6 @@ class EMNavProcessor(
         }
         title?.let { pages.add(AnswerPage(it, rows)) }
 
-        // Navigation + answer timeline. Voice/Location events have their own sections, but still
-        // advance the clock so deltas stay chronological.
         var prevTime: LocalDateTime? = null
         val timeline =
             response.events.mapNotNull { event ->
@@ -414,7 +400,6 @@ class EMNavProcessor(
                 containsKey(ResponsesViewModel.KEY_TYPE)
         } == true
 
-    /** Frontend-style elapsed-time label between two events ("+2.0s", "+1m 4s"); null if not after. */
     private fun formatDelta(
         from: LocalDateTime,
         to: LocalDateTime,
@@ -429,12 +414,6 @@ class EMNavProcessor(
         }
     }
 
-    /**
-     * Draft completion as a percentage, stepped to the nearest 5% and clamped to 5–95%
-     * (a draft never reads 0% or 100%).
-     * - Multi-page surveys: position of the page (group) we stopped on / total pages.
-     * - Single-page surveys: answered questions / total questions on that page.
-     */
     fun draftProgress(response: Response): Int {
         val validationJsonOutput =
             FileUtils.getValidationJson(getActivity(), survey.id) ?: return MIN_PROGRESS
@@ -691,7 +670,6 @@ class EMNavProcessor(
     }
 }
 
-/** Page-grouped answers + navigation/answer timeline for one response's Detail screen. */
 data class DetailContent(
     val answerPages: List<AnswerPage>,
     val timeline: List<TimelineEntry>,

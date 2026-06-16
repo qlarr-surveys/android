@@ -82,17 +82,14 @@ data class ResponsesScreenState(
     val lastSyncTime: LocalDateTime? = null,
     val isComplete: Boolean = false,
     val activeFilter: ResponsesFilter = ResponsesFilter.ALL,
-    /** Non-null when the Detail view is open for one response. */
     val detail: ResponseDetailData? = null,
 ) {
     fun shouldLoad() = !(isLoading || isComplete)
 
     val totalResponsesCount: Int get() = completeResponsesCount + inCompleteResponsesCount
 
-    /** Drafts = incomplete responses (not submitted). */
     val draftResponsesCount: Int get() = inCompleteResponsesCount
 
-    /** Pending = complete but not yet uploaded — the actually-uploadable responses. */
     val pendingResponsesCount: Int
         get() =
             (completeResponsesCount - uploadedResponsesCount).coerceAtLeast(
@@ -131,7 +128,6 @@ fun ResponsesScreen(
         }
     }
 
-    // Full empty state only when the survey has no local responses at all.
     if (screenState.totalResponsesCount == 0 && !screenState.isLoading) {
         EmptyState(modifier = modifier, onStartResponse = onStartResponse)
     } else {
@@ -190,7 +186,6 @@ fun ResponsesScreen(
     }
 }
 
-// ── Summary header ───────────────────────────────────────────────────
 @Composable
 private fun SummaryHeader(
     state: ResponsesScreenState,
@@ -314,7 +309,6 @@ private fun SyncAllPill(
     }
 }
 
-// ── Filter chips ─────────────────────────────────────────────────────
 @Composable
 private fun FilterChipsRow(
     state: ResponsesScreenState,
@@ -396,7 +390,6 @@ private fun FilterChip(
     }
 }
 
-// ── Response card ────────────────────────────────────────────────────
 @Composable
 private fun ResponseCard(
     item: ResponseItemData,
@@ -415,7 +408,6 @@ private fun ResponseCard(
                 .border(BorderStroke(1.dp, Colors.Hairline), RoundedCornerShape(16.dp))
                 .clickable(onClick = onClick),
     ) {
-        // Accent rail
         Box(
             modifier =
                 Modifier
@@ -598,7 +590,6 @@ private fun MediaSummary(item: ResponseItemData) {
                     if (item.photos > 0) MediaTag(Icons.Filled.Image, item.photos)
                     if (item.videos > 0) MediaTag(Icons.Filled.Videocam, item.videos)
                     if (item.audios > 0) MediaTag(Icons.Filled.Mic, item.audios)
-                    // location count shown only when more than one
                     if (item.locations > 0) {
                         MediaTag(
                             Icons.Filled.Place,
@@ -698,7 +689,6 @@ private fun DraftFooter(
     }
 }
 
-// ── Empty state ──────────────────────────────────────────────────────
 @Composable
 private fun EmptyState(
     modifier: Modifier = Modifier,

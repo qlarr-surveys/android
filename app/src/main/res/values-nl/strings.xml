@@ -213,7 +213,6 @@
     <string name="responses_empty_title">Nog geen reacties</string>
     <string name="responses_empty_subtitle">Reacties die u voor deze enquête verzamelt, verschijnen hier.</string>
     <string name="responses_empty_action">Een reactie starten</string>
-    <!-- Response detail screen -->
     <string name="response_detail_title">Reactie #%1$d</string>
     <string name="response_meta_status">Status</string>
     <string name="response_meta_started">Gestart</string>
@@ -239,7 +238,6 @@
     <string name="response_no_events">Geen gebeurtenissen vastgelegd</string>
     <string name="response_answer_cleared">Gewist · media geüpload</string>
 
-    <!-- Survey Info screen (redesign) -->
     <string name="info_status_active">Actief</string>
     <string name="info_status_scheduled">Gepland</string>
     <string name="info_status_expired">Verlopen</string>

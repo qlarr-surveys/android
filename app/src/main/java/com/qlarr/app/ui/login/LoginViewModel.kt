@@ -36,8 +36,6 @@ class LoginViewModel(
     private fun checkForPreviousSession() {
         if (!sessionManager.hasPreviousSession()) return
         if (sessionManager.getLastSuccessfulEnv() == BackendEnvironment.Guest) {
-            // Guests hold no server-side account, so a leftover guest session is
-            // meaningless — clear it silently instead of prompting to resolve a conflict.
             viewModelScope.launch(Dispatchers.IO) {
                 loginInteractor.clearUser()
             }
@@ -163,7 +161,6 @@ class LoginViewModel(
             }
 
             null -> {
-                // do nothing
             }
         }
 

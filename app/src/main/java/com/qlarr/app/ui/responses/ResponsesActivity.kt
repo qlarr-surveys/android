@@ -73,8 +73,6 @@ class ResponsesActivity : ComponentActivity() {
             val screenState by viewModel.responsesScreenData.collectAsState()
             val detail = screenState.detail
 
-            // Resolve the live list item for the open detail; keep the last known one so the detail
-            // doesn't flicker while a refresh (e.g. after sync) transiently empties the list.
             val liveItem = detail?.let { d -> screenState.responses.find { it.id == d.responseId } }
             var lastItem by remember { mutableStateOf<ResponseItemData?>(null) }
             LaunchedEffect(liveItem) { if (liveItem != null) lastItem = liveItem }
