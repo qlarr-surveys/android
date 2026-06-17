@@ -30,6 +30,8 @@ import com.qlarr.app.ui.common.replaceFirstIf
 import com.qlarr.app.ui.common.toFormattedString
 import com.qlarr.app.ui.survey.EMNavProcessor
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -54,6 +56,7 @@ class ResponsesViewModel(
     private var currentPage: Int = 0
 
     private var ordinalById: Map<String, Int> = emptyMap()
+    private var loadJob: Job? = null
     private val timingHandler = Handler(Looper.getMainLooper())
 
     private val exoPlayer by lazy {
@@ -171,8 +174,11 @@ class ResponsesViewModel(
     }
 
     fun refresh() {
-        viewModelScope.launch(Dispatchers.IO) {
-            if (!_responsesScreenData.value.isLoading) {
+        val previous = loadJob
+        loadJob =
+            viewModelScope.launch(Dispatchers.IO) {
+                // Supersede any in-flight load so a refresh (e.g. filter change) never gets dropped.
+                previous?.cancelAndJoin()
                 currentPlayingMedia?.let {
                     withContext(Dispatchers.Main) {
                         timingHandler.removeCallbacksAndMessages(null)
@@ -189,68 +195,70 @@ class ResponsesViewModel(
                 val uploadedCount = responsesRepository.countUploaded(surveyData.id)
                 _responsesScreenData.update {
                     it.copy(
+                        isLoading = false,
                         isComplete = false,
                         responses = emptyList(),
                         uploadedResponsesCount = uploadedCount,
                     )
                 }
-                loadNext()
+                loadPage()
             }
-        }
     }
 
     fun loadNext() {
         if (!_responsesScreenData.value.shouldLoad()) {
             return
         }
-        viewModelScope.launch(Dispatchers.IO) {
-            _responsesScreenData.update { it.copy(isLoading = true) }
-            responsesRepository
-                .getResponses(
-                    surveyData.id,
-                    currentPage++,
-                    PER_PAGE,
-                    _responsesScreenData.value.activeFilter,
-                ).let { newList ->
-                    val start = System.currentTimeMillis()
-                    val quotaExceeded = surveyData.quotaExceeded()
-                    val rawById = newList.associateBy { it.id }
-                    if (newList.isNotEmpty()) {
-                        emNavProcessor.maskedValues(newList).collect { response ->
-                            val raw = rawById[response.id] ?: response
-                            _responsesScreenData.update {
-                                it.copy(
-                                    isLoading = false,
-                                    isComplete = newList.size < PER_PAGE,
-                                    responses =
-                                        it.responses
-                                            .toMutableList()
-                                            .apply {
-                                                add(
-                                                    buildItem(
-                                                        masked = response,
-                                                        raw = raw,
-                                                        quotaExceeded = quotaExceeded,
-                                                    ),
-                                                )
-                                            },
-                                )
-                            }
-                        }
-                    } else {
+        loadJob = viewModelScope.launch(Dispatchers.IO) { loadPage() }
+    }
+
+    private suspend fun loadPage() {
+        _responsesScreenData.update { it.copy(isLoading = true) }
+        responsesRepository
+            .getResponses(
+                surveyData.id,
+                currentPage++,
+                PER_PAGE,
+                _responsesScreenData.value.activeFilter,
+            ).let { newList ->
+                val start = System.currentTimeMillis()
+                val quotaExceeded = surveyData.quotaExceeded()
+                val rawById = newList.associateBy { it.id }
+                if (newList.isNotEmpty()) {
+                    emNavProcessor.maskedValues(newList).collect { response ->
+                        val raw = rawById[response.id] ?: response
                         _responsesScreenData.update {
                             it.copy(
                                 isLoading = false,
-                                isComplete = true,
+                                isComplete = newList.size < PER_PAGE,
+                                responses =
+                                    it.responses
+                                        .toMutableList()
+                                        .apply {
+                                            add(
+                                                buildItem(
+                                                    masked = response,
+                                                    raw = raw,
+                                                    quotaExceeded = quotaExceeded,
+                                                ),
+                                            )
+                                        },
                             )
                         }
                     }
-                    Log.d(
-                        "time",
-                        "loadNext ${System.currentTimeMillis() - start}",
-                    )
+                } else {
+                    _responsesScreenData.update {
+                        it.copy(
+                            isLoading = false,
+                            isComplete = true,
+                        )
+                    }
                 }
-        }
+                Log.d(
+                    "time",
+                    "loadNext ${System.currentTimeMillis() - start}",
+                )
+            }
     }
 
     fun deleteResponse(responseId: String) {
