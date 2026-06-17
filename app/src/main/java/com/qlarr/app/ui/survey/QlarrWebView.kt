@@ -588,11 +588,11 @@ data class NavigateRequest(
     val responseId: UUID?,
     val lang: String? = null,
     val navigationDirection: NavigationDirection? = null,
-    val values: Map<String, Any> = mapOf(),
+    val values: Map<String, Any?> = mapOf(),
     val events: List<ResponseEvent.Value> = listOf(),
 )
 
 data class AutoSaveValues(
-    val values: Map<String, Any>,
+    val values: Map<String, Any?>,
     val events: List<ResponseEvent.Value> = listOf()
 )

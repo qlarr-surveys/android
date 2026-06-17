@@ -107,7 +107,7 @@ class EMNavProcessor(
                 }.filter { responseField ->
                     prefillQuestionsCodes.any {
                         responseField.componentCode == it ||
-                            responseField.componentCode.startsWith("${it}A")
+                                responseField.componentCode.startsWith("${it}A")
                     }
                 }.map { "${it.componentCode}.value" }
 
@@ -168,10 +168,10 @@ class EMNavProcessor(
             navigationDirection = useCaseInput.navigationDirection!!,
             navigationIndex = current.navigationIndex,
             lang = lang,
-            values =
-                current.values.toMutableMap().apply {
-                    putAll(useCaseInput.values)
-                },
+            values = mutableMapOf<String, Any?>().apply {
+                putAll(current.values)
+                putAll(useCaseInput.values)
+            },
             onSuccess = { navigationJsonOutput, language, additionalLang ->
                 val result =
                     navigationJsonOutput
@@ -253,7 +253,7 @@ class EMNavProcessor(
     private fun navigationUseCase(
         validationJsonOutput: ValidationJsonOutput,
         lang: String? = null,
-        values: Map<String, Any> = mapOf(),
+        values: Map<String, Any?> = mapOf(),
         navigationIndex: NavigationIndex? = null,
         navigationDirection: NavigationDirection,
         onSuccess: suspend (NavigationJsonOutput, SurveyLang, List<SurveyLang>) -> Unit,
@@ -339,10 +339,7 @@ class EMNavProcessor(
     ) {
         val current = qlarrDb.responseDao().get(responseId)
         qlarrDb.responseDao().updateAndAppendOldEvents(
-            values =
-                current.values.toMutableMap().apply {
-                    putAll(result.toSave)
-                },
+            values = result.toSave,
             id = current.id,
             navigationIndex = result.navigationIndex,
             startDate = current.startDate,
