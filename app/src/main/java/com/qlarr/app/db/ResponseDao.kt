@@ -96,14 +96,52 @@ interface ResponseDao {
     )
     suspend fun getByUserAndSurvey(surveyId: String, page: Int, perPage: Int): List<Response>
 
+    @Query(
+        "SELECT * FROM response WHERE surveyId = :surveyId AND is_synced = :synced " +
+            "ORDER BY startDate DESC LIMIT :perPage OFFSET (:page*:perPage)",
+    )
+    suspend fun getByUserAndSurveyFiltered(
+        surveyId: String,
+        synced: Boolean,
+        page: Int,
+        perPage: Int,
+    ): List<Response>
+
+    @Query(
+        "SELECT * FROM response WHERE surveyId = :surveyId AND submitDate IS NULL " +
+            "ORDER BY startDate DESC LIMIT :perPage OFFSET (:page*:perPage)",
+    )
+    suspend fun getDrafts(
+        surveyId: String,
+        page: Int,
+        perPage: Int,
+    ): List<Response>
+
+    @Query(
+        "SELECT * FROM response WHERE surveyId = :surveyId AND submitDate IS NOT NULL AND is_synced = 0 " +
+            "ORDER BY startDate DESC LIMIT :perPage OFFSET (:page*:perPage)",
+    )
+    suspend fun getPendingUpload(
+        surveyId: String,
+        page: Int, perPage: Int): List<Response>
+
+    @Query("SELECT id FROM response WHERE surveyId = :surveyId ORDER BY startDate ASC")
+    suspend fun getOrderedIds(surveyId: String): List<String>
+
     @Query("SELECT COUNT(*) FROM response WHERE surveyId = :surveyId")
     suspend fun countByUserAndSurvey(surveyId: String): Int
 
     @Query("SELECT COUNT(*) FROM response WHERE surveyId = :surveyId AND submitDate IS NOT NULL")
     suspend fun countCompleteByUserAndSurvey(surveyId: String): Int
 
+    @Query("SELECT COUNT(*) FROM response WHERE surveyId = :surveyId AND is_synced = 1")
+    suspend fun countUploaded(surveyId: String): Int
+
     @Query("SELECT COUNT(*) FROM response WHERE surveyId = :surveyId AND is_synced = 0 AND submitDate IS NOT NULL")
     suspend fun countUnsyncedResponses(surveyId: String): Int
+
+    @Query("SELECT COUNT(*) FROM response WHERE is_synced = 0 AND submitDate IS NOT NULL")
+    suspend fun countAllUnsyncedResponses(): Int
 
     @Query("UPDATE response SET is_synced = 1 WHERE id = :responseId")
     suspend fun markResponseAsSynced(responseId: String)

@@ -1,7 +1,6 @@
 package com.qlarr.app
 
 import android.app.Application
-import android.webkit.WebView
 import androidx.appcompat.app.AppCompatDelegate
 import coil.ImageLoader
 import coil.ImageLoaderFactory
@@ -25,17 +24,17 @@ class App :
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         startKoin {
             androidContext(this@App)
-            modules(
-                androidModule,
-                loginModule,
-                launchModule,
-                mainModule,
-                refreshTokenModule,
-                responsesModule,
-                surveyModule,
-                guestModule,
-            )
-        }
+                modules(
+                    androidModule,
+                    loginModule,
+                    launchModule,
+                    mainModule,
+                    refreshTokenModule,
+                    responsesModule,
+                    surveyModule,
+                    guestModule,
+                )
+            }
     }
 
     override fun newImageLoader(): ImageLoader =

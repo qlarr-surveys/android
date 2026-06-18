@@ -5,6 +5,8 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
@@ -13,10 +15,14 @@ import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.qlarr.app.AppEvent
 import com.qlarr.app.EventBus
+import com.qlarr.app.R
 import com.qlarr.app.api.survey.ResponseEvent
 import com.qlarr.app.business.responses.ResponseRepository
+import com.qlarr.app.business.responses.ResponsesFilter
+import com.qlarr.app.business.survey.BackgroundSync
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.business.survey.SurveyRepository
+import com.qlarr.app.business.survey.UploadSurveyResponsesUseCase
 import com.qlarr.app.db.model.Response
 import com.qlarr.app.ui.common.FileUtils
 import com.qlarr.app.ui.common.error.ErrorProcessor
@@ -24,6 +30,8 @@ import com.qlarr.app.ui.common.replaceFirstIf
 import com.qlarr.app.ui.common.toFormattedString
 import com.qlarr.app.ui.survey.EMNavProcessor
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -37,6 +45,8 @@ class ResponsesViewModel(
     private val eventBus: EventBus,
     private val errorProcessor: ErrorProcessor,
     private val surveyRepository: SurveyRepository,
+    private val backgroundSync: BackgroundSync,
+    private val uploadUseCase: UploadSurveyResponsesUseCase,
 ) : AndroidViewModel(application),
     ErrorProcessor by errorProcessor {
     private lateinit var surveyData: SurveyData
@@ -44,40 +54,48 @@ class ResponsesViewModel(
     val responsesScreenData = _responsesScreenData.asStateFlow()
     lateinit var emNavProcessor: EMNavProcessor
     private var currentPage: Int = 0
+
+    private var ordinalById: Map<String, Int> = emptyMap()
+    private var loadJob: Job? = null
     private val timingHandler = Handler(Looper.getMainLooper())
 
     private val exoPlayer by lazy {
         ExoPlayer.Builder(application).build().also { player ->
-            player.addListener(object : Player.Listener {
-                override fun onPlaybackStateChanged(playbackState: Int) {
-                    if (playbackState == Player.STATE_ENDED) {
+            player.addListener(
+                object : Player.Listener {
+                    override fun onPlaybackStateChanged(playbackState: Int) {
+                        if (playbackState == Player.STATE_ENDED) {
+                            stopCurrentMedia()
+                        }
+                    }
+
+                    override fun onPlayerError(error: PlaybackException) {
                         stopCurrentMedia()
                     }
-                }
 
-                override fun onPlayerError(error: PlaybackException) {
-                    stopCurrentMedia()
-                }
-
-                private fun stopCurrentMedia() {
-                    timingHandler.removeCallbacksAndMessages(null)
-                    currentPlayingMedia?.let { media ->
-                        _responsesScreenData.updatePlayingAudio(
-                            responseId = media.responseId,
-                            audioPath = media.path,
-                            isPlaying = false,
-                            time = 0
-                        )
+                    private fun stopCurrentMedia() {
+                        timingHandler.removeCallbacksAndMessages(null)
+                        currentPlayingMedia?.let { media ->
+                            _responsesScreenData.updatePlayingAudio(
+                                responseId = media.responseId,
+                                audioPath = media.path,
+                                isPlaying = false,
+                                time = 0,
+                            )
+                        }
+                        currentPlayingMedia = null
                     }
-                    currentPlayingMedia = null
-                }
-            })
+                },
+            )
         }
     }
 
     private var currentPlayingMedia: CurrentPlayingMedia? = null
 
-    data class CurrentPlayingMedia(val path: String = "", val responseId: String = "")
+    data class CurrentPlayingMedia(
+        val path: String = "",
+        val responseId: String = "",
+    )
 
     fun init(surveyData: SurveyData) {
         this.surveyData = surveyData
@@ -86,11 +104,22 @@ class ResponsesViewModel(
                 when {
                     event is AppEvent.UploadedSurveyResponse && event.survey.id == surveyData.id -> {
                         this@ResponsesViewModel.surveyData = event.survey
+                        _responsesScreenData.update { it.copy(lastSyncTime = event.survey.lastSync) }
                         refresh()
+                        rebuildDetailIfOpen(event.responseId)
                     }
 
                     event is AppEvent.ResponseEnded -> {
                         refreshSingleResponse(event.responseId)
+                        rebuildDetailIfOpen(event.responseId)
+                    }
+
+                    event is AppEvent.UploadingSurveyResponse -> {
+                        _responsesScreenData.update { it.copy(isSyncing = true) }
+                    }
+
+                    event is AppEvent.UploadingResponse -> {
+                        _responsesScreenData.update { it.copy(isSyncing = event.uploading) }
                     }
                 }
             }
@@ -124,7 +153,13 @@ class ResponsesViewModel(
                             .toMutableList()
                             .replaceFirstIf(
                                 { it.id == responseId },
-                                { response.toResponseItemData(surveyData.quotaExceeded()) },
+                                {
+                                    buildItem(
+                                        masked = response,
+                                        raw = newResponse,
+                                        quotaExceeded = surveyData.quotaExceeded(),
+                                    )
+                                },
                             )
                     _responsesScreenData.update {
                         it.copy(
@@ -139,8 +174,11 @@ class ResponsesViewModel(
     }
 
     fun refresh() {
-        viewModelScope.launch(Dispatchers.IO) {
-            if (!_responsesScreenData.value.isLoading) {
+        val previous = loadJob
+        loadJob =
+            viewModelScope.launch(Dispatchers.IO) {
+                // Supersede any in-flight load so a refresh (e.g. filter change) never gets dropped.
+                previous?.cancelAndJoin()
                 currentPlayingMedia?.let {
                     withContext(Dispatchers.Main) {
                         timingHandler.removeCallbacksAndMessages(null)
@@ -149,52 +187,78 @@ class ResponsesViewModel(
                     }
                 }
                 currentPage = 0
-                _responsesScreenData.update { it.copy(isComplete = false, responses = emptyList()) }
-                loadNext()
+                ordinalById =
+                    responsesRepository
+                        .getOrderedIds(surveyData.id)
+                        .withIndex()
+                        .associate { (index, id) -> id to index + 1 }
+                val uploadedCount = responsesRepository.countUploaded(surveyData.id)
+                _responsesScreenData.update {
+                    it.copy(
+                        isLoading = false,
+                        isComplete = false,
+                        responses = emptyList(),
+                        uploadedResponsesCount = uploadedCount,
+                    )
+                }
+                loadPage()
             }
-        }
     }
 
     fun loadNext() {
         if (!_responsesScreenData.value.shouldLoad()) {
             return
         }
-        viewModelScope.launch(Dispatchers.IO) {
-            _responsesScreenData.update { it.copy(isLoading = true) }
-            responsesRepository
-                .getResponses(surveyData.id, currentPage++, PER_PAGE)
-                .let { newList ->
-                    val start = System.currentTimeMillis()
-                    val quotaExceeded = surveyData.quotaExceeded()
-                    if (newList.isNotEmpty()) {
-                        emNavProcessor.maskedValues(newList).collect { response ->
-                            _responsesScreenData.update {
-                                it.copy(
-                                    isLoading = false,
-                                    isComplete = newList.size < PER_PAGE,
-                                    responses =
-                                        it.responses
-                                            .toMutableList()
-                                            .apply {
-                                                add(response.toResponseItemData(quotaExceeded))
-                                            },
-                                )
-                            }
-                        }
-                    } else {
+        loadJob = viewModelScope.launch(Dispatchers.IO) { loadPage() }
+    }
+
+    private suspend fun loadPage() {
+        _responsesScreenData.update { it.copy(isLoading = true) }
+        responsesRepository
+            .getResponses(
+                surveyData.id,
+                currentPage++,
+                PER_PAGE,
+                _responsesScreenData.value.activeFilter,
+            ).let { newList ->
+                val start = System.currentTimeMillis()
+                val quotaExceeded = surveyData.quotaExceeded()
+                val rawById = newList.associateBy { it.id }
+                if (newList.isNotEmpty()) {
+                    emNavProcessor.maskedValues(newList).collect { response ->
+                        val raw = rawById[response.id] ?: response
                         _responsesScreenData.update {
                             it.copy(
                                 isLoading = false,
-                                isComplete = true,
+                                isComplete = newList.size < PER_PAGE,
+                                responses =
+                                    it.responses
+                                        .toMutableList()
+                                        .apply {
+                                            add(
+                                                buildItem(
+                                                    masked = response,
+                                                    raw = raw,
+                                                    quotaExceeded = quotaExceeded,
+                                                ),
+                                            )
+                                        },
                             )
                         }
                     }
-                    Log.d(
-                        "time",
-                        "loadNext ${System.currentTimeMillis() - start}",
-                    )
+                } else {
+                    _responsesScreenData.update {
+                        it.copy(
+                            isLoading = false,
+                            isComplete = true,
+                        )
+                    }
                 }
-        }
+                Log.d(
+                    "time",
+                    "loadNext ${System.currentTimeMillis() - start}",
+                )
+            }
     }
 
     fun deleteResponse(responseId: String) {
@@ -206,36 +270,79 @@ class ResponsesViewModel(
                     currentPlayingMedia = null
                 }
             }
-            responsesRepository.deleteResponse(responseId).let {
-                _responsesScreenData.update { screenData ->
-                    val list = screenData.responses.filter { it.id != responseId }
-                    val count =
-                        list.count { it.submitDateString != null && !it.isSynced }
-                    val quotaExceeded = surveyData.quotaExceeded(count)
-                    val completeCount = list.count { it.submitDateString != null }
-                    val inCompleteCount = list.size - completeCount
-                    screenData.copy(
-                        responses = list.map { it.copy(editEnabled = !quotaExceeded && it.submitDateString == null) },
-                        completeResponsesCount = completeCount,
-                        inCompleteResponsesCount = inCompleteCount,
+            val deleted = _responsesScreenData.value.responses.find { it.id == responseId }
+            responsesRepository.deleteResponse(responseId)
+            ordinalById =
+                responsesRepository
+                    .getOrderedIds(surveyData.id)
+                    .withIndex()
+                    .associate { (index, id) -> id to index + 1 }
+            _responsesScreenData.update { screenData ->
+                val wasComplete = deleted?.submitDateString != null
+                val completeCount =
+                    (screenData.completeResponsesCount - if (wasComplete) 1 else 0).coerceAtLeast(0)
+                val inCompleteCount =
+                    (screenData.inCompleteResponsesCount - if (wasComplete) 0 else 1).coerceAtLeast(
+                        0,
                     )
-                }
+                val unsyncedComplete =
+                    (completeCount - screenData.uploadedResponsesCount).coerceAtLeast(0)
+                val quotaExceeded = surveyData.quotaExceeded(unsyncedComplete)
+                val list =
+                    screenData.responses
+                        .filter { it.id != responseId }
+                        .map {
+                            it.copy(
+                                ordinal = ordinalById[it.id] ?: it.ordinal,
+                                editEnabled = !quotaExceeded && it.submitDateString == null,
+                            )
+                        }
+                screenData.copy(
+                    responses = list,
+                    completeResponsesCount = completeCount,
+                    inCompleteResponsesCount = inCompleteCount,
+                )
             }
         }
     }
 
-    private fun Response.toResponseItemData(quotaExceeded: Boolean) =
-        ResponseItemData(
-            id = id,
-            isSynced = isSynced,
-            startDateString = startDate.toFormattedString(),
-            submitDateString = submitDate?.toFormattedString(),
-            editEnabled = !quotaExceeded && submitDate == null,
-            deleteEnabled = !isSynced && submitDate == null,
-            events = toListEventData(),
-            values = toResponseValueData(),
-            lang = lang,
+    private fun buildItem(
+        masked: Response,
+        raw: Response,
+        quotaExceeded: Boolean,
+    ): ResponseItemData {
+        val status = responseStatus(isComplete = raw.submitDate != null, isSynced = raw.isSynced)
+        val fileTypes = raw.fileResponseTypes()
+        return ResponseItemData(
+            id = raw.id,
+            ordinal = ordinalById[raw.id] ?: 0,
+            status = status,
+            isSynced = raw.isSynced,
+            startDateString = raw.startDate.toFormattedString(),
+            submitDateString = raw.submitDate?.toFormattedString(),
+            editEnabled = !quotaExceeded && raw.submitDate == null,
+            deleteEnabled = status != ResponseStatus.UPLOADED,
+            events = masked.toListEventData(),
+            values = masked.toResponseValueData(),
+            lang = raw.lang,
+            photos = fileTypes.count { !it.contains("video") },
+            videos = fileTypes.count { it.contains("video") },
+            audios = raw.events.count { it is ResponseEvent.VoiceRecording },
+            locations = raw.events.count { it is ResponseEvent.Location },
+            draftProgress = if (status == ResponseStatus.DRAFT) emNavProcessor.draftProgress(raw) else null,
         )
+    }
+
+    private fun Response.fileResponseTypes(): List<String> =
+        values.values.mapNotNull { value ->
+            (value as? Map<*, *>)
+                ?.takeIf {
+                    it.containsKey(KEY_FILENAME) &&
+                        it.containsKey(KEY_STORED_FILENAME) &&
+                        it.containsKey(KEY_TYPE)
+                }?.get(KEY_TYPE)
+                ?.toString()
+        }
 
     private fun Response.toResponseValueData() =
         values.mapNotNull {
@@ -275,70 +382,153 @@ class ResponsesViewModel(
         exoPlayer.release()
     }
 
+    fun setFilter(filter: ResponsesFilter) {
+        if (_responsesScreenData.value.activeFilter == filter) return
+        _responsesScreenData.update { it.copy(activeFilter = filter) }
+        refresh()
+    }
+
+
+    fun openDetail(responseId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val detail = buildDetail(responseId)
+            _responsesScreenData.update { it.copy(detail = detail) }
+        }
+    }
+
+    fun closeDetail() {
+        pauseCurrentlyPlaying()
+        _responsesScreenData.update { it.copy(detail = null) }
+    }
+
+    private fun rebuildDetailIfOpen(responseId: String) {
+        if (_responsesScreenData.value.detail?.responseId != responseId) return
+        viewModelScope.launch(Dispatchers.IO) {
+            val detail = buildDetail(responseId)
+            _responsesScreenData.update {
+                if (it.detail?.responseId == responseId) it.copy(detail = detail) else it
+            }
+        }
+    }
+
+    private suspend fun buildDetail(responseId: String): ResponseDetailData {
+        val raw = responsesRepository.getResponse(responseId)
+        val content = emNavProcessor.detailContent(raw, includeUnanswered = raw.submitDate == null)
+        return ResponseDetailData(
+            responseId = responseId,
+            disqualified = raw.values["Survey.disqualified"] as? Boolean ?: false,
+            answerPages = content.answerPages,
+            timeline = content.timeline,
+        )
+    }
+
+    fun syncAll() {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (surveyRepository.shouldSync()) {
+                backgroundSync.startSurveySync()
+            }
+        }
+    }
+
+    fun syncResponse(responseId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                if (uploadUseCase.uploadResponse(surveyData.id, responseId)) {
+                    toast(R.string.responses_sync_complete)
+                } else {
+                    toast(R.string.responses_sync_none)
+                }
+            } catch (e: Exception) {
+                handleError(e)
+            }
+        }
+    }
+
+    private suspend fun toast(
+        @StringRes messageRes: Int,
+    ) = withContext(Dispatchers.Main) {
+        Toast.makeText(getApplication(), messageRes, Toast.LENGTH_SHORT).show()
+    }
+
     fun handleError(it: Exception) {
         viewModelScope.launch {
             processError(it)
         }
     }
 
-    fun onPlayClicked(responseItemId: String, audioPath: String) {
+    fun onPlayClicked(
+        responseItemId: String,
+        audioPath: String,
+    ) {
         _responsesScreenData.value.responses.find { it.id == responseItemId }?.let { item ->
-            item.events.find { event ->
-                (event as? ResponseEventData.AudioRecordingData)?.audioPath == audioPath
-            }?.let {
-                val audioData = (it as ResponseEventData.AudioRecordingData)
-                when {
-                    currentPlayingMedia?.path != audioData.audioPath -> {
-                        if (currentPlayingMedia != null) {
-                            _responsesScreenData.updatePlayingAudio(
-                                currentPlayingMedia!!.responseId,
-                                currentPlayingMedia!!.path, false
-                            )
+            item.events
+                .find { event ->
+                    (event as? ResponseEventData.AudioRecordingData)?.audioPath == audioPath
+                }?.let {
+                    val audioData = (it as ResponseEventData.AudioRecordingData)
+                    when {
+                        currentPlayingMedia?.path != audioData.audioPath -> {
+                            if (currentPlayingMedia != null) {
+                                _responsesScreenData.updatePlayingAudio(
+                                    currentPlayingMedia!!.responseId,
+                                    currentPlayingMedia!!.path,
+                                    false,
+                                )
+                            }
+                            currentPlayingMedia = CurrentPlayingMedia(audioData.audioPath, item.id)
+                            exoPlayer.stop()
+                            exoPlayer.removeMediaItems(0, exoPlayer.mediaItemCount)
+                            exoPlayer.addMediaItem(MediaItem.fromUri(audioData.audioPath))
+                            exoPlayer.prepare()
                         }
-                        currentPlayingMedia = CurrentPlayingMedia(audioData.audioPath, item.id)
-                        exoPlayer.stop()
-                        exoPlayer.removeMediaItems(0, exoPlayer.mediaItemCount)
-                        exoPlayer.addMediaItem(MediaItem.fromUri(audioData.audioPath))
-                        exoPlayer.prepare()
+
+                        exoPlayer.currentPosition <= audioData.audioDuration -> {
+                            exoPlayer.seekTo(0)
+                        }
                     }
-                    exoPlayer.currentPosition <= audioData.audioDuration -> {
-                        exoPlayer.seekTo(0)
-                    }
+                    exoPlayer.seekTo(audioData.currentTime)
+                    exoPlayer.play()
+                    timingHandler.removeCallbacksAndMessages(null)
+                    timingHandler.post(
+                        object : Runnable {
+                            override fun run() {
+                                _responsesScreenData.updatePlayingAudio(
+                                    responseId = item.id,
+                                    audioPath = audioData.audioPath,
+                                    isPlaying = exoPlayer.isPlaying,
+                                    time = exoPlayer.currentPosition.roundToThousand(),
+                                )
+                                timingHandler.postDelayed(this, 1000)
+                            }
+                        },
+                    )
                 }
-                exoPlayer.seekTo(audioData.currentTime)
-                exoPlayer.play()
-                timingHandler.removeCallbacksAndMessages(null)
-                timingHandler.post(object : Runnable {
-                    override fun run() {
-                        _responsesScreenData.updatePlayingAudio(
-                            responseId = item.id,
-                            audioPath = audioData.audioPath,
-                            isPlaying = exoPlayer.isPlaying,
-                            time = exoPlayer.currentPosition.roundToThousand()
-                        )
-                        timingHandler.postDelayed(this, 1000)
-                    }
-                })
-            }
         }
     }
 
-    fun onPauseClicked(responseId: String, audioPath: String) {
+    fun onPauseClicked(
+        responseId: String,
+        audioPath: String,
+    ) {
         exoPlayer.pause()
         timingHandler.removeCallbacksAndMessages(null)
         _responsesScreenData.updatePlayingAudio(
             responseId = responseId,
             audioPath = audioPath,
             isPlaying = false,
-            time = exoPlayer.currentPosition.roundToThousand()
+            time = exoPlayer.currentPosition.roundToThousand(),
         )
     }
 
-    fun onSeekTo(responseId: String, audioPath: String, position: Long) {
+    fun onSeekTo(
+        responseId: String,
+        audioPath: String,
+        position: Long,
+    ) {
         _responsesScreenData.updatePlayingAudio(
             responseId = responseId,
             audioPath = audioPath,
-            time = position
+            time = position,
         )
         _responsesScreenData.getCurrentAudio()?.audioPath?.let { path ->
             if (currentPlayingMedia?.path == path) {
@@ -363,26 +553,29 @@ class ResponsesViewModel(
         responseId: String,
         audioPath: String,
         isPlaying: Boolean? = null,
-        time: Long? = null
+        time: Long? = null,
     ) {
         if (isPlaying == null && time == null) return
         val responseIndex = value.responses.indexOfFirst { it.id == responseId }
         if (responseIndex == -1) return
         val response = value.responses[responseIndex]
-        val eventIndex = response.events.indexOfFirst {
-            (it as? ResponseEventData.AudioRecordingData)?.audioPath == audioPath
-        }
+        val eventIndex =
+            response.events.indexOfFirst {
+                (it as? ResponseEventData.AudioRecordingData)?.audioPath == audioPath
+            }
         if (eventIndex == -1) return
-        val newEvent = (response.events[eventIndex] as ResponseEventData.AudioRecordingData).let { old ->
-            old.copy(
-                isPlaying = isPlaying ?: old.isPlaying,
-                currentTime = time?.roundToThousand() ?: old.currentTime
-            )
-        }
+        val newEvent =
+            (response.events[eventIndex] as ResponseEventData.AudioRecordingData).let { old ->
+                old.copy(
+                    isPlaying = isPlaying ?: old.isPlaying,
+                    currentTime = time?.roundToThousand() ?: old.currentTime,
+                )
+            }
         val newEvents = response.events.toMutableList().apply { set(eventIndex, newEvent) }
-        val newResponses = value.responses.toMutableList().apply {
-            set(responseIndex, response.copy(events = newEvents))
-        }
+        val newResponses =
+            value.responses.toMutableList().apply {
+                set(responseIndex, response.copy(events = newEvents))
+            }
         update { this.value.copy(responses = newResponses) }
     }
 
@@ -401,27 +594,35 @@ class ResponsesViewModel(
         }
     }
 
-    private fun Response.toListEventData() = events.mapNotNull {
-        when (it) {
-            is ResponseEvent.VoiceRecording -> {
-                val file = it.getFile(
-                    context = this@ResponsesViewModel.getApplication(),
-                    surveyId = surveyData.id,
-                    responseId = id
-                )
-                if (file.exists()) {
-                    ResponseEventData.AudioRecordingData(
-                        FileUtils.getDuration(file.absolutePath)?.roundToThousand() ?: 0,
-                        file.absolutePath
-                    )
-                } else null
+    private fun Response.toListEventData() =
+        events.mapNotNull {
+            when (it) {
+                is ResponseEvent.VoiceRecording -> {
+                    val file =
+                        it.getFile(
+                            context = this@ResponsesViewModel.getApplication(),
+                            surveyId = surveyData.id,
+                            responseId = id,
+                        )
+                    if (file.exists()) {
+                        ResponseEventData.AudioRecordingData(
+                            FileUtils.getDuration(file.absolutePath)?.roundToThousand() ?: 0,
+                            file.absolutePath,
+                        )
+                    } else {
+                        null
+                    }
+                }
+
+                is ResponseEvent.Location -> {
+                    ResponseEventData.LocationData(longitude = it.longitude, latitude = it.latitude)
+                }
+
+                else -> {
+                    null
+                }
             }
-            is ResponseEvent.Location -> {
-                ResponseEventData.LocationData(longitude = it.longitude, latitude = it.latitude)
-            }
-            else -> null
         }
-    }
 
     companion object {
         private const val PER_PAGE = 10
@@ -433,6 +634,8 @@ class ResponsesViewModel(
 
 data class ResponseItemData(
     val id: String,
+    val ordinal: Int,
+    val status: ResponseStatus,
     val isSynced: Boolean,
     val startDateString: String,
     val submitDateString: String?,
@@ -441,6 +644,11 @@ data class ResponseItemData(
     val editEnabled: Boolean,
     val deleteEnabled: Boolean,
     val lang: String,
+    val photos: Int = 0,
+    val videos: Int = 0,
+    val audios: Int = 0,
+    val locations: Int = 0,
+    val draftProgress: Int? = null,
 )
 
 sealed class ResponseValueData(
@@ -461,19 +669,22 @@ sealed class ResponseValueData(
 
 sealed interface ResponseEventData {
     data class AudioRecordingData(
-        val audioDuration: Long, val audioPath: String, val isPlaying: Boolean = false,
-        val currentTime: Long = 0
+        val audioDuration: Long,
+        val audioPath: String,
+        val isPlaying: Boolean = false,
+        val currentTime: Long = 0,
     ) : ResponseEventData
 
     data class LocationData(
-        val longitude: Double = 0.0, val latitude: Double = 0.0
+        val longitude: Double = 0.0,
+        val latitude: Double = 0.0,
     ) : ResponseEventData
 }
 
 private fun ResponseEvent.VoiceRecording.getFile(
     context: Context,
     surveyId: String,
-    responseId: String
+    responseId: String,
 ) = FileUtils.getResponseFile(context, fileName, surveyId, responseId)
 
 private fun Long.roundToThousand(): Long {

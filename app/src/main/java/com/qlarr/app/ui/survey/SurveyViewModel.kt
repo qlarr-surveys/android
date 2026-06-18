@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.qlarr.app.AppEvent
 import com.qlarr.app.AppEvent.ResponseEnded
 import com.qlarr.app.EventBus
+import com.qlarr.app.business.survey.BackgroundSync
 import com.qlarr.app.business.survey.SurveyRepository
 import com.qlarr.app.ui.common.error.ErrorProcessor
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +18,7 @@ class SurveyViewModel(
     private val surveyId: String,
     private val eventBus: EventBus,
     private val surveyRepository: SurveyRepository,
+    private val backgroundSync: BackgroundSync,
     errorProcessor: ErrorProcessor,
 ) : ViewModel(),
     ErrorProcessor by errorProcessor {
@@ -32,6 +34,9 @@ class SurveyViewModel(
                     surveyRepository.getOfflineSurvey(surveyId),
                 ),
             )
+            if (surveyRepository.shouldSync()) {
+                backgroundSync.startSurveySync()
+            }
         }
     }
 

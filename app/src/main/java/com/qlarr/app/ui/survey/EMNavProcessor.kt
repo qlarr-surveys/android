@@ -21,7 +21,15 @@ import com.qlarr.app.db.QlarrDb
 import com.qlarr.app.db.model.Response
 import com.qlarr.app.db.model.Response.Companion.STORED_FILENAME_KEY
 import com.qlarr.app.ui.common.FileUtils
+import com.qlarr.app.ui.common.toFormattedString
+import com.qlarr.app.ui.responses.AnswerPage
+import com.qlarr.app.ui.responses.AnswerRow
+import com.qlarr.app.ui.responses.AnswerValue
+import com.qlarr.app.ui.responses.ResponseValueData
+import com.qlarr.app.ui.responses.ResponsesViewModel
+import com.qlarr.app.ui.responses.TimelineEntry
 import com.qlarr.surveyengine.ext.JsonExt
+import com.qlarr.surveyengine.ext.splitToComponentCodes
 import com.qlarr.surveyengine.model.Dependency
 import com.qlarr.surveyengine.model.ReservedCode
 import com.qlarr.surveyengine.model.SurveyLang
@@ -39,9 +47,11 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.net.URLConnection
+import java.time.Duration
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.UUID
+import kotlin.math.roundToInt
 
 @SuppressLint("SetJavaScriptEnabled")
 class EMNavProcessor(
@@ -250,6 +260,220 @@ class EMNavProcessor(
 
     private fun String.stripHTMLTags(): String = replace(Regex("<.*?>"), "")
 
+    fun detailContent(
+        response: Response,
+        includeUnanswered: Boolean,
+    ): DetailContent {
+        val validationJsonOutput =
+            FileUtils.getValidationJson(getActivity(), survey.id)
+                ?: return DetailContent(emptyList(), emptyList())
+        val codeIndex = validationJsonOutput.buildCodeIndex()
+        val labels =
+            JsonExt.labels(
+                validationJsonOutput.survey.toString(),
+                "",
+                validationJsonOutput.defaultSurveyLang().code,
+            )
+        val valueColumns =
+            validationJsonOutput.schema
+                .filter { it.columnName == ColumnName.VALUE }
+                .map { it.componentCode }
+                .toSet()
+        val masked = maskedValues(response.values)
+
+        fun maskedOrRaw(code: String): String? {
+            val raw = response.values["$code.value"]?.toString()
+            val maskedValue =
+                masked[Dependency(code, ReservedCode.MaskedValue).toValueKey()]?.toString()
+            return maskedValue?.let { "$it ($raw)" } ?: raw
+        }
+
+        fun questionLabel(code: String): String {
+            val parts = code.splitToComponentCodes()
+            return if (parts.size > 1) {
+                val q = parts[0]
+                val question =
+                    "(${codeIndex[q] ?: q}) ${labels[q]?.stripHTMLTags().orEmpty()}".trim()
+                "$question - ${labels[code]?.stripHTMLTags() ?: code}"
+            } else {
+                "(${codeIndex[code] ?: code}) ${labels[code]?.stripHTMLTags() ?: code}".trim()
+            }
+        }
+
+        val pages = mutableListOf<AnswerPage>()
+        var title: String? = null
+        var rows = mutableListOf<AnswerRow>()
+        validationJsonOutput.componentIndexList.forEach { ci ->
+            val code = ci.code
+            when {
+                code.startsWith("G") -> {
+                    title?.let { pages.add(AnswerPage(it, rows)) }
+                    title =
+                        "${codeIndex[code] ?: ""} · ${labels[code]?.stripHTMLTags() ?: code}".trim()
+                    rows = mutableListOf()
+                }
+
+                code in valueColumns -> {
+                    val raw = response.values["$code.value"]
+                    val answer: AnswerValue? =
+                        when {
+                            raw == null -> {
+                                if (includeUnanswered) AnswerValue.NotAnswered else null
+                            }
+
+                            raw.isFileMap() -> {
+                                val map = raw as Map<*, *>
+                                val storedName =
+                                    map[ResponsesViewModel.KEY_STORED_FILENAME] as String
+                                val filename = map[ResponsesViewModel.KEY_FILENAME] as String
+                                val file =
+                                    FileUtils.getResponseFile(
+                                        getActivity(),
+                                        storedName,
+                                        survey.id,
+                                        response.id,
+                                    )
+                                if (file.exists()) {
+                                    AnswerValue.File(
+                                        ResponseValueData.FileValueData(
+                                            filename = filename,
+                                            file = file,
+                                            fileType = map[ResponsesViewModel.KEY_TYPE] as String,
+                                            key = questionLabel(code),
+                                        ),
+                                    )
+                                } else {
+                                    AnswerValue.Cleared(filename)
+                                }
+                            }
+
+                            else -> {
+                                AnswerValue.Text(maskedOrRaw(code).orEmpty())
+                            }
+                        }
+                    if (answer != null && title != null) {
+                        rows.add(AnswerRow(questionLabel(code), answer))
+                    }
+                }
+            }
+        }
+        title?.let { pages.add(AnswerPage(it, rows)) }
+
+        var prevTime: LocalDateTime? = null
+        val timeline =
+            response.events.mapNotNull { event ->
+                val delta = prevTime?.let { formatDelta(it, event.time) }
+                prevTime = event.time
+                when (event) {
+                    is ResponseEvent.Navigation -> {
+                        TimelineEntry.Nav(
+                            from = codeIndex[event.from] ?: event.from.ifBlank { "Start" },
+                            to = codeIndex[event.to] ?: event.to.ifBlank { "End" },
+                            tag = event.direction.name.uppercase(),
+                            timeLabel = event.time.toFormattedString(),
+                            delta = delta,
+                        )
+                    }
+
+                    is ResponseEvent.Value -> {
+                        TimelineEntry.Answer(
+                            question = questionLabel(event.code),
+                            value = maskedOrRaw(event.code).orEmpty(),
+                            timeLabel = event.time.toFormattedString(),
+                            delta = delta,
+                        )
+                    }
+
+                    else -> {
+                        null
+                    }
+                }
+            }
+
+        return DetailContent(pages, timeline)
+    }
+
+    private fun Any.isFileMap(): Boolean =
+        (this as? Map<*, *>)?.run {
+            containsKey(ResponsesViewModel.KEY_FILENAME) &&
+                containsKey(ResponsesViewModel.KEY_STORED_FILENAME) &&
+                containsKey(ResponsesViewModel.KEY_TYPE)
+        } == true
+
+    private fun formatDelta(
+        from: LocalDateTime,
+        to: LocalDateTime,
+    ): String? {
+        val ms = Duration.between(from, to).toMillis()
+        if (ms <= 0) return null
+        val seconds = ms / 1000.0
+        return when {
+            seconds < 60 -> "+%.1fs".format(seconds)
+            seconds < 3600 -> "+${(seconds / 60).toInt()}m ${(seconds % 60).toInt()}s"
+            else -> "+${(seconds / 3600).toInt()}h ${((seconds % 3600) / 60).toInt()}m"
+        }
+    }
+
+    fun draftProgress(response: Response): Int {
+        val validationJsonOutput =
+            FileUtils.getValidationJson(getActivity(), survey.id) ?: return MIN_PROGRESS
+        val groups =
+            validationJsonOutput.survey
+                .get("groups")
+                ?.toList()
+                .orEmpty()
+        val totalGroups = groups.size
+        val pct: Double =
+            if (totalGroups > 1) {
+                val currentCode =
+                    when (val ni = response.navigationIndex) {
+                        is NavigationIndex.Group -> {
+                            ni.groupId
+                        }
+
+                        is NavigationIndex.End -> {
+                            ni.groupId
+                        }
+
+                        is NavigationIndex.Groups -> {
+                            ni.groupIds.lastOrNull()
+                        }
+
+                        is NavigationIndex.Question -> {
+                            groups
+                                .firstOrNull { group ->
+                                    group
+                                        .get("questions")
+                                        ?.any { it.get("code")?.asText() == ni.questionId } == true
+                                }?.get("code")
+                                ?.asText()
+                        }
+                    }
+                val idx = groups.indexOfFirst { it.get("code")?.asText() == currentCode }
+                if (idx < 0) 0.0 else (idx + 1).toDouble() / totalGroups * 100.0
+            } else {
+                val questions =
+                    groups
+                        .firstOrNull()
+                        ?.get("questions")
+                        ?.toList()
+                        .orEmpty()
+                if (questions.isEmpty()) {
+                    0.0
+                } else {
+                    val answered =
+                        questions.count { q ->
+                            val code = q.get("code")?.asText() ?: return@count false
+                            response.values.keys.any {
+                                (it == "$code.value" || it.startsWith("${code}A")) && it.endsWith(".value")
+                            }
+                        }
+                    answered.toDouble() / questions.size * 100.0
+                }
+            }
+        return ((pct / 5.0).roundToInt() * 5).coerceIn(MIN_PROGRESS, MAX_PROGRESS)
+    }
+
     private fun navigationUseCase(
         validationJsonOutput: ValidationJsonOutput,
         lang: String? = null,
@@ -318,14 +542,19 @@ class EMNavProcessor(
                 submitDate = null,
                 isSynced = false,
                 values = result.toSave,
-                events = if (survey.saveTimings) listOf(
-                    ResponseEvent.Navigation(
-                        from = "",
-                        to = result.navigationIndex.stringIndex(),
-                        direction = NavigationDirection.Start,
-                        time = LocalDateTime.now(ZoneOffset.UTC)
-                    )
-                ) else emptyList()
+                events =
+                    if (survey.saveTimings) {
+                        listOf(
+                            ResponseEvent.Navigation(
+                                from = "",
+                                to = result.navigationIndex.stringIndex(),
+                                direction = NavigationDirection.Start,
+                                time = LocalDateTime.now(ZoneOffset.UTC),
+                            ),
+                        )
+                    } else {
+                        emptyList()
+                    },
             ),
         )
     }
@@ -350,19 +579,20 @@ class EMNavProcessor(
                     current.submitDate
                 },
             lang = surveyLang,
-            events = mutableListOf<ResponseEvent>().apply {
-                if (survey.saveTimings) {
-                    add(
-                        ResponseEvent.Navigation(
-                            from = current.navigationIndex.stringIndex(),
-                            to = result.navigationIndex.stringIndex(),
-                            direction = navigationDirection,
-                            time = LocalDateTime.now(ZoneOffset.UTC)
+            events =
+                mutableListOf<ResponseEvent>().apply {
+                    if (survey.saveTimings) {
+                        add(
+                            ResponseEvent.Navigation(
+                                from = current.navigationIndex.stringIndex(),
+                                to = result.navigationIndex.stringIndex(),
+                                direction = navigationDirection,
+                                time = LocalDateTime.now(ZoneOffset.UTC),
+                            ),
                         )
-                    )
-                    addAll(events)
-                }
-            }
+                        addAll(events)
+                    }
+                },
         )
     }
 
@@ -432,8 +662,15 @@ class EMNavProcessor(
 
     companion object {
         private const val TAG = "EMNavProcessor"
+        private const val MIN_PROGRESS = 5
+        private const val MAX_PROGRESS = 95
     }
 }
+
+data class DetailContent(
+    val answerPages: List<AnswerPage>,
+    val timeline: List<TimelineEntry>,
+)
 
 data class ResponseUploadFile(
     val filename: String,

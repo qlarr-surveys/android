@@ -4,15 +4,30 @@ import com.qlarr.app.api.survey.ResponseEvent
 import com.qlarr.app.db.ResponseDao
 import com.qlarr.app.db.model.Response
 
+enum class ResponsesFilter { ALL, DRAFT, PENDING, UPLOADED }
+
 interface ResponseRepository {
 
     suspend fun getResponse(responseId: String): Response
     suspend fun getResponses(surveyId: String): List<Response>
     suspend fun getResponses(surveyId: String, page: Int, perPage: Int): List<Response>
+
+    suspend fun getResponses(
+        surveyId: String,
+        page: Int,
+        perPage: Int,
+        filter: ResponsesFilter,
+    ): List<Response>
+
+    suspend fun getOrderedIds(surveyId: String): List<String>
+
+    suspend fun countUploaded(surveyId: String): Int
     suspend fun deleteResponse(responseId: String)
     suspend fun addEvent(responseId: String, event: ResponseEvent)
     suspend fun markResponseAsSynced(responseId: String)
     suspend fun getUnsyncedCount(surveyId: String): Int
+
+    suspend fun hasUnsyncedResponses(): Boolean
 }
 
 class ResponseRepositoryImpl(
@@ -31,6 +46,40 @@ class ResponseRepositoryImpl(
         return responseDao.getByUserAndSurvey(surveyId, page, perPage)
     }
 
+    override suspend fun getResponses(
+        surveyId: String,
+        page: Int,
+        perPage: Int,
+        filter: ResponsesFilter,
+    ): List<Response> =
+        when (filter) {
+            ResponsesFilter.ALL -> {
+                responseDao.getByUserAndSurvey(surveyId, page, perPage)
+            }
+
+            ResponsesFilter.DRAFT -> {
+                responseDao.getDrafts(surveyId, page, perPage)
+            }
+
+            ResponsesFilter.PENDING -> {
+                responseDao.getPendingUpload(surveyId, page, perPage)
+            }
+
+            ResponsesFilter.UPLOADED -> {
+                responseDao.getByUserAndSurveyFiltered(
+                    surveyId,
+                    synced = true,
+                    page = page,
+                    perPage = perPage,
+                )
+            }
+        }
+
+    override suspend fun getOrderedIds(surveyId: String): List<String> = responseDao.getOrderedIds(surveyId)
+
+    override suspend fun countUploaded(surveyId: String): Int =
+        responseDao.countUploaded(surveyId)
+
     override suspend fun deleteResponse(responseId: String) {
         return responseDao.deleteById(responseId)
     }
@@ -43,5 +92,6 @@ class ResponseRepositoryImpl(
 
     override suspend fun getUnsyncedCount(surveyId: String) =
         responseDao.countUnsyncedResponses(surveyId)
-}
 
+    override suspend fun hasUnsyncedResponses() = responseDao.countAllUnsyncedResponses() > 0
+}

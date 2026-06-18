@@ -19,6 +19,7 @@ import android.webkit.WebViewClient
 import androidx.core.content.FileProvider
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.qlarr.app.BuildConfig
 import com.qlarr.app.api.survey.ResponseEvent
@@ -176,14 +177,23 @@ constructor(
 
             @JavascriptInterface
             fun autoSaveValues(valuesToSave: String) {
+                    val responseId =
+                        responseId ?: run {
+                            surveyActivity?.quit()
+                            return
+                }
                 val mapper = objectMapper.registerModule(JavaTimeModule())
-                val autoSaveValues: AutoSaveValues = mapper.readValue(valuesToSave)
+                    val node = mapper.readTree(valuesToSave)
+                    val values: Map<String, Any?> =
+                        mapper.convertValue(if (node.has("values")) node.get("values") else node)
+                    val events: List<ResponseEvent.Value> =
+                        node.get("events")?.let { mapper.convertValue(it) } ?: emptyList()
                 emNavProcessor.navigate(
                     NavigateRequest(
                         navigationDirection = NavigationDirection.Resume,
-                        values = autoSaveValues.values,
-                        events = autoSaveValues.events,
-                        responseId = UUID.fromString(responseId!!)
+                            values = values,
+                            events = events,
+                            responseId = UUID.fromString(responseId)
                     ),
                     object : NavigationListener {
                         override fun onSuccess(apiNavigationOutput: ApiNavigationOutput) {
@@ -590,9 +600,4 @@ data class NavigateRequest(
     val navigationDirection: NavigationDirection? = null,
     val values: Map<String, Any?> = mapOf(),
     val events: List<ResponseEvent.Value> = listOf(),
-)
-
-data class AutoSaveValues(
-    val values: Map<String, Any?>,
-    val events: List<ResponseEvent.Value> = listOf()
 )

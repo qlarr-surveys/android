@@ -34,17 +34,23 @@ class LoginViewModel(
     }
 
     private fun checkForPreviousSession() {
-        if (sessionManager.hasPreviousSession()) {
-            _loginState.update {
-                it.copy(
-                    lockedToPreviousEnv = true,
-                    previousSession = PreviousSessionInfo(
-                        userName = sessionManager.getPreviousUserName(),
-                        environment = sessionManager.getLastSuccessfulEnv()
-                    ),
-                    showSessionConflictDialog = true
-                )
+        if (!sessionManager.hasPreviousSession()) return
+        if (sessionManager.getLastSuccessfulEnv() == BackendEnvironment.Guest) {
+            viewModelScope.launch(Dispatchers.IO) {
+                loginInteractor.clearUser()
             }
+            return
+        }
+        _loginState.update {
+            it.copy(
+                lockedToPreviousEnv = true,
+                previousSession =
+                    PreviousSessionInfo(
+                        userName = sessionManager.getPreviousUserName(),
+                        environment = sessionManager.getLastSuccessfulEnv(),
+                    ),
+                showSessionConflictDialog = true,
+            )
         }
     }
 
@@ -155,7 +161,6 @@ class LoginViewModel(
             }
 
             null -> {
-                // do nothing
             }
         }
 

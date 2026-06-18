@@ -26,20 +26,15 @@ class ErrorProcessorImpl(private val connectivityChecker: ConnectivityChecker) :
     private val _errors = MutableSharedFlow<ProcessedError>()
     override val errors = _errors.asSharedFlow()
 
-    // TODO: check if no internet connection
     override suspend fun processError(throwable: Throwable) {
         throwable.printStackTrace()
-        val processedError = when (throwable) {
-            is HttpException -> {
-                processHttpException(throwable)
-            }
+        val processedError =
+            when {
+                throwable is HttpException -> {
+                    processHttpException(throwable)
+                }
 
-            is UnknownHostException,
-            is SocketTimeoutException,
-            is ConnectException,
-            is InterruptedIOException,
-            is NoRouteToHostException,
-            is SSLException -> {
+                throwable.isConnectivityError() -> {
                 if (connectivityChecker.networkAvailable) {
                     ProcessedError.Timeout
                 } else {
@@ -75,7 +70,6 @@ class ErrorProcessorImpl(private val connectivityChecker: ConnectivityChecker) :
         _errors.emit(ProcessedError.NoOfflineRole)
     }
 
-    // TODO proper error handling per code
     private fun processHttpException(throwable: HttpException): ProcessedError {
         return when (throwable.code()) {
             401 -> ProcessedError.AuthError
@@ -83,7 +77,26 @@ class ErrorProcessorImpl(private val connectivityChecker: ConnectivityChecker) :
             else -> ProcessedError.GeneralError
         }
     }
+}
 
+fun Throwable.isConnectivityError(): Boolean =
+    when (this) {
+        is UnknownHostException,
+        is SocketTimeoutException,
+        is ConnectException,
+        is InterruptedIOException,
+        is NoRouteToHostException,
+        is SSLException,
+        -> true
+
+        else -> false
+    }
+
+fun Throwable?.isAlreadySynced(): Boolean {
+    val http = this as? HttpException ?: return false
+    if (http.code() != 400) return false
+    val body = runCatching { http.response()?.errorBody()?.string() }.getOrNull()
+    return body?.contains("ResponseAlreadySyncedException") == true
 }
 
 sealed class ProcessedError(val titleRes: Int, val messageRes: Int) {

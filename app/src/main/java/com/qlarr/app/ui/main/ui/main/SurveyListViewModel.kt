@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.qlarr.app.AppEvent
 import com.qlarr.app.EventBus
 import com.qlarr.app.business.auth.LogoutUseCase
+import com.qlarr.app.business.responses.ResponseRepository
 import com.qlarr.app.business.settings.SharedPrefsManager
 import com.qlarr.app.business.survey.BackgroundSync
 import com.qlarr.app.business.survey.SurveyData
@@ -28,6 +29,7 @@ class SurveyListViewModel(
     private val backgroundSync: BackgroundSync,
     private val eventBus: EventBus,
     private val sharedPrefsManager: SharedPrefsManager,
+    private val responseRepository: ResponseRepository,
     errorProcessor: ErrorProcessor,
 ) : ViewModel(),
     ErrorProcessor by errorProcessor {
@@ -43,6 +45,9 @@ class SurveyListViewModel(
     private val _downloadState: MutableStateFlow<DownloadState> =
         MutableStateFlow(DownloadState.Idle)
     val downloadState = _downloadState.asStateFlow()
+
+    private val _logoutDialog = MutableStateFlow<LogoutDialog>(LogoutDialog.Hidden)
+    val logoutDialog = _logoutDialog.asStateFlow()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -60,28 +65,8 @@ class SurveyListViewModel(
                         updateSurveyData(event.survey)
                     }
 
-                    is AppEvent.UploadingResponse -> {
-                        if (!event.uploading) {
-                            _state.update {
-                                _state.value.copy(
-                                    surveyList =
-                                        _state.value.surveyList.map {
-                                            it.copy(isSyncing = false)
-                                        },
-                                )
-                            }
-                        }
-                    }
-
-                    is AppEvent.UploadingSurveyResponse -> {
-                        _state.update {
-                            _state.value.copy(
-                                surveyList =
-                                    _state.value.surveyList.map {
-                                        it.copy(isSyncing = it.id == event.surveyId)
-                                    },
-                            )
-                        }
+                    else -> {
+                        Unit
                     }
                 }
             }
@@ -186,15 +171,42 @@ class SurveyListViewModel(
         }
     }
 
+    fun onLogoutClicked() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _logoutDialog.value =
+                LogoutDialog.Visible(
+                    hasUnsynced = responseRepository.hasUnsyncedResponses(),
+                )
+        }
+    }
+
+    fun dismissLogoutDialog() {
+        _logoutDialog.value = LogoutDialog.Hidden
+    }
+
     fun logout() {
         viewModelScope.launch(Dispatchers.IO) {
-            logoutUseCase()
+            logoutUseCase(clearAllData = true)
+            _uiEvents.emit(UiEvents.GoToLogin)
+        }
+    }
+
+    fun sessionExpiredLogout() {
+        viewModelScope.launch(Dispatchers.IO) {
+            logoutUseCase(clearAllData = false)
             _uiEvents.emit(UiEvents.GoToLogin)
         }
     }
 
     sealed class UiEvents {
         object GoToLogin : UiEvents()
+    }
+
+    sealed interface LogoutDialog {
+        data object Hidden : LogoutDialog
+
+        data class Visible(
+            val hasUnsynced: Boolean) : LogoutDialog
     }
 
     data class State(

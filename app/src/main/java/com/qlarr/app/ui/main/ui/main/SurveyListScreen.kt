@@ -7,6 +7,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,11 +17,13 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -43,13 +46,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.qlarr.app.R
 import com.qlarr.app.business.ByteSize
 import com.qlarr.app.business.formatBytes
 import com.qlarr.app.storage.DownloadState
 import com.qlarr.app.ui.common.error.ProcessedError
+import com.qlarr.app.ui.common.theme.Colors
 import com.qlarr.app.ui.common.theme.QlarrTheme
 import com.qlarr.app.ui.common.theme.QlarrTopBar
 import com.qlarr.app.ui.common.theme.TopBarIconButton
@@ -63,11 +66,11 @@ import com.qlarr.app.ui.survey.SurveyListItem
 fun SurveyListScreen(viewModel: SurveyListViewModel) {
     val state by viewModel.state.collectAsState()
     val downloadState by viewModel.downloadState.collectAsState()
+    val logoutDialog by viewModel.logoutDialog.collectAsState()
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
     val columns = if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) 1 else 2
 
-    var logoutDialogShown by remember { mutableStateOf(false) }
     var errorDialogState by remember { mutableStateOf<ProcessedError?>(null) }
 
     LaunchedEffect(Unit) {
@@ -91,7 +94,7 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                         viewModel.fetchSurveyList(true)
                     }
                     TopBarIconButton(iconRes = R.drawable.baseline_logout_24) {
-                        logoutDialogShown = true
+                        viewModel.onLogoutClicked()
                     }
                 },
             )
@@ -103,8 +106,12 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                     .fillMaxSize()
                     .padding(padding),
             ) {
-                Column(modifier = Modifier.fillMaxSize()) {
-                    // Guest warning banner
+                Column(
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .background(Colors.Page),
+                ) {
                     if (state.isGuest) {
                         Card(
                             modifier = Modifier.fillMaxWidth(),
@@ -123,7 +130,6 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                     }
 
                     if (!state.showLoading && state.surveyList.isEmpty()) {
-                        // Empty state
                         Box(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center,
@@ -137,21 +143,18 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                             )
                         }
                     } else {
-                        // Survey list
                         LazyVerticalGrid(
                             columns = GridCells.Fixed(columns),
                             modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(14.dp),
+                            verticalArrangement = Arrangement.spacedBy(14.dp),
+                            horizontalArrangement = Arrangement.spacedBy(14.dp),
                         ) {
                             items(
                                 items = state.surveyList,
                                 key = { it.id },
                             ) { surveyData ->
                                 SurveyListItem(
-                                    modifier = Modifier.padding(
-                                        bottom = 8.dp,
-                                        start = 8.dp,
-                                        end = 8.dp,
-                                    ),
                                     surveyData = surveyData,
                                     onStartClick = {
                                         context.startActivity(
@@ -180,7 +183,6 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                     }
                 }
 
-                // Loading overlay
                 if (state.showLoading) {
                     Box(
                         modifier = Modifier
@@ -209,7 +211,6 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                     }
                 }
 
-                // Download progress overlay
                 val currentDownloadState = downloadState
                 if (currentDownloadState is DownloadState.Loading) {
                     Box(
@@ -277,15 +278,14 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                 }
             }
 
-            // Logout confirmation dialog
-            if (logoutDialogShown) {
+            (logoutDialog as? SurveyListViewModel.LogoutDialog.Visible)?.let { dialog ->
                 DialogConfirmLogout(
+                    hasUnsyncedResponses = dialog.hasUnsynced,
                     onConfirmation = { viewModel.logout() },
-                    onDismiss = { logoutDialogShown = false },
+                    onDismiss = { viewModel.dismissLogoutDialog() },
                 )
             }
 
-            // Error dialog
             errorDialogState?.let { error ->
                 val isAuthError = error is ProcessedError.AuthError
                 AlertDialog(
@@ -300,7 +300,7 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
                         TextButton(onClick = {
                             errorDialogState = null
                             if (isAuthError) {
-                                viewModel.logout()
+                                viewModel.sessionExpiredLogout()
                             }
                         }) {
                             Text(stringResource(id = android.R.string.ok))
@@ -314,29 +314,59 @@ fun SurveyListScreen(viewModel: SurveyListViewModel) {
 
 @Composable
 private fun DialogConfirmLogout(
+    hasUnsyncedResponses: Boolean,
     onConfirmation: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = { },
         title = {
-            Text(text = stringResource(id = R.string.logout_are_you_sure))
+            Text(
+                text =
+                    stringResource(
+                        id =
+                            if (hasUnsyncedResponses) {
+                                R.string.logout_warning_title
+                            } else {
+                                R.string.logout_are_you_sure
+                            },
+                    ),
+            )
         },
         text = {
-            Text(text = stringResource(id = R.string.logout_alert_message))
+            Text(
+                text =
+                    stringResource(
+                        id =
+                            if (hasUnsyncedResponses) {
+                                R.string.logout_alert_message
+                            } else {
+                        R.string.logout_synced_message
+                    },
+                        ),
+                    )
         },
         confirmButton = {
             TextButton(
                 onClick = onConfirmation,
-            ) {
-                Text(stringResource(id = R.string.logout))
+                colors =
+                    ButtonDefaults.textButtonColors(
+                        contentColor = MaterialTheme.colorScheme.error,
+                    ),
+                    ) {
+                Text(
+                    stringResource(
+                        id = if (hasUnsyncedResponses) R.string.logout_anyway else R.string.logout,
+                    ),
+                    fontSize = 16.sp,
+                )
             }
         },
         dismissButton = {
             TextButton(
                 onClick = onDismiss,
             ) {
-                Text(stringResource(id = R.string.cancel))
+                Text(stringResource(id = R.string.cancel), fontSize = 16.sp)
             }
         },
     )
@@ -344,8 +374,16 @@ private fun DialogConfirmLogout(
 
 @Composable
 @Preview(showBackground = true)
-private fun PreviewDialogConfirmLogout() {
+private fun PreviewDialogConfirmLogoutUnsynced() {
     QlarrTheme {
-        DialogConfirmLogout(onConfirmation = {}, onDismiss = {})
+        DialogConfirmLogout(hasUnsyncedResponses = true, onConfirmation = {}, onDismiss = {})
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun PreviewDialogConfirmLogoutSynced() {
+    QlarrTheme {
+        DialogConfirmLogout(hasUnsyncedResponses = false, onConfirmation = {}, onDismiss = {})
     }
 }

@@ -8,6 +8,8 @@ import com.qlarr.app.api.survey.UploadResponseRequestData
 import com.qlarr.app.business.responses.ResponseRepository
 import com.qlarr.app.db.model.Response
 import com.qlarr.app.ui.common.FileUtils
+import com.qlarr.app.ui.common.error.isAlreadySynced
+import com.qlarr.app.ui.common.error.isConnectivityError
 import com.qlarr.app.ui.responses.ResponsesViewModel.Companion.KEY_FILENAME
 import com.qlarr.app.ui.responses.ResponsesViewModel.Companion.KEY_STORED_FILENAME
 import com.qlarr.app.ui.responses.ResponsesViewModel.Companion.KEY_TYPE
@@ -15,7 +17,11 @@ import com.qlarr.app.ui.responses.ResponsesViewModel.Companion.KEY_TYPE
 interface UploadSurveyResponsesUseCase {
     suspend operator fun invoke()
 
-    suspend fun uploadSurvey(surveyId: String)
+    suspend fun uploadSurvey(surveyId: String): Int
+
+    suspend fun uploadResponse(
+        surveyId: String,
+        responseId: String): Boolean
 }
 
 class UploadSurveyResponsesUseCaseImpl(
@@ -49,19 +55,35 @@ class UploadSurveyResponsesUseCaseImpl(
         }
     }
 
-    override suspend fun uploadSurvey(surveyId: String) {
+    override suspend fun uploadSurvey(surveyId: String): Int {
         eventBus.emitEvent(AppEvent.UploadingSurveyResponse(surveyId))
         val responses =
             responseRepository
                 .getResponses(surveyId)
                 .filter { !it.isSynced && it.submitDate != null }
+        var synced = 0
+        var firstError: Exception? = null
         responses.forEach { response ->
             try {
                 syncResponse(surveyId, response)
+                synced++
             } catch (e: Exception) {
-                reportError(e)
+                if (e.isConnectivityError()) throw e
+                if (firstError == null) firstError = e
             }
         }
+        firstError?.let { throw it }
+        return synced
+    }
+
+    override suspend fun uploadResponse(
+        surveyId: String,
+        responseId: String,
+    ): Boolean {
+        val response = responseRepository.getResponse(responseId)
+        if (response.isSynced || response.submitDate == null) return false
+        syncResponse(surveyId, response)
+        return true
     }
 
     private suspend fun syncResponse(
@@ -112,7 +134,6 @@ class UploadSurveyResponsesUseCaseImpl(
                 }
             }
 
-        // 3. upload response row
         val uploadData =
             UploadResponseRequestData(
                 versionId = response.version,
@@ -126,13 +147,23 @@ class UploadSurveyResponsesUseCaseImpl(
             )
         val result =
             surveyRepository.uploadSurveyResponse(surveyId, response.id, uploadData)
-        if (result.isSuccess) {
-            // 4. mark response as synced
-            responseRepository.markResponseAsSynced(response.id)
-            val surveyData = surveyRepository.updateSurveyAfterSync(surveyId, result.getOrThrow())
-            eventBus.emitEvent(AppEvent.UploadedSurveyResponse(response.id, surveyData))
-        } else {
-            reportError(result.exceptionOrNull())
+        when {
+            result.isSuccess -> {
+                responseRepository.markResponseAsSynced(response.id)
+                val surveyData =
+                    surveyRepository.updateSurveyAfterSync(surveyId, result.getOrThrow())
+                eventBus.emitEvent(AppEvent.UploadedSurveyResponse(response.id, surveyData))
+            }
+
+            result.exceptionOrNull().isAlreadySynced() -> {
+                responseRepository.markResponseAsSynced(response.id)
+                val surveyData = surveyRepository.getOfflineSurvey(surveyId)
+                eventBus.emitEvent(AppEvent.UploadedSurveyResponse(response.id, surveyData))
+            }
+
+            else -> {
+                throw result.exceptionOrNull() ?: IllegalStateException("Response upload failed")
+            }
         }
     }
 
