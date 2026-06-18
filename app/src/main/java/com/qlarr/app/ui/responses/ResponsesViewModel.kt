@@ -450,7 +450,7 @@ class ResponsesViewModel(
         Toast.makeText(getApplication(), messageRes, Toast.LENGTH_SHORT).show()
     }
 
-    private fun handleError(it: Exception) {
+    fun handleError(it: Exception) {
         viewModelScope.launch {
             processError(it)
         }

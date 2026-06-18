@@ -204,7 +204,7 @@ class ResponsesActivity : ComponentActivity() {
     }
 
     private fun openResponseFile(file: ResponseValueData.FileValueData) {
-        FileUtils.openFile(this, file.file, file.fileType) { it.printStackTrace() }
+        FileUtils.openFile(this, file.file, file.fileType) { viewModel.handleError(it) }
     }
 
     private fun openMap(location: ResponseEventData.LocationData) {
