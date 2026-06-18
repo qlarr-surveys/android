@@ -184,7 +184,7 @@ constructor(
                 }
                 val mapper = objectMapper.registerModule(JavaTimeModule())
                     val node = mapper.readTree(valuesToSave)
-                    val values: Map<String, Any> =
+                    val values: Map<String, Any?> =
                         mapper.convertValue(if (node.has("values")) node.get("values") else node)
                     val events: List<ResponseEvent.Value> =
                         node.get("events")?.let { mapper.convertValue(it) } ?: emptyList()
@@ -598,6 +598,6 @@ data class NavigateRequest(
     val responseId: UUID?,
     val lang: String? = null,
     val navigationDirection: NavigationDirection? = null,
-    val values: Map<String, Any> = mapOf(),
+    val values: Map<String, Any?> = mapOf(),
     val events: List<ResponseEvent.Value> = listOf(),
 )
