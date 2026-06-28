@@ -124,9 +124,15 @@ git clone https://github.com/qlarr-surveys/frontend.git && cd frontend/deploy
 docker compose -f docker-compose.local.yml up -d
 ```
 
-The deployment is available at `http://localhost:3000` with default credentials
-`admin@admin.admin` / `admin`. Point the app's **Login to Private Server** at your server's url to
-collect against it.
+This brings up the full stack — the Qlarr UI at `http://localhost:3000` and the backend API at
+`http://localhost:8080` — with default credentials `admin@admin.admin` / `admin`. Use the UI to
+create and publish a survey, then point the app's **Login to Private Server** at the backend API
+url to collect against it (from the Android emulator, reach the host machine via
+`http://10.0.2.2:8080`). To stop the stack, run
+`docker compose -f docker-compose.local.yml down`.
+
+See the [deployment guide](https://qlarr-surveys.github.io/docs/guides/deployment/local) for full
+details.
 
 ### Offline Data Collection
 
