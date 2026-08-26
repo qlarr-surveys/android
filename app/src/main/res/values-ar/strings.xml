@@ -230,7 +230,7 @@
     <string name="delete_response_confirmation_message">ستُحذف هذه الاستجابة نهائيًا ولا يمكن استعادتها.</string>
     <string name="delete">حذف</string>
     <string name="welcome_title">مرحبًا بك في Qlarr</string>
-    <string name="welcome_tagline">اجمع ردود الاستبيانات في أي مكان — حتى دون اتصال بالإنترنت.</string>
+    <string name="welcome_tagline">اجمع ردود الاستبيانات في أي مكان، حتى دون اتصال بالإنترنت.</string>
     <string name="response_status_draft">مسودة</string>
     <string name="response_status_pending">قيد الانتظار</string>
     <string name="response_status_uploaded">تم الرفع</string>

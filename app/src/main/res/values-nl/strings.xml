@@ -186,7 +186,7 @@
     <string name="delete_response_confirmation_message">Deze reactie wordt permanent verwijderd en kan niet worden hersteld.</string>
     <string name="delete">Verwijderen</string>
     <string name="welcome_title">Welkom bij Qlarr</string>
-    <string name="welcome_tagline">Verzamel enquêtereacties overal — zelfs offline.</string>
+    <string name="welcome_tagline">Verzamel enquêtereacties overal, zelfs offline.</string>
     <string name="response_status_draft">Concept</string>
     <string name="response_status_pending">In behandeling</string>
     <string name="response_status_uploaded">Geüpload</string>

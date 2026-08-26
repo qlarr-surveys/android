@@ -188,7 +188,7 @@
     <string name="delete_response_confirmation_message">Diese Antwort wird dauerhaft gelöscht und kann nicht wiederhergestellt werden.</string>
     <string name="delete">Löschen</string>
     <string name="welcome_title">Willkommen bei Qlarr</string>
-    <string name="welcome_tagline">Erfassen Sie Umfrageantworten überall – auch offline.</string>
+    <string name="welcome_tagline">Erfassen Sie Umfrageantworten überall, auch offline.</string>
     <string name="response_status_draft">Entwurf</string>
     <string name="response_status_pending">Ausstehend</string>
     <string name="response_status_uploaded">Hochgeladen</string>

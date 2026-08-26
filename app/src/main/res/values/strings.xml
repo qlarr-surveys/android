@@ -187,7 +187,7 @@
     <string name="logout_synced_message">All data is synced to the server. Local data will be deleted.</string>
     <string name="login_to_private">Login to Private Server</string>
     <string name="welcome_title">Welcome to Qlarr</string>
-    <string name="welcome_tagline">Collect survey responses anywhere — even offline.</string>
+    <string name="welcome_tagline">Collect survey responses anywhere, even offline.</string>
     <string name="guest_warning">"You are checking the app as the guest. "</string>
     <string name="survey_item_button_get_missing_files">Get Missing Files</string>
     <string name="survey_end_finish_action">Finish</string>

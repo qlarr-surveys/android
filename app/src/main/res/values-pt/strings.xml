@@ -197,7 +197,7 @@
     <string name="delete_response_confirmation_message">Esta resposta será excluída permanentemente e não poderá ser recuperada.</string>
     <string name="delete">Excluir</string>
     <string name="welcome_title">Bem-vindo ao Qlarr</string>
-    <string name="welcome_tagline">Colete respostas de pesquisas em qualquer lugar — mesmo offline.</string>
+    <string name="welcome_tagline">Colete respostas de pesquisas em qualquer lugar, mesmo offline.</string>
     <string name="response_status_draft">Rascunho</string>
     <string name="response_status_pending">Pendente</string>
     <string name="response_status_uploaded">Enviado</string>
