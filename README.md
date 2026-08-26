@@ -20,10 +20,9 @@ The Android app is one piece of a larger, survey-as-code ecosystem. Surveys are 
 structure and JavaScript for logic, then executed consistently across web, Android, and iOS from a
 single definition by a shared engine.
 
-- **[frontend](https://github.com/qlarr-surveys/frontend)** — React WYSIWYG survey editor and web
-  renderer
-- **[backend](https://github.com/qlarr-surveys/backend)** — Spring Boot/Kotlin API for survey
-  management, response sync, and GraalVM-powered logic evaluation
+- **[qlarr](https://github.com/qlarr-surveys/qlarr)** — monorepo holding the React frontend (WYSIWYG
+  survey editor and web renderer), the NestJS backend (survey management, response sync, exports,
+  auth), and the Docker Compose deployment
 - **[survey-engine-kmp](https://github.com/qlarr-surveys/survey-engine-kmp)** — Kotlin Multiplatform
   survey engine (shared navigation and domain logic)
 - **[survey-engine-script](https://github.com/qlarr-surveys/survey-engine-script)** — survey
@@ -120,7 +119,7 @@ You can collect against the hosted Qlarr Console or a self-hosted server.
 **Self-hosting (local server in ~30 seconds):**
 
 ```bash
-git clone https://github.com/qlarr-surveys/frontend.git && cd frontend/deploy
+git clone https://github.com/qlarr-surveys/qlarr.git && cd qlarr/deploy
 docker compose -f docker-compose.local.yml up -d
 ```
 
@@ -171,8 +170,8 @@ cloning — and any time you want the latest renderer — before building:
 ./update_react_files.sh
 ```
 
-The script clones the [frontend](https://github.com/qlarr-surveys/frontend) repo, runs
-`npm install`, builds the production and debug bundles, and copies them into
+The script clones the [qlarr](https://github.com/qlarr-surveys/qlarr) monorepo, runs `npm install`
+in its `frontend/` directory, builds the production and debug bundles, and copies them into
 `app/src/main/assets/react-app/` and `app/src/debug/assets/react-app/`. It requires git and
 Node.js/npm.
 
@@ -236,8 +235,7 @@ The AGPL-3.0 license ensures that:
 
 ## Related Projects
 
-- [frontend](https://github.com/qlarr-surveys/frontend) - WYSIWYG survey editor and web renderer
-- [backend](https://github.com/qlarr-surveys/backend) - Backend infrastructure
+- [qlarr](https://github.com/qlarr-surveys/qlarr) - Monorepo: web frontend, backend, and deployment
 - [survey-engine-kmp](https://github.com/qlarr-surveys/survey-engine-kmp) - Kotlin Multiplatform survey engine
 - [survey-engine-script](https://github.com/qlarr-surveys/survey-engine-script) - Survey definition scripting
 
