@@ -582,6 +582,7 @@ class EMNavProcessor(
             events =
                 mutableListOf<ResponseEvent>().apply {
                     if (survey.saveTimings) {
+                        addAll(events)
                         add(
                             ResponseEvent.Navigation(
                                 from = current.navigationIndex.stringIndex(),
@@ -590,7 +591,6 @@ class EMNavProcessor(
                                 time = LocalDateTime.now(ZoneOffset.UTC),
                             ),
                         )
-                        addAll(events)
                     }
                 },
         )
