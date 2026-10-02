@@ -221,3 +221,64 @@ class ValueDataTypesTest {
         assertEquals(emptyMap<String, ReturnType>(), valueDataTypes(schema))
     }
 }
+
+class ComponentHeaderTest {
+    @Test
+    fun `single component uses the root index and its label`() {
+        val labels = mapOf("Q1" to "How old are you?")
+        assertEquals(
+            "(1) How old are you?",
+            componentHeader("Q1", labels, mapOf("Q1" to "1"), emptyMap(), "en"),
+        )
+    }
+
+    @Test
+    fun `nested component joins the whole path with dashes, indexed by the root`() {
+        // Q9A1 splits to [Q9, A1] → cumulative [Q9, Q9A1]: question then row.
+        val labels = mapOf("Q9" to "Grid question", "Q9A1" to "Statement 1")
+        assertEquals(
+            "(9) Grid question - Statement 1",
+            componentHeader("Q9A1", labels, mapOf("Q9" to "9"), emptyMap(), "en"),
+        )
+    }
+
+    @Test
+    fun `a component without a label is dropped from the path`() {
+        // No label for the Q9 root — only the row contributes text.
+        val labels = mapOf("Q9A1" to "Statement 1")
+        assertEquals(
+            "(9) Statement 1",
+            componentHeader("Q9A1", labels, mapOf("Q9" to "9"), emptyMap(), "en"),
+        )
+    }
+
+    @Test
+    fun `strips HTML from every label in the path`() {
+        val labels = mapOf("Q9" to "<b>Grid</b>", "Q9A1" to "<i>Row</i>")
+        assertEquals(
+            "(9) Grid - Row",
+            componentHeader("Q9A1", labels, mapOf("Q9" to "9"), emptyMap(), "en"),
+        )
+    }
+
+    @Test
+    fun `resolves format instructions in a label against the response values`() {
+        val labels = mapOf("Q1" to "You are {{ age }}")
+        val values = mapOf<String, Any>("Q1.format_label_en_1" to "30")
+        assertEquals(
+            "(1) You are 30",
+            componentHeader("Q1", labels, mapOf("Q1" to "1"), values, "en"),
+        )
+    }
+
+    @Test
+    fun `falls back to the root code when it has no index`() {
+        val labels = mapOf("Q1" to "Label")
+        assertEquals("(Q1) Label", componentHeader("Q1", labels, emptyMap(), emptyMap(), "en"))
+    }
+
+    @Test
+    fun `shows a bare index when no component in the path has a label`() {
+        assertEquals("(1)", componentHeader("Q1", emptyMap(), mapOf("Q1" to "1"), emptyMap(), "en"))
+    }
+}

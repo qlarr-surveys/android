@@ -234,15 +234,8 @@ class EMNavProcessor(
                             labels,
                         ) ?: raw
                     if (isEmptyAnswer(newValue)) return@forEach
-                    val prefix = codeIndex[column]?.let { "($it) " } ?: ""
-                    val label =
-                        resolveLabelFormat(
-                            labels[column] ?: column,
-                            column,
-                            response.values,
-                            response.lang,
-                        )
-                    newValues["$prefix$label"] = newValue
+                    val header = componentHeader(column, labels, codeIndex, response.values, response.lang)
+                    newValues[header] = newValue
                 }
 
                 emit(response.copy(values = newValues))
@@ -285,16 +278,8 @@ class EMNavProcessor(
         fun label(code: String, fallback: String): String =
             resolveLabelFormat(labels[code] ?: fallback, code, response.values, response.lang)
 
-        fun questionLabel(code: String): String {
-            val parts = code.splitToComponentCodes()
-            return if (parts.size > 1) {
-                val q = parts[0]
-                val question = "(${codeIndex[q] ?: q}) ${label(q, "")}".trim()
-                "$question - ${label(code, code)}"
-            } else {
-                "(${codeIndex[code] ?: code}) ${label(code, code)}".trim()
-            }
-        }
+        fun questionLabel(code: String): String =
+            componentHeader(code, labels, codeIndex, response.values, response.lang)
 
         val pages = mutableListOf<AnswerPage>()
         var title: String? = null
@@ -838,4 +823,34 @@ internal fun resolveLabelFormat(
     val state = formatState(values, code)
     return replaceFormatInstructions(stripped, state, "label", pickFormatLang(state, "label", lang))
         ?: stripped
+}
+
+/**
+ * Human-readable header for a response column, mirroring the web renderer: the
+ * root question's index followed by the label of every component along the
+ * code's path — question, then row, then column, … — joined with " - ".
+ *
+ * The path is the cumulative prefixes of the split code, so `Q9A1` yields
+ * [`Q9`, `Q9A1`] (question, row). Components with no label are dropped (a bare
+ * index is still shown). Each label is HTML-stripped and has its `{{...}}`
+ * format instructions resolved against this response's [values].
+ */
+internal fun componentHeader(
+    code: String,
+    labels: Map<String, String>,
+    codeIndex: Map<String, String>,
+    values: Map<String, Any>,
+    lang: String,
+): String {
+    val parts = code.splitToComponentCodes()
+    if (parts.isEmpty()) return code
+    val componentCodes = parts.indices.map { i -> parts.subList(0, i + 1).joinToString("") }
+    val componentLabels =
+        componentCodes.mapNotNull { component ->
+            labels[component]
+                ?.takeIf { it.isNotEmpty() }
+                ?.let { resolveLabelFormat(it, component, values, lang) }
+        }
+    val index = codeIndex[componentCodes.first()] ?: componentCodes.first()
+    return "($index) ${componentLabels.joinToString(" - ")}".trim()
 }
