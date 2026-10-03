@@ -30,10 +30,10 @@ import com.qlarr.app.ui.responses.ResponsesViewModel
 import com.qlarr.app.ui.responses.TimelineEntry
 import com.qlarr.surveyengine.ext.JsonExt
 import com.qlarr.surveyengine.ext.splitToComponentCodes
-import com.qlarr.surveyengine.model.Dependency
-import com.qlarr.surveyengine.model.ReservedCode
 import com.qlarr.surveyengine.model.SurveyLang
 import com.qlarr.surveyengine.model.exposed.ColumnName
+import com.qlarr.surveyengine.model.exposed.ResponseField
+import com.qlarr.surveyengine.model.exposed.ReturnType
 import com.qlarr.surveyengine.model.exposed.NavigationDirection
 import com.qlarr.surveyengine.model.exposed.NavigationIndex
 import com.qlarr.surveyengine.model.exposed.SurveyMode
@@ -204,20 +204,7 @@ class EMNavProcessor(
         ) { navListener.onError(it) }
     }
 
-    private fun maskedValues(values: Map<String, Any>): Map<String, Any> =
-        buildMap {
-            values.forEach { (key, _) ->
-                if (key.endsWith(".value")) {
-                    val prefix = key.substringBeforeLast(".value")
-                    val maskedKey = "$prefix.masked_value"
-                    values[maskedKey]?.let { maskedValue ->
-                        put(maskedKey, maskedValue)
-                    }
-                }
-            }
-        }
-
-    fun maskedValues(values: List<Response>): Flow<Response> {
+    fun readableValues(values: List<Response>): Flow<Response> {
         val validationJsonOutput = FileUtils.getValidationJson(getActivity(), survey.id)!!
         val schema =
             validationJsonOutput.schema.filter { it.columnName == ColumnName.VALUE }.map {
@@ -230,35 +217,31 @@ class EMNavProcessor(
                 validationJsonOutput.defaultSurveyLang().code,
             )
         val codeIndex = validationJsonOutput.buildCodeIndex()
+        val dataTypeByCode = valueDataTypes(validationJsonOutput.schema)
 
         return flow {
             values.forEach { response ->
                 val newValues = mutableMapOf<String, Any>()
                 val oldValues = response.values
-                val maskedValues = maskedValues(response.values)
                 schema.forEach { column ->
-                    val key = "$column.value"
-                    oldValues[key]?.let { value ->
-                        val prefix = codeIndex[column]?.let { "($it) " } ?: ""
-                        val newKey = "$prefix${labels[column]?.stripHTMLTags() ?: column}"
-                        val newValue =
-                            maskedValues[
-                                Dependency(
-                                    column,
-                                    ReservedCode.MaskedValue,
-                                ).toValueKey(),
-                            ]?.toString()
-                                ?: value
-                        newValues[newKey] = newValue
-                    }
+                    val raw = oldValues["$column.value"] ?: return@forEach
+                    val questionCode = column.splitToComponentCodes().first()
+                    val newValue =
+                        resolveListAndEnumValues(
+                            raw,
+                            questionCode,
+                            dataTypeByCode[column],
+                            labels,
+                        ) ?: raw
+                    if (isEmptyAnswer(newValue)) return@forEach
+                    val header = componentHeader(column, labels, codeIndex, response.values, response.lang)
+                    newValues[header] = newValue
                 }
 
                 emit(response.copy(values = newValues))
             }
         }
     }
-
-    private fun String.stripHTMLTags(): String = replace(Regex("<.*?>"), "")
 
     fun detailContent(
         response: Response,
@@ -279,26 +262,24 @@ class EMNavProcessor(
                 .filter { it.columnName == ColumnName.VALUE }
                 .map { it.componentCode }
                 .toSet()
-        val masked = maskedValues(response.values)
+        val dataTypeByCode = valueDataTypes(validationJsonOutput.schema)
 
-        fun maskedOrRaw(code: String): String? {
-            val raw = response.values["$code.value"]?.toString()
-            val maskedValue =
-                masked[Dependency(code, ReservedCode.MaskedValue).toValueKey()]?.toString()
-            return maskedValue?.let { "$it ($raw)" } ?: raw
+        fun resolvedValue(code: String): String? {
+            val raw = response.values["$code.value"] ?: return null
+            val questionCode = code.splitToComponentCodes().first()
+            return resolveListAndEnumValues(
+                raw,
+                questionCode,
+                dataTypeByCode[code],
+                labels,
+            )?.toString()
         }
 
-        fun questionLabel(code: String): String {
-            val parts = code.splitToComponentCodes()
-            return if (parts.size > 1) {
-                val q = parts[0]
-                val question =
-                    "(${codeIndex[q] ?: q}) ${labels[q]?.stripHTMLTags().orEmpty()}".trim()
-                "$question - ${labels[code]?.stripHTMLTags() ?: code}"
-            } else {
-                "(${codeIndex[code] ?: code}) ${labels[code]?.stripHTMLTags() ?: code}".trim()
-            }
-        }
+        fun label(code: String, fallback: String): String =
+            resolveLabelFormat(labels[code] ?: fallback, code, response.values, response.lang)
+
+        fun questionLabel(code: String): String =
+            componentHeader(code, labels, codeIndex, response.values, response.lang)
 
         val pages = mutableListOf<AnswerPage>()
         var title: String? = null
@@ -309,7 +290,7 @@ class EMNavProcessor(
                 code.startsWith("G") -> {
                     title?.let { pages.add(AnswerPage(it, rows)) }
                     title =
-                        "${codeIndex[code] ?: ""} · ${labels[code]?.stripHTMLTags() ?: code}".trim()
+                        "${codeIndex[code] ?: ""} · ${label(code, code)}".trim()
                     rows = mutableListOf()
                 }
 
@@ -317,11 +298,11 @@ class EMNavProcessor(
                     val raw = response.values["$code.value"]
                     val answer: AnswerValue? =
                         when {
-                            raw == null -> {
+                            isEmptyAnswer(raw) -> {
                                 if (includeUnanswered) AnswerValue.NotAnswered else null
                             }
 
-                            raw.isFileMap() -> {
+                            raw?.isFileMap() == true -> {
                                 val map = raw as Map<*, *>
                                 val storedName =
                                     map[ResponsesViewModel.KEY_STORED_FILENAME] as String
@@ -348,7 +329,7 @@ class EMNavProcessor(
                             }
 
                             else -> {
-                                AnswerValue.Text(maskedOrRaw(code).orEmpty())
+                                AnswerValue.Text(resolvedValue(code).orEmpty())
                             }
                         }
                     if (answer != null && title != null) {
@@ -378,7 +359,7 @@ class EMNavProcessor(
                     is ResponseEvent.Value -> {
                         TimelineEntry.Answer(
                             question = questionLabel(event.code),
-                            value = maskedOrRaw(event.code).orEmpty(),
+                            value = resolvedValue(event.code).orEmpty(),
                             timeLabel = event.time.toFormattedString(),
                             delta = delta,
                         )
@@ -723,4 +704,153 @@ fun <T> measure(
     val result = block()
     Log.d("time", "$name " + "${System.currentTimeMillis() - start}")
     return result
+}
+
+internal fun String.stripHTMLTags(): String = replace(Regex("<.*?>"), "")
+
+/** An answer is empty — and should be omitted — when it is null, "", or an empty list. */
+internal fun isEmptyAnswer(value: Any?): Boolean =
+    value == null || value == "" || (value is List<*> && value.isEmpty())
+
+/** componentCode → `dataType` for every VALUE field in the response schema. */
+internal fun valueDataTypes(schema: List<ResponseField>): Map<String, ReturnType> =
+    schema
+        .filter { it.columnName == ColumnName.VALUE }
+        .associate { it.componentCode to it.dataType }
+
+/**
+ * Resolve choice answers to their human-readable labels: an `enum` (single
+ * choice) code → its label, a `list` (multiple choice) of codes → the labels
+ * comma-joined. Every other data type passes through as the raw stored value.
+ * Labels are keyed off the root question (`<question><answerCode>`) so array
+ * columns resolve too.
+ */
+internal fun resolveListAndEnumValues(
+    raw: Any?,
+    questionCode: String,
+    dataType: ReturnType?,
+    labels: Map<String, String>,
+): Any? {
+    // A blank answer code must stay blank — never fall through to
+    // `labels[questionCode]`, which is the question's own label, not an answer.
+    fun toLabel(code: Any?): Any? {
+        val answerCode = code?.toString().orEmpty()
+        if (answerCode.isBlank()) return code
+        return labels[questionCode + answerCode]?.stripHTMLTags() ?: code
+    }
+    return when (dataType) {
+        is ReturnType.Enum -> if (raw is String) toLabel(raw) else raw
+        is ReturnType.List ->
+            if (raw is List<*>) raw.joinToString(", ") { toLabel(it).toString() } else raw
+
+        else -> raw
+    }
+}
+
+// Format instructions are `{{ ... }}` placeholders embedded in survey content
+// (labels, descriptions). At runtime the engine computes each one's result and
+// stores it under `<code>.format_<name>_<lang>_<n>` in the response values; these
+// helpers substitute those results back into the text in document order.
+
+private val FORMAT_INSTRUCTION_REGEX = Regex("""\{\{.*?\}\}""")
+
+internal fun getAllFormatInstructions(input: String): List<String> =
+    FORMAT_INSTRUCTION_REGEX.findAll(input).map { it.value }.toList()
+
+internal fun replaceFormatInstructions(
+    html: String?,
+    state: Map<String, Any?>,
+    name: String,
+    lang: String,
+): String? {
+    if (html.isNullOrEmpty()) return html
+    var result: String = html
+    getAllFormatInstructions(html).forEachIndexed { index, match ->
+        state["format_${name}_${lang}_${index + 1}"]?.let { replacement ->
+            result = result.replaceFirst(match, replacement.toString())
+        }
+    }
+    return result
+}
+
+/**
+ * The per-component slice of the flat response values, with the `<code>.` prefix
+ * stripped — the shape [replaceFormatInstructions] expects as its `state` (keys
+ * like `format_label_en_1`).
+ */
+internal fun formatState(
+    values: Map<String, Any?>,
+    code: String,
+): Map<String, Any?> {
+    val prefix = "$code."
+    return values
+        .filterKeys { it.startsWith(prefix) }
+        .mapKeys { it.key.substring(prefix.length) }
+}
+
+/**
+ * Which language's `format_<name>_<lang>_<n>` results to use. Prefers the
+ * response's language, but falls back to whatever language the stored
+ * instructions actually carry — the survey's languages may have changed after
+ * this response was collected.
+ */
+internal fun pickFormatLang(
+    state: Map<String, Any?>,
+    name: String,
+    preferred: String,
+): String {
+    val prefix = "format_${name}_"
+    val suffix = Regex("""^(.+)_\d+$""")
+    val langs = linkedSetOf<String>()
+    for (key in state.keys) {
+        if (!key.startsWith(prefix)) continue
+        suffix.find(key.substring(prefix.length))?.let { langs.add(it.groupValues[1]) }
+    }
+    return if (langs.contains(preferred)) preferred else (langs.firstOrNull() ?: preferred)
+}
+
+/**
+ * Strip HTML from a label, then substitute its `{{...}}` format instructions with
+ * this response's stored computed values for component [code].
+ */
+internal fun resolveLabelFormat(
+    text: String,
+    code: String,
+    values: Map<String, Any>,
+    lang: String,
+): String {
+    val stripped = text.stripHTMLTags()
+    val state = formatState(values, code)
+    return replaceFormatInstructions(stripped, state, "label", pickFormatLang(state, "label", lang))
+        ?: stripped
+}
+
+/**
+ * Human-readable header for a response column, mirroring the web renderer: the
+ * root question's index followed by the label of every component along the
+ * code's path — question, then row, then column, … — joined with " - ".
+ *
+ * The path is the cumulative prefixes of the split code, so `Q9A1` yields
+ * [`Q9`, `Q9A1`] (question, row). Components with no label are dropped (a bare
+ * index is still shown). Each label is HTML-stripped and has its `{{...}}`
+ * format instructions resolved against this response's [values].
+ */
+internal fun componentHeader(
+    code: String,
+    labels: Map<String, String>,
+    codeIndex: Map<String, String>,
+    values: Map<String, Any>,
+    lang: String,
+): String {
+    val parts = code.splitToComponentCodes()
+    if (parts.isEmpty()) return code
+    val componentCodes = parts.indices.map { i -> parts.subList(0, i + 1).joinToString("") }
+    val componentLabels =
+        componentCodes.mapNotNull { component ->
+            labels[component]
+                ?.takeIf { it.isNotEmpty() }
+                ?.let { resolveLabelFormat(it, component, values, lang) }
+        }
+    val index = codeIndex[componentCodes.first()] ?: componentCodes.first()
+    return "($index) ${componentLabels.joinToString(" - ")}".trim()
 }
