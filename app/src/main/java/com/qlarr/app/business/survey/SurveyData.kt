@@ -36,7 +36,8 @@ data class SurveyData(
     val description: String,
     val imageUrl: String,
     val lastSync: LocalDateTime? = null,
-    val surveyNavigationData: SurveyNavigationData
+    val surveyNavigationData: SurveyNavigationData,
+    val quotaCounts: Map<String, Int> = emptyMap(),
 ) : Parcelable {
     private val scheduled: Boolean
         get() = startDate != null && startDate.isAfter(LocalDateTime.now())
@@ -141,7 +142,8 @@ data class SurveyData(
                 cachedDesign = cachedDesign,
                 cachedAllFiles = cachedAllFiles,
                 lastSync = lastSync,
-                surveyNavigationData = survey.navigationData
+                surveyNavigationData = survey.navigationData,
+                quotaCounts = survey.quotaCounts,
             )
     }
 }

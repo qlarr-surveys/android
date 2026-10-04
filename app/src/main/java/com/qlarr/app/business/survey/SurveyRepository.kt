@@ -7,6 +7,7 @@ import com.qlarr.app.api.survey.Survey
 import com.qlarr.app.api.survey.SurveyDesign
 import com.qlarr.app.api.survey.SurveyService
 import com.qlarr.app.api.survey.UploadResponseRequestData
+import com.qlarr.app.api.survey.objectMapper
 import com.qlarr.app.business.guest.GuestSurveyRepository
 import com.qlarr.app.db.ResponseDao
 import com.qlarr.app.db.survey.PublishInfoEntity
@@ -334,6 +335,7 @@ class SurveyRepositoryImpl(
             id = id,
             totalResponsesCount = responseCount.completeResponseCount,
             syncedResponseCount = this.syncedResponseCount + 1,
+            quotaCounts = objectMapper.writeValueAsString(responseCount.quotaCounts),
             lastSync = LocalDateTime.now(ZoneOffset.UTC),
         )
 
@@ -361,6 +363,7 @@ class SurveyRepositoryImpl(
             cachedDesign = this.cachedDesign,
             cachedAllFiles = this.cachedAllFiles,
             navigationData = this.surveyNavigationData,
+            quotaCounts = objectMapper.writeValueAsString(this.quotaCounts),
         )
 }
 

@@ -16,6 +16,7 @@ import com.qlarr.app.api.survey.ResponseEvent
 import com.qlarr.app.api.survey.SurveyNavigationData
 import com.qlarr.app.api.survey.ValidationJsonOutput
 import com.qlarr.app.api.survey.objectMapper
+import com.qlarr.app.business.survey.OfflineQuotas
 import com.qlarr.app.business.survey.SurveyData
 import com.qlarr.app.db.QlarrDb
 import com.qlarr.app.db.model.Response
@@ -66,6 +67,28 @@ class EMNavProcessor(
     private fun getActivity(): Activity = webView.context as Activity
 
     private var scriptLoaded = false
+
+    private var fullQuotas: List<String>? = null
+
+    private fun fullQuotas(validationJsonOutput: ValidationJsonOutput): List<String> =
+        fullQuotas ?: runBlocking {
+            val syncedCounts =
+                qlarrDb
+                    .surveyDataDao()
+                    .getSurveyDataById(survey.id)
+                    ?.quotaCounts
+                    ?.let { objectMapper.readValue(it, jacksonTypeRef<Map<String, Int>>()) }
+                    ?: survey.quotaCounts
+            OfflineQuotas.fullQuotas(
+                limits = OfflineQuotas.limits(validationJsonOutput.survey),
+                syncedCounts = syncedCounts,
+                unsyncedCompletes =
+                    qlarrDb
+                        .responseDao()
+                        .getUnsyncedComplete(survey.id)
+                    .map { it.values },
+                    )
+        }.also { fullQuotas = it }
 
     init {
         webView.clearCache(true)
@@ -136,6 +159,7 @@ class EMNavProcessor(
     fun start(navListener: NavigationListener) {
         val validationJsonOutput = FileUtils.getValidationJson(getActivity(), survey.id)!!
         val prefilledValues = getPrefillValues(validationJsonOutput)
+        fullQuotas = null
 
         navigationUseCase(
             validationJsonOutput = validationJsonOutput,
@@ -156,6 +180,7 @@ class EMNavProcessor(
                             additionalLang = additionalLang,
                             navigationData = survey.surveyNavigationData,
                             saveTimings = survey.saveTimings,
+                            screenedOutQuota = screenedOutQuota(navigationJsonOutput),
                         )
                 navListener.onSuccess(result)
             },
@@ -191,6 +216,7 @@ class EMNavProcessor(
                             additionalLang = additionalLang,
                             navigationData = survey.surveyNavigationData,
                             saveTimings = survey.saveTimings,
+                            screenedOutQuota = screenedOutQuota(navigationJsonOutput),
                         )
                 updateResponse(
                     current.id,
@@ -474,6 +500,13 @@ class EMNavProcessor(
         return ((pct / 5.0).roundToInt() * 5).coerceIn(MIN_PROGRESS, MAX_PROGRESS)
     }
 
+    private fun screenedOutQuota(navigationJsonOutput: NavigationJsonOutput): String? =
+        OfflineQuotas.screenedOutQuota(
+            fullQuotas.orEmpty(),
+            navigationJsonOutput.navigationIndex,
+            navigationJsonOutput.toSave,
+        )
+
     private fun navigationUseCase(
         validationJsonOutput: ValidationJsonOutput,
         lang: String? = null,
@@ -503,6 +536,7 @@ class EMNavProcessor(
                 navigationIndex = navigationIndex,
                 skipInvalid = survey.surveyNavigationData.skipInvalid,
                 surveyMode = SurveyMode.OFFLINE,
+                fullQuotas = objectMapper.writeValueAsString(fullQuotas(validationJsonOutput)),
             )
         val script = navigationUseCaseWrapperImpl.getNavigationScript()
         (webView.context as Activity).runOnUiThread {
@@ -692,6 +726,7 @@ fun NavigationJsonOutput.with(
     additionalLang: List<SurveyLang>,
     navigationData: SurveyNavigationData,
     saveTimings: Boolean,
+    screenedOutQuota: String? = null,
 ): ApiNavigationOutput =
     ApiNavigationOutput(
         survey,
@@ -702,6 +737,7 @@ fun NavigationJsonOutput.with(
         lang,
         additionalLang,
         saveTimings,
+        screenedOutQuota,
     )
 
 data class ApiNavigationOutput(
@@ -713,6 +749,7 @@ data class ApiNavigationOutput(
     val lang: SurveyLang,
     val additionalLang: List<SurveyLang>?,
     val saveTimings: Boolean,
+    val screenedOutQuota: String? = null,
 )
 
 fun <T> measure(

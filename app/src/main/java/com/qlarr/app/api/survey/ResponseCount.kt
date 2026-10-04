@@ -6,5 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class ResponseCount(
     @JsonProperty("completeResponseCount") val completeResponseCount: Int,
-    @JsonProperty("userResponsesCount") val userResponsesCount: Int
+    @JsonProperty("userResponsesCount") val userResponsesCount: Int,
+    @JsonProperty("quotaCounts") val quotaCounts: Map<String, Int> = emptyMap(),
 )
