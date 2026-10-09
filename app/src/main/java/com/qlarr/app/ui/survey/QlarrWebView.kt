@@ -39,6 +39,7 @@ import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
+import java.text.Collator
 import java.util.UUID
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -226,6 +227,50 @@ constructor(
 
             }
 
+            @Suppress("unused")
+            @JavascriptInterface
+            fun searchHierarchicalAutoComplete(
+                filename: String,
+                level: Int,
+                prefix: String,
+                query: String,
+                lang: String,
+                defaultLang: String,
+            ) {
+                val rows = readHierarchicalRows(filename)
+                val searchLang = hierarchicalSearchLang(rows, lang, defaultLang)
+                val prefixValues: List<String> = objectMapper.readValue(prefix)
+                val collator = Collator.getInstance()
+                val result = rows
+                    .mapNotNull { pathOf(it, searchLang) }
+                    .filter { path -> prefixValues.indices.all { path.getOrNull(it) == prefixValues[it] } }
+                    .mapNotNull { it.getOrNull(level) }
+                    .filter { it.isNotBlank() && it.contains(query, true) }
+                    .distinct()
+                    .sortedWith(collator)
+                    .take(10)
+                loadUrlOnUiThread(
+                    "javascript:searchHierarchicalAutoComplete(${objectMapper.writeValueAsString(result)})"
+                )
+            }
+
+            @Suppress("unused")
+            @JavascriptInterface
+            fun hierarchicalAutoCompleteRow(
+                filename: String,
+                path: String,
+                lang: String,
+                defaultLang: String,
+            ) {
+                val rows = readHierarchicalRows(filename)
+                val searchLang = hierarchicalSearchLang(rows, lang, defaultLang)
+                val pathValues: List<String> = objectMapper.readValue(path)
+                val row = rows.firstOrNull { pathOf(it, searchLang) == pathValues }
+                loadUrlOnUiThread(
+                    "javascript:hierarchicalAutoCompleteRow(${objectMapper.writeValueAsString(row)})"
+                )
+            }
+
             @JavascriptInterface
             fun start() {
                 val mapper = objectMapper.registerModule(JavaTimeModule())
@@ -379,6 +424,21 @@ constructor(
 
         webViewClient = qlarrWebViewClient
     }
+
+    // Hierarchical autocomplete rows: each maps a language to its path, one value per level,
+    // e.g. { "en": ["Germany", "Bavaria"], "de": ["Deutschland", "Bayern"] }
+    private fun readHierarchicalRows(filename: String): List<Map<String, Any?>> =
+        objectMapper.readValue(FileUtils.getResourceFile(context, filename, survey.id))
+
+    private fun pathOf(row: Map<String, Any?>, lang: String): List<String?>? =
+        (row[lang] as? List<*>)?.map { it as? String }
+
+    // Search in `lang` if any row has it, otherwise in `defaultLang`
+    private fun hierarchicalSearchLang(
+        rows: List<Map<String, Any?>>,
+        lang: String,
+        defaultLang: String,
+    ): String = if (rows.any { it[lang] is List<*> }) lang else defaultLang
 
     private fun getRuntimeJs(): WebResourceResponse {
         val script = FileUtils.getValidationJson(context, survey.id)?.script
