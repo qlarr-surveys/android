@@ -2,7 +2,6 @@ package com.qlarr.app.business.survey
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.qlarr.app.business.survey.OfflineQuotas.QuotaLimit
-import com.qlarr.surveyengine.model.exposed.NavigationIndex
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -54,33 +53,29 @@ class OfflineQuotasTest {
     }
 
     @Test
-    fun `names the first full quota a screened-out respondent belongs to`() {
-        val end = NavigationIndex.End("G2")
-        val toSave =
+    fun `full quotas become is_quota_met inputs for the engine`() {
+        assertEquals(
             mapOf(
-                "Survey.disqualified" to true,
-                "Survey.quota_QT1" to false,
-                "Survey.quota_QT2" to true,
-                "Survey.quota_QT3" to true,
-            )
+                "Survey.is_quota_met_QT1" to true,
+                "Survey.is_quota_met_QT2" to true,
+            ),
+            OfflineQuotas.quotaInputs(listOf("QT1", "QT2")),
+        )
+        assertEquals(emptyMap<String, Boolean>(), OfflineQuotas.quotaInputs(emptyList()))
+    }
+
+    @Test
+    fun `reads the screening quota the engine reported`() {
         assertEquals(
             "QT2",
-            OfflineQuotas.screenedOutQuota(listOf("QT1", "QT2", "QT3"), end, toSave),
-        )
-        assertNull(OfflineQuotas.screenedOutQuota(listOf("QT1"), end, toSave))
-        assertNull(
             OfflineQuotas.screenedOutQuota(
-                listOf("QT2"),
-                end,
-                toSave + ("Survey.disqualified" to false),
+                mapOf(
+                    "Survey.disqualified" to true,
+                    "Survey.screened_out_by_quota" to "QT2",
+                ),
             ),
         )
-        assertNull(
-            OfflineQuotas.screenedOutQuota(
-                listOf("QT2"),
-                NavigationIndex.Group("G1"),
-                toSave,
-            ),
-        )
+        assertNull(OfflineQuotas.screenedOutQuota(mapOf("Survey.disqualified" to true)))
+        assertNull(OfflineQuotas.screenedOutQuota(emptyMap()))
     }
 }

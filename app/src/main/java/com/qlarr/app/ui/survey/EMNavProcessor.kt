@@ -501,11 +501,7 @@ class EMNavProcessor(
     }
 
     private fun screenedOutQuota(navigationJsonOutput: NavigationJsonOutput): String? =
-        OfflineQuotas.screenedOutQuota(
-            fullQuotas.orEmpty(),
-            navigationJsonOutput.navigationIndex,
-            navigationJsonOutput.toSave,
-        )
+        OfflineQuotas.screenedOutQuota(navigationJsonOutput.toSave)
 
     private fun navigationUseCase(
         validationJsonOutput: ValidationJsonOutput,
@@ -532,11 +528,13 @@ class EMNavProcessor(
                 navigationDirection = navigationDirection,
                 navigationMode = survey.surveyNavigationData.navigationMode,
                 processedSurvey = objectMapper.writeValueAsString(validationJsonOutput),
-                values = objectMapper.writeValueAsString(values),
+                values =
+                    objectMapper.writeValueAsString(
+                        values + OfflineQuotas.quotaInputs(fullQuotas(validationJsonOutput)),
+                    ),
                 navigationIndex = navigationIndex,
                 skipInvalid = survey.surveyNavigationData.skipInvalid,
                 surveyMode = SurveyMode.OFFLINE,
-                fullQuotas = objectMapper.writeValueAsString(fullQuotas(validationJsonOutput)),
             )
         val script = navigationUseCaseWrapperImpl.getNavigationScript()
         (webView.context as Activity).runOnUiThread {

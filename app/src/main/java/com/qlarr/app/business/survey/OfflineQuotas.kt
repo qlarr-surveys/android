@@ -1,10 +1,11 @@
 package com.qlarr.app.business.survey
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.qlarr.surveyengine.model.exposed.NavigationIndex
 
 object OfflineQuotas {
     private const val QUOTA_VALUE_PREFIX = "Survey.quota_"
+    private const val IS_QUOTA_MET_PREFIX = "Survey.is_quota_met_"
+    private const val SCREENED_OUT_BY_QUOTA = "Survey.screened_out_by_quota"
     private const val DISQUALIFIED = "Survey.disqualified"
     private val QUOTA_CODE = Regex("^[A-Za-z0-9][A-Za-z0-9_]*$")
 
@@ -42,14 +43,9 @@ object OfflineQuotas {
             }.map { it.code }
     }
 
-    fun screenedOutQuota(
-        fullQuotas: List<String>,
-        navigationIndex: NavigationIndex,
-        toSave: Map<String, Any?>,
-    ): String? {
-        if (navigationIndex !is NavigationIndex.End || !isTrue(toSave[DISQUALIFIED])) return null
-        return fullQuotas.firstOrNull { isTrue(toSave["$QUOTA_VALUE_PREFIX$it"]) }
-    }
+    fun quotaInputs(fullQuotas: List<String>): Map<String, Boolean> = fullQuotas.associate { "$IS_QUOTA_MET_PREFIX$it" to true }
+
+    fun screenedOutQuota(toSave: Map<String, Any?>): String? = toSave[SCREENED_OUT_BY_QUOTA] as? String
 
     private fun isTrue(value: Any?): Boolean = value == true || value == "true"
 }
