@@ -17,7 +17,7 @@ import com.qlarr.app.db.survey.SurveyDataEntity
         Response::class,
         SurveyDataEntity::class,
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(
@@ -43,6 +43,13 @@ abstract class QlarrDb : RoomDatabase() {
             }
         }
 
+        val MIGRATION_2_3 =
+            object : Migration(2, 3) {
+                override fun migrate(db: SupportSQLiteDatabase) {
+                    db.execSQL("ALTER TABLE survey_data_table ADD COLUMN quotaCounts TEXT NOT NULL DEFAULT '{}'")
+                }
+        }
+
         @Volatile
         private var INSTANCE: QlarrDb? = null
 
@@ -51,9 +58,8 @@ abstract class QlarrDb : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     QlarrDb::class.java,
-                    "qlarr_db"
-                )
-                    .addMigrations(MIGRATION_1_2)
+                    "qlarr_db",
+                ).addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                     .build()
 
                 INSTANCE = instance

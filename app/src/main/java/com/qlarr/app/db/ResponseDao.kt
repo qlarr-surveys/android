@@ -90,6 +90,9 @@ interface ResponseDao {
     @Query("SELECT * FROM response WHERE surveyId = :surveyId")
     suspend fun getAllByUserAndSurvey(surveyId: String): List<Response>
 
+    @Query("SELECT * FROM response WHERE surveyId = :surveyId AND submitDate IS NOT NULL AND is_synced = 0")
+    suspend fun getUnsyncedComplete(surveyId: String): List<Response>
+
     @Query(
         "SELECT * FROM response WHERE surveyId = :surveyId ORDER BY startDate DESC " +
                 "LIMIT :perPage OFFSET (:page*:perPage)"
