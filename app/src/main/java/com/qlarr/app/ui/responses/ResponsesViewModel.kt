@@ -147,7 +147,7 @@ class ResponsesViewModel(
                 val newResponse =
                     responsesRepository
                         .getResponse(responseId)
-                emNavProcessor.maskedValues(listOf(newResponse)).collect { response ->
+                emNavProcessor.readableValues(listOf(newResponse)).collect { response ->
                     val newResponses =
                         _responsesScreenData.value.responses
                             .toMutableList()
@@ -155,7 +155,7 @@ class ResponsesViewModel(
                                 { it.id == responseId },
                                 {
                                     buildItem(
-                                        masked = response,
+                                        readable = response,
                                         raw = newResponse,
                                         quotaExceeded = surveyData.quotaExceeded(),
                                     )
@@ -225,7 +225,7 @@ class ResponsesViewModel(
                 val quotaExceeded = surveyData.quotaExceeded()
                 val rawById = newList.associateBy { it.id }
                 if (newList.isNotEmpty()) {
-                    emNavProcessor.maskedValues(newList).collect { response ->
+                    emNavProcessor.readableValues(newList).collect { response ->
                         val raw = rawById[response.id] ?: response
                         _responsesScreenData.update {
                             it.copy(
@@ -237,7 +237,7 @@ class ResponsesViewModel(
                                         .apply {
                                             add(
                                                 buildItem(
-                                                    masked = response,
+                                                    readable = response,
                                                     raw = raw,
                                                     quotaExceeded = quotaExceeded,
                                                 ),
@@ -307,7 +307,7 @@ class ResponsesViewModel(
     }
 
     private fun buildItem(
-        masked: Response,
+        readable: Response,
         raw: Response,
         quotaExceeded: Boolean,
     ): ResponseItemData {
@@ -322,8 +322,8 @@ class ResponsesViewModel(
             submitDateString = raw.submitDate?.toFormattedString(),
             editEnabled = !quotaExceeded && raw.submitDate == null,
             deleteEnabled = status != ResponseStatus.UPLOADED,
-            events = masked.toListEventData(),
-            values = masked.toResponseValueData(),
+            events = readable.toListEventData(),
+            values = readable.toResponseValueData(),
             lang = raw.lang,
             photos = fileTypes.count { !it.contains("video") },
             videos = fileTypes.count { it.contains("video") },
