@@ -17,6 +17,8 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitProvider {
+    private val refreshLock = Any()
+
     fun retrofitPublicEndpoints(sessionManager: SessionManager): Retrofit =
         getRetrofit(
             DUMMY_URL,
@@ -46,7 +48,8 @@ object RetrofitProvider {
                             .newBuilder()
                             .method(original.method, original.body)
 
-                    sessionManager.getActiveToken()?.let {
+                    val sentToken = sessionManager.getActiveToken()
+                    sentToken?.let {
                         requestBuilder.header("Authorization", "Bearer $it")
                     }
 
@@ -56,26 +59,31 @@ object RetrofitProvider {
                     if (response.code != 401) {
                         return@addInterceptor response
                     }
-                    val refreshToken =
-                        sessionManager.getRefreshToken() ?: return@addInterceptor response
-                    val activeToken =
-                        sessionManager.getActiveToken() ?: return@addInterceptor response
 
-                    val newTokenResult =
-                        runBlocking {
-                            refreshTokenUseCase(refreshToken, activeToken)
-                        }
-                    if (newTokenResult.isSuccess) {
-                        val newRequest =
-                            original
-                                .newBuilder()
-                                .header("Authorization", "Bearer ${newTokenResult.getOrNull()}")
-                                .method(original.method, original.body)
-                                .build()
-                        chain.proceed(newRequest)
-                    } else {
-                        response
-                    }
+                    val newToken =
+                        synchronized(refreshLock) {
+                            val storedToken = sessionManager.getActiveToken()
+                            if (storedToken != null && storedToken != sentToken) {
+                                storedToken
+                            } else {
+                                val refreshToken =
+                                    sessionManager.getRefreshToken()
+                                        ?: return@addInterceptor response
+                                val activeToken = storedToken ?: return@addInterceptor response
+                                runBlocking {
+                                    refreshTokenUseCase(refreshToken, activeToken)
+                                }.getOrNull()
+                            }
+                        } ?: return@addInterceptor response
+
+                    response.close()
+                    val newRequest =
+                        original
+                            .newBuilder()
+                            .header("Authorization", "Bearer $newToken")
+                            .method(original.method, original.body)
+                            .build()
+                    chain.proceed(newRequest)
                 }.build()
         return getRetrofit(DUMMY_URL, httpClient)
     }
