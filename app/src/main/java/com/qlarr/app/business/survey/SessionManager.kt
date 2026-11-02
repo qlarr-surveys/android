@@ -44,7 +44,7 @@ class SessionManagerImpl(
         sharedPrefsManager.lastSuccessfulEnv = sharedPrefsManager.env
         sharedPrefsManager.lastUserName = "${loginResponse.firstName} ${loginResponse.lastName}"
         sharedPrefsManager.activeToken = loginResponse.activeToken
-        sharedPrefsManager.refreshToken = loginResponse.refreshToken
+        loginResponse.refreshToken?.let { sharedPrefsManager.refreshToken = it }
     }
 
     override fun sameUser(loginResponse: LoginResponse): Boolean {
