@@ -250,7 +250,38 @@ constructor(
                     .sortedWith(collator)
                     .take(10)
                 loadUrlOnUiThread(
-                    "javascript:searchHierarchicalAutoComplete(${objectMapper.writeValueAsString(result)})"
+                    "javascript:searchHierarchicalAutoComplete(${objectMapper.writeValueAsString(result)})",
+                    )
+                }
+
+                @Suppress("unused")
+                @JavascriptInterface
+                fun listHierarchicalAutoCompleteLevel(
+                    requestId: Int,
+                    filename: String,
+                    level: Int,
+                    prefix: String,
+                    lang: String,
+                    defaultLang: String,
+                ) {
+                    val rows = readHierarchicalRows(filename)
+                    val searchLang = hierarchicalSearchLang(rows, lang, defaultLang)
+                    val prefixValues: List<String> = objectMapper.readValue(prefix)
+                    val collator = Collator.getInstance()
+                    val result =
+                        rows
+                            .mapNotNull { pathOf(it, searchLang) }
+                            .filter { path -> prefixValues.indices.all { path.getOrNull(it) == prefixValues[it] } }
+                            .mapNotNull { it.getOrNull(level) }
+                            .filter { it.isNotBlank() }
+                            .distinct()
+                            .sortedWith(collator)
+                    loadUrlOnUiThread(
+                        "javascript:listHierarchicalAutoCompleteLevel($requestId, ${
+                            objectMapper.writeValueAsString(
+                            result,
+                        )
+                    })"
                 )
             }
 
