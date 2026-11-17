@@ -83,6 +83,10 @@
 -keep class kotlin.Metadata { *; }
 -keep class kotlin.reflect.** { *; }
 
+-keep class kotlin.collections.EmptyList { *; }
+-keep class kotlin.collections.EmptyMap { *; }
+-keep class kotlin.collections.EmptySet { *; }
+
 # ------------------ KEEP necessary App classes ----------
 -keep class com.qlarr.app.api.** { *; }
 -keep class com.qlarr.app.db.** { *; }

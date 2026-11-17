@@ -1,26 +1,17 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
     id 'com.google.devtools.ksp'
     id 'org.jetbrains.kotlin.plugin.compose'
 }
 
-kotlin {
-    compilerOptions {
-        jvmTarget = JvmTarget.JVM_17
-    }
-}
-
 android {
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId "com.qlarr.app"
         minSdk 24
-        targetSdk 36
+        targetSdk 37
         versionCode 1
         versionName "0.1.0"
 
@@ -54,7 +45,7 @@ android {
             debuggable false
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
     }
@@ -70,15 +61,12 @@ android {
         buildConfig true
         compose true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.13"
-    }
 
     namespace 'com.qlarr.app'
 }
 
 ext {
-    room_version = '2.7.1'
+    room_version = '2.8.5'
     exoplayer_version = '1.10.0'
     okhttp_version = '5.3.2'
     coilVersion = '2.7.0'
@@ -90,7 +78,7 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.10.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.10.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.10.0'
-    implementation('com.github.qlarr-surveys:survey-engine-kmp:0461be6465') {
+    implementation('com.github.qlarr-surveys:survey-engine-kmp:b77eac8a8f') {
         exclude group: 'org.graalvm.js', module: 'js'
         exclude group: 'org.graalvm.js', module: 'js-scriptengine'
     }
@@ -133,7 +121,6 @@ dependencies {
 
 
     implementation("androidx.room:room-runtime:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version")
 
     ksp "androidx.room:room-compiler:$room_version"
 

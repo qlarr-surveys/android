@@ -9,10 +9,10 @@ Thank you for your interest in contributing to Qlarr Android!
 
 ### Prerequisites
 
-- **Android Studio** Arctic Fox or later
+- **Android Studio** (current stable release)
 - **Android SDK** 24 (Nougat) or higher
 - **Kotlin** 2.2.21
-- **Gradle** 8.13+
+- **Gradle** 9.6+
 
 ### Getting Started
 
