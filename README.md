@@ -46,7 +46,7 @@ single definition by a shared engine.
 - **UI:** Jetpack Compose with Material 3 (Activities host Compose screens at navigation boundaries)
 - **Dependency Injection:** Koin (feature-scoped modules)
 - **Networking:** Retrofit 3 + Jackson, with automatic JWT refresh on `401`
-- **Persistence:** Room 2.7 (offline-first local store)
+- **Persistence:** Room 2.8 (offline-first local store)
 - **Background Sync:** WorkManager with network constraints and exponential backoff
 - **Images:** Coil
 - **Survey Engine:** [survey-engine-kmp](https://github.com/qlarr-surveys/survey-engine-kmp)
